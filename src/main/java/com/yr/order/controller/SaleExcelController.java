@@ -2,7 +2,7 @@ package com.yr.order.controller;
 
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
-import com.yr.entitys.bo.orderBO.ViewExcel;
+import com.yr.entitys.bo.orderBO.SaleExportExcelBO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/SaleExcel")
-public class ExcelController {
+public class SaleExcelController {//销售订单的导出导入
     
-    private static Log log = LogFactory.getLog(ExcelController.class);
+    private static Log log = LogFactory.getLog(SaleExcelController.class);
      @Autowired
      private SaleService saleService;
      @Autowired
@@ -68,6 +68,6 @@ public class ExcelController {
     public ModelAndView viewExcel()  {
         Map<String, Object> map = new HashMap<>();
         map.put("saleList", saleDao.ExcelQuery());
-        return new ModelAndView(new ViewExcel(), map);
+        return new ModelAndView(new SaleExportExcelBO(), map);
     }
 }

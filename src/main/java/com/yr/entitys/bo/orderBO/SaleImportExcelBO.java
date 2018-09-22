@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
-public class ReadExcel {
+public class SaleImportExcelBO {
     //总行数
     private int totalRows = 0;  
     //总条数
@@ -28,7 +28,7 @@ public class ReadExcel {
     //错误信息接收器
     private String errorMsg;
     //构造方法
-    public ReadExcel(){}
+    public SaleImportExcelBO(){}
     //获取总行数
     public int getTotalRows()  { return totalRows;} 
     //获取总列数
@@ -50,7 +50,7 @@ public class ReadExcel {
   }
 
     /**
-     * 读EXCEL文件，获取客户信息集合
+     * 读EXCEL文件，获取销售订单信息集合
      * @param fileName
      * @param Mfile
      * @return
@@ -71,7 +71,7 @@ public class ReadExcel {
            e.printStackTrace();
        }
        
-       //初始化客户信息的集合    
+       //初始化销售订单信息的集合
        List<Sale> saleList=new ArrayList<Sale>();
        //初始化输入流
        InputStream is = null;  
@@ -106,7 +106,7 @@ public class ReadExcel {
       return saleList;
   }
   /**
-   * 根据excel里面的内容读取销售信息
+   * 根据excel里面的内容读取销售订单信息
    * @param is 输入流
    * @param isExcel2003 excel是2003还是2007版本
    * @return
@@ -124,7 +124,7 @@ public class ReadExcel {
            else{//当excel是2007时
                wb = new XSSFWorkbook(is);
            }
-           //读取Excel里面销售的信息
+           //读取Excel里面销售订单的信息
            saleList=readExcelValue(wb);
        }
        catch (IOException e)  {  
@@ -133,7 +133,7 @@ public class ReadExcel {
        return saleList;
   }
   /**
-   * 读取Excel里面销售的信息
+   * 读取Excel里面销售订单的信息
    * @param wb
    * @return
    */
@@ -185,7 +185,7 @@ public class ReadExcel {
                    }
                }
            }
-           //添加销售
+           //添加销售订单
            saleList.add(sale);
        }
        return saleList;
