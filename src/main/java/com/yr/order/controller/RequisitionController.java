@@ -1,0 +1,94 @@
+package com.yr.order.controller;
+
+import com.yr.entitys.bo.orderBO.RequisitionBO;
+import com.yr.entitys.page.Page;
+import com.yr.entitys.order.Requisition;
+import com.yr.order.service.RequisitionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@Controller
+@RequestMapping(value = "requisition")
+public class RequisitionController {
+    @Autowired
+    private RequisitionService requisitionServiceImpl;
+
+    @ModelAttribute
+    public void modelAttribute(@RequestParam(value = "id", required = true) Integer id, Map<String, Object> map) {
+        if (id != null && id != 0) {
+            Requisition requisition = requisitionServiceImpl.getRequisitionById(id);
+            map.put("requisition", requisition);
+        }
+    }
+
+    /**
+     * 数据查询接口
+     *
+     * @return
+     */
+    @RequestMapping(value = "/requisitionTable/list", method = RequestMethod.GET)
+    public String index() {
+        return null;
+    }
+
+    @RequestMapping(value = "/requisitionTable", method = RequestMethod.GET)
+    public Page<Requisition> query(RequisitionBO requisitionBO, Page<RequisitionBO> page) {
+        page.setT(requisitionBO);
+        Page<Requisition> page1 = requisitionServiceImpl.query(page);
+        return page1;
+
+    }
+
+    /**
+     * 添加数据接口；
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/requisitionTable/add", method = RequestMethod.GET)
+    public String jumpAdd(Map<String, Object> map) {
+        map.put("requisition", new Requisition());
+        return null;
+    }
+
+
+    @RequestMapping(value = "/requisitionTable", method = RequestMethod.POST)
+    public String add(Requisition requisition) {
+        requisitionServiceImpl.add(requisition);
+        return null;
+    }
+    /**
+     * 修改接口；
+     *
+     * @param id
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/requisitionTable/update/{id}", method = RequestMethod.GET)
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map) {
+        Requisition requisition = requisitionServiceImpl.getRequisitionById(id);
+        map.put("requisition", requisition);
+        return null;
+    }
+
+    @RequestMapping(value = "/requisitionTable", method = RequestMethod.PUT)
+    public String update(@ModelAttribute("requisition") Requisition requisition) {
+        requisitionServiceImpl.update(requisition);
+        return null;
+    }
+
+    /**
+     * 这个是ajax 请求不要跳转，删除接口
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable Integer id) {
+        requisitionServiceImpl.delete(id);
+        return null;
+    }
+}
