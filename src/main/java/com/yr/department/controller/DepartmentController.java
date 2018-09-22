@@ -48,7 +48,7 @@ public class DepartmentController {
      * @return
      * 单独查询部门的编号，以供父级id选择需要返回一个list
      */
-    @RequestMapping(value = "/departmentTable",method = RequestMethod.GET)
+    @RequestMapping(value = "/departmentTable/add",method = RequestMethod.GET)
     public String AddEcho(){
         List<Department> supcode=service.querycod();
         return "";
