@@ -20,7 +20,7 @@ public class RequisitionController {
     private RequisitionService requisitionServiceImpl;
 
     @ModelAttribute
-    public void modelAttribute(@RequestParam(value = "id", required = true) Integer id, Map<String, Object> map) {
+    public void modelAttribute(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
         if (id != null && id != 0) {
             Requisition requisition = requisitionServiceImpl.getRequisitionById(id);
             map.put("requisition", requisition);
