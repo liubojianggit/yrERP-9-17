@@ -20,7 +20,7 @@ import java.util.Map;
 public class DepartmentController {
     @Qualifier("departmentServiceImpl")
     @Autowired
-    private DepartmentService service;
+    private DepartmentService departmentService;
 
 
     /**
@@ -37,7 +37,7 @@ public class DepartmentController {
         page.setT(departbo);
         page.setCurrentPage(currentPage);
         page.setPageSize(pageSize);
-        Page<Departmentbo> page1 = service.query(page);
+        Page<Departmentbo> page1 = departmentService.query(page);
         Map<String,Object> map=new HashMap<>();
         map.put("page", page1);
         return page1;
@@ -50,7 +50,7 @@ public class DepartmentController {
      */
     @RequestMapping(value = "/departmentTable/add",method = RequestMethod.GET)
     public String AddEcho(){
-        List<Department> supcode=service.querycod();
+        List<Department> supcode=departmentService.querycod();
         return "";
     }
 
@@ -62,13 +62,13 @@ public class DepartmentController {
      */
     @RequestMapping(value="/departmentTable",method = RequestMethod.POST)
     public String add(Department depart, Map<String, Object> map){
-        boolean isNull =service.isNullAdd(depart);
+        boolean isNull =departmentService.isNullAdd(depart);
         if(isNull == false){
             map.put("depart",depart);
             map.put("uperror", 1);//如果修改的值为空就不修改并且跳转到修改页面(重新刷新页面)
             return "departadd";
         }else{
-            service.add(depart);
+            departmentService.add(depart);
             return "departList";
         }
     }
@@ -79,7 +79,7 @@ public class DepartmentController {
      */
     @RequestMapping(value = "/departmentTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
-        service.delete(id);
+        departmentService.delete(id);
         return "departList";
     }
 
@@ -92,7 +92,7 @@ public class DepartmentController {
     @RequestMapping(value = "/departmentTable/{id}",method = RequestMethod.GET)
     public String upEcho(@PathVariable Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page) {
         page.setT(departbo);
-        Department departs = service.getById(id);
+        Department departs = departmentService.getById(id);
         map.put("depart",departs);
         map.put("page", page);
         return "add";
@@ -106,16 +106,16 @@ public class DepartmentController {
     @RequestMapping(value="/departmentTable",method = RequestMethod.PUT)
     public String update(Department depart
             ,@RequestParam("id")Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page){
-        boolean isNull =service.isNullUpdate(depart);
+        boolean isNull =departmentService.isNullUpdate(depart);
         if(isNull == false ){
-            Department depart1 = service.getById(id);
+            Department depart1 = departmentService.getById(id);
             map.put("depart", depart1);
             map.put("uperror",2);
             return "Aadd";
         }else{
             page.setT(departbo);
             map.put("page", page);
-            service.update(depart);
+            departmentService.update(depart);
             return "AList";
         }
     }

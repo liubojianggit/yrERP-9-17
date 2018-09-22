@@ -18,7 +18,7 @@ import java.util.List;
 public class DepartmentServicImpl implements DepartmentService {
     @Qualifier("departmentDaoImpl")
     @Autowired
-    private DepartmentDao dao;
+    private DepartmentDao departmentDao;
 
     /**
      *分页查询部门
@@ -27,8 +27,8 @@ public class DepartmentServicImpl implements DepartmentService {
      */
     @Override
     public Page<Departmentbo> query(Page<Departmentbo> page) {
-        page.setTotalRecord(dao.getCount((Departmentbo)page.getT()));
-        List<Departmentbo> list=dao.query(page);
+        page.setTotalRecord(departmentDao.getCount((Departmentbo)page.getT()));
+        List<Departmentbo> list=departmentDao.query(page);
         page.setPageData(list);
         return page;
 
@@ -41,7 +41,7 @@ public class DepartmentServicImpl implements DepartmentService {
      */
     @Override
     public Department getById(Integer id) {
-        return dao.getById(id);
+        return departmentDao.getById(id);
     }
 
     /**
@@ -50,7 +50,7 @@ public class DepartmentServicImpl implements DepartmentService {
      */
     @Override
     public void add(Department depart) {
-        dao.add(depart);
+        departmentDao.add(depart);
     }
 
     /**
@@ -59,7 +59,7 @@ public class DepartmentServicImpl implements DepartmentService {
      */
     @Override
     public void update(Department depart) {
-        dao.update(depart);
+        departmentDao.update(depart);
     }
 
     /**
@@ -68,7 +68,7 @@ public class DepartmentServicImpl implements DepartmentService {
      */
     @Override
     public void delete(Integer id) {
-        dao.delete(id);
+        departmentDao.delete(id);
     }
 
     /**
@@ -119,7 +119,7 @@ public class DepartmentServicImpl implements DepartmentService {
     @Override
     public List<Department> querycod() {
 
-        return dao.querycod();
+        return departmentDao.querycod();
     }
 
 }
