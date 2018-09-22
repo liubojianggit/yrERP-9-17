@@ -60,7 +60,7 @@ public class DepartmentController {
      * @param map
      * @return
      */
-    @RequestMapping(value="",method = RequestMethod.POST)
+    @RequestMapping(value="/departmentTable",method = RequestMethod.POST)
     public String add(Department depart, Map<String, Object> map){
         boolean isNull =service.isNullAdd(depart);
         if(isNull == false){
@@ -77,7 +77,7 @@ public class DepartmentController {
      * 根据id删除部门表
      * @return 返回分页查询页面
      */
-    @RequestMapping(value = "//{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/departmentTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         service.delete(id);
         return "departList";
@@ -89,7 +89,7 @@ public class DepartmentController {
      * @param map 放入map中存放request，方便页面拿取
      * @return
      */
-    @RequestMapping(value = "/update/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/departmentTable/{id}",method = RequestMethod.GET)
     public String upEcho(@PathVariable Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page) {
         page.setT(departbo);
         Department departs = service.getById(id);
@@ -103,7 +103,7 @@ public class DepartmentController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/account",method = RequestMethod.PUT)
+    @RequestMapping(value="/departmentTable",method = RequestMethod.PUT)
     public String update(Department depart
             ,@RequestParam("id")Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page){
         boolean isNull =service.isNullUpdate(depart);
