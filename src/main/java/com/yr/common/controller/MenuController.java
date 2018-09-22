@@ -25,7 +25,7 @@ public class MenuController {
      * 查询菜单表，返回json格式字符串
      * @return List<User>
      */
-    @RequestMapping(value="/menuTable", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value="/menuTable/json", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String query(){
         return menuService.query();

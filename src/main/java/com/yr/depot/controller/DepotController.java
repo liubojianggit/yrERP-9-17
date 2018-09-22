@@ -26,7 +26,7 @@ public class DepotController {
      * @param pageSize 当前页条数
      * @return
      */
-    @RequestMapping(value="/depotTable")
+    @RequestMapping(value="/depotTable",method = RequestMethod.GET)
     @ResponseBody
     public Page<Depotbo> query(Depotbo depotbo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
         Page<Depotbo> page = new Page<>();
@@ -43,7 +43,7 @@ public class DepotController {
      * 操作的只是跳转仓库添加页面
      * @return
      */
-    @RequestMapping(value="/depotTable")
+    @RequestMapping(value="/depotTable/add",method = RequestMethod.GET)
     public String AddEcho(){
 
         return "depotadd";//添加页面的jsp前缀
