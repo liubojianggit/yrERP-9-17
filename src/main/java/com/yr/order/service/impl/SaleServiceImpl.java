@@ -2,7 +2,7 @@ package com.yr.order.service.impl;
 
 import com.yr.entitys.bo.orderBO.SaleBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.bo.orderBO.ReadExcel;
+import com.yr.entitys.bo.orderBO.SaleImportExcel;
 import com.yr.entitys.order.Sale;
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
@@ -27,7 +27,7 @@ public class SaleServiceImpl implements SaleService {
     public boolean batchImport(String name,MultipartFile file){
         boolean b = false;
         //创建处理EXCEL
-        ReadExcel readExcel=new ReadExcel();
+        SaleImportExcel readExcel=new SaleImportExcel();
         //解析excel，获取销售信息集合。
         List<Sale> saleList = readExcel.getExcelInfo(name ,file);
 
