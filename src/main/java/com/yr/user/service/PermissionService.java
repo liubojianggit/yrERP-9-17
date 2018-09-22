@@ -15,25 +15,25 @@ public interface PermissionService {
     void query(Page<PermissionBo> page);
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     void add(Permission permission);
 
     /**
-     * 修改用户信息
+     * 修改权限信息
      * @param permission
      */
     void update(Permission permission);
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return Role
      */

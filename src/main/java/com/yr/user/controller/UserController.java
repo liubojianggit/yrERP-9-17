@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 操纵用户
+ */
 @Controller
 @RequestMapping("/u_user")
 public class UserController {

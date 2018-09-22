@@ -56,8 +56,8 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 分页的形式查询user表的数据
-     * @return List<RoleBo>
+     * 分页的形式查询权限表的数据
+     * @return List<PermissionBo>
      */
     public List<PermissionBo> query(Page<PermissionBo> page){
         String jpql = "select p from Permission p where 1 = 1 ";
@@ -97,7 +97,7 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     public void add(Permission permission){
@@ -119,7 +119,7 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     public void delete(Integer id){
@@ -131,7 +131,7 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return ole
      */

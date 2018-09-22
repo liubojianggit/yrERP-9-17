@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * 操纵权限
+ */
 @Controller
 @RequestMapping("u_permission")
 public class PermissionController {
@@ -85,7 +88,7 @@ public class PermissionController {
     }
 
     /**
-     * 删除用户
+     * 删除权限
      * @return String
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.DELETE)

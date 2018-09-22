@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * 操纵角色
+ */
 @Controller
 @RequestMapping("u_role")
 public class RoleController {
@@ -86,7 +89,7 @@ public class RoleController {
     }
 
     /**
-     * 删除用户
+     * 删除角色
      * @return String
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.DELETE)
