@@ -7,6 +7,7 @@ import com.yr.entitys.department.Department;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("departmentTable")
+@RequestMapping(value = "/department")
 public class DepartmentController {
+    @Qualifier("departmentServiceImpl")
     @Autowired
     private DepartmentService service;
 
@@ -28,7 +30,7 @@ public class DepartmentController {
      * @param pageSize 当前页条数
      * @return
      */
-    @RequestMapping(value="/")
+    @RequestMapping(value="/departmentTable",method = RequestMethod.GET)
     @ResponseBody
     public Page<Departmentbo> query(Departmentbo departbo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
         Page<Departmentbo> page = new Page<>();
@@ -46,11 +48,12 @@ public class DepartmentController {
      * @return
      * 单独查询部门的编号，以供父级id选择需要返回一个list
      */
+    @RequestMapping(value = "/departmentTable",method = RequestMethod.GET)
     public String AddEcho(){
         List<Department> supcode=service.querycod();
         return "";
-
     }
+
     /**
      * 保存部门表添加的数据，前提添加数据不能为空
      * @param depart
@@ -69,23 +72,24 @@ public class DepartmentController {
             return "departList";
         }
     }
+
     /**
      * 根据id删除部门表
      * @return 返回分页查询页面
      */
-
     @RequestMapping(value = "//{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         service.delete(id);
         return "departList";
     }
+
     /**
      * 根据id回显部门修改的数据
      * @param id
      * @param map 放入map中存放request，方便页面拿取
      * @return
      */
-    @RequestMapping(value = "/update/{id}")
+    @RequestMapping(value = "/update/{id}",method = RequestMethod.GET)
     public String upEcho(@PathVariable Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page) {
         page.setT(departbo);
         Department departs = service.getById(id);
