@@ -59,7 +59,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     /**
-     * 分页的形式查询user表的数据
+     * 分页的形式查询角色表的数据
      * @return List<RoleBo>
      */
     public List<RoleBo> query(Page<RoleBo> page){
@@ -100,7 +100,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     /**
-     * 添加用户信息
+     * 添加角色信息
      * @param role
      */
     public void add(Role role){
@@ -111,7 +111,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     /**
-     * 修改用户信息
+     * 修改角色信息
      * @param role
      */
     public void update(Role role){
@@ -122,7 +122,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     /**
-     * 删除用户信息
+     * 删除角色信息
      * @param id
      */
     public void delete(Integer id){

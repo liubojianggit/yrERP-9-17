@@ -7,6 +7,7 @@ import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
 import com.yr.user.dao.UserDao;
 import com.yr.user.service.UserService;
+import com.yr.util.Md5Utils;
 import com.yr.util.SerializeUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional
     public void add(User user){
+        user.setPassword(Md5Utils.getMd5Password(user.getPassword()));//将密码加密后置入user中
         userDao.add(user);
     }
 

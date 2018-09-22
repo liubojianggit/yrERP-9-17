@@ -18,7 +18,7 @@ public interface RequisitionDao {
      * 查询数据库，并以List集合的方式返回回来
      * @return
      */
-    //List<Requisition> queryForList();
+    List<Requisition> queryForList();
 
     /**
      * 根据采购表id 查询数据

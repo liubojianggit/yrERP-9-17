@@ -38,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 添加用户信息
+     * 添加角色信息
      * @param role
      */
     @Transactional
@@ -47,7 +47,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 修改用户信息
+     * 修改角色信息
      * @param role
      */
     @Transactional
@@ -56,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 删除用户信息
+     * 删除角色信息
      * @param id
      */
     @Transactional
@@ -65,7 +65,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询角色数据
      * @param id
      * @return Role
      */

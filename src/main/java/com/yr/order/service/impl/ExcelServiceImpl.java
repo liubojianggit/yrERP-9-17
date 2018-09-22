@@ -8,6 +8,7 @@ import com.yr.util.ExcelUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,11 @@ public class ExcelServiceImpl implements ExcelService {
         //调用ExcelUtil的方法
         xssfWorkbook = ExcelUtil.createExcelFile(Requisition.class, list, map, sheetName);
         return xssfWorkbook;
+    }
+
+    @Override
+    public boolean batchImport(String name, MultipartFile file) {
+        return false;
     }
 
     /*public static Map<Integer, List<ExcelBean>> contentExcel() {

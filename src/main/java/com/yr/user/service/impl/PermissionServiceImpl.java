@@ -1,8 +1,9 @@
 package com.yr.user.service.impl;
-
 import com.yr.entitys.bo.user.PermissionBo;
+import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.user.dao.PermissionDao;
 import com.yr.user.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,17 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     @Transactional
     public void add(Permission permission){
+        permission.setMethod(permission.getMethod().toUpperCase());//将method转为大写
         permissionDao.add(permission);
     }
 
     /**
-     * 修改用户信息
+     * 修改权限信息
      * @param permission
      */
     @Transactional
@@ -47,7 +49,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     @Transactional
@@ -56,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return Role
      */
@@ -64,4 +66,3 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionDao.getById(id);
     }
 }
-

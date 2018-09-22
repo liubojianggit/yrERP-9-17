@@ -46,13 +46,12 @@ public class RequisitionDaoImpl implements RequisitionDao {
         return list;
     }
 
-    /*@Override
+    @Override
     public List<Requisition> queryForList() {
         String jpql ="select r from Requisition r";
         List<Requisition> list =  entityManager.createQuery(jpql).getResultList();
         return list;
-    }*/
-
+    }
     @Override
     public Long getCount(RequisitionBO requisitionBO) {
         String jpql= "select count(*) from Requisition r where 1=1 ";
