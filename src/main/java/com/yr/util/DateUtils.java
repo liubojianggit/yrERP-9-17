@@ -40,5 +40,17 @@ public class DateUtils {
         return date;
     }
 
+    /**
+     * Date类型的时间转String类型的时间,格式为指定格式
+     *
+     * @param date
+     * @param formatStr
+     * @return String 格式为:formatStr
+     */
+    public static String dateToStr(Date date, String formatStr) {
+        SimpleDateFormat formatter = new SimpleDateFormat(formatStr);
+        return formatter.format(date);
+    }
+
 }
 
