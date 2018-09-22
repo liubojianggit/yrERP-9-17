@@ -64,6 +64,7 @@ public class SaleController {//销售订单Controller
         map1.put("0","退货");
         map1.put("1","交易成功");
         map.put("sates",map1);
+        map.put("sale", new Sale());
         return "saleAU";
     }
 
