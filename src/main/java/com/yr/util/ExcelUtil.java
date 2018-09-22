@@ -134,8 +134,8 @@ public class ExcelUtil {
                 }
                 XSSFCell cell = row.createCell(i);
                 cell.setCellValue(value);
-                cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-                cell.setCellStyle(fontStyle2);
+               // cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+               // cell.setCellStyle(fontStyle2);
                 // 获得最大列宽
                 int width = value.getBytes().length * 300;
                 // 还未设置，设置当前
