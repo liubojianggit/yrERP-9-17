@@ -1,19 +1,22 @@
 package com.yr.department.service.impl;
 
 import com.yr.department.dao.DepartmentDao;
+import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import com.yr.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-@Service
+@Service("departmentSericeImpl")
 @Transactional
-public class DepartmentServicImpl implements DepartmentService{
+public class DepartmentServicImpl implements DepartmentService {
+    @Qualifier("departmentDaoImpl")
     @Autowired
     private DepartmentDao dao;
 
@@ -108,8 +111,14 @@ public class DepartmentServicImpl implements DepartmentService{
         return true;
     }
 
+    /**
+     * 跳转添加页面无数据
+     * @return
+     * 单独查询部门的编号，以供父级id选择需要返回一个list
+     */
     @Override
     public List<Department> querycod() {
+
         return dao.querycod();
     }
 
