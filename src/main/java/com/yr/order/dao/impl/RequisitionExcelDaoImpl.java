@@ -1,40 +1,44 @@
-package com.yr.order.service.impl;
+package com.yr.order.dao.impl;
 
 import com.yr.entitys.order.Requisition;
-import com.yr.order.dao.ExcelDao;
-import com.yr.order.service.ExcelService;
+import com.yr.order.dao.RequisitionExcelDao;
 import com.yr.util.ExcelBean;
-import com.yr.util.ExcelUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public class ExcelServiceImpl implements ExcelService {
+@Repository
+public class RequisitionExcelDaoImpl implements RequisitionExcelDao {
 
-    @Autowired
-    private ExcelDao excelDaoImpl;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
-    public XSSFWorkbook exportExcelInfo(String headTextName) throws Exception {
-        //根据条件查询数据，把数据装载到一个list中
-        List<Requisition> list = excelDaoImpl.queryForList();
-
-        List<ExcelBean> excel=new ArrayList<>();
-        Map<Integer,List<ExcelBean>> map =excelDaoImpl.contentExcel();
-        //Map<Integer,List<ExcelBean>> map =ExcelServiceImpl.contentExcel();
-        XSSFWorkbook xssfWorkbook=null;
-        String sheetName = headTextName + "分享内容";
-        //调用ExcelUtil的方法
-        xssfWorkbook = ExcelUtil.createExcelFile(Requisition.class, list, map, sheetName);
-        return xssfWorkbook;
+    public List<Requisition> queryForList() {
+        String jpql ="select r from Requisition r";
+        List<Requisition> list =  entityManager.createQuery(jpql).getResultList();
+        return list;
     }
 
-    /*public static Map<Integer, List<ExcelBean>> contentExcel() {
+    /*@Override
+    public List<String> getHeadName() {
+        String jpql ="select COLUMN_NAME from information_schema.COLUMNS where table_name = 'requisition' ";
+        List<String> list = entityManager.createQuery(jpql).getResultList();
+        return list;
+    }*/
+
+    /**
+     * Excel表格对应的表头信息处理类
+     * @return
+     */
+    @Override
+    public Map<Integer, List<ExcelBean>> contentExcel() {
         List<ExcelBean> excel = new ArrayList<>();
         Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
         XSSFWorkbook xssfWorkbook = null;
@@ -59,6 +63,5 @@ public class ExcelServiceImpl implements ExcelService {
         excel.add(new ExcelBean("修改时间", "updateTime", 0));
         map.put(0, excel);
         return map;
-    }*/
-
+    }
 }

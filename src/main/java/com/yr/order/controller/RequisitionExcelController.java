@@ -1,6 +1,6 @@
 package com.yr.order.controller;
 
-import com.yr.order.service.ExcelService;
+import com.yr.order.service.RequisitionExcelService;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Controller
 public class RequisitionExcelController {
     @Autowired
-    private ExcelService excelServiceImpl;
+    private RequisitionExcelService excelServiceImpl;
 
 
     /**

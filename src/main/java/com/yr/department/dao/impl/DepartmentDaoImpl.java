@@ -1,5 +1,6 @@
 package com.yr.department.dao.impl;
 
+import com.yr.department.dao.DepartmentDao;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.department.Department;
@@ -12,34 +13,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
-@Repository
+@Repository("departmentDaoImpl")
 public class DepartmentDaoImpl implements DepartmentDao {
     @PersistenceContext
     private EntityManager entityManager;
-    @Override
-    public void add(Department depart) {
-        String sql = "insert department (code,name,sup_code,createTime,createEmpno)values(?1,?2,?3,?4,?5)";
-        Query query = (Query) entityManager.createNativeQuery(sql).setParameter(1, depart.getCode())
-                .setParameter(2, depart.getName()).setParameter(3, depart.getSupCode()).setParameter(4,new Date()).setParameter(5,depart.getCreateEmpno());
-        query.executeUpdate();
-    }
 
-    @Override
-    public void delete(Integer id) {
-        String jpql= "delete from Department d where d.id = ?1";
-        Query query = entityManager.createQuery(jpql).setParameter(1, id);
-        query.executeUpdate();
-    }
-
-    @Override
-    public void update(Department depart) {
-        String jpql = "update Department d set d.name=?1,d.supCode=?2,d.updateTime=?3,d.updateEmpno=?4 where d.id=?5";
-        Query query = entityManager.createQuery(jpql).setParameter(1,depart.getName()).setParameter(2,depart.getSupCode())
-                .setParameter(3,new Date()).setParameter(4,depart.getUpdateEmpno()).setParameter(5,depart.getId());
-        query.executeUpdate();
-
-    }
-
+    /**
+     *查询总条数 并附给搜索框模糊查询
+     * @param departbo
+     * @return
+     */
     @Override
     public Long getCount(Departmentbo departbo) {
         String jpql="select count(*) from Depot d where 1=1";
@@ -62,14 +45,11 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     }
 
-    @Override
-    public Department getById(Integer id) {
-        String jpql = "SELECT d FROM Department d WHERE  d.id = ?1";
-        Department dpart = (Department) entityManager.createQuery(jpql).setParameter(1, id).getSingleResult();
-
-        return dpart;
-    }
-
+    /**
+     * 分页查询所有
+     * @param page
+     * @return
+     */
     @Override
     public List<Departmentbo> query(Page<Departmentbo> page) {
         String jpql="select d from Department d where 1=1 ";
@@ -93,12 +73,57 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return  list;
     }
 
+    /**
+     * 新增部门
+     * @param depart
+     */
+    @Override
+    public void add(Department depart) {
+       entityManager.persist(depart);
+    }
+
+    /**
+     * 根据ID删除部门
+     * @param id
+     */
+    @Override
+    public void delete(Integer id) {
+      Department department= entityManager.find(Department.class,id);
+      entityManager.remove(id);
+    }
+
+    /**
+     * 修改部门
+     * @param depart
+     */
+    @Override
+    public void update(Department depart) {
+        entityManager.merge(depart);
+
+    }
+
+    /**
+     * 根据ID查询回显部门数据
+     * @param id
+     * @return
+     */
+    @Override
+    public Department getById(Integer id) {
+        Department department=entityManager.find(Department.class,id);
+        return department;
+    }
+
+    /**
+     * 跳转添加页面无数据
+     * @return
+     * 单独查询部门的编号，以供父级id选择需要返回一个list
+     */
     @Override
     public List<Department> querycod() {
         String  jpql="select code from Department";
-       Query query =entityManager.createQuery(jpql);
-       List<Department> list=query.getResultList();
-       return list;
+        Query query =entityManager.createQuery(jpql);
+        List<Department> list=query.getResultList();
+        return list;
     }
 
 }

@@ -1,27 +1,16 @@
 package com.yr.util;
 
-import com.yr.order.util.DateUtils;
-import com.yr.util.ExcelBean;
-import net.stxy.one.poi.ExcelBean;
-import org.apache.http.client.utils.DateUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,8 +134,8 @@ public class ExcelUtil {
                 }
                 XSSFCell cell = row.createCell(i);
                 cell.setCellValue(value);
-                cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-                cell.setCellStyle(fontStyle2);
+               // cell.setCellType(XSSFCell.CELL_TYPE_STRING);
+               // cell.setCellStyle(fontStyle2);
                 // 获得最大列宽
                 int width = value.getBytes().length * 300;
                 // 还未设置，设置当前

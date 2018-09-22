@@ -1,21 +1,24 @@
 package com.yr.department.service.impl;
 
 import com.yr.department.dao.DepartmentDao;
+import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import com.yr.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-@Service
+@Service("departmentSericeImpl")
 @Transactional
-public class DepartmentServicImpl implements DepartmentService{
+public class DepartmentServicImpl implements DepartmentService {
+    @Qualifier("departmentDaoImpl")
     @Autowired
-    private DepartmentDao dao;
+    private DepartmentDao departmentDao;
 
     /**
      *分页查询部门
@@ -24,8 +27,8 @@ public class DepartmentServicImpl implements DepartmentService{
      */
     @Override
     public Page<Departmentbo> query(Page<Departmentbo> page) {
-        page.setTotalRecord(dao.getCount((Departmentbo)page.getT()));
-        List<Departmentbo> list=dao.query(page);
+        page.setTotalRecord(departmentDao.getCount((Departmentbo)page.getT()));
+        List<Departmentbo> list=departmentDao.query(page);
         page.setPageData(list);
         return page;
 
@@ -38,7 +41,7 @@ public class DepartmentServicImpl implements DepartmentService{
      */
     @Override
     public Department getById(Integer id) {
-        return dao.getById(id);
+        return departmentDao.getById(id);
     }
 
     /**
@@ -47,7 +50,7 @@ public class DepartmentServicImpl implements DepartmentService{
      */
     @Override
     public void add(Department depart) {
-        dao.add(depart);
+        departmentDao.add(depart);
     }
 
     /**
@@ -56,7 +59,7 @@ public class DepartmentServicImpl implements DepartmentService{
      */
     @Override
     public void update(Department depart) {
-        dao.update(depart);
+        departmentDao.update(depart);
     }
 
     /**
@@ -65,7 +68,7 @@ public class DepartmentServicImpl implements DepartmentService{
      */
     @Override
     public void delete(Integer id) {
-        dao.delete(id);
+        departmentDao.delete(id);
     }
 
     /**
@@ -108,9 +111,15 @@ public class DepartmentServicImpl implements DepartmentService{
         return true;
     }
 
+    /**
+     * 跳转添加页面无数据
+     * @return
+     * 单独查询部门的编号，以供父级id选择需要返回一个list
+     */
     @Override
     public List<Department> querycod() {
-        return dao.querycod();
+
+        return departmentDao.querycod();
     }
 
 }
