@@ -1,6 +1,6 @@
 package com.yr.order.dao.impl;
 
-import com.yr.entitys.bo.orderBO.SaleBo;
+import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.order.Sale;
 import com.yr.order.dao.SaleDao;
@@ -33,7 +33,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public Integer getCount(Page<SaleBo> page) {
+    public Integer getCount(Page<SaleBO> page) {
         String jpql="select count(*) from Sale s where 1=1";
         if(!StringUtils.isEmpty(page.getT().getSale().getCode())){//判断是否为空
             jpql +="and s.code like :code";//模糊查询编号
@@ -58,7 +58,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public List<SaleBo> query(Page<SaleBo> page) {
+    public List<SaleBO> query(Page<SaleBO> page) {
         String jpql = "select s from Sale s where 1=1";
         if (!StringUtils.isEmpty(page.getT().getSale().getCode())){//判断是否为null
             jpql +="and s.code like :code";
@@ -80,7 +80,7 @@ public class SaleDaoImpl implements SaleDao {
             query.setParameter("customer_buy","&"+page.getT().getSale().getCustomerBuy()+"%");
         }
         query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
-        List<SaleBo> list = query.getResultList();
+        List<SaleBO> list = query.getResultList();
         return list;
     }
 
