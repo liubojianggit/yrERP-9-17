@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/sale_order")
-public class SaleController {
+public class SaleController {//销售订单Controller
     @Autowired
     private SaleService saleService;
 
@@ -31,7 +31,7 @@ public class SaleController {
     }
 
     /**
-     * 页面查询接口
+     * 销售订单表页面查询接口
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET)
@@ -40,7 +40,7 @@ public class SaleController {
     }
 
     /**
-     * 分页的形式查询销售表的数据
+     * 分页的形式查询销售订单表的数据
      * @param saleBO
      * @param page
      * @return
@@ -54,7 +54,7 @@ public class SaleController {
     }
 
     /**
-     * 跳转添加页面
+     * 跳转添加销售订单表页面
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/add",method = RequestMethod.GET)
@@ -68,7 +68,7 @@ public class SaleController {
     }
 
     /**
-     * 保存添加
+     * 保存添加销售订单表
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST)
@@ -78,7 +78,7 @@ public class SaleController {
     }
 
     /**
-     * 跳转修改页面
+     * 跳转修改销售订单表页面
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
@@ -94,7 +94,7 @@ public class SaleController {
     }
 
     /**
-     * 保存修改
+     * 保存修改销售订单表
      * @param sale
      * @return
      */
@@ -107,7 +107,7 @@ public class SaleController {
     }
 
     /**
-     * 删除
+     * 根据id删除销售订单表
      * @param id
      */
     @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE)
