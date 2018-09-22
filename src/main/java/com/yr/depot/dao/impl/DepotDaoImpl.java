@@ -15,7 +15,7 @@ import java.util.List;
 /**
  *仓库模块数据层实现增删改查
  */
-@Repository("depoDaoImpl")
+@Repository("depotDaoImpl")
 public class DepotDaoImpl implements DepotDao {
 
     @PersistenceContext
