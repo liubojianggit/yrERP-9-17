@@ -37,10 +37,11 @@ public class RequisitionServiceImpl implements RequisitionService{
         return page1;
     }
 
-    @Overrides
+    @Override
     public List<Requisition> queryForLists() {
         return requisitionDaoImpl.queryForList();
     }
+
 
     @Override
     public Requisition getRequisitionById(Integer id) {
