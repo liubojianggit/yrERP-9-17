@@ -24,7 +24,12 @@ import java.io.*;
 @SuppressWarnings("unchecked")
 public class SerializeUtil {
 	static final Class<?> CLAZZ = SerializeUtil.class;
-	
+
+    /**
+     * 将对象序列化成byte数组的流
+     * @param value
+     * @return byte[]
+     */
     public static byte[] serialize(Object value) {
         if (value == null) { 
             throw new NullPointerException("Can't serialize null");
@@ -48,11 +53,22 @@ public class SerializeUtil {
         return rv;
     }
 
-    
+    /**
+     * 将byte数组的流还原成对象
+     * @param in
+     * @return
+     */
 	public static Object deserialize(byte[] in) {
         return deserialize(in, Object.class);
     }
 
+    /**
+     * 根据byte数组,class返回一个指定类型的对象
+     * @param in
+     * @param requiredType
+     * @param <T>
+     * @return T
+     */
     public static <T> T deserialize(byte[] in, Class<T>...requiredType) {
         Object rv = null;
         ByteArrayInputStream bis = null;
