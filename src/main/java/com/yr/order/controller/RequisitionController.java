@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * 采购列表增删改查接口
+ */
 @Controller
 @RequestMapping(value = "requisition")
 public class RequisitionController {
