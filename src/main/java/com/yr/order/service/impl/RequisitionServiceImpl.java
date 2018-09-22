@@ -3,7 +3,7 @@ package com.yr.order.service.impl;
 import com.yr.entitys.bo.orderBO.RequisitionBO;
 import com.yr.entitys.order.Requisition;
 import com.yr.entitys.page.Page;
-import com.yr.order.dao.ExcelDao;
+import com.yr.order.dao.RequisitionExcelDao;
 import com.yr.order.dao.RequisitionDao;
 import com.yr.order.service.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class RequisitionServiceImpl implements RequisitionService{
     private  RequisitionDao requisitionDaoImpl;
 
     @Autowired
-    private ExcelDao excelDaoImpl;
+    private RequisitionExcelDao requisitionExcelDaoImpl;
 
     @Override
     public Page<Requisition> query(Page<RequisitionBO> page) {

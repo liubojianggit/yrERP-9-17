@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.InvocationTargetException;
 
-public interface ExcelService {
+public interface RequisitionExcelService {
     /**
      * 导出Excel表格
      * @param headTextName

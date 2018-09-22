@@ -1,8 +1,8 @@
 package com.yr.order.service.impl;
 
 import com.yr.entitys.order.Requisition;
-import com.yr.order.dao.ExcelDao;
-import com.yr.order.service.ExcelService;
+import com.yr.order.dao.RequisitionExcelDao;
+import com.yr.order.service.RequisitionExcelService;
 import com.yr.util.ExcelBean;
 import com.yr.util.ExcelUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -15,18 +15,18 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ExcelServiceImpl implements ExcelService {
+public class RequisitionExcelServiceImpl implements RequisitionExcelService {
 
     @Autowired
-    private ExcelDao excelDaoImpl;
+    private RequisitionExcelDao requisitionExcelDaoImpl;
 
     @Override
     public XSSFWorkbook exportExcelInfo(String headTextName) throws Exception {
         //根据条件查询数据，把数据装载到一个list中
-        List<Requisition> list = excelDaoImpl.queryForList();
+        List<Requisition> list = requisitionExcelDaoImpl.queryForList();
 
         List<ExcelBean> excel=new ArrayList<>();
-        Map<Integer,List<ExcelBean>> map =excelDaoImpl.contentExcel();
+        Map<Integer,List<ExcelBean>> map = requisitionExcelDaoImpl.contentExcel();
         //Map<Integer,List<ExcelBean>> map =ExcelServiceImpl.contentExcel();
         XSSFWorkbook xssfWorkbook=null;
         String sheetName = headTextName + "分享内容";
