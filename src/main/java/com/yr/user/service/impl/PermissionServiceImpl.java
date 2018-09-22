@@ -30,7 +30,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     @Transactional
@@ -40,7 +40,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 修改用户信息
+     * 修改权限信息
      * @param permission
      */
     @Transactional
@@ -49,7 +49,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     @Transactional
@@ -58,7 +58,7 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return Role
      */

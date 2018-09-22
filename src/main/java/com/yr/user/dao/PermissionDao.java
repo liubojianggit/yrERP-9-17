@@ -18,31 +18,31 @@ public interface PermissionDao {
     Long getCount(Page<PermissionBo> page);//@Param指定的是别名
 
     /**
-     * 分页的形式查询user表的数据
+     * 分页的形式查询权限表的数据
      * @return List<PermissionBo>
      */
     List<PermissionBo> query(Page<PermissionBo> page);
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     void add(Permission permission);
 
     /**
-     * 修改用户信息
+     * 修改权限信息
      * @param permission
      */
     void update(Permission permission);
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return Permission
      */
