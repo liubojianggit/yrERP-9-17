@@ -1,6 +1,6 @@
 package com.yr.order.controller;
 
-import com.yr.entitys.bo.orderBO.SaleBo;
+import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.order.Sale;
 import com.yr.order.service.SaleService;
@@ -41,14 +41,14 @@ public class SaleController {
 
     /**
      * 分页的形式查询销售表的数据
-     * @param saleBo
+     * @param saleBO
      * @param page
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET)
     @ResponseBody
-    public Page<SaleBo>query(SaleBo saleBo, Page<SaleBo>page){
-        page.setT(saleBo);
+    public Page<SaleBO>query(SaleBO saleBO, Page<SaleBO>page){
+        page.setT(saleBO);
         saleService.query(page);
         return page;
     }
@@ -82,8 +82,8 @@ public class SaleController {
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, SaleBo saleBo, Page<SaleBo> page){
-        page.setT(saleBo);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, SaleBO saleBO, Page<SaleBO> page){
+        page.setT(saleBO);
         Map<String,Object>map1 = new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
@@ -99,8 +99,8 @@ public class SaleController {
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT)
-    public String SaveOrUpdate(Sale sale,SaleBo saleBo,Page<SaleBo> page, Map<String, Object> map){
-        page.setT(saleBo);
+    public String SaveOrUpdate(Sale sale, SaleBO saleBO, Page<SaleBO> page, Map<String, Object> map){
+        page.setT(saleBO);
         map.put("page",page);
         saleService.update(sale);
         return "saleList";

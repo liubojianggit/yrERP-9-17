@@ -4,7 +4,7 @@ import com.yr.entitys.order.Sale;
 
 import java.io.Serializable;
 
-public class SaleBo implements Serializable{//销售的业务操作
+public class SaleBO implements Serializable{//销售的业务操作
     private Sale sale;
     //销售订单编号
    /* private String code;

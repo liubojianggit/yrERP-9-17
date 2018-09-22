@@ -2,7 +2,7 @@ package com.yr.order.controller;
 
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
-import com.yr.entitys.bo.orderBO.SaleExportExcel;
+import com.yr.entitys.bo.orderBO.SaleExportExcelBO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +68,6 @@ public class SaleExcelController {//销售订单的导出导入
     public ModelAndView viewExcel()  {
         Map<String, Object> map = new HashMap<>();
         map.put("saleList", saleDao.ExcelQuery());
-        return new ModelAndView(new SaleExportExcel(), map);
+        return new ModelAndView(new SaleExportExcelBO(), map);
     }
 }

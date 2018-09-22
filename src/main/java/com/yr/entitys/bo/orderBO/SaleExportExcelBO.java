@@ -15,7 +15,7 @@ import java.util.List;
 
 import java.util.Map;
 
-public class SaleExportExcel extends AbstractXlsxView{
+public class SaleExportExcelBO extends AbstractXlsxView{
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {

@@ -1,8 +1,8 @@
 package com.yr.order.service.impl;
 
-import com.yr.entitys.bo.orderBO.SaleBo;
+import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.bo.orderBO.SaleImportExcel;
+import com.yr.entitys.bo.orderBO.SaleImportExcelBO;
 import com.yr.entitys.order.Sale;
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
@@ -27,7 +27,7 @@ public class SaleServiceImpl implements SaleService {
     public boolean batchImport(String name,MultipartFile file){
         boolean b = false;
         //创建处理EXCEL
-        SaleImportExcel readExcel=new SaleImportExcel();
+        SaleImportExcelBO readExcel=new SaleImportExcelBO();
         //解析excel，获取销售信息集合。
         List<Sale> saleList = readExcel.getExcelInfo(name ,file);
 
@@ -47,9 +47,9 @@ public class SaleServiceImpl implements SaleService {
      * @param page
      */
     @Override
-    public void query(Page<SaleBo> page) {
+    public void query(Page<SaleBO> page) {
         page.setTotalPage(saleDao.getCount(page));
-        List<SaleBo>list = saleDao.query(page);
+        List<SaleBO>list = saleDao.query(page);
         page.setPageData(list);
 
     }

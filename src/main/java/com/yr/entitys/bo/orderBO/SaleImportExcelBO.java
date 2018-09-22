@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
-public class SaleImportExcel {
+public class SaleImportExcelBO {
     //总行数
     private int totalRows = 0;  
     //总条数
@@ -28,7 +28,7 @@ public class SaleImportExcel {
     //错误信息接收器
     private String errorMsg;
     //构造方法
-    public SaleImportExcel(){}
+    public SaleImportExcelBO(){}
     //获取总行数
     public int getTotalRows()  { return totalRows;} 
     //获取总列数
