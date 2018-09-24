@@ -73,6 +73,9 @@ public class RequisitionController {
         //这个初始的修改人，后期会改
         requisition.setUpdateEmp((String) request.getSession().getAttribute(""));
 
+        //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
+        double total = requisition.getUnitPrice()*requisition.getPurchaseNumber();
+        requisition.setTotalPrice(total);
         requisitionServiceImpl.add(requisition);
         return null;
     }
@@ -96,6 +99,10 @@ public class RequisitionController {
         requisition.setUpdateEmp((String)request.getSession().getAttribute(""));
         //获取当前时间为数据修改时间；
         requisition.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+
+        //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
+        double total = requisition.getUnitPrice()*requisition.getPurchaseNumber();
+        requisition.setTotalPrice(total);
 
         requisitionServiceImpl.update(requisition);
         return null;
