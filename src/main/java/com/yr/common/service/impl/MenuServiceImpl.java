@@ -7,17 +7,20 @@ import com.yr.common.service.MenuService;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
+import com.yr.util.DateUtils;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Transactional
 @Service
-public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
+public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuDao menuDaoImp;
     @Autowired
@@ -63,16 +66,94 @@ public class MenuServiceImpl extends BaseService<Menu> implements MenuService {
     }
 
     /**
-     * 添加
-     * @param menu
+     * 把Menu转成MenuBO，再转成json字符串返回，用于页面菜单主页生成菜单树形表
      */
-    public void add(Menu menu){
-        ((MenuDaoImpl)menuDaoImp).add(menu);
-        Permission permission = new Permission();
-        permission.setMethod(menu.getMethod());
-        permission.setName(menu.getName());
-        permission.setUrl(menu.getUrl());
-        permission.setSupId(0);
-        permissionService.add(permission); //添加权限
+    @Override
+    public String queryMenus() {
+        List<MenuBO> menuTurnMenuBOList = new ArrayList<MenuBO>();
+        for (Menu menu : menuDaoImp.query()) {
+            //这里new对象，要使用自动注入吗？？
+            MenuBO menuBO = new MenuBO();
+            menuBO.setId(menu.getId());
+            menuBO.setTitle(menu.getName());
+            menuBO.setIcon(menu.getPic());
+            menuBO.setPid(menu.getPid());
+            menuBO.setHref(menu.getUrl());
+            menuBO.setMethod(menu.getMethod());
+            menuBO.setCreateEmp(menu.getCreateEmp());
+            menuBO.setCreateTime(DateUtils.dateToStr(menu.getCreateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
+            menuBO.setUpdateEmp(menu.getUpdateEmp());
+            menuBO.setUpdateTime(DateUtils.dateToStr(menu.getUpdateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
+            menuTurnMenuBOList.add(menuBO);
+        }
+        String menuJsonStr = JSONArray.fromObject(menuTurnMenuBOList).toString();
+        String strJson = "{" +
+                "\"msg\": \"\"," +
+                "\"code\": 0," +
+                "\"data\":"+menuJsonStr+"," +
+                "\"count\": 924," +
+                "\"is\": true," +
+                "\"tip\": \"操作成功！\"" +
+                "}";
+        return strJson;
+    }
+
+    @Override
+    public MenuBO getOneMenu(Integer id) {
+        Menu menu = menuDaoImp.getOneMenu(id);
+        MenuBO menuBO = new MenuBO();
+        menuBO.setMenu(menu);
+        return menuBO;
+    }
+
+    @Override
+    public List<MenuBO> querySupMenuBO() {
+        List<Menu> list = menuDaoImp.query();
+        List<MenuBO> listBO = new ArrayList<>();
+        for (Menu menu:list) {
+            MenuBO menuBO = new MenuBO();
+            menuBO.setMenu(menu);
+            listBO.add(menuBO);
+        }
+        Menu menu1 = new Menu();
+        menu1.setName("无");
+        menu1.setPid(0);
+        menu1.setId(0);
+        MenuBO menuBO1 = new MenuBO();
+        menuBO1.setMenu(menu1);
+        listBO.add(menuBO1);
+        return listBO;
+    }
+
+    @Override
+    public String delete(Integer id) {
+        menuDaoImp.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
+    }
+
+    @Override
+    public String update(MenuBO menuBO) {
+        String unicode = menuDaoImp.queryIconUnicode(menuBO.getMenu().getPic());
+        menuBO.getMenu().setPic(unicode);
+        menuDaoImp.update(menuBO.getMenu());
+        return "{\"code\":1,\"msg\":\"修改保存成功\"}";
+    }
+
+    /**
+     * 添加
+     * @param menuBO
+     */
+    public String add(MenuBO menuBO,User loginUser){
+        String str = "{\"code\":0,\"msg\":\"新增保存失败\"}";
+        String unicode = menuDaoImp.queryIcon(menuBO.getMenu().getPic());
+        menuBO.getMenu().setPic(unicode);
+        if ((menuDaoImp.queryUrl(menuBO.getMenu()) == 0)){
+            menuDaoImp.add(menuBO,loginUser);
+            str = "{\"code\":1,\"msg\":\"新增保存成功\"}";
+        }else {
+            str = "{\"code\":2,\"msg\":\"菜单名/url重复了，请重新输入\"}";
+        }
+
+        return str;
     }
 }
