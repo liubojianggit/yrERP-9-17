@@ -7,9 +7,11 @@ import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +65,9 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable", method=RequestMethod.POST)
-    public String saveAdd(Permission permission){
+    public String saveAdd(Permission permission, HttpServletRequest request){
+        permission.setCreateTime(new Date());//获取当前时间
+        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         permissionService.add(permission);
         return "redirect:/permission";
     }
@@ -84,7 +88,9 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable",method= RequestMethod.PUT)
-    public String saveUpdate(Permission permission, Page<PermissionBo> page, Map<String, Object> map){
+    public String saveUpdate(Permission permission, Page<PermissionBo> page, Map<String, Object> map, HttpServletRequest request){
+        permission.setUpdateTime(new Date());//获取修改当前时间
+        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         map.put("page", page);
         permissionService.update(permission);
         return "permissionList";
