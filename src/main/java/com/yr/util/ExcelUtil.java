@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Excel导出工具类
+ * 采购表Excel表单的导出工具类
  * Created by ASUS on 2018/5/20
  *
  * @Authod Grey Wolf
+ * @author  linxinmin
  */
 public class ExcelUtil {
 
