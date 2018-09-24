@@ -40,6 +40,9 @@
 	<mvc:view-controller path="/login" view-name="login"/>
 	<mvc:view-controller path="/index" view-name="index"/>
 	<mvc:view-controller path="/main" view-name="main"/>
+	<mvc:view-controller path="/menu" view-name="menu"/>
+	<mvc:view-controller path="/menu1" view-name="menu1"/>
+	<mvc:view-controller path="/menuAdd" view-name="menuAU"/>
 
 	<!-- 配置 SessionLocalResolver -->
 	<bean id="localeResolver"
