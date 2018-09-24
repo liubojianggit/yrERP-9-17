@@ -38,10 +38,9 @@ public class RequisitionDaoImpl implements RequisitionDao {
         {
             query.setParameter("type","%"+page.getT().getPurchaseType()+"%");
         }
-       /* query.setFirstResult(page).setMaxResults(page.getPageSize());//查询分页
-        List<Requisition> list = query.getResultList();*/
 
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<Requisition> list = query.getResultList();
         return list;
     }
