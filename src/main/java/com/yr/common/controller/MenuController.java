@@ -31,6 +31,8 @@ public class MenuController {
         return menuService.query();
     }
 
+
+
     /**
      * 跳转添加页面
      * @return String

@@ -6,6 +6,8 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 
+import java.util.List;
+
 public interface PermissionService {
 
     /**
@@ -38,4 +40,25 @@ public interface PermissionService {
      * @return Role
      */
     Permission getById(Integer id);
+
+    /**
+     * 用集合角色具有哪些权限
+     */
+    List<PermissionBo> getPermission(Integer id);
+
+    /**
+     * 根据父权限获得子权限
+     * @param rid 角色id
+     * @param pid 权限id
+     * @return List<PermissionBo>
+     */
+    List<PermissionBo> getchildren(Integer rid, Integer pid);
+
+    /**
+     * 根据子id获取所有父级id
+     * @param id
+     * @return Permission
+     */
+    List<Permission> getParent(Integer id);
+
 }
