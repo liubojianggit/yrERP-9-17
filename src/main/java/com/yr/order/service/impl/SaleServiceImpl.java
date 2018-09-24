@@ -1,18 +1,21 @@
 package com.yr.order.service.impl;
 
-import com.yr.entitys.bo.orderBO.SaleBO;
-import com.yr.entitys.page.Page;
-import com.yr.entitys.bo.orderBO.SaleImportExcelBO;
-import com.yr.entitys.order.Sale;
-import com.yr.order.dao.SaleDao;
-import com.yr.order.service.SaleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.orderBO.SaleImportExcelBO;
+import com.yr.entitys.order.Sale;
+import com.yr.entitys.page.Page;
+import com.yr.order.dao.SaleDao;
+import com.yr.order.service.SaleService;
+
 @Service
+@Transactional
 public class SaleServiceImpl implements SaleService {
     @Autowired
     private SaleDao saleDao;
@@ -48,7 +51,7 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public void query(Page<SaleBO> page) {
-        page.setTotalPage(saleDao.getCount(page));
+        page.setTotalRecord(saleDao.getCount(page));
         List<SaleBO>list = saleDao.query(page);
         page.setPageData(list);
 
@@ -82,8 +85,5 @@ public class SaleServiceImpl implements SaleService {
     public Sale getById(Integer id) {
         return saleDao.getById(id);
     }
-
-
-
 
 }

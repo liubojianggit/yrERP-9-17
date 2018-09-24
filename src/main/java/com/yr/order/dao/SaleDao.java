@@ -18,7 +18,7 @@ public interface SaleDao {
      * @param
      * @return Integer
      */
-    Integer getCount(Page<SaleBO> page);//@Param指定的是别名
+    Long getCount(Page<SaleBO> page);//@Param指定的是别名
 
     /**
      * 分页的形式查询user表的数据

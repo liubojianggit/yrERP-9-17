@@ -1,5 +1,6 @@
 package com.yr.order.controller;
 
+
 import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.order.Sale;
@@ -36,7 +37,7 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET)
     public String index(){
-        return "";
+        return "saleList";
     }
 
     /**
@@ -48,6 +49,7 @@ public class SaleController {//销售订单Controller
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET)
     @ResponseBody
     public Page<SaleBO>query(SaleBO saleBO, Page<SaleBO>page){
+        System.out.println("sadfasdfsd");
         page.setT(saleBO);
         saleService.query(page);
         return page;
@@ -63,7 +65,7 @@ public class SaleController {//销售订单Controller
         Map<String,Object> map1=new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
-        map.put("sates",map1);
+        map.put("states",map1);
         map.put("sale", new Sale());
         return "saleAU";
     }
@@ -75,7 +77,8 @@ public class SaleController {//销售订单Controller
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST)
     public String saveAdd(Sale sale){
         saleService.add(sale);
-        return "redirect:/sale";
+        /*  return "redirect:/sale";*/
+        return "saleList";
     }
 
     /**
@@ -83,13 +86,11 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, SaleBO saleBO, Page<SaleBO> page){
-        page.setT(saleBO);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
         Map<String,Object>map1 = new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
-        map.put("states",map);
-        map.put("page",page);
+        map.put("states",map1);
         map.put("sale",saleService.getById(id));//根据id获取对象放入request中
         return "saleAU";
     }
@@ -100,9 +101,7 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT)
-    public String SaveOrUpdate(Sale sale, SaleBO saleBO, Page<SaleBO> page, Map<String, Object> map){
-        page.setT(saleBO);
-        map.put("page",page);
+    public String SaveOrUpdate(Sale sale){
         saleService.update(sale);
         return "saleList";
     }
