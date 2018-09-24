@@ -64,4 +64,9 @@ public class RequisitionExcelDaoImpl implements RequisitionExcelDao {
         map.put(0, excel);
         return map;
     }
+
+    @Override
+    public void add(Requisition requisition) {
+        entityManager.persist(requisition);
+    }
 }

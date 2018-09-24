@@ -5,10 +5,12 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import java.io.Serializable;
 
 /**
- * Excel表格
+ * 采购表需要导出导入Excel表格的工具类；
  * Created by ASUS on 2018/5/20
  *
  * @Authod Grey Wolf
+ * @author linxinmin
+ *
  */
 public class ExcelBean implements Serializable {
     //列头（标题）名

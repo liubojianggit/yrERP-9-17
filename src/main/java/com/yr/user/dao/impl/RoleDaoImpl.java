@@ -94,7 +94,7 @@ public class RoleDaoImpl implements RoleDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
             query.setParameter("addr", "%"+page.getT().getUser().getAddr()+"%");
         }*/
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<RoleBo> list = query.getResultList();//获得分页后的数据集合
         return list;
     }

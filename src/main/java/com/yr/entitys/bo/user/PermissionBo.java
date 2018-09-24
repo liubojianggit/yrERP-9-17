@@ -2,21 +2,61 @@ package com.yr.entitys.bo.user;
 
 import com.yr.entitys.user.Permission;
 
-public class PermissionBo {
-    private Permission permission;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Permission getPermission() {
-        return permission;
+/**
+ * 权限的操作类
+ */
+public class PermissionBo extends Permission{
+    /**
+     * 是否勾选
+     */
+    private String mark;
+    /**
+     * role Id
+     */
+    private String roleId;
+    private List<PermissionBo> permissionBos = new ArrayList<>();
+
+    /**
+     * 判断是否相等，返回true为勾选，false为没有勾选
+     * @return boolean
+     */
+    public boolean ischeck(){
+        return mark.equals(roleId);
     }
 
-    public void setPermission(Permission permission) {
-        this.permission = permission;
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public List<PermissionBo> getPermissionBos() {
+        return permissionBos;
+    }
+
+    public void setPermissionBos(List<PermissionBo> permissionBos) {
+        this.permissionBos = permissionBos;
     }
 
     @Override
     public String toString() {
-        return "PermissionsBO{" +
-                "permission=" + permission +
+        return "PermissionBo{" +
+                "mark='" + mark + '\'' +
+                ", roleId='" + roleId + '\'' +
+                ", permissionBos=" + permissionBos +
                 '}';
     }
 }

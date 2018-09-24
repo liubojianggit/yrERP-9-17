@@ -1,4 +1,4 @@
-package com.yr.supplier.service.impl.impl;
+package com.yr.supplier.dao.impl;
 
 import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.page.Page;

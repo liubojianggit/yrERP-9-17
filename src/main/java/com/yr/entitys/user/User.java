@@ -2,6 +2,7 @@ package com.yr.entitys.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yr.common.entity.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,14 +21,16 @@ public class User extends BaseEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;//编号
     private String photo;//员工照片
-    @Column(unique = true, nullable = false)//设置为唯一约束，并且是不为null
+    @Column(name="job_num",unique = true, nullable = false)//设置为唯一约束，并且是不为null
     private String jobNum;//工号
+    @Column(name="depa_code")
     private String depaCode;//部门编号
     @Column(unique = true, nullable = false)
     private String name;//姓名
     private Integer sex;//性别
     //定义时间格式	自动更新时间
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @Column(columnDefinition = "date")//columnDefinition设置数据库映射类型
     private Date birthday;//生日
     private String addr;//地址
     @Column(nullable = false)

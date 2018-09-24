@@ -1,5 +1,6 @@
 package com.yr.order.service.impl;
 
+import com.yr.entitys.bo.orderBO.RequisitionImportExcelBO;
 import com.yr.entitys.order.Requisition;
 import com.yr.order.dao.RequisitionExcelDao;
 import com.yr.order.service.RequisitionExcelService;
@@ -37,34 +38,20 @@ public class RequisitionExcelServiceImpl implements RequisitionExcelService {
 
     @Override
     public boolean batchImport(String name, MultipartFile file) {
-        return false;
+        boolean isvalue = false;
+        //创建处理Excel
+        RequisitionImportExcelBO requisitionImportExcelBO = new RequisitionImportExcelBO();
+        //解析excel,获取采购信息集合
+        List<Requisition> requisitionList = requisitionImportExcelBO.getExcelInfo(name,file);
+        if (requisitionList !=null)
+        {
+            isvalue=true;
+        }
+
+        //迭代添加采购信息，
+        for (Requisition requisition:requisitionList) {
+             requisitionExcelDaoImpl.add(requisition);
+        }
+        return isvalue;
     }
-
-    /*public static Map<Integer, List<ExcelBean>> contentExcel() {
-        List<ExcelBean> excel = new ArrayList<>();
-        Map<Integer, List<ExcelBean>> map = new LinkedHashMap<>();
-        XSSFWorkbook xssfWorkbook = null;
-        //设置标题栏
-        excel.add(new ExcelBean("申请ID", "id", 0));
-        excel.add(new ExcelBean("申请编号", "code", 0));
-        excel.add(new ExcelBean("审批人", "approver", 0));
-        excel.add(new ExcelBean("收货人", "consignee", 0));
-        excel.add(new ExcelBean("申请部门编号", "depa_code", 0));
-        excel.add(new ExcelBean("收货仓库编号", "depot_code", 0));
-        excel.add(new ExcelBean("申请人工号", "job_num", 0));
-        excel.add(new ExcelBean("采购商品名称", "purc_ware_name", 0));
-        excel.add(new ExcelBean("采购商品数量", "purc_ware_num", 0));
-        excel.add(new ExcelBean("采购商品类型", "purc_ware_type", 0));
-        excel.add(new ExcelBean("供应商编号", "supp_code", 0));
-        excel.add(new ExcelBean("商品总价", "total_price", 0));
-        excel.add(new ExcelBean("商品单价", "unit_price", 0));
-        excel.add(new ExcelBean("采购单状态", "status", 0));
-        excel.add(new ExcelBean("创建人", "createEmp", 0));
-        excel.add(new ExcelBean("创建时间", "createTime", 0));
-        excel.add(new ExcelBean("修改人", "updateEmp", 0));
-        excel.add(new ExcelBean("修改时间", "updateTime", 0));
-        map.put(0, excel);
-        return map;
-    }*/
-
 }

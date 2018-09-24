@@ -80,4 +80,10 @@ public interface UserDao {
      * @return User
      */
     User getByName(String name);
+
+    /**
+     * 部门删除时调用,根据部门编号删除用户
+     */
+    void delete(String department);
+
 }

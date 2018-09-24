@@ -107,4 +107,6 @@ public class RoleController {
     public void setRoles(Integer id,Integer[] roleIds){
         roleService.setPermissions(id,roleIds);
     }
+
+
 }

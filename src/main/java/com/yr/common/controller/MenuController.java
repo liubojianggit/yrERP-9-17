@@ -36,6 +36,8 @@ public class MenuController {
         return menuService.query();
     }
 
+
+
     /**
      * 放回固定格式的字符串，生成菜单树形表
      * @return
