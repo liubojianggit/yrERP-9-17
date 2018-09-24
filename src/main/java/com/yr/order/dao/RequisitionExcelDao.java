@@ -24,4 +24,10 @@ public interface RequisitionExcelDao {
      * @return
      */
     public Map<Integer, List<ExcelBean>> contentExcel();
+
+    /**
+     * 给采购表添加采购信息
+     * @param requisition
+     */
+    public void add(Requisition requisition);
 }

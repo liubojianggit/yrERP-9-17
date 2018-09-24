@@ -38,10 +38,9 @@ public class RequisitionDaoImpl implements RequisitionDao {
         {
             query.setParameter("type","%"+page.getT().getPurchaseType()+"%");
         }
-       /* query.setFirstResult(page).setMaxResults(page.getPageSize());//查询分页
-        List<Requisition> list = query.getResultList();*/
 
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<Requisition> list = query.getResultList();
         return list;
     }
@@ -89,12 +88,13 @@ public class RequisitionDaoImpl implements RequisitionDao {
 
     @Override
     public void add(Requisition requisition) {
+        //添加数据
         entityManager.persist(requisition);
     }
 
     @Override
     public void update(Requisition requisition) {
-        String jpql="update Requisition r set r.job_num = :jobNumber,r.depa_copde = :deparCode,r.approver = :approver,r.purc_ware_name = :name,r.purc_ware_type = :purcType," +
+       /* String jpql="update Requisition r set r.job_num = :jobNumber,r.depa_copde = :deparCode,r.approver = :approver,r.purc_ware_name = :name,r.purc_ware_type = :purcType," +
                 "r.purc_ware_num = :number,r.supp_code = :supplireCode,r.unit_price = :unitPrice,r.total_price = :totalPrice,r.status =: status," +
                 "r.consignee =: consignee, r.depot_code =: depotCode";
 
@@ -110,7 +110,9 @@ public class RequisitionDaoImpl implements RequisitionDao {
                 .setParameter("status",requisition.getStatus())
                 .setParameter("consignee",requisition.getConsignee())
                 .setParameter("depotCode",requisition.getDepotCode())
-                .executeUpdate();
+                .executeUpdate();*/
+       //修改
+       entityManager.merge(requisition);
 
     }
 

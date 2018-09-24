@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 供应商表的controller
+ */
 @Controller
-@RequestMapping("supplierTable")
+@RequestMapping("supplier")
 public class SupplierController {
     @Autowired
     private SupplierService service;
@@ -25,7 +28,7 @@ public class SupplierController {
      * @param pageSize 当前页条数
      * @return
      */
-    @RequestMapping(value="/Apage")
+    @RequestMapping(value="/supplierTable",method = RequestMethod.GET)
     @ResponseBody
     public Page<SupplierBo> query(SupplierBo supplierBo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
         Page<SupplierBo> page = new Page<>();
@@ -41,7 +44,7 @@ public class SupplierController {
      * 没业务据操作，只跳转到供应商添加页面
      * @return
      */
-    @RequestMapping(value="/")
+    @RequestMapping(value="/supplierTable/add",method = RequestMethod.GET)
     public String AddEcho(){
 
         return "supplieradd";//添加页面的jsp前缀
@@ -52,7 +55,7 @@ public class SupplierController {
      * @param map
      * @return
      */
-    @RequestMapping(value="",method = RequestMethod.POST)
+    @RequestMapping(value="/supplierTable",method = RequestMethod.POST)
     public String add(Supplier supplier, Map<String, Object> map) {
         boolean isNull = service.isNullAdd(supplier);
         if(isNull == false){
@@ -69,7 +72,7 @@ public class SupplierController {
      * @return 返回分页查询页面
      */
 
-    @RequestMapping(value = "//{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         service.delete(id);
         return "AList";
@@ -81,7 +84,7 @@ public class SupplierController {
      * @param map 放入map中存放request，方便页面拿取
      * @return
      */
-    @RequestMapping(value = "/UpdateEcho/{id}")
+    @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.GET)
     public String upEcho(@PathVariable Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page) {
         page.setT(supplierBo);
         Supplier depots = service.getById(id);
@@ -95,7 +98,7 @@ public class SupplierController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/account",method = RequestMethod.PUT)
+    @RequestMapping(value="/supplierTable",method = RequestMethod.PUT)
     public String update(Supplier supplier
             ,@RequestParam("id")Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page){
         boolean isNull =service.isNullUpdate(supplier);

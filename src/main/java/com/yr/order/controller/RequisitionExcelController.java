@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping(value = "requisition")
 public class RequisitionExcelController {
     @Autowired
     private RequisitionExcelService excelServiceImpl;
