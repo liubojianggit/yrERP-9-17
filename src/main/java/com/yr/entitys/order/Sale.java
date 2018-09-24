@@ -1,12 +1,15 @@
 package com.yr.entitys.order;
 
+import com.yr.common.entity.BaseEntity;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Table(name="sale_order")
 @Entity
 @Cacheable(true)
-public class Sale {//销售订单表
+public class Sale extends BaseEntity implements Serializable{//销售订单表
     //销售订单id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
@@ -68,25 +71,6 @@ public class Sale {//销售订单表
     //销售商品的仓库编号
     @Column(name = "depot_code",nullable = false)//不为null
     private String depotCode;
-
-    //创建时间
-    @Temporal(TemporalType.TIMESTAMP)//(默认年月日时分秒)
-    @Column(name = "CreateTime")
-    private Date createTime;
-
-    //创建人
-    @Column(name = "create_Emp")
-    private String createEmp;
-
-    //修改时间
-    @Temporal(TemporalType.TIMESTAMP)//(默认年月日时分秒)
-    @Column(name = "update_time")
-    private Date updateTime;
-
-    //修改人
-    @Column(name = "update_Emp")
-    private String updateEmp;
-
 
     public Integer getId() {
         return id;
@@ -168,6 +152,14 @@ public class Sale {//销售订单表
         this.states = states;
     }
 
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
     public String getApprover() {
         return approver;
     }
@@ -198,25 +190,5 @@ public class Sale {//销售订单表
 
     public void setDepotCode(String depotCode) {
         this.depotCode = depotCode;
-    }
-
-    @Override
-    public String toString() {
-        return "Sale{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
-                ", customerBuy='" + customerBuy + '\'' +
-                ", salesperson='" + salesperson + '\'' +
-                ", wareCode='" + wareCode + '\'' +
-                ", number=" + number +
-                ", money=" + money +
-                ", sPhoneNumber='" + sPhoneNumber + '\'' +
-                ", remark='" + remark + '\'' +
-                ", states=" + states +
-                ", approver='" + approver + '\'' +
-                ", requName='" + requName + '\'' +
-                ", rPhoneNumber='" + rPhoneNumber + '\'' +
-                ", depotCode='" + depotCode + '\'' +
-                '}';
     }
 }
