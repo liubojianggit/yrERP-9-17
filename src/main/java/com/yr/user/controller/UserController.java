@@ -73,6 +73,7 @@ public class UserController {
         map1.put("2", "女");
         map1.put("3", "保密");
         map.put("sexs", map1);
+        //部门编号为键，名字为值
         return "userAU";
     }
 

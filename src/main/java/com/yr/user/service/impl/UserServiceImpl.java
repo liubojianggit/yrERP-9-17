@@ -116,4 +116,11 @@ public class UserServiceImpl implements UserService {
     public User getByName(String name){
         return userDao.getByName(name);
     }
+
+    /**
+     * 部门删除时调用,根据部门编号删除用户
+     */
+    public void delete(String department){
+        userDao.delete(department);
+    }
 }

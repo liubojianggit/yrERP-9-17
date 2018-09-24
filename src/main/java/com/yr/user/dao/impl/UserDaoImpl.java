@@ -210,4 +210,12 @@ public class UserDaoImpl implements UserDao {
         User user = (User)entityManager.createQuery(jpql).setParameter(1,name).getSingleResult();
         return user;
     }
+
+    /**
+     * 部门删除时调用,根据部门编号删除用户
+     */
+    public void delete(String department){
+        String jpql = "select u from User u where depa_code = ?1";
+        entityManager.createQuery(jpql).setParameter(1,department).executeUpdate();
+    }
 }
