@@ -3,15 +3,12 @@ package com.yr.entitys.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Entity
-@Table(name = "requisition")
-public class Requisition implements Serializable{
-
+@Table(name = "purchaseOrder")
+public class PurchaseOrder implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -218,11 +215,11 @@ public class Requisition implements Serializable{
         return depotCode;
     }
 
-    public Requisition() {
+    public PurchaseOrder() {
 
     }
 
-    public Requisition(Integer id, String code, String jobNumber, String departmentCode, String approver, String purchasName, String purchaseType, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode, Date createTime, String createEmp, Date updateTime, String updateEmp) {
+    public PurchaseOrder(Integer id, String code, String jobNumber, String departmentCode, String approver, String purchasName, String purchaseType, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode, Date createTime, String createEmp, Date updateTime, String updateEmp) {
         this.id = id;
         this.code = code;
         this.jobNumber = jobNumber;
@@ -245,7 +242,7 @@ public class Requisition implements Serializable{
 
     @Override
     public String toString() {
-        return "Requisition{" +
+        return "PurchaseOrder{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", jobNumber='" + jobNumber + '\'' +
