@@ -10,23 +10,23 @@ import javax.persistence.*;
 public class supplierWares {
  @Id
  @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Integer  id ;
+ private Integer  id ;//自动增长
  @Column(nullable = false,unique = true)
- private String code;
+ private String code;//供应商品的编号，不能为null，唯一约束
  @Column(nullable = false)
-    private String name;
+    private String name;//供应商品的名称，不能为null
  @Column(nullable = false)
-    private String suppPhoto;
+    private String suppPhoto;//供应商品的头像，不能为null
  @Column(nullable = false)
-    private String type;
+    private String type;//供应商品的类型，不能为null
  @Column(nullable = false,name = "total_inventory")
-    private Long totalInventory;
+    private Long totalInventory;//供应商品的总价格，不能为null
  @Column(nullable = false,name = "unit_price")
-    private double unitPrice;
+    private double unitPrice;//供应商品的单价，不能为null
  @Column(nullable = false)
-    private String brand;
+    private String brand;//供应商品的品牌，不能为null
  @Column(nullable = false)
-    private String addr;
+    private String addr;//供应商品的地址，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
     private String createTime;
     @Column(nullable = false)

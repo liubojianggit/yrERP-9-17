@@ -66,8 +66,10 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      */
     @Override
     public Page<SupplierWareBo> query(Page<SupplierWareBo> page) {
+        System.out.println(swd.getCount(page)+"eee");
         page.setTotalRecord(swd.getCount(page));
         List<SupplierWareBo> wareList = swd.query(page);
+
         page.setPageData(wareList);
         return page;
     }
@@ -96,9 +98,6 @@ public class SupplierWareServiceImpl implements SupplierWareService {
         if (StringUtils.isNull(supplierWares.getAddr())) {
             t = true;
         }
-        if (StringUtils.isNull(supplierWares.getSuppCode())) {
-            t = true;
-        }
         if (StringUtils.isNull(supplierWares.getBrand())) {
             t = true;
         }
@@ -122,9 +121,6 @@ public class SupplierWareServiceImpl implements SupplierWareService {
             t = true;
         }
         if (StringUtils.isNull(supplierWares.getAddr())) {
-            t = true;
-        }
-        if (StringUtils.isNull(supplierWares.getSuppCode())) {
             t = true;
         }
         if (StringUtils.isNull(supplierWares.getBrand())) {

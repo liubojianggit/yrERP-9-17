@@ -1,6 +1,6 @@
 package com.yr.depot.service;
 
-import com.yr.entitys.bo.depotBo.WareSearchBo;
+import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 
@@ -20,7 +20,7 @@ public interface WareService {
      * @param ware
      * @return List<Ware>数组
      */
-    public Page<WareSearchBo> query(Page<WareSearchBo> ware);
+    public Page<WareBo> query(Page<WareBo> ware);
 
     /**
      * 添加数据
