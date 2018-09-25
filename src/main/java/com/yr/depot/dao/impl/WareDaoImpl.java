@@ -30,8 +30,9 @@ public class WareDaoImpl implements WareDao {
      */
     @Override
     public Ware getWare(Integer id) {
-        String jpql = "select w from Ware w where w.id=?1";
-        Query query = entityManager.createQuery(jpql);
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select w from Ware w where w.id=?");
+        Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, id);
         Ware ware = (Ware) query.getSingleResult();
         return ware;
@@ -81,22 +82,21 @@ public class WareDaoImpl implements WareDao {
     @Override
     public boolean add(Ware ware) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("insert into wares(ware_type_code,type,code,ware_photo,name,addr,brand,out_unit_price,bar_code," +
+        jpql.append("insert into wares(type,code,ware_photo,name,addr,brand,out_unit_price,bar_code," +
                 "total_inventory,createTime,createEmp,remark)");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1,ware.getWareTypeCode());
-        query.setParameter(2,ware.getType());
-        query.setParameter(3,ware.getCode());
-        query.setParameter(4,ware.getWarePhoto());
-        query.setParameter(5,ware.getName());
-        query.setParameter(6,ware.getAddr());
-        query.setParameter(7,ware.getBrand());
-        query.setParameter(8,ware.getOutUnitPrice());
-        query.setParameter(9,ware.getBarCode());
-        query.setParameter(10,ware.getTotalInventory());
-        query.setParameter(11,new Date());
-        query.setParameter(12,ware.getCreateEmp());
-        query.setParameter(13,ware.getRemark());
+        query.setParameter(1,ware.getType());
+        query.setParameter(2,ware.getCode());
+        query.setParameter(3,ware.getWarePhoto());
+        query.setParameter(4,ware.getName());
+        query.setParameter(5,ware.getAddr());
+        query.setParameter(6,ware.getBrand());
+        query.setParameter(7,ware.getOutUnitPrice());
+        query.setParameter(8,ware.getBarCode());
+        query.setParameter(9,ware.getTotalInventory());
+        query.setParameter(10,new Date());
+        query.setParameter(11,ware.getCreateEmp());
+        query.setParameter(12,ware.getRemark());
         try {
             query.executeUpdate();
             return true;
@@ -123,24 +123,23 @@ public class WareDaoImpl implements WareDao {
     @Override
     public boolean update(Ware ware) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("update Ware set ware_type_code = ?,type = ?,code=?,ware_photo=?,name=?,addr=?,brand=?," +
+        jpql.append("update Ware set type = ?,code=?,ware_photo=?,name=?,addr=?,brand=?," +
                 "out_unit_price=?,bar_code=?,total_inventory=?,updateTime=?,updateEmp=?," +
                 "remark=? where id = ?");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1,ware.getWareTypeCode());
-        query.setParameter(2,ware.getType());
-        query.setParameter(3,ware.getCode());
-        query.setParameter(4,ware.getWarePhoto());
-        query.setParameter(5,ware.getName());
-        query.setParameter(6,ware.getAddr());
-        query.setParameter(7,ware.getBrand());
-        query.setParameter(8,ware.getOutUnitPrice());
-        query.setParameter(9,ware.getBarCode());
-        query.setParameter(10,ware.getTotalInventory());
-        query.setParameter(11,new Date());
-        query.setParameter(12,ware.getUpdateEmp());
-        query.setParameter(13,ware.getRemark());
-        query.setParameter(14,ware.getId());
+        query.setParameter(1,ware.getType());
+        query.setParameter(2,ware.getCode());
+        query.setParameter(3,ware.getWarePhoto());
+        query.setParameter(4,ware.getName());
+        query.setParameter(5,ware.getAddr());
+        query.setParameter(6,ware.getBrand());
+        query.setParameter(7,ware.getOutUnitPrice());
+        query.setParameter(8,ware.getBarCode());
+        query.setParameter(9,ware.getTotalInventory());
+        query.setParameter(10,new Date());
+        query.setParameter(11,ware.getUpdateEmp());
+        query.setParameter(12,ware.getRemark());
+        query.setParameter(13,ware.getId());
         try {
             query.executeUpdate();
             return  true;
