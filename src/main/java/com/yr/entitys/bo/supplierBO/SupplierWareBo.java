@@ -7,10 +7,10 @@ import com.yr.entitys.supplier.supplierWares;
  */
 public class SupplierWareBo {
     private supplierWares supplierWare;
-    private String name;
-    private String type;
-    private double minUnitPrice;
-    private double maxUnitPrice;
+    private String name;//供应商品的名称
+    private String type;//供应商品的类型
+    private double minUnitPrice;//供应商品的最低单价
+    private double maxUnitPrice;//供应商品的最高单价
     private String brand;//品牌
 
     public supplierWares getSupplierWare() {

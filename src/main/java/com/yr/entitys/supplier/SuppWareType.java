@@ -14,8 +14,8 @@ public class SuppWareType {
     private String code;//供应商品类型的编号，不能为null，唯一约束
     @Column(nullable = false,unique = true)
     private String name;//供应商品类型的名称，不能为null，唯一约束
-    @Column(nullable = false)
-    private String sup_code;//供应商品类型的父级的商品编号，不能为null
+    @Column(nullable = false,name = "sup_code")
+    private String supCode;//供应商品类型的父级的商品编号，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
     private String createTime;//创建时间，不能为null
     @Column(nullable = false)
@@ -48,12 +48,12 @@ public class SuppWareType {
         this.name = name;
     }
 
-    public String getSup_code() {
-        return sup_code;
+    public String getSupCode() {
+        return supCode;
     }
 
-    public void setSup_code(String sup_code) {
-        this.sup_code = sup_code;
+    public void setSupCode(String supCode) {
+        this.supCode = supCode;
     }
 
     public String getCreateTime() {
@@ -94,7 +94,7 @@ public class SuppWareType {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", sup_code='" + sup_code + '\'' +
+                ", supCode='" + supCode + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", createEmp='" + createEmp + '\'' +
                 ", updateTime='" + updateTime + '\'' +

@@ -11,36 +11,36 @@ public class Ware {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
     private Integer id;
-    @Column(name = "ware_type_code",nullable = false)
-    private String wareTypeCode;
+ /*   @Column(name = "ware_type_code",nullable = false)
+    private String wareTypeCode;*/
     @Column(nullable = false)
-    private String type;
+    private String type;//商品类型、不能为null
     @Column(nullable = false,unique = true)
-    private String code;
+    private String code;//商品编号，不能为null
     @Column(name = "ware_photo",nullable = false)
-    private String warePhoto;//商品头像
+    private String warePhoto;//商品头像，不能为null
     @Column(nullable = false)
-    private String name;
+    private String name;//名称，不能为null
     @Column(nullable = false)
-    private String addr;//产地
+    private String addr;//产地，不能为null
     @Column(nullable = false)
-    private String brand;//品牌
+    private String brand;//品牌，不能为null
     @Column(name = "In_unit_price",nullable = false)
-    private Double inUnitPrice;//采购单价
+    private Double inUnitPrice;//采购单价，不能为null
     @Column(name = "out_unit_price",nullable = false)
-    private Double outUnitPrice;//销售单价
+    private Double outUnitPrice;//销售单价，不能为null
     @Column(name = "bar_code")
     private String barCode;//条码
     @Column(name = "total_inventory",nullable = false)
-    private Long totalInventory;//库存总量
+    private Long totalInventory;//库存总量，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
-    private String createTime;
+    private String createTime;//创建时间，不能为null
     @Column(nullable = false)
-    private String createEmp;
+    private String createEmp;//创建人，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
-    private String updateTime;
+    private String updateTime;//修改时间
     @Column(nullable = false)
-    private  String updateEmp;
+    private  String updateEmp;//修改人
     private String remark;//备注
 
     public Integer getId() {
@@ -51,13 +51,13 @@ public class Ware {
         this.id = id;
     }
 
-    public String getWareTypeCode() {
+/*    public String getWareTypeCode() {
         return wareTypeCode;
     }
 
     public void setWareTypeCode(String wareTypeCode) {
         this.wareTypeCode = wareTypeCode;
-    }
+    }*/
 
     public String getType() {
         return type;
@@ -183,7 +183,6 @@ public class Ware {
     public String toString() {
         return "Ware{" +
                 "id=" + id +
-                ", wareTypeCode='" + wareTypeCode + '\'' +
                 ", type='" + type + '\'' +
                 ", code='" + code + '\'' +
                 ", warePhoto='" + warePhoto + '\'' +

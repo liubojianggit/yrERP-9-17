@@ -1,6 +1,9 @@
 package com.yr.entitys.bo.depotBo;
 
-public class WareSearchBo {
+/**
+ * 仓库商品对外拓展类
+ */
+public class WareBo {
     private String type;
     private String code;
     private String name;
@@ -58,7 +61,7 @@ public class WareSearchBo {
 
     @Override
     public String toString() {
-        return "WareSearchBo{" +
+        return "WareBo{" +
                 "type='" + type + '\'' +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +

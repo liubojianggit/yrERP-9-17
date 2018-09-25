@@ -12,19 +12,19 @@ public class WareType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
     private Integer id;
     @Column(nullable = false,unique = true)
-    private String code;
+    private String code;//商品类型的编号，不能为null，唯一约束
     @Column(nullable = false,unique = true)
-    private String name;
+    private String name;//商品类型的名称，不能为null，唯一约束
     @Column(name = "sup_code",nullable = false)
     private String supCode;//上级商品类型编号
     @Column(nullable = false,columnDefinition = "DATE")
-    private String createTime;
+    private String createTime;//
     @Column(nullable = false)
-    private String createEmp;
+    private String createEmp;//创建人
     @Column(nullable = false,columnDefinition = "DATE")
-    private String updateTime;
+    private String updateTime;//修改时间
     @Column(nullable = false)
-    private  String updateEmp;
+    private  String updateEmp;//修改人
 
     public Integer getId() {
         return id;
