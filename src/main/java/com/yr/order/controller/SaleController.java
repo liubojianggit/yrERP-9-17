@@ -2,8 +2,8 @@ package com.yr.order.controller;
 
 
 import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.order.Sale;
 import com.yr.order.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +26,8 @@ public class SaleController {//销售订单Controller
     @ModelAttribute
     public void ModelAttribute(@RequestParam(value = "id",required = false)Integer id, Map<String,Object>map){
         if (id != null && id != 0){
-            Sale sale = saleService.getById(id);
-            map.put("sale",sale);
+            SaleOrder saleOrder = saleService.getById(id);
+            map.put("saleOrder",saleOrder);
         }
     }
 
@@ -35,7 +35,7 @@ public class SaleController {//销售订单Controller
      * 销售订单表页面查询接口
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public String index(){
         return "saleList";
     }
@@ -46,10 +46,9 @@ public class SaleController {//销售订单Controller
      * @param page
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET)
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public Page<SaleBO>query(SaleBO saleBO, Page<SaleBO>page){
-        System.out.println("sadfasdfsd");
         page.setT(saleBO);
         saleService.query(page);
         return page;
@@ -61,12 +60,12 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/add",method = RequestMethod.GET)
     public String jumpAdd(Map<String,Object>map){
-        map.put("sale",new Sale());//传入一个空的user对象
+        map.put("sale",new SaleOrder());//传入一个空的user对象
         Map<String,Object> map1=new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
         map.put("states",map1);
-        map.put("sale", new Sale());
+        map.put("sale", new SaleOrder());
         return "saleAU";
     }
 
@@ -74,8 +73,8 @@ public class SaleController {//销售订单Controller
      * 保存添加销售订单表
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST)
-    public String saveAdd(Sale sale){
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    public String saveAdd(SaleOrder sale){
         saleService.add(sale);
         /*  return "redirect:/sale";*/
         return "saleList";
@@ -100,8 +99,8 @@ public class SaleController {//销售订单Controller
      * @param sale
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT)
-    public String SaveOrUpdate(Sale sale){
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    public String SaveOrUpdate(SaleOrder sale){
         saleService.update(sale);
         return "saleList";
     }
@@ -110,7 +109,7 @@ public class SaleController {//销售订单Controller
      * 根据id删除销售订单表
      * @param id
      */
-    @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delete(@PathVariable Integer id){
         saleService.delete(id);
