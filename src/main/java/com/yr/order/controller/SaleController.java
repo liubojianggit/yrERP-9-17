@@ -35,7 +35,7 @@ public class SaleController {//销售订单Controller
      * 销售订单表页面查询接口
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public String index(){
         return "saleList";
     }
@@ -46,10 +46,9 @@ public class SaleController {//销售订单Controller
      * @param page
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET)
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public Page<SaleBO>query(SaleBO saleBO, Page<SaleBO>page){
-        System.out.println("sadfasdfsd");
         page.setT(saleBO);
         saleService.query(page);
         return page;
@@ -74,7 +73,7 @@ public class SaleController {//销售订单Controller
      * 保存添加销售订单表
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST)
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     public String saveAdd(Sale sale){
         saleService.add(sale);
         /*  return "redirect:/sale";*/
@@ -100,7 +99,7 @@ public class SaleController {//销售订单Controller
      * @param sale
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT)
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     public String SaveOrUpdate(Sale sale){
         saleService.update(sale);
         return "saleList";
@@ -110,7 +109,7 @@ public class SaleController {//销售订单Controller
      * 根据id删除销售订单表
      * @param id
      */
-    @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
     public void delete(@PathVariable Integer id){
         saleService.delete(id);
