@@ -3,12 +3,15 @@ package com.yr.user.controller;
 import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Role;
+import com.yr.entitys.user.User;
 import com.yr.user.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -36,10 +39,19 @@ public class RoleController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/roleTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "roleList";
+    }
+
+    /**
      * 分页的形式查询role表的数据
      * @return List<RoleBo>
      */
-    @RequestMapping(value="/roleTable", method = RequestMethod.GET)
+    @RequestMapping(value="/roleTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<RoleBo> query(Page<RoleBo> page){
         roleService.query(page);
@@ -61,7 +73,9 @@ public class RoleController {
      * @return String
      */
     @RequestMapping(value="/roleTable", method=RequestMethod.POST)
-    public String saveAdd(Role role){
+    public String saveAdd(Role role, HttpServletRequest request){
+        role.setCreateTime(new Date());//获取当前时间
+        role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         roleService.add(role);
         return "redirect:/role";
     }
@@ -82,7 +96,9 @@ public class RoleController {
      * @return String
      */
     @RequestMapping(value="/roleTable",method= RequestMethod.PUT)
-    public String saveUpdate(Role role, Page<RoleBo> page, Map<String, Object> map){
+    public String saveUpdate(Role role, Page<RoleBo> page, Map<String, Object> map, HttpServletRequest request){
+        role.setUpdateTime(new Date());//获取修改当前时间
+        role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         map.put("page", page);
         roleService.update(role);
         return "roleList";

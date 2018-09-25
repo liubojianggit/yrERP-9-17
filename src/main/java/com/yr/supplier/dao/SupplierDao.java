@@ -16,7 +16,7 @@ public interface SupplierDao {
     void add(Supplier supplier);
 
     /**
-     * 根据id删除供应商数据
+     * 根据id删除供应商数 据
      * @param id
      */
     void delete(Integer id);

@@ -15,6 +15,7 @@ import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
+@Transactional
 public class BaseService<T> {
     @Autowired
     private BaseDao<T> baseDao;

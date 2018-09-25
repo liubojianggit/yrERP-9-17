@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("permissionServiceImpl")
+@Transactional
 public class PermissionServiceImpl implements PermissionService {
     @Autowired
     @Qualifier("permissionDaoImpl")
@@ -33,7 +34,6 @@ public class PermissionServiceImpl implements PermissionService {
      * 添加权限信息
      * @param permission
      */
-    @Transactional
     public void add(Permission permission){
         permission.setMethod(permission.getMethod().toUpperCase());//将method转为大写
         permissionDao.add(permission);
@@ -43,7 +43,6 @@ public class PermissionServiceImpl implements PermissionService {
      * 修改权限信息
      * @param permission
      */
-    @Transactional
     public void update(Permission permission){
         permissionDao.update(permission);
     }
@@ -52,7 +51,6 @@ public class PermissionServiceImpl implements PermissionService {
      * 删除权限信息
      * @param id
      */
-    @Transactional
     public void delete(Integer id){
         permissionDao.delete(id);
     }

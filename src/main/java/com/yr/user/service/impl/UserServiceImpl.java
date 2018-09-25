@@ -17,9 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("userServiceImpl")
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -43,7 +45,6 @@ public class UserServiceImpl implements UserService {
      * 添加用户信息
      * @param user
      */
-    @Transactional
     public void add(User user){
         user.setPassword(Md5Utils.getMd5Password(user.getPassword()));//将密码加密后置入user中
         userDao.add(user);
@@ -53,7 +54,6 @@ public class UserServiceImpl implements UserService {
      * 修改用户信息
      * @param user
      */
-    @Transactional
     public void update(User user){
         userDao.update(user);
     }
@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
      * 删除用户信息
      * @param id
      */
-    @Transactional
     public void delete(Integer id){
         userDao.delete(id);
     }

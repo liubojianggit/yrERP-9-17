@@ -7,9 +7,11 @@ import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +40,19 @@ public class PermissionController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/permissionTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "roleList";
+    }
+
+    /**
      * 分页的形式查询permission表的数据
      * @return List<PermissionBo>
      */
-    @RequestMapping(value="/permissionTable", method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<PermissionBo> query(Page<PermissionBo> page){
         permissionService.query(page);
@@ -63,7 +74,9 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable", method=RequestMethod.POST)
-    public String saveAdd(Permission permission){
+    public String saveAdd(Permission permission, HttpServletRequest request){
+        permission.setCreateTime(new Date());//获取当前时间
+        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         permissionService.add(permission);
         return "redirect:/permission";
     }
@@ -84,7 +97,9 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable",method= RequestMethod.PUT)
-    public String saveUpdate(Permission permission, Page<PermissionBo> page, Map<String, Object> map){
+    public String saveUpdate(Permission permission, Page<PermissionBo> page, Map<String, Object> map, HttpServletRequest request){
+        permission.setUpdateTime(new Date());//获取修改当前时间
+        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         map.put("page", page);
         permissionService.update(permission);
         return "permissionList";
@@ -103,7 +118,7 @@ public class PermissionController {
     /**
      * 回显角色所有的权限
      */
-    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/permissionList",method = RequestMethod.GET)
     @ResponseBody
     public List<PermissionBo> getPermission(Integer id){
         return permissionService.getPermission(id);
@@ -112,7 +127,7 @@ public class PermissionController {
     /**
      * 通过父级权限获得子级权限
      */
-    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/permissionChildren",method = RequestMethod.GET)
     public List<PermissionBo> getChildren(Integer rid, Integer pid){
         return permissionService.getchildren(rid, pid);
     }

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service("departmentServiceImpl")
 @Transactional
 public class DepartmentServicImpl implements DepartmentService {
@@ -122,4 +125,15 @@ public class DepartmentServicImpl implements DepartmentService {
         return departmentDao.querycod();
     }
 
+    /**
+     * 查询部门编号返回map 提供给用户表
+     * @param code
+     * @param name
+     * @return
+     */
+    @Override
+    public Map<String, Object> querys(String code) {
+
+        return departmentDao.querys(code);
+    }
 }

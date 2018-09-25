@@ -17,10 +17,10 @@
 <body class="childrenBody">
 <form class="layui-form">
 	<blockquote class="layui-elem-quote quoteBox">
-		<form class="layui-form">
+		<form class="layui-form" id="searchFormId">
 			<div class="layui-inline">
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容" />
+					<input type="text" class="layui-input searchVal" id="userName" placeholder="请输入姓名：" /><input type="text" class="layui-input searchVal" id="depaCode" value="" placeholder="请输入部门名称/编号：" /><input type="text" class="layui-input searchVal" id="minAge" value="" placeholder="请输入最小年龄：" /><input type="text" class="layui-input searchVal" id="maxAge" value="" placeholder="请输入最大年龄" />
 				</div>
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
@@ -45,6 +45,6 @@
 	</script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/page/user/userList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/userList.js"></script>
 </body>
 </html>

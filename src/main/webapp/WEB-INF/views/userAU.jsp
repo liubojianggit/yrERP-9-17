@@ -18,24 +18,24 @@
 </head>
 <body class="childrenBody">
 
-<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="user">
+<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="userBO">
 <form:errors path="*"></form:errors>
-<c:if test="${user.id != null }">
+<c:if test="${userBO.user.id != null }">
 		<input type="hidden" name="_method" value="PUT"/>
-		<input type="hidden" name="id" value="${user.getId() }">
+		<input type="hidden" name="id" value="${userBO.user.getId() }">
 	</c:if>	
  <!-- 上传头像 -->               <!-- div居中 -->
 <div class="layui-upload" align="center">
-	<c:if test="${user.id != null }">
+	<c:if test="${userBO.user.id != null }">
 		<div class="layui-upload-list">
 		<!-- 头像回显的样式，这里是圆形 -->
-	    <img src="<%=request.getContextPath() %>/${user.getHeadUrl()}" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
+	    <img src="<%=request.getContextPath() %>/userTable/icons/"+${userBO.user.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
 	    <p id="demoText"></p>
 	  	</div>
 	  	<input type="hidden" name="headUrl" id="headUrl2" value=""/>
 	  	<button type="button" class="layui-btn" id="test2">修改头像</button>
 	</c:if>
-	<c:if test="${user.id == null }">
+	<c:if test="${userBO.user.id == null }">
 		<div class="layui-upload-list">
 		<!-- 头像回显的样式，这里是圆形 -->
 	    	<img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">
@@ -62,7 +62,7 @@
 			<form:input path="empno" class="layui-input"  lay-verify="required" placeholder="请输入工号"/>
 		</div>
 	</div>
-	<c:if test="${user.id == null }">
+	<c:if test="${userBO.user.id == null }">
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">密码</label>
 		<div class="layui-input-block">
