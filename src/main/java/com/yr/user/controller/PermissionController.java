@@ -127,7 +127,7 @@ public class PermissionController {
     /**
      * 通过父级权限获得子级权限
      */
-    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/permissionChildren",method = RequestMethod.GET)
     public List<PermissionBo> getChildren(Integer rid, Integer pid){
         return permissionService.getchildren(rid, pid);
     }
