@@ -1,5 +1,6 @@
 package com.yr.supplier.controller;
 
+import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.depot.Depot;
@@ -7,6 +8,7 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 import com.yr.supplier.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,23 @@ import java.util.Map;
  * 供应商表的controller
  */
 @Controller
-@RequestMapping("supplier")
+@RequestMapping("/supplier")
 public class SupplierController {
     @Autowired
+    @Qualifier("supplierServiceImpl")
     private SupplierService service;
+
     /**
-     *分页查询工会隐身列表数据
+     * 跳转到拥有供应商的查询列表，没有数据操作
+     * @return
+     */
+    @RequestMapping(value = "/supplierTable/List",method = RequestMethod.GET)
+    public String list(){
+        System.out.println("aa");
+        return "supplierList";
+    }
+    /**
+     *分页查询供应商列表数据
      * @param supplierBo 供应商对象
      * @param currentPage 当前页
      * @param pageSize 当前页条数
@@ -47,7 +60,7 @@ public class SupplierController {
     @RequestMapping(value="/supplierTable/add",method = RequestMethod.GET)
     public String AddEcho(){
 
-        return "supplieradd";//添加页面的jsp前缀
+        return "supplierAdd";//添加页面的jsp前缀
     }
     /**
      * 保存供应商添加的数据，前提添加数据不能为空
@@ -75,7 +88,7 @@ public class SupplierController {
     @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         service.delete(id);
-        return "AList";
+        return "supplierList";
     }
 
     /**
@@ -90,7 +103,7 @@ public class SupplierController {
         Supplier depots = service.getById(id);
         map.put("supplier",depots);
         map.put("page", page);
-        return "supplieradd";
+        return "supplierAdd";
     }
     /**
      * 根据id回显后的值修供应商库数据
