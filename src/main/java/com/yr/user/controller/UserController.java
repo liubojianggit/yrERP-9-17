@@ -16,12 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
+import sun.misc.Request;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,10 +57,19 @@ public class UserController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/userTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "userList";
+    }
+
+    /**
      * 分页的形式查询user表的数据
      * @return List<User>
      */
-    @RequestMapping(value="/userTable", method = RequestMethod.GET)
+    @RequestMapping(value="/userTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<UserBo> query(Page<UserBo> page){
         userService.query(page);
