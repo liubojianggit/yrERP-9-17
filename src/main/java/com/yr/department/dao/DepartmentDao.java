@@ -1,66 +1,58 @@
 package com.yr.department.dao;
 
-import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.depotBo.Depotbo;
-import com.yr.entitys.department.Department;
-import com.yr.entitys.depot.Depot;
-import com.yr.entitys.page.Page;
-
 import java.util.List;
 import java.util.Map;
 
+import com.yr.entitys.department.Department;
+
+/**
+ * 部门Dao接口类
+ */
 public interface DepartmentDao {
 
-    /**
-     * 为仓库添加数据
-     * @param depart
+   /**
+     * 分页查询所有
+     * @param page
+     * @return
      */
-    void add(Department depart);
+     List<Department>query();
+
+     /*//**
+     * 查询总条数
+     * @param search
+     * @return Integer
+     *//*
+    Long departmentCount(Page<Departmentbo> page);*/
 
     /**
-     * 根据id删除仓库数据
+     * 根据ID查询部门 并回显
+     * @return
+     */
+    Department departmentId(Integer id);
+
+    /**
+     * 新增部门
+     * @param department
+     */
+    void add(Department department);
+
+    /**
+     * 删除部门
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 根据对象修改仓库数据
-     * @param depart
+     * 修改部门
+     * @param department
      */
-    void update(Department depart);
+    void update(Department department);
 
     /**
-     * 查询总数（模糊查询总数）
-     * @param departbo
-     * @return
-     */
-    Long getCount(Departmentbo departbo);
-
-    /**
-     * 根据id查询仓库数据
-     * @param id
-     * @return
-     */
-    Department getById(Integer id);
-
-    /**
-     * 分页查询用户
-     * @param page
-     * @return
-     */
-    List<Departmentbo> query(Page<Departmentbo> page);
-
-    /**
-     * 查询父级id，将父级id以下拉框的形式显示
-     */
-    List<Department> querycod();
-
-    /**
-     * 查询部门编号返回map 提供给用户表
+     * 查询部门编号,提供给用户调用
      * @param code
-     * @param name
      * @return
      */
-    Map<String, Object> querys(String code );
+    Map<String,Object>querys(String code);
 
 }

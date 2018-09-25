@@ -111,13 +111,16 @@ public class SupplierServiceImpl implements SupplierService {
      *电信号 133、149、153、173、177、180、181、189、199
      * 联通号 130、131、132、145、155、156、166、175、176、185、186
      * 移动号 134(0-8)、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188、198
-     * @param mobile
+     * @param tell
      * @return
      */
-    public static boolean isMobile(String mobile) {
+    public boolean isTell(String tell) {
         String regex = "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
         Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(mobile);
-        return m.matches();
+        Matcher m = p.matcher(tell);
+        if(!m.matches()){
+            return true;
+        }
+        return false;
     }
 }

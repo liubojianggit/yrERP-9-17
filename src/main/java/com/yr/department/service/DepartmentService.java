@@ -1,72 +1,52 @@
 package com.yr.department.service;
 
-import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.depotBo.Depotbo;
-import com.yr.entitys.department.Department;
-import com.yr.entitys.depot.Depot;
-import com.yr.entitys.page.Page;
-
 import java.util.List;
 import java.util.Map;
 
+import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.department.Department;
+
+/**
+ *部门Service接口
+ */
 public interface DepartmentService {
+
     /**
-     * 分页搜索查询
+     * 分页查询所有
      * @param page
      * @return
      */
-    Page<Departmentbo> query(Page<Departmentbo> page);
+    List<Departmentbo>query();
 
-    /**
-     * 根据id查询部门
+   /**
+     * 根据ID查询部门 并回显
      * @param id
      * @return
      */
-    Department getById(Integer id);
+    Department departmentId(Integer id);
 
     /**
-     * 部门添加
-     * @param depart
+     * 新增部门
+     * @param department
      */
-    void add(Department depart);
+    void add(Department department);
 
     /**
-     * 部门修改
-     * @param depart
-     */
-
-    void update(Department depart);
-    /**
-     * 部门删除
+     * 删除部门
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 判断添加部门数据是否为null
-     * @param depart
-     * @return
+     * 修改部门
+     * @param department
      */
-    boolean isNullAdd(Department depart);
+    void update(Department department);
 
     /**
-     * 判断修改部门数据是否为null
-     * @param depart
-     * @return
-     */
-    boolean isNullUpdate(Department depart);
-    /**
-     * 查询父级id，将父级id以下拉框的形式显示
-     */
-    List<Department> querycod();
-
-    /**
-     * 查询部门 编号和名字 提供给用户表
+     * 查询部门编号,提供给用户调用
      * @param code
-     * @param name
      * @return
      */
-    Map<String, Object> querys(String code);
-
-
+    Map<String,Object> querys(String code);
 }

@@ -1,147 +1,98 @@
 package com.yr.department.dao.impl;
 
-import com.yr.department.dao.DepartmentDao;
-import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.depotBo.Depotbo;
-import com.yr.entitys.department.Department;
-import com.yr.entitys.depot.Depot;
-import com.yr.entitys.page.Page;
-import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import com.yr.department.dao.DepartmentDao;
+import com.yr.entitys.department.Department;
+import org.springframework.stereotype.Repository;
+
+/**
+ * 部门Dao接口实现类
+ */
 @Repository("departmentDaoImpl")
 public class DepartmentDaoImpl implements DepartmentDao {
-    @PersistenceContext
+
+    @PersistenceContext //@PersistenceContext 注解来标记成员变量
     private EntityManager entityManager;
 
     /**
-     *查询总条数 并附给搜索框模糊查询
-     * @param departbo
-     * @return
+     * 查询所有数据 返回list
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public Long getCount(Departmentbo departbo) {
-        String jpql="select count(*) from Depot d where 1=1";
-        String code=departbo.getCode();
-        String name=departbo.getName();
-        if (code !=null && code !=""){
-            jpql +=" and d.code like :code ";
-        }if(name != null && name !="" ){
-            jpql +=" and d.name like :name ";
-        }
+    public List<Department> query (){
+        String sql= "select u from department u where 1=1";
+        Query query = entityManager.createQuery(sql);
+        List<Department>list=query.getResultList();
+        return list;
+    }
 
-        Query query =entityManager.createQuery(jpql);
-        if(code !=null && code !=""){
-            query.setParameter("code","%"+code+"%");
-        }if(name != null && name !=""){
-            query.setParameter("name","%"+name+"%");
-        }
-        Long count =(Long)query.getSingleResult();
+ /*   *//**
+     * 查询总条数
+     *//*
+    @Override
+    public Long departmentCount(Page<Departmentbo>page){
+        String sql="select count(*) from department where 1=1";
+        Query query=entityManager.createQuery(sql);
+        Long count = (Long) query.getSingleResult();
         return count;
-
-    }
-
-    /**
-     * 分页查询所有
-     * @param page
-     * @return
-     */
-    @Override
-    public List<Departmentbo> query(Page<Departmentbo> page) {
-        String jpql="select d from Department d where 1=1 ";
-        String code=page.getT().getCode();
-        String name=page.getT().getName();
-        if (code !=null && code !=""){
-            jpql +=" and d.code like :code ";
-        }if(name != null && name !="" ){
-            jpql +=" and d.name like :name ";
-        }
-
-        Query query =entityManager.createQuery(jpql);
-        if(code !=null && code !=""){
-            query.setParameter("code","%"+code+"%");
-        }if(name != null && name !=""){
-            query.setParameter("name","%"+name+"%");
-        }
-        System.out.println(jpql);
-        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
-        List<Departmentbo> list = query.getResultList();
-        return  list;
-    }
+    }*/
 
     /**
-     * 新增部门
-     * @param depart
+     * 根据ID查询部门 并回显
      */
     @Override
-    public void add(Department depart) {
-       entityManager.persist(depart);
-    }
+    public Department departmentId(Integer id) {
+        Department department=entityManager.find(Department.class, id);
 
-    /**
-     * 根据ID删除部门
-     * @param id
-     */
-    @Override
-    public void delete(Integer id) {
-      Department department= entityManager.find(Department.class,id);
-      entityManager.remove(id);
-    }
-
-    /**
-     * 修改部门
-     * @param depart
-     */
-    @Override
-    public void update(Department depart) {
-        entityManager.merge(depart);
-
-    }
-
-    /**
-     * 根据ID查询回显部门数据
-     * @param id
-     * @return
-     */
-    @Override
-    public Department getById(Integer id) {
-        Department department=entityManager.find(Department.class,id);
         return department;
     }
 
     /**
-     * 跳转添加页面无数据
-     * @return
-     * 单独查询部门的编号，以供父级id选择需要返回一个list
+     * 新增部门
      */
     @Override
-    public List<Department> querycod() {
-        String  jpql="select code from Department";
-        Query query =entityManager.createQuery(jpql);
-        List<Department> list=query.getResultList();
-        return list;
+    public void add(Department department) {
+
+        entityManager.persist(department);
+
     }
 
     /**
-     * 查询部门编号返回map 提供给用户表
-     * @param code
-     * @param name
-     * @return
+     * 删除部门
      */
     @Override
-    public Map<String, Object> querys(String code) {
-        String sql="select code from department";
-        Query query=entityManager.createQuery(sql);
-        Map<String , Object> mao=new HashMap<>();
-        mao.put(code,mao);
-        return mao;
+    public void delete(Integer id) {
+        Department department=entityManager.find(Department.class, id);
+        entityManager.remove(department);
     }
 
+    /**
+     * 修改部门
+     */
+    @Override
+    public void update(Department department) {
+        entityManager.merge(department);
+    }
+
+
+    /**
+     * 查询部门编号,提供给用户调用
+     * @param code
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String,Object>querys(String code){
+        String sql="select code from department";
+        List<Department> list = entityManager.createQuery(sql).setParameter(1,code).getResultList();
+        Map<String,Object>map=new HashMap<>();
+        map.put(code, map);//编号key 名字为值
+        return map;
+    }
 }

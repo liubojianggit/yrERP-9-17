@@ -1,122 +1,102 @@
 package com.yr.department.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.department.Department;
-import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-@Controller
+/**
+ * 部门表Controller接口
+ */
 @RequestMapping(value = "/department")
+@Controller
 public class DepartmentController {
     @Qualifier("departmentServiceImpl")
     @Autowired
-    private DepartmentService departmentService;
+    private DepartmentService departmentService;//把epartmentService对象传过来
 
+    //如果表单中带有ID 就执行这里
+    //@RequestParam(value="id", required = false)表示执行该方法时不必要有id这个参数值，如果是ture则是必须要有id这个参数
+    @ModelAttribute
+    public void getAccount(@RequestParam (value="id" ,required=false) Integer id , Map<String ,Object> map){
+        if(id !=0 &&id !=null){
+            Department department=departmentService.departmentId(id);
+            map.put("department", department);
+        }
+    }
 
     /**
-     *分页查询部门列表数据
-     * @param departbo 部门对象
-     * @param currentPage 当前页
-     * @param pageSize 当前页条数
+     * 放回固定格式的字符串，生成菜单树形表
      * @return
      */
-    @RequestMapping(value="/departmentTable",method = RequestMethod.GET)
-    @ResponseBody
-    public Page<Departmentbo> query(Departmentbo departbo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
-        Page<Departmentbo> page = new Page<>();
-        page.setT(departbo);
-        page.setCurrentPage(currentPage);
-        page.setPageSize(pageSize);
-        Page<Departmentbo> page1 = departmentService.query(page);
+    @RequestMapping(value="/dapartmentTable/list",method=RequestMethod.GET,produces="application/json;charset=UTF-8")//防止ajxa页面出现乱码
+    public String query(){
+        departmentService.query();
+        return query();
+    }
+
+    /**
+     * 跳转操作页面
+     * @return
+     */
+    @RequestMapping(value = "/departmentTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String List(){
+
+        return "redirect:/departmentList";
+    }
+    /**
+     * 跳转添加页面
+     * @returns
+     */
+    @RequestMapping(value="/departmentTable/add",method=RequestMethod.GET)
+    public String add(Map<String , Object>map){
+        map.put("department", new Department());//传入一个空的对象
+        return "redirect:/departmentAU";//返回新增 修改页面
+    }
+    /**
+     * 保存添加
+     */
+    @RequestMapping(value="/departmentTable",method=RequestMethod.POST)
+    public String adds(Department department){
+        departmentService.add(department);//调用添加方法
+        return "redirect:/departmentList";//返回部门页面
+    }
+    /**
+     * 根据ID 删除部门
+     * @return
+     */
+    @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.DELETE)
+    public String delete(@PathVariable("id") Integer id){
+        departmentService.delete(id);//调用删除方法
+        return "redirect:/departmentList";//返回部门页面
+    }
+    /**
+     * 跳转修改 部门
+     */
+    @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.GET)
+    public String update(@PathVariable("id") Integer id){
         Map<String,Object> map=new HashMap<>();
-        map.put("page", page1);
-        return page1;
+        map.put("department", departmentService.departmentId(id));//调用查询ID方法回显数据
+        return "redirect:/departmentAU";//返回新增 修改页面
     }
 
     /**
-     * 跳转添加页面无数据
-     * @return
-     * 单独查询部门的编号，以供父级id选择需要返回一个list
+     * 保存修改 部门
      */
-    @RequestMapping(value = "/departmentTable/add",method = RequestMethod.GET)
-    public String AddEcho(){
-        List<Department> supcode=departmentService.querycod();
-        return "";
-    }
-
-    /**
-     * 保存部门表添加的数据，前提添加数据不能为空
-     * @param depart
-     * @param map
-     * @return
-     */
-    @RequestMapping(value="/departmentTable",method = RequestMethod.POST)
-    public String add(Department depart, Map<String, Object> map){
-        boolean isNull =departmentService.isNullAdd(depart);
-        if(isNull == false){
-            map.put("depart",depart);
-            map.put("uperror", 1);//如果修改的值为空就不修改并且跳转到修改页面(重新刷新页面)
-            return "departadd";
-        }else{
-            departmentService.add(depart);
-            return "departList";
-        }
-    }
-
-    /**
-     * 根据id删除部门表
-     * @return 返回分页查询页面
-     */
-    @RequestMapping(value = "/departmentTable/{id}", method = RequestMethod.DELETE)
-    public String delete(@PathVariable Integer id) {
-        departmentService.delete(id);
-        return "departList";
-    }
-
-    /**
-     * 根据id回显部门修改的数据
-     * @param id
-     * @param map 放入map中存放request，方便页面拿取
-     * @return
-     */
-    @RequestMapping(value = "/departmentTable/{id}",method = RequestMethod.GET)
-    public String upEcho(@PathVariable Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page) {
-        page.setT(departbo);
-        Department departs = departmentService.getById(id);
-        map.put("depart",departs);
-        map.put("page", page);
-        return "add";
-    }
-    /**9
-     * 根据id回显后的值修改用户
-     * @param
-     * @param map
-     * @return
-     */
-    @RequestMapping(value="/departmentTable",method = RequestMethod.PUT)
-    public String update(Department depart
-            ,@RequestParam("id")Integer id,Map<String, Object> map,Departmentbo departbo,Page<Departmentbo>page){
-        boolean isNull =departmentService.isNullUpdate(depart);
-        if(isNull == false ){
-            Department depart1 = departmentService.getById(id);
-            map.put("depart", depart1);
-            map.put("uperror",2);
-            return "Aadd";
-        }else{
-            page.setT(departbo);
-            map.put("page", page);
-            departmentService.update(depart);
-            return "AList";
-        }
+    @RequestMapping(value="/departmentTable",method=RequestMethod.PUT)
+    public String updates(Department department){
+        departmentService.update(department);
+        return "redirect:/departmentList";//返回部门页面
     }
 }
