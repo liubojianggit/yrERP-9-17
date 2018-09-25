@@ -12,7 +12,9 @@ import com.yr.department.dao.DepartmentDao;
 import com.yr.entitys.department.Department;
 import org.springframework.stereotype.Repository;
 
-
+/**
+ * 部门Dao接口实现类
+ */
 @Repository("departmentDaoImpl")
 public class DepartmentDaoImpl implements DepartmentDao {
 

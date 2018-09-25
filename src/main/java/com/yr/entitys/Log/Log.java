@@ -16,7 +16,6 @@ public class Log {
     //产生日志的模块
     @Column(nullable = false)
     private String modular;
-
     /**
      *
      */ //产生日志的表名

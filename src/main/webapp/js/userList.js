@@ -11,9 +11,17 @@ layui.use(['form','layer','table','laytpl'],function(){
     	pos = strFullPath.indexOf(strPath),
     	prePath = strFullPath.substring(0, pos),
     	path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
-    
-    
     ;
+    //格式化时间戳
+    function formatDate(now) {
+        var year=now.getFullYear(); //年
+        var month=now.getMonth()+1; //月
+        var date=now.getDate(); //日
+        var hour=now.getHours(); //时
+        var minute=now.getMinutes();// 分
+        var second=now.getSeconds(); //秒
+        return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
+    }
 
     //用户列表
     var tableIns = table.render({
@@ -27,17 +35,22 @@ layui.use(['form','layer','table','laytpl'],function(){
                 "data": res.pageDataList //解析数据列表
             };
         },*/
-        request: {
+        /*request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-        },
+        },*/where:{//需要传入的值
+            "user.userName": $("#userName").val(),  //搜索的关键字
+            "depaCode": $("#depaCode").val(),  //搜索的关键字
+            "minAge": $("#minAge").val(),  //搜索的关键字
+            "maxAge": $("#maxAge").val() //搜索的关键字
+        }/*,
         response: {
            // statusName: 'status' //规定数据状态的字段名称，默认：code
             //,statusCode: 200 //规定成功的状态码，默认：0
             //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
             countName: 'totalRecord' //规定数据总数的字段名称，默认：count
             ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
-        },
+        }*/,
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -48,20 +61,21 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'user.name', title: '用户名', align:"center",unresize: true},
+            {field: 'name', title: '用户名', align:"center",unresize: true},
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
-            {field: 'user.photo', title: '头像',  align:'center',templet:function(d){
+            {field: 'photo', title: '头像',  align:'center',templet:function(d){
                 return '<img style="width: 28px;height: 28px;"  src="'+path+"/userTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
             }},
-
-            {field: 'user.jobNum', title: '工号', align:"center", unresize: true},
-            {field: 'user.depaCode', title: '部门编号', align:"center", unresize: true},
-            {field: 'user.sex', title: '性别', align:"center", unresize: true},
-            {field: 'user.birthday', title: '生日', align:"center", unresize: true},
-            {field: 'user.phoneNumber', title: '电话', align:"center", unresize: true},
+            {field: 'jobNum', title: '工号', align:"center", unresize: true},
+            {field: 'depaCode', title: '部门编号', align:"center", unresize: true},
+            {field: 'sex', title: '性别', align:"center", unresize: true},
+            {field: 'birthday', title: '生日', align:"center", unresize: true,templet:function(v){
+                return new Date(v);
+            }},
+            {field: 'phoneNumber', title: '电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             //{field: 'status', title: '状态', align:"center", unresize: true},
-            {field: 'user.status', title: '用户状态',  align:'center',templet:function(d){
+            {field: 'status', title: '用户状态',  align:'center',templet:function(d){
             	d.status == "0" ? $("#abc").text("禁用") : $("#abc").text("启用");
                 return d.status == "0" ? "限制使用" : "正常使用";
             }},
@@ -96,7 +110,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            content : path+"/userTable/add",//发送请求
+            content : path+"u_user/userTable/add",//发送请求
             end: function(){
                 window.location.href='<%=request.getContextPath() %>/u_user/userTable';
             }
@@ -140,7 +154,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             //addUser(data);
-            window.location.href = path+"user/update/"+data.id;
+            window.location.href = path+"u_user/userTable/"+data.id;
             
         }else if(layEvent === 'auth'){
         	layer.open({
@@ -282,7 +296,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
             	$.ajax({
         			type: 'post',
-        			url: path+'user/userTable',//请求登录验证接口
+        			url: path+'u_user/userTable',//请求登录验证接口
         			dataType : 'json',
         			data: {id:obj.data.id,_method:'delete'},
         			success: function(data){

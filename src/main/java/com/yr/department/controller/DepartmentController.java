@@ -35,15 +35,25 @@ public class DepartmentController {
             map.put("department", department);
         }
     }
+
     /**
-     * 查询所有部门
-     * @param page
+     * 放回固定格式的字符串，生成菜单树形表
      * @return
      */
     @RequestMapping(value="/dapartmentTable/list",method=RequestMethod.GET,produces="application/json;charset=UTF-8")//防止ajxa页面出现乱码
-    public Page<Departmentbo> query(Page<Departmentbo> page){
+    public String query(){
+        departmentService.query();
+        return query();
+    }
 
-        return page;
+    /**
+     * 跳转操作页面
+     * @return
+     */
+    @RequestMapping(value = "/departmentTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String List(){
+
+        return "redirect:/departmentList";
     }
     /**
      * 跳转添加页面

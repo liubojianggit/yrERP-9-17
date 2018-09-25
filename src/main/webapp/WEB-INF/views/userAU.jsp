@@ -43,7 +43,7 @@
 	  	</div>
 	  		<button type="button" class="layui-btn" id="test1">上传头像</button>
 	  		<!-- 上传头像成功后保存的隐藏框 -->
-  			<input type="hidden" name="headUrl" id="headUrl" value="">
+  			<input type="hidden" name="user.photo" id="headUrl" value="">
   	</c:if>
   
 </div> 
@@ -52,76 +52,61 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">姓名</label>
 		<div class="layui-input-block">
-			<form:input path="name" class="layui-input"  lay-verify="required" placeholder="请输入登录名"/>
-			<!-- <input type="text" name="name" class="layui-input"  lay-verify="required" placeholder="请输入登录名"> -->
+			<form:input path="user.name" class="layui-input"  lay-verify="required" placeholder="请输入姓名"/>
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">工号</label>
 		<div class="layui-input-block">
-			<form:input path="empno" class="layui-input"  lay-verify="required" placeholder="请输入工号"/>
+			<form:input path="user.jobNum" class="layui-input"  lay-verify="required" placeholder="请输入工号"/>
 		</div>
 	</div>
-	<c:if test="${userBO.user.id == null }">
+	<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
+		<label class="layui-form-label">所属部门</label>
+		<div class="layui-input-inline">
+			<form:select path="user.depaName" items="${depaList }" itemLabel="name" itemValue="<input type=" date" name="" id="">"></form:select>
+		</div>
+	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">密码</label>
+		<label class="layui-form-label">生日</label>
 		<div class="layui-input-block">
-			<form:input path="passwd" class="layui-input"  lay-verify="required" placeholder="请输入密码"/>
+			<form:input path="user.birthday" class="layui-input"  lay-verify="required" placeholder="请输入生日"/>
 		</div>
 	</div>
-	</c:if>
-	
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">年龄</label>
+		<div class="layui-input-block">
+			<form:input path="user.age" class="layui-input"  lay-verify="required" placeholder="请输入年龄"/>
+		</div>
+	</div>
+
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">电话</label>
 		<div class="layui-input-block">
-			<form:input path="phone" class="layui-input"  lay-verify="required" placeholder="请输入手机号码"/>
+			<form:input path="user.phoneNumber" class="layui-input"  lay-verify="required" placeholder="请输入手机号码"/>
 		</div>
 	</div>
 	
-	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">邮箱</label>
-		<div class="layui-input-block">
-			<form:input path="email" class="layui-input userEmail" lay-verify="email" placeholder="请输入邮箱"/>
-		</div>
-	</div>
+
 		<div class="magb15 layui-col-md4 layui-col-xs12">
 			<label class="layui-form-label">性别</label>
 			<div class="layui-input-block">
-				<!-- 单选框格式写法，所有name的值都是一样的，其中checked是默认值  -->
-				<!-- <input type="radio" name="sex" value="男" title="男" checked>
-				<input type="radio" name="sex" value="女" title="女">
-				<input type="radio" name="sex" value="保密" title="保密"> -->
-				<form:radiobuttons path="sex" items="${sexs }"/>
+				<form:radiobuttons path="user.sex" items="${sexs }"/>
 			</div>
 		</div>
 		<!-- layui-form-item 换行 -->
 		<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">账号状态</label>
 		<div class="layui-input-inline">
-			<!-- <select name="status" class="userStatus">
-					<option value="0">不启用</option>
-					<option value="1">启用</option>
-				</select> -->
-			<form:select path="status" items="${statusMap }"></form:select>
+			<form:select path="user.status" items="${statusMap }"></form:select>
 		</div>
 	</div>
 		<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">地址</label>
 		<div class="layui-input-inline">
-			<!-- <select name="addr" class="userGrade">
-					<option value="0">广西</option>
-					<option value="1">广东</option>
-					<option value="2">湖南</option>
-					<option value="3">湖北</option>
-					<option value="4">上海</option>
-				</select> -->
-			<form:select path="addr" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+			<form:select path="user.addr" items="${addrList }" itemLabel="name" itemValue="id"></form:select>
 		</div>
 	</div>
-	
-		
-		
-	
 	
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
@@ -136,6 +121,6 @@
 	</div>
 </form:form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/page/user/userAdd.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/userAU.js"></script>
 </body>
 </html>
