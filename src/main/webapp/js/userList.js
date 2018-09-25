@@ -19,25 +19,6 @@ layui.use(['form','layer','table','laytpl'],function(){
     var tableIns = table.render({
         elem: '#userList',
         url :path+ 'u_user/userTable/list',
-       /* parseData: function(res){ //res 即为原始返回的数据
-            return {
-                //"code": res.status, //解析接口状态
-                //"msg": res.message, //解析提示文本
-                "count": res.totalRecord, //解析数据长度
-                "data": res.pageDataList //解析数据列表
-            };
-        },*/
-        request: {
-            pageName: 'currentPage' //页码的参数名称，默认：page
-            ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-        },
-        response: {
-           // statusName: 'status' //规定数据状态的字段名称，默认：code
-            //,statusCode: 200 //规定成功的状态码，默认：0
-            //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-            countName: 'totalRecord' //规定数据总数的字段名称，默认：count
-            ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
-        },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -96,7 +77,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            content : path+"/userTable/add",//发送请求
+            content : path+"u_user/userTable/add",//发送请求
             end: function(){
                 window.location.href='<%=request.getContextPath() %>/u_user/userTable';
             }
@@ -140,7 +121,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             //addUser(data);
-            window.location.href = path+"user/update/"+data.id;
+            window.location.href = path+"u_user/userTable/"+data.id;
             
         }else if(layEvent === 'auth'){
         	layer.open({
@@ -282,7 +263,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
             	$.ajax({
         			type: 'post',
-        			url: path+'user/userTable',//请求登录验证接口
+        			url: path+'u_user/userTable',//请求登录验证接口
         			dataType : 'json',
         			data: {id:obj.data.id,_method:'delete'},
         			success: function(data){
