@@ -110,7 +110,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            content : path+"/userTable/add",//发送请求
+            content : path+"u_user/userTable/add",//发送请求
             end: function(){
                 window.location.href='<%=request.getContextPath() %>/u_user/userTable';
             }
@@ -154,7 +154,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             //addUser(data);
-            window.location.href = path+"user/update/"+data.id;
+            window.location.href = path+"u_user/userTable/"+data.id;
             
         }else if(layEvent === 'auth'){
         	layer.open({
@@ -296,7 +296,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
             	$.ajax({
         			type: 'post',
-        			url: path+'user/userTable',//请求登录验证接口
+        			url: path+'u_user/userTable',//请求登录验证接口
         			dataType : 'json',
         			data: {id:obj.data.id,_method:'delete'},
         			success: function(data){

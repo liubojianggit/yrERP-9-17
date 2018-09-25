@@ -5,8 +5,9 @@ import java.util.Map;
 
 import com.yr.entitys.department.Department;
 
-
-
+/**
+ * 部门Dao接口类
+ */
 public interface DepartmentDao {
 
    /**

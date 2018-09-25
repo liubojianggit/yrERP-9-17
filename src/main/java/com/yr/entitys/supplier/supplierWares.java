@@ -2,6 +2,9 @@ package com.yr.entitys.supplier;
 
 import javax.persistence.*;
 
+/**
+ * 供应商品实体类
+ */
 @Entity
 @Table(name = "supp_wares")
 public class supplierWares {
@@ -10,10 +13,10 @@ public class supplierWares {
  private Integer  id ;
  @Column(nullable = false,unique = true)
  private String code;
- @Column(nullable = false,name = "supp_code")
-    private String suppCode;
  @Column(nullable = false)
     private String name;
+ @Column(nullable = false)
+    private String suppPhoto;
  @Column(nullable = false)
     private String type;
  @Column(nullable = false,name = "total_inventory")
@@ -48,16 +51,17 @@ public class supplierWares {
         this.code = code;
     }
 
-    public String getSuppCode() {
-        return suppCode;
-    }
-
-    public void setSuppCode(String suppCode) {
-        this.suppCode = suppCode;
-    }
 
     public String getName() {
         return name;
+    }
+
+    public String getSuppPhoto() {
+        return suppPhoto;
+    }
+
+    public void setSuppPhoto(String suppPhoto) {
+        this.suppPhoto = suppPhoto;
     }
 
     public void setName(String name) {
@@ -141,8 +145,8 @@ public class supplierWares {
         return "supplierWares{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
-                ", suppCode='" + suppCode + '\'' +
                 ", name='" + name + '\'' +
+                ", suppPhoto='" + suppPhoto + '\'' +
                 ", type='" + type + '\'' +
                 ", totalInventory=" + totalInventory +
                 ", unitPrice=" + unitPrice +
