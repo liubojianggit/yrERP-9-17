@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,19 @@ public class SupplierController {
     @Autowired
     private SupplierService service;
 
+    /**
+     * 调用这个类的所有方法前都要执行有@ModelAttribute的方法
+     @param id
+      * @param map
+     * @throws SQLException
+     */
+    @ModelAttribute
+    public void query(@RequestParam(value ="id",required=false) Integer id,Map<String, Object> map) throws SQLException{// 绑定站位符
+        if (id != null&&id !=0) {
+            Supplier supplier=service.getById(id);
+            map.put("depot", supplier);
+        }
+    }
     /**
      * 跳转到拥有供应商的查询列表，没有数据操作
      * @return
@@ -56,7 +70,7 @@ public class SupplierController {
      * 没业务据操作，只跳转到供应商添加页面
      * @return
      */
-    @RequestMapping(value="/supplierTable/add",method = RequestMethod.GET)
+    @RequestMapping(value="/supplierTable/add",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String AddEcho(){
 
         return "supplierAdd";//添加页面的jsp前缀
@@ -67,7 +81,7 @@ public class SupplierController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/supplierTable",method = RequestMethod.POST)
+    @RequestMapping(value="/supplierTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     public String add(Supplier supplier, Map<String, Object> map) {
         boolean isNull = service.isNullAdd(supplier);
         boolean isTell=service.isTell(supplier.getPhoneNumber());
@@ -87,7 +101,7 @@ public class SupplierController {
      * @return 返回分页查询页面
      */
 
-    @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public String delete(@PathVariable Integer id) {
         service.delete(id);
         return "supplierList";
@@ -99,13 +113,13 @@ public class SupplierController {
      * @param map 放入map中存放request，方便页面拿取
      * @return
      */
-    @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String upEcho(@PathVariable Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page) {
         page.setT(supplierBo);
         Supplier depots = service.getById(id);
         map.put("supplier",depots);
         map.put("page", page);
-        return "supplieradd";
+        return "supplierAdd";
     }
     /**
      * 根据id回显后的值修供应商库数据
@@ -113,7 +127,7 @@ public class SupplierController {
      * @param map
      * @return
      */
-    @RequestMapping(value="/supplierTable",method = RequestMethod.PUT)
+    @RequestMapping(value="/supplierTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
     public String update(Supplier supplier
             ,@RequestParam("id")Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page){
         boolean isNull =service.isNullUpdate(supplier);
