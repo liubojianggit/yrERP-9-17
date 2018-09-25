@@ -2,9 +2,9 @@ package com.yr.order.service;
 
 import java.util.List;
 
+import com.yr.entitys.order.SaleOrder;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yr.entitys.order.Sale;
 
 public interface SaleExcelportService {
 	
@@ -12,7 +12,7 @@ public interface SaleExcelportService {
 	 * 导出Excel表格
 	 * @return
 	 */
-	 List<Sale> queryForList();
+	 List<SaleOrder> queryForList();
 	/**
 	 * 导入Excel表格
 	 * @param name

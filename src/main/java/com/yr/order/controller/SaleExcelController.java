@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yr.entitys.order.SaleOrder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.yr.entitys.order.Sale;
 import com.yr.order.service.SaleExcelportService;
 import com.yr.util.ExportExcelUtils;
 
@@ -74,9 +74,9 @@ public class SaleExcelController {// 销售订单的导出导入
     @RequestMapping(value = "/Import", method = RequestMethod.POST)
     public ModelAndView exportExcel(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Sale sale = new Sale();
+            SaleOrder sale = new SaleOrder();
             // 查出用户数据
-            List<Sale> salelist = saleExcelport.queryForList();
+            List<SaleOrder> salelist = saleExcelport.queryForList();
             String title = "销售订单表";
             String[] rowsName = new String[] { "序号","订单id", "订单编号", "购买客户", "销售员", "销售商品编号", "销售商品数量", "销售金额", "销售员联系电话",
                     "备注", "销售单状态", "收货人", "审批人", "申请退货人姓名", "申请退货人联系电话", "销售商品的仓库编号", "创建人", "创建时间", "修改人", "修改时间" };
@@ -84,7 +84,7 @@ public class SaleExcelController {// 销售订单的导出导入
             List<Object[]> dataList = new ArrayList<Object[]>();
             Object[] objs = null;
             for (int i = 0; i < salelist.size(); i++) {
-                Sale po = salelist.get(i);
+                SaleOrder po = salelist.get(i);
                 objs = new Object[rowsName.length];
                 objs[0] = i;// 序号
                 objs[1] = po.getId();// 销售订单id

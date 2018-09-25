@@ -6,9 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.yr.entitys.order.SaleOrder;
 import org.springframework.stereotype.Repository;
 
-import com.yr.entitys.order.Sale;
 import com.yr.order.dao.SaleExportDao;
 @Repository
 public class SaleExportDaoImpl implements SaleExportDao{
@@ -19,10 +19,10 @@ public class SaleExportDaoImpl implements SaleExportDao{
 	
 	
 	 @Override
-		public List<Sale> queryForList() {
-	    	String jpql = "select s from Sale s ";
+		public List<SaleOrder> queryForList() {
+	    	String jpql = "select s from SaleOrder s ";
 	    	  Query query = entityManager.createQuery(jpql);
-	          List<Sale> list = query.getResultList();
+	          List<SaleOrder> list = query.getResultList();
 	          return list;
 	    }
 	    
