@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,6 +57,14 @@ public class RequisitionController {
      */
     @RequestMapping(value = "/requisitionTable/add", method = RequestMethod.GET)
     public String jumpAdd(Map<String, Object> map) {
+        Map<Integer,String> status = new HashMap<Integer, String>();
+        status.put(0,"驳回");
+        status.put(1,"交易成功");
+        status.put(2,"待审核");
+        status.put(3,"申请退货");
+        status.put(4,"退货成功");
+        //将状态设进map
+        map.put("status",status);
         map.put("requisition", new Requisition());
         return null;
     }
@@ -89,6 +98,15 @@ public class RequisitionController {
     @RequestMapping(value = "/requisitionTable/update/{id}", method = RequestMethod.GET)
     public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map) {
         Requisition requisition = requisitionServiceImpl.getRequisitionById(id);
+        Map<Integer,String> status = new HashMap<Integer, String>();
+        status.put(0,"驳回");
+        status.put(1,"交易成功");
+        status.put(2,"待审核");
+        status.put(3,"申请退货");
+        status.put(4,"退货成功");
+        //将状态设进map
+        map.put("status",status);
+        //将修改后的采购订单对象设进map
         map.put("requisition", requisition);
         return null;
     }

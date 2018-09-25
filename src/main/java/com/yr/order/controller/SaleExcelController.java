@@ -26,8 +26,6 @@ public class SaleExcelController {//销售订单的导出导入
     private static Log log = LogFactory.getLog(SaleExcelController.class);
      @Autowired
      private SaleService saleService;
-     @Autowired
-     private SaleDao saleDao;
 
     /**
      * 导入Excel表
@@ -63,11 +61,7 @@ public class SaleExcelController {//销售订单的导出导入
 
     /*
      * 导出excel表
-     * */
-    @RequestMapping(value = "/excel",method={ RequestMethod.POST })
-    public ModelAndView viewExcel()  {
-        Map<String, Object> map = new HashMap<>();
-        map.put("saleList", saleDao.ExcelQuery());
-        return new ModelAndView(new SaleExportExcelBO(), map);
-    }
+     *
+     */
+
 }
