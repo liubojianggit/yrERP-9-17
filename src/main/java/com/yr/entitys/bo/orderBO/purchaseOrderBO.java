@@ -2,6 +2,11 @@ package com.yr.entitys.bo.orderBO;
 
 import com.yr.entitys.order.PurchaseOrder;
 
+/**
+ * 采购订单
+ * @author
+ * @since
+ */
 public class purchaseOrderBO {
     private PurchaseOrder purchaseOrder;
 	
@@ -10,7 +15,7 @@ public class purchaseOrderBO {
     //采购商品类型(用于页面查询)
     private String purchaseType;
 
-    public void setRequisition(PurchaseOrder purchaseOrder) {
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
         this.purchaseOrder = purchaseOrder;
     }
 
@@ -22,7 +27,7 @@ public class purchaseOrderBO {
         this.purchaseType = purchaseType;
     }
 
-    public PurchaseOrder getRequisition() {
+    public PurchaseOrder getPurchaseOrder() {
         return purchaseOrder;
     }
 
