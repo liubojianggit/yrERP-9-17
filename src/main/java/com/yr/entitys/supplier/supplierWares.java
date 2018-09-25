@@ -10,12 +10,10 @@ public class supplierWares {
  private Integer  id ;
  @Column(nullable = false,unique = true)
  private String code;
- @Column(nullable = false,name = "supp_code")
-    private String suppCode;
  @Column(nullable = false)
     private String name;
  @Column(nullable = false)
-    private String suppphoto;
+    private String suppPhoto;
  @Column(nullable = false)
     private String type;
  @Column(nullable = false,name = "total_inventory")
@@ -50,24 +48,17 @@ public class supplierWares {
         this.code = code;
     }
 
-    public String getSuppCode() {
-        return suppCode;
-    }
-
-    public void setSuppCode(String suppCode) {
-        this.suppCode = suppCode;
-    }
 
     public String getName() {
         return name;
     }
 
-    public String getSuppphoto() {
-        return suppphoto;
+    public String getSuppPhoto() {
+        return suppPhoto;
     }
 
-    public void setSuppphoto(String suppphoto) {
-        this.suppphoto = suppphoto;
+    public void setSuppPhoto(String suppPhoto) {
+        this.suppPhoto = suppPhoto;
     }
 
     public void setName(String name) {
@@ -151,9 +142,8 @@ public class supplierWares {
         return "supplierWares{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
-                ", suppCode='" + suppCode + '\'' +
                 ", name='" + name + '\'' +
-                ", suppphoto='" + suppphoto + '\'' +
+                ", suppPhoto='" + suppPhoto + '\'' +
                 ", type='" + type + '\'' +
                 ", totalInventory=" + totalInventory +
                 ", unitPrice=" + unitPrice +
