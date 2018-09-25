@@ -1,8 +1,8 @@
 package com.yr.order.service;
 
 import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.order.Sale;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface SaleService {
@@ -15,15 +15,15 @@ public interface SaleService {
 
     /**
      * 添加用户信息
-     * @param sale
+     * @param saleOrder
      */
-    void add(Sale sale);
+    void add(SaleOrder saleOrder);
 
     /**
      * 修改用户信息
-     * @param sale
+     * @param saleOrder
      */
-    void update(Sale sale);
+    void update(SaleOrder saleOrder);
 
     /**
      * 删除用户信息
@@ -36,5 +36,5 @@ public interface SaleService {
      * @param id
      * @return Sale
      */
-    Sale getById(Integer id);
+    SaleOrder getById(Integer id);
 }

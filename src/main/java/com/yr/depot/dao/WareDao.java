@@ -1,6 +1,6 @@
 package com.yr.depot.dao;
 
-import com.yr.entitys.bo.depotBo.WareSearchBo;
+import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 
@@ -22,7 +22,7 @@ public interface WareDao {
      * @param ware
      * @return List<Ware>数组
      */
-    public List<WareSearchBo> query(Page<WareSearchBo> ware);
+    public List<WareBo> query(Page<WareBo> ware);
 
     /**
      * 添加数据
@@ -51,5 +51,5 @@ public interface WareDao {
      * @return 查询条数
      */
 
-    public Long getCount(Page<WareSearchBo> ware);
+    public Long getCount(Page<WareBo> ware);
 }

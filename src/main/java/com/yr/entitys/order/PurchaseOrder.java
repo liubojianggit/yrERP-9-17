@@ -1,30 +1,30 @@
 package com.yr.entitys.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yr.common.entity.BaseEntity;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Date;
 
-
 @Entity
-@Table(name = "requisition")
-public class Requisition implements Serializable{
-
+@Table(name = "purchaseOrder")
+public class PurchaseOrder extends BaseEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //采购订单编号
     private String code;
 
-    //申请编号
+    //采购人工号
     @Column(name = "job_num")
     private String jobNumber;
 
-    //申请人工号
+    //采购部门编号
     @Column(name = "depa_code")
     private String departmentCode;
+
     //审批人
     private String approver;
 
@@ -63,7 +63,7 @@ public class Requisition implements Serializable{
     @Column(name = "depot_code")
     private String  depotCode;
 
-    @JsonFormat(pattern ="yyyy-MM-dd",timezone = "GMT+8")
+   /* @JsonFormat(pattern ="yyyy-MM-dd",timezone = "GMT+8")
     private Date createTime;
 
     private String createEmp;
@@ -71,14 +71,14 @@ public class Requisition implements Serializable{
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     private Date updateTime;
 
-    private String updateEmp;
+    private String updateEmp;*/
 
 
     public void setPurchasName(String purchasName) {
         this.purchasName = purchasName;
     }
 
-    public void setCreateTime(Date createTime) {
+  /*  public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -92,7 +92,7 @@ public class Requisition implements Serializable{
 
     public void setUpdateEmp(String updateEmp) {
         this.updateEmp = updateEmp;
-    }
+    }*/
 
     public void setId(Integer id) {
         this.id = id;
@@ -150,7 +150,7 @@ public class Requisition implements Serializable{
         return purchasName;
     }
 
-    public Date getCreateTime() {
+   /* public Date getCreateTime() {
         return createTime;
     }
 
@@ -165,7 +165,7 @@ public class Requisition implements Serializable{
     public String getUpdateEmp() {
         return updateEmp;
     }
-
+*/
     public Integer getId() {
         return id;
     }
@@ -218,11 +218,11 @@ public class Requisition implements Serializable{
         return depotCode;
     }
 
-    public Requisition() {
+    public PurchaseOrder() {
 
     }
 
-    public Requisition(Integer id, String code, String jobNumber, String departmentCode, String approver, String purchasName, String purchaseType, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode, Date createTime, String createEmp, Date updateTime, String updateEmp) {
+    public PurchaseOrder(Integer id, String code, String jobNumber, String departmentCode, String approver, String purchasName, String purchaseType, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode) {
         this.id = id;
         this.code = code;
         this.jobNumber = jobNumber;
@@ -237,15 +237,11 @@ public class Requisition implements Serializable{
         this.status = status;
         this.consignee = consignee;
         this.depotCode = depotCode;
-        this.createTime = createTime;
-        this.createEmp = createEmp;
-        this.updateTime = updateTime;
-        this.updateEmp = updateEmp;
     }
 
     @Override
     public String toString() {
-        return "Requisition{" +
+        return "PurchaseOrder{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", jobNumber='" + jobNumber + '\'' +
@@ -260,10 +256,6 @@ public class Requisition implements Serializable{
                 ", status=" + status +
                 ", consignee='" + consignee + '\'' +
                 ", depotCode='" + depotCode + '\'' +
-                ", createTime=" + createTime +
-                ", createEmp='" + createEmp + '\'' +
-                ", updateTime=" + updateTime +
-                ", updateEmp='" + updateEmp + '\'' +
                 '}';
     }
 }

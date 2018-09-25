@@ -1,11 +1,19 @@
 package com.yr.entitys.bo.orderBO;
 
-import com.yr.entitys.order.Sale;
+import com.yr.entitys.order.SaleOrder;
 
 import java.io.Serializable;
 
 public class SaleBO implements Serializable{//销售的业务操作
-    private Sale sale;
+    private SaleOrder saleOrder;
+
+    public SaleOrder getSaleOrder() {
+        return saleOrder;
+    }
+
+    public void setSaleOrder(SaleOrder saleOrder) {
+        this.saleOrder = saleOrder;
+    }
     //销售订单编号
    /* private String code;
     //购买客户
@@ -27,11 +35,4 @@ public class SaleBO implements Serializable{//销售的业务操作
         this.customerBuy = customerBuy;
     }*/
 
-    public Sale getSale() {
-        return sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
 }

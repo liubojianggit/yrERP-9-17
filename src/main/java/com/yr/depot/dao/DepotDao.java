@@ -28,10 +28,10 @@ public interface DepotDao {
 
     /**
      * 查询总数（模糊查询总数）
-     * @param depot
+     * @param page
      * @return
      */
-    Long getCount(Depotbo depot);
+    Long getCount(Page<Depotbo> page);
 
     /**
      * 根据id查询仓库数据

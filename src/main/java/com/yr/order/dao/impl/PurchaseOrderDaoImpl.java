@@ -1,9 +1,9 @@
 package com.yr.order.dao.impl;
 
-import com.yr.entitys.bo.orderBO.RequisitionBO;
+import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.order.Requisition;
-import com.yr.order.dao.RequisitionDao;
+import com.yr.order.dao.PurchaseOrderDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,16 +11,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-
 @Repository
-public class RequisitionDaoImpl implements RequisitionDao {
-
+public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Requisition> query(Page<RequisitionBO> page) {
-        String jpql="select r from Requisition r where 1=1 ";
+    public List<PurchaseOrder> query(Page<purchaseOrderBO> page) {
+        String jpql="select r from PurchaseOrder r where 1=1 ";
         if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
         {
             jpql+="and r.purc_ware_name like :name ";
@@ -41,35 +39,35 @@ public class RequisitionDaoImpl implements RequisitionDao {
 
         //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
-        List<Requisition> list = query.getResultList();
+        List<PurchaseOrder> list = query.getResultList();
         return list;
     }
 
     @Override
-    public List<Requisition> queryForList() {
-        String jpql ="select r from Requisition r";
-        List<Requisition> list =  entityManager.createQuery(jpql).getResultList();
+    public List<PurchaseOrder> queryForList() {
+        String jpql ="select r from PurchaseOrder r";
+        List<PurchaseOrder> list =  entityManager.createQuery(jpql).getResultList();
         return list;
     }
     @Override
-    public Long getCount(RequisitionBO requisitionBO) {
-        String jpql= "select count(*) from Requisition r where 1=1 ";
-        if(requisitionBO.getPurchaseName()!=null && !requisitionBO.getPurchaseName().equals(""))
+    public Long getCount(purchaseOrderBO purchaseOrderBO) {
+        String jpql= "select count(*) from PurchaseOrder r where 1=1 ";
+        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
         {
             jpql+="and r.purc_ware_name like :name ";
         }
-        if(requisitionBO.getPurchaseType()!=null && !requisitionBO.getPurchaseType().equals(""))
+        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
         {
             jpql+="and r.purc_ware_type like :type ";
         }
         Query query =  entityManager.createQuery(jpql);
-        if(requisitionBO.getPurchaseName()!=null && !requisitionBO.getPurchaseName().equals(""))
+        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
         {
-            query.setParameter("name","%"+requisitionBO.getPurchaseName()+"%");
+            query.setParameter("name","%"+purchaseOrderBO.getPurchaseName()+"%");
         }
-        if(requisitionBO.getPurchaseType()!=null && !requisitionBO.getPurchaseType().equals(""))
+        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
         {
-            query.setParameter("type","%"+requisitionBO.getPurchaseType()+"%");
+            query.setParameter("type","%"+purchaseOrderBO.getPurchaseType()+"%");
         }
         Long value = (Long) query.getSingleResult();
 
@@ -77,23 +75,23 @@ public class RequisitionDaoImpl implements RequisitionDao {
     }
 
     @Override
-    public Requisition getRequisitionById(Integer id) {
-       /* String jpql="select r from Requisition r where r.id=:id";
+    public PurchaseOrder getRequisitionById(Integer id) {
+       /* String jpql="select r from PurchaseOrder r where r.id=:id";
         Query query =  entityManager.createQuery(jpql).setParameter("id",id);
         Requisition requisition = (Requisition) query.getSingleResult();*/
 
-       Requisition requisition = entityManager.find(Requisition.class,id);
-        return requisition;
+        PurchaseOrder purchaseOrder = entityManager.find(PurchaseOrder.class,id);
+        return purchaseOrder;
     }
 
     @Override
-    public void add(Requisition requisition) {
+    public void add(PurchaseOrder purchaseOrder) {
         //添加数据
-        entityManager.persist(requisition);
+        entityManager.persist(purchaseOrder);
     }
 
     @Override
-    public void update(Requisition requisition) {
+    public void update(PurchaseOrder purchaseOrder) {
        /* String jpql="update Requisition r set r.job_num = :jobNumber,r.depa_copde = :deparCode,r.approver = :approver,r.purc_ware_name = :name,r.purc_ware_type = :purcType," +
                 "r.purc_ware_num = :number,r.supp_code = :supplireCode,r.unit_price = :unitPrice,r.total_price = :totalPrice,r.status =: status," +
                 "r.consignee =: consignee, r.depot_code =: depotCode";
@@ -111,8 +109,8 @@ public class RequisitionDaoImpl implements RequisitionDao {
                 .setParameter("consignee",requisition.getConsignee())
                 .setParameter("depotCode",requisition.getDepotCode())
                 .executeUpdate();*/
-       //修改
-       entityManager.merge(requisition);
+        //修改
+        entityManager.merge(purchaseOrder);
 
     }
 
@@ -121,8 +119,8 @@ public class RequisitionDaoImpl implements RequisitionDao {
         /*String jpql = "delete from Requisition u where u.id = :id";
         entityManager.createQuery(jpql).setParameter("id",id).executeUpdate();*/
 
-        Requisition requisition =  entityManager.find(Requisition.class,id);
-        entityManager.remove(requisition);
+        PurchaseOrder purchaseOrder =  entityManager.find(PurchaseOrder.class,id);
+        entityManager.remove(purchaseOrder);
 
     }
 
@@ -131,7 +129,7 @@ public class RequisitionDaoImpl implements RequisitionDao {
         /*String jpql ="delete from Requisition u where u.id in (?1)";
         entityManager.createQuery(jpql).setParameter(1,ids).executeUpdate();*/
         for (Integer id :ids) {
-            Requisition req =  entityManager.find(Requisition.class,id);
+            PurchaseOrder req =  entityManager.find(PurchaseOrder.class,id);
             entityManager.remove(req);
         }
 

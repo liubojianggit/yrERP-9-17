@@ -1,50 +1,50 @@
 package com.yr.order.dao;
 
-import com.yr.entitys.bo.orderBO.RequisitionBO;
+import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.order.Requisition;
 
 import java.util.List;
 
-public interface RequisitionDao {
+public interface PurchaseOrderDao {
     /**
      * 分页查询
      * @param page
      * @return
      */
-    List<Requisition> query(Page<RequisitionBO> page);
+    List<PurchaseOrder> query(Page<purchaseOrderBO> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
      * @return
      */
-    List<Requisition> queryForList();
+    List<PurchaseOrder> queryForList();
 
     /**
      * 根据采购表id 查询数据
      * @param id
      * @return
      */
-    Requisition getRequisitionById(Integer id);
+    PurchaseOrder getRequisitionById(Integer id);
 
     /**
      * 查询数据库表总条数
      * @param requisitionBO
      * @return
      */
-    Long getCount(RequisitionBO requisitionBO);
+    Long getCount(purchaseOrderBO requisitionBO);
 
     /**
      * 添加
-     * @param requisition
+     * @param purchaseOrder
      */
-    void  add(Requisition requisition);
+    void  add(PurchaseOrder purchaseOrder);
 
     /**
      * 修改
-     * @param requisition
+     * @param purchaseOrder
      */
-    void  update(Requisition requisition);
+    void  update(PurchaseOrder purchaseOrder);
 
     /**
      * 删除

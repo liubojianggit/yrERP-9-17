@@ -1,6 +1,6 @@
 package com.yr.depot.controller;
 
-import com.yr.entitys.bo.depotBo.WareSearchBo;
+import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.depot.service.WareService;
@@ -80,7 +80,7 @@ ws.update(ware);
      */
     @RequestMapping(value = "waresTable",method = RequestMethod.GET)
     @ResponseBody
-    public Page<WareSearchBo> queryWare(Page<WareSearchBo> ware, Map<String,Object>map){
+    public Page<WareBo> queryWare(Page<WareBo> ware, Map<String,Object>map){
         ware = ws.query(ware);
         map.put("ware",ware);
         return ware;

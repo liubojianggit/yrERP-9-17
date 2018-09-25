@@ -9,7 +9,7 @@ import java.util.Date;
 @Table(name="sale_order")
 @Entity
 @Cacheable(true)
-public class Sale extends BaseEntity implements Serializable{//销售订单表
+public class SaleOrder extends BaseEntity implements Serializable{//销售订单表
     //销售订单id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id

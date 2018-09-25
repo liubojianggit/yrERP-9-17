@@ -1,30 +1,28 @@
-package com.yr.entitys.depot;
+package com.yr.entitys.supplier;
 
 import javax.persistence.*;
 
 /**
- * 商品类型实体类
+ * 供应商品类型实体类
  */
 @Entity
-@Table(name = "ware_type")
-public class WareType {
+public class SuppWareType {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false,unique = true)
-    private String code;//商品类型的编号，不能为null，唯一约束
+    private String code;//供应商品类型的编号，不能为null，唯一约束
     @Column(nullable = false,unique = true)
-    private String name;//商品类型的名称，不能为null，唯一约束
-    @Column(name = "sup_code",nullable = false)
-    private String supCode;//上级商品类型编号
+    private String name;//供应商品类型的名称，不能为null，唯一约束
+    @Column(nullable = false,name = "sup_code")
+    private String supCode;//供应商品类型的父级的商品编号，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
-    private String createTime;//
+    private String createTime;//创建时间，不能为null
     @Column(nullable = false)
-    private String createEmp;//创建人
-    @Column(nullable = false,columnDefinition = "DATE")
-    private String updateTime;//修改时间
-    @Column(nullable = false)
-    private  String updateEmp;//修改人
+    private String createEmp;//创建人，不能为null
+    @Column(columnDefinition = "DATE")
+    private String updateTime;
+    private  String updateEmp;
 
     public Integer getId() {
         return id;
@@ -92,7 +90,7 @@ public class WareType {
 
     @Override
     public String toString() {
-        return "WareType{" +
+        return "SuppWareType{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +

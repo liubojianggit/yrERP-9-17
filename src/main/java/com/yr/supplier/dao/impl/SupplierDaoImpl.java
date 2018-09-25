@@ -48,11 +48,11 @@ public class SupplierDaoImpl implements SupplierDao {
     }
 
     @Override
-    public Long getCount(SupplierBo supplierBo) {
-        String jpql="select count(*) from Supplier s where 1=1";
-        String code=supplierBo.getSupplier().getCode();
-        String name=supplierBo.getName();
-        String addr=supplierBo.getAddr();
+    public Long getCount(Page<SupplierBo>page) {
+        String jpql="select count(*) from Supplier d where 1=1";
+        String code=page.getT().getCode();
+        String name=page.getT().getName();
+        String addr=page.getT().getAddr();
         if (code !=null && code !=""){
             jpql +=" and d.code like :code ";
         }if(name != null && name !="" ){
@@ -83,8 +83,8 @@ public class SupplierDaoImpl implements SupplierDao {
 
     @Override
     public List<SupplierBo> query(Page<SupplierBo> page) {
-        String jpql="select s from Supplier s where 1=1 ";
-        String code=page.getT().getSupplier().getCode();
+        String jpql="select d from Supplier d where 1=1 ";
+        String code=page.getT().getCode();
         String name=page.getT().getName();
         String addr=page.getT().getAddr();
         if (code !=null && code !=""){
