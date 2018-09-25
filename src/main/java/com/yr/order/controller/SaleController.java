@@ -2,8 +2,8 @@ package com.yr.order.controller;
 
 
 import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.order.Sale;
 import com.yr.order.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +26,8 @@ public class SaleController {//销售订单Controller
     @ModelAttribute
     public void ModelAttribute(@RequestParam(value = "id",required = false)Integer id, Map<String,Object>map){
         if (id != null && id != 0){
-            Sale sale = saleService.getById(id);
-            map.put("sale",sale);
+            SaleOrder saleOrder = saleService.getById(id);
+            map.put("saleOrder",saleOrder);
         }
     }
 
@@ -60,12 +60,12 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/add",method = RequestMethod.GET)
     public String jumpAdd(Map<String,Object>map){
-        map.put("sale",new Sale());//传入一个空的user对象
+        map.put("sale",new SaleOrder());//传入一个空的user对象
         Map<String,Object> map1=new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
         map.put("states",map1);
-        map.put("sale", new Sale());
+        map.put("sale", new SaleOrder());
         return "saleAU";
     }
 
@@ -74,7 +74,7 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
-    public String saveAdd(Sale sale){
+    public String saveAdd(SaleOrder sale){
         saleService.add(sale);
         /*  return "redirect:/sale";*/
         return "saleList";
@@ -100,7 +100,7 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
-    public String SaveOrUpdate(Sale sale){
+    public String SaveOrUpdate(SaleOrder sale){
         saleService.update(sale);
         return "saleList";
     }
