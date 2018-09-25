@@ -87,8 +87,8 @@ public class DepartmentServiceImpl implements DepartmentService {
      * @param code
      * @return
      */
-    public Map<String,Object> querys(String code){
+    public Map<String,Object> querys(){
 
-        return departmentDao.querys(code);
+        return departmentDao.querys();
     }
 }

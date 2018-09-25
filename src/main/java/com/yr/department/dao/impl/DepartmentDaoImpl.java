@@ -1,5 +1,6 @@
 package com.yr.department.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +60,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public void add(Department department) {
-
         entityManager.persist(department);
-
     }
 
     /**
@@ -81,18 +80,19 @@ public class DepartmentDaoImpl implements DepartmentDao {
         entityManager.merge(department);
     }
 
-
     /**
      * 查询部门编号,提供给用户调用
      * @param code
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Map<String,Object>querys(String code){
-        String sql="select code from department";
-        List<Department> list = entityManager.createQuery(sql).setParameter(1,code).getResultList();
+    public Map<String,Object>querys(){
+        String sql="select * from department";
+        List<Department> list = entityManager.createQuery(sql).getResultList();
         Map<String,Object>map=new HashMap<>();
-        map.put(code, map);//编号key 名字为值
+        for (Department department : list) {
+            map.put( department.getCode(),department.getName() );//编号key 名字为值
+        }
         return map;
     }
 }

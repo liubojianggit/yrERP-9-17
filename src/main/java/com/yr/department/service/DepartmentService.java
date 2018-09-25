@@ -12,8 +12,7 @@ import com.yr.entitys.department.Department;
 public interface DepartmentService {
 
     /**
-     * 分页查询所有
-     * @param page
+     * 查询所有
      * @return
      */
     List<Departmentbo>query();
@@ -48,5 +47,5 @@ public interface DepartmentService {
      * @param code
      * @return
      */
-    Map<String,Object> querys(String code);
+    Map<String,Object> querys();
 }

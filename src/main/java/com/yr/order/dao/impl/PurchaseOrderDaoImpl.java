@@ -3,6 +3,7 @@ package com.yr.order.dao.impl;
 import com.yr.entitys.bo.orderBO.purchaseOrderBO;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
+import com.yr.order.dao.PurchaseOrderDao;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class PurchaseOrderDaoImpl implements PurchaseOrder {
+public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     @PersistenceContext
     private EntityManager entityManager;
 

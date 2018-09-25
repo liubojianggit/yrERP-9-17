@@ -53,6 +53,6 @@ public interface DepartmentDao {
      * @param code
      * @return
      */
-    Map<String,Object>querys(String code);
+    Map<String,Object>querys();
 
 }
