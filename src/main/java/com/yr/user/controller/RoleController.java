@@ -39,10 +39,19 @@ public class RoleController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/roleTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "roleList";
+    }
+
+    /**
      * 分页的形式查询role表的数据
      * @return List<RoleBo>
      */
-    @RequestMapping(value="/roleTable", method = RequestMethod.GET)
+    @RequestMapping(value="/roleTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<RoleBo> query(Page<RoleBo> page){
         roleService.query(page);

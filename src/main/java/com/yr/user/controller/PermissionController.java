@@ -40,10 +40,19 @@ public class PermissionController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/permissionTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "roleList";
+    }
+
+    /**
      * 分页的形式查询permission表的数据
      * @return List<PermissionBo>
      */
-    @RequestMapping(value="/permissionTable", method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<PermissionBo> query(Page<PermissionBo> page){
         permissionService.query(page);
@@ -109,7 +118,7 @@ public class PermissionController {
     /**
      * 回显角色所有的权限
      */
-    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/permissionList",method = RequestMethod.GET)
     @ResponseBody
     public List<PermissionBo> getPermission(Integer id){
         return permissionService.getPermission(id);
