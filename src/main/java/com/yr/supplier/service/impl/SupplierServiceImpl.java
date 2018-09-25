@@ -28,7 +28,7 @@ public class SupplierServiceImpl implements SupplierService {
      */
     @Override
     public Page<SupplierBo> query(Page<SupplierBo> page) {
-        page.setTotalRecord(dao.getCount((SupplierBo)page.getT()));
+        page.setTotalRecord(dao.getCount(page));
         List<SupplierBo> list=dao.query(page);
         page.setPageData(list);
         return page;

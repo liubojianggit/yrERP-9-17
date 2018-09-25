@@ -45,26 +45,19 @@ public class SupplierController {
     @RequestMapping(value = "/supplierTable/List",method = RequestMethod.GET)
     public String list(){
         System.out.println("aa");
-        return "supplierList";
+        return "test";
     }
     /**
      *分页查询供应商列表数据
      * @param supplierBo 供应商对象
-     * @param currentPage 当前页
-     * @param pageSize 当前页条数
      * @return
      */
     @RequestMapping(value="/supplierTable",method = RequestMethod.GET)
     @ResponseBody
-    public Page<SupplierBo> query(SupplierBo supplierBo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
-        Page<SupplierBo> page = new Page<>();
-        page.setT(supplierBo);
-        page.setCurrentPage(currentPage);
-        page.setPageSize(pageSize);
-        Page<SupplierBo> page1 = service.query(page);
-        Map<String,Object> map=new HashMap<>();
-        map.put("page", page1);
-        return page1;
+    public Page<SupplierBo> query(SupplierBo supplierBo,Page<SupplierBo>page){
+       page.setT(supplierBo);
+       service.query(page);
+        return page;
     }
     /**
      * 没业务据操作，只跳转到供应商添加页面
