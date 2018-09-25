@@ -1,13 +1,20 @@
 package com.yr.supplier.controller;
 
+import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.supplierWares;
+import com.yr.entitys.user.User;
 import com.yr.supplier.service.SupplierWareService;
+import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Map;
 
 /**
@@ -18,6 +25,10 @@ import java.util.Map;
 public class SupplierWareController {
     @Autowired
     private SupplierWareService sws;
+    @Autowired
+    private JedisManager jedisManager;
+    public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
+
     @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
         if (id!=null){
@@ -86,6 +97,20 @@ public class SupplierWareController {
     public Page<SupplierWareBo> queryWare(Page<SupplierWareBo> supplierWare, Map<String,Object>map){
         supplierWare = sws.query(supplierWare);
         map.put("ware",supplierWare);
+        System.out.println(supplierWare+"4");
         return supplierWare;
+    }
+    /**
+     * 通过用户的id请求返回图像的字节流
+     */
+    @RequestMapping("supplierTable/icons/{id}")
+    public void getIcons(@PathVariable(value="id") Integer id , HttpServletRequest request, HttpServletResponse response) throws IOException {
+        supplierWares supplierWare  = sws.getSupplierWare(id);//根据id获得user对象
+        byte[] data = FileUtils.getFileFlow(supplierWare.getSuppPhoto());//调用方法将流传出
+        response.setContentType("image/png");
+        OutputStream stream = response.getOutputStream();
+        stream.write(data);//将图片以流的形式返回出去
+        stream.flush();
+        stream.close();
     }
 }
