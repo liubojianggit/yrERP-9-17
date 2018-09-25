@@ -2,10 +2,13 @@ package com.yr.department.service;
 
 import java.util.List;
 import java.util.Map;
+
+import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 
-
-
+/**
+ *部门Service接口
+ */
 public interface DepartmentService {
 
     /**
@@ -13,7 +16,7 @@ public interface DepartmentService {
      * @param page
      * @return
      */
-    List<Department>query();
+    List<Departmentbo>query();
 
    /**
      * 根据ID查询部门 并回显
