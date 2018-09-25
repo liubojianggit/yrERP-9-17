@@ -1,16 +1,22 @@
 package com.yr.entitys.bo.orderBO;
-import com.yr.entitys.order.Requisition;
 
-public class RequisitionBO {
-    private Requisition requisition;
+import com.yr.entitys.order.PurchaseOrder;
+
+/**
+ * 采购订单
+ * @author
+ * @since
+ */
+public class purchaseOrderBO {
+    private PurchaseOrder purchaseOrder;
 	
     //采购商品名称(用于页面查询)
     private String  purchaseName;
     //采购商品类型(用于页面查询)
     private String purchaseType;
 
-    public void setRequisition(Requisition requisition) {
-        this.requisition = requisition;
+    public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
+        this.purchaseOrder = purchaseOrder;
     }
 
     public void setPurchaseName(String purchaseName) {
@@ -21,8 +27,8 @@ public class RequisitionBO {
         this.purchaseType = purchaseType;
     }
 
-    public Requisition getRequisition() {
-        return requisition;
+    public PurchaseOrder getPurchaseOrder() {
+        return purchaseOrder;
     }
 
     public String getPurchaseName() {

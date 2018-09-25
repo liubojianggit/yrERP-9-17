@@ -1,31 +1,31 @@
 package com.yr.order.service;
 
-import com.yr.entitys.bo.orderBO.RequisitionBO;
-import com.yr.entitys.order.Requisition;
+import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 
 import java.util.List;
 
-public interface RequisitionService {
+public interface PurchaseOrderService {
     /**
      * 分页查询
      * @param page
      * @return
      */
-    Page<Requisition> query(Page<RequisitionBO> page);
+    Page<PurchaseOrder> query(Page<purchaseOrderBO> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
      * @return
      */
-    List<Requisition> queryForLists();
+    List<PurchaseOrder> queryForLists();
 
     /**
      * 根据采购表id 查询数据
      * @param id
      * @return
      */
-    Requisition getRequisitionById(Integer id);
+    PurchaseOrder getRequisitionById(Integer id);
 
     /**
      * 查询数据库表总条数
@@ -36,15 +36,15 @@ public interface RequisitionService {
 
     /**
      * 添加
-     * @param requisition
+     * @param purchaseOrder
      */
-    void  add(Requisition requisition);
+    void  add(PurchaseOrder purchaseOrder);
 
     /**
      * 修改
-     * @param requisition
+     * @param purchaseOrder
      */
-    void  update(Requisition requisition);
+    void  update(PurchaseOrder purchaseOrder);
 
     /**
      * 删除

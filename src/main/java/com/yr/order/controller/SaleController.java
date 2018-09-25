@@ -60,7 +60,7 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/add",method = RequestMethod.GET)
     public String jumpAdd(Map<String,Object>map){
-        map.put("sale",new SaleOrder());//传入一个空的user对象
+        map.put("sale",new SaleOrder());//传入一个空的sale对象
         Map<String,Object> map1=new HashMap<>();
         map1.put("0","退货");
         map1.put("1","交易成功");
