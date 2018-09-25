@@ -12,45 +12,21 @@ layui.use(['form','layer','table','laytpl'],function(){
     	prePath = strFullPath.substring(0, pos),
     	path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
     ;
-    //格式化时间戳
-    function formatDate(now) {
-        var year=now.getFullYear(); //年
-        var month=now.getMonth()+1; //月
-        var date=now.getDate(); //日
-        var hour=now.getHours(); //时
-        var minute=now.getMinutes();// 分
-        var second=now.getSeconds(); //秒
-        return year+"-"+month+"-"+date+" "+hour+":"+minute+":"+second;
-    }
 
     //用户列表
     var tableIns = table.render({
         elem: '#userList',
         url :path+ 'u_user/userTable/list',
-       /* parseData: function(res){ //res 即为原始返回的数据
-            return {
-                //"code": res.status, //解析接口状态
-                //"msg": res.message, //解析提示文本
-                "count": res.totalRecord, //解析数据长度
-                "data": res.pageDataList //解析数据列表
-            };
-        },*/
-        /*request: {
+        request: {//request下面是请求后台的参数的别名,response是响应的别名
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-        },*/where:{//需要传入的值
-            "user.userName": $("#userName").val(),  //搜索的关键字
+        },
+        where:{//需要传入的值
+            "user.name": $("#userName").val(),  //搜索的关键字
             "depaCode": $("#depaCode").val(),  //搜索的关键字
             "minAge": $("#minAge").val(),  //搜索的关键字
             "maxAge": $("#maxAge").val() //搜索的关键字
-        }/*,
-        response: {
-           // statusName: 'status' //规定数据状态的字段名称，默认：code
-            //,statusCode: 200 //规定成功的状态码，默认：0
-            //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-            countName: 'totalRecord' //规定数据总数的字段名称，默认：count
-            ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
-        }*/,
+        },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -64,14 +40,15 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '用户名', align:"center",unresize: true},
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
             {field: 'photo', title: '头像',  align:'center',templet:function(d){
-                return '<img style="width: 28px;height: 28px;"  src="'+path+"/userTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
+                return '<img style="width: 28px;height: 28px;"  src="'+path + d + '"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
             }},
             {field: 'jobNum', title: '工号', align:"center", unresize: true},
             {field: 'depaCode', title: '部门编号', align:"center", unresize: true},
-            {field: 'sex', title: '性别', align:"center", unresize: true},
-            {field: 'birthday', title: '生日', align:"center", unresize: true,templet:function(v){
-                return new Date(v);
+            {field: 'sex', title: '性别', align:"center", unresize: true,templet:function(d){
+                return d == 0 ? "女" : "男";
             }},
+            {field: 'age', title: '年龄', align:"center", unresize: true},
+            {field: 'birthday', title: '生日', align:"center", unresize: true},
             {field: 'phoneNumber', title: '电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             //{field: 'status', title: '状态', align:"center", unresize: true},
@@ -85,21 +62,17 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    "user.name": $("#userName").val(),  //搜索的关键字
-                    "user.depaCode": $("#depaCode").val(),  //搜索的关键字
-                    "minAge": $("#minAge").val(),  //搜索的关键字
-                    "maxAge": $("#maxAge").val() //搜索的关键字
-                }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+        table.reload("userListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                "user.name": $("#userName").val(),  //搜索的关键字
+                "user.depaCode": $("#depaCode").val(),  //搜索的关键字
+                "minAge": $("#minAge").val(),  //搜索的关键字
+                "maxAge": $("#maxAge").val() //搜索的关键字
+            }
+        })
     });
 
     //添加用户

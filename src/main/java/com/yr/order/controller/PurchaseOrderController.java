@@ -13,9 +13,12 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 这个是一个采购的controller层
+ */
 @Controller
 @RequestMapping(value = "requisition")
-public class purchaseOrderController {
+public class PurchaseOrderController {
     @Autowired
     private PurchaseOrderService purchaseOrderServiceImpl;
 
