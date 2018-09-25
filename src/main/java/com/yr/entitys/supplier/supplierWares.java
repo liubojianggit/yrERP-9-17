@@ -15,6 +15,8 @@ public class supplierWares {
  @Column(nullable = false)
     private String name;
  @Column(nullable = false)
+    private String suppphoto;
+ @Column(nullable = false)
     private String type;
  @Column(nullable = false,name = "total_inventory")
     private Long totalInventory;
@@ -58,6 +60,14 @@ public class supplierWares {
 
     public String getName() {
         return name;
+    }
+
+    public String getSuppphoto() {
+        return suppphoto;
+    }
+
+    public void setSuppphoto(String suppphoto) {
+        this.suppphoto = suppphoto;
     }
 
     public void setName(String name) {
@@ -143,6 +153,7 @@ public class supplierWares {
                 ", code='" + code + '\'' +
                 ", suppCode='" + suppCode + '\'' +
                 ", name='" + name + '\'' +
+                ", suppphoto='" + suppphoto + '\'' +
                 ", type='" + type + '\'' +
                 ", totalInventory=" + totalInventory +
                 ", unitPrice=" + unitPrice +
