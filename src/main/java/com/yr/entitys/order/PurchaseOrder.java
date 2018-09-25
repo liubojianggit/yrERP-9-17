@@ -14,15 +14,17 @@ public class PurchaseOrder extends BaseEntity implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    //采购订单编号
     private String code;
 
-    //申请编号
+    //采购人工号
     @Column(name = "job_num")
     private String jobNumber;
 
-    //申请人工号
+    //采购部门编号
     @Column(name = "depa_code")
     private String departmentCode;
+
     //审批人
     private String approver;
 
