@@ -22,7 +22,6 @@ import java.util.Map;
 @RequestMapping("/supplier")
 public class SupplierController {
     @Autowired
-    @Qualifier("supplierServiceImpl")
     private SupplierService service;
 
     /**
@@ -71,14 +70,17 @@ public class SupplierController {
     @RequestMapping(value="/supplierTable",method = RequestMethod.POST)
     public String add(Supplier supplier, Map<String, Object> map) {
         boolean isNull = service.isNullAdd(supplier);
+        boolean isTell=service.isTell(supplier.getPhoneNumber());
         if(isNull == false){
             map.put("depot",supplier);
             map.put("uperror", 1);
             return "supplieradd";
-        }else{
+        }if(isTell){
+            map.put("tell",2);//电话错误
+            return "supplieradd";
+        }
             service.add(supplier);
             return "supplierList";
-         }
     }
     /**
      * 根据id删除供应商表数据
@@ -103,7 +105,7 @@ public class SupplierController {
         Supplier depots = service.getById(id);
         map.put("supplier",depots);
         map.put("page", page);
-        return "supplierAdd";
+        return "supplieradd";
     }
     /**
      * 根据id回显后的值修供应商库数据
