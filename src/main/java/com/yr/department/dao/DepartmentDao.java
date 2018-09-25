@@ -7,6 +7,7 @@ import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepartmentDao {
 
@@ -53,5 +54,13 @@ public interface DepartmentDao {
      * 查询父级id，将父级id以下拉框的形式显示
      */
     List<Department> querycod();
+
+    /**
+     * 查询部门编号返回map 提供给用户表
+     * @param code
+     * @param name
+     * @return
+     */
+    Map<String, Object> querys(String code );
 
 }

@@ -12,7 +12,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository("departmentDaoImpl")
 public class DepartmentDaoImpl implements DepartmentDao {
     @PersistenceContext
@@ -124,6 +127,21 @@ public class DepartmentDaoImpl implements DepartmentDao {
         Query query =entityManager.createQuery(jpql);
         List<Department> list=query.getResultList();
         return list;
+    }
+
+    /**
+     * 查询部门编号返回map 提供给用户表
+     * @param code
+     * @param name
+     * @return
+     */
+    @Override
+    public Map<String, Object> querys(String code) {
+        String sql="select code from department";
+        Query query=entityManager.createQuery(sql);
+        Map<String , Object> mao=new HashMap<>();
+        mao.put(code,mao);
+        return mao;
     }
 
 }
