@@ -29,10 +29,10 @@ public interface SupplierDao {
 
     /**
      * 查询总数（模糊查询总数）
-     * @param supplierBo
+     * @param page
      * @return
      */
-    Long getCount(SupplierBo supplierBo);
+    Long getCount(Page<SupplierBo>page);
 
     /**
      * 根据id查询供应商数据

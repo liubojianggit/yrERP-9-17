@@ -27,7 +27,7 @@ public class DepotServiceImpl implements DepotService {
      */
     @Override
     public Page<Depotbo> query(Page<Depotbo> page) {
-       page.setTotalRecord(depotDao.getCount((Depotbo)page.getT()));
+       page.setTotalRecord(depotDao.getCount(page));
         List<Depotbo> list=depotDao.query(page);
         page.setPageData(list);
         return page;

@@ -36,21 +36,14 @@ public class DepotController {
     /**
      *分页查询仓库列表数据
      * @param depotbo 仓库对象
-     * @param currentPage 当前页
-     * @param pageSize 当前页条数
      * @return
      */
     @RequestMapping(value="/depotTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<Depotbo> query(Depotbo depotbo , @RequestParam("currentPage") Integer currentPage, @RequestParam("pageSize") Integer pageSize){
-        Page<Depotbo> page = new Page<>();
-        page.setT(depotbo);
-        page.setCurrentPage(currentPage);
-        page.setPageSize(pageSize);
-        Page<Depotbo> page1 = service.query(page);
-        Map<String,Object> map=new HashMap<>();
-        map.put("page", page1);
-        return page1;
+    public Page<Depotbo> query(Depotbo depotbo ,Page<Depotbo>page){
+       page.setT(depotbo);
+        service.query(page);
+        return page;
     }
 
     /**

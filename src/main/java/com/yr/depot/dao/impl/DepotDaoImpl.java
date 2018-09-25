@@ -52,15 +52,15 @@ public class DepotDaoImpl implements DepotDao {
     /**
      * 查询总条数
      * 返回int类型
-     * @param depot
+     * @param page
      * @return
      */
     @Override
-    public Long getCount(Depotbo depot) {
+    public Long getCount(Page<Depotbo> page) {
     String jpql="select count(*) from Depot d where 1=1";
-        String code=depot.getCode();
-        String name=depot.getName();
-        String addr=depot.getAddr();
+        String code=page.getT().getCode();
+        String name=page.getT().getName();
+        String addr=page.getT().getAddr();
         if (code !=null && code !=""){
             jpql +=" and d.code like :code ";
         }if(name != null && name !="" ){
