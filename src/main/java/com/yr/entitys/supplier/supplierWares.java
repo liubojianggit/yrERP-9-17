@@ -2,6 +2,9 @@ package com.yr.entitys.supplier;
 
 import javax.persistence.*;
 
+/**
+ * 供应商品实体类
+ */
 @Entity
 @Table(name = "supp_wares")
 public class supplierWares {
