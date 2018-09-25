@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * 部门表接口
+ * 部门表Controller接口
  */
 @RequestMapping(value = "/department")
 @Controller
@@ -52,7 +52,7 @@ public class DepartmentController {
     @RequestMapping(value="/departmentTable/add",method=RequestMethod.GET)
     public String add(Map<String , Object>map){
         map.put("department", new Department());//传入一个空的对象
-        return "redirect/departmentTableupdate";//返回新增 修改页面
+        return "redirect:/departmentAU";//返回新增 修改页面
     }
     /**
      * 保存添加
@@ -60,7 +60,7 @@ public class DepartmentController {
     @RequestMapping(value="/departmentTable",method=RequestMethod.POST)
     public String adds(Department department){
         departmentService.add(department);//调用添加方法
-        return "redirect/departmentTableindex";//返回部门页面
+        return "redirect:/departmentList";//返回部门页面
     }
     /**
      * 根据ID 删除部门
@@ -69,7 +69,7 @@ public class DepartmentController {
     @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.DELETE)
     public String delete(@PathVariable("id") Integer id){
         departmentService.delete(id);//调用删除方法
-        return "redirect/departmentTableindex";//返回部门页面
+        return "redirect:/departmentList";//返回部门页面
     }
     /**
      * 跳转修改 部门
@@ -78,8 +78,7 @@ public class DepartmentController {
     public String update(@PathVariable("id") Integer id){
         Map<String,Object> map=new HashMap<>();
         map.put("department", departmentService.departmentId(id));//调用查询ID方法回显数据
-
-        return "redirect/departmentTableupdate";//返回新增 修改页面
+        return "redirect:/departmentAU";//返回新增 修改页面
     }
 
     /**
@@ -88,6 +87,6 @@ public class DepartmentController {
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT)
     public String updates(Department department){
         departmentService.update(department);
-        return "redirect/departmentTableindex";//返回部门页面
+        return "redirect:/departmentList";//返回部门页面
     }
 }
