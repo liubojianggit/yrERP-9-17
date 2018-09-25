@@ -1,7 +1,7 @@
 package com.yr.depot.dao.impl;
 
 import com.yr.depot.dao.WareDao;
-import com.yr.entitys.bo.depotBo.WareSearchBo;
+import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import org.springframework.stereotype.Repository;
@@ -43,7 +43,7 @@ public class WareDaoImpl implements WareDao {
      * @return List ware 商品
      */
     @Override
-    public List<WareSearchBo> query(Page<WareSearchBo> ware) {
+    public List<WareBo> query(Page<WareBo> ware) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("select w from Ware w where 1=1");
         String addr = ware.getT().getAddr();
@@ -74,7 +74,7 @@ public class WareDaoImpl implements WareDao {
         Query query = entityManager.createQuery(jpql.toString());
         query.setFirstResult(ware.getCurrentPage());
         query.setMaxResults(ware.getPageSize());
-        List<WareSearchBo> wares = query.getResultList();
+        List<WareBo> wares = query.getResultList();
         return wares;
     }
 
@@ -150,7 +150,7 @@ public class WareDaoImpl implements WareDao {
     }
 
     @Override
-    public Long getCount(Page<WareSearchBo> ware) {
+    public Long getCount(Page<WareBo> ware) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("select count(*) from Ware where 1=1");
         String addr = ware.getT().getAddr();
