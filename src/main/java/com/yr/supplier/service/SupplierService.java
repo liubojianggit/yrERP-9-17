@@ -55,4 +55,11 @@ public interface SupplierService {
      */
     boolean isNullUpdate(Supplier supplier);
 
+    /**
+     * 判断电话格式是否正确
+     * @param tell
+     * @return
+     */
+    boolean isTell(String tell);
+
 }
