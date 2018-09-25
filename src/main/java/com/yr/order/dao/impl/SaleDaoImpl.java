@@ -18,6 +18,10 @@ public class SaleDaoImpl implements SaleDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * 导出销售订单的Excel表
+     * @return
+     */
     @Override
     public List<Sale> ExcelQuery() {
         String jpql = "select s from Sale s where 1=1";

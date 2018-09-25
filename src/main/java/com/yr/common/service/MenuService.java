@@ -1,5 +1,6 @@
 package com.yr.common.service;
 
+import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
 import com.yr.entitys.user.User;
 import org.apache.poi.ss.formula.functions.T;
@@ -14,10 +15,20 @@ public interface MenuService {
      * @return String
      */
     String query();
+    String queryMenus();
+    MenuBO getOneMenu(Integer id);
+    List<MenuBO> querySupMenuBO();
+
+    //删除菜单记录
+    String delete(Integer id);
+
+    //修改菜单记录
+    String update(MenuBO menuBO);
 
     /**
      * 添加
-     * @param menu
+     * @param menuBO
      */
-    void add(Menu menu);
+    String add(MenuBO menuBO,User loginUser);
+
 }

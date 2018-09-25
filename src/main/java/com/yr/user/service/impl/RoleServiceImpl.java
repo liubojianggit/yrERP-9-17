@@ -18,6 +18,7 @@ import redis.clients.jedis.Jedis;
 import java.util.List;
 
 @Service("roleServiceImpl")
+@Transactional
 public class RoleServiceImpl implements RoleService {
     @Autowired
     @Qualifier("roleDaoImpl")
@@ -41,7 +42,6 @@ public class RoleServiceImpl implements RoleService {
      * 添加角色信息
      * @param role
      */
-    @Transactional
     public void add(Role role){
         roleDao.add(role);
     }
@@ -50,7 +50,6 @@ public class RoleServiceImpl implements RoleService {
      * 修改角色信息
      * @param role
      */
-    @Transactional
     public void update(Role role){
         roleDao.update(role);
     }
@@ -59,7 +58,6 @@ public class RoleServiceImpl implements RoleService {
      * 删除角色信息
      * @param id
      */
-    @Transactional
     public void delete(Integer id){
         roleDao.delete(id);
     }

@@ -7,18 +7,24 @@ import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
 import com.yr.user.service.UserService;
 import com.yr.util.FileUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
+import sun.misc.Request;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,10 +57,19 @@ public class UserController {
     }
 
     /**
+     * 跳转列表
+     * @return
+     */
+    @RequestMapping(value = "/userTable",method = RequestMethod.GET)
+    public String jumpList(){
+        return "userList";
+    }
+
+    /**
      * 分页的形式查询user表的数据
      * @return List<User>
      */
-    @RequestMapping(value="/userTable", method = RequestMethod.GET)
+    @RequestMapping(value="/userTable/list", method = RequestMethod.GET)
     @ResponseBody
     public Page<UserBo> query(Page<UserBo> page){
         userService.query(page);
@@ -105,6 +120,8 @@ public class UserController {
         }
         FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
         user.setPhoto(phoneStr);//替换掉原本的路径
+        user.setCreateTime(new Date());//获取当前时间
+        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         userService.add(user);
         return "redirect:/user";
     }
@@ -130,8 +147,10 @@ public class UserController {
      * @return String
      */
     @RequestMapping(value="/userTable",method=RequestMethod.PUT)
-    public String saveUpdate(User user, Page<UserBo> page, Map<String, Object> map){
+    public String saveUpdate(User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
         map.put("page", page);
+        user.setUpdateTime(new Date());//获取修改当前时间
+        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         userService.update(user);
         return "userList";
     }
