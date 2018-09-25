@@ -33,7 +33,7 @@ public class RequisitionController {
 
     /**
      * 数据查询接口
-     *
+     * 跳转查询页面
      * @return
      */
     @RequestMapping(value = "/requisitionTable/list", method = RequestMethod.GET)
@@ -51,7 +51,7 @@ public class RequisitionController {
 
     /**
      * 添加数据接口；
-     *
+     * 跳转添加页面
      * @param map
      * @return
      */
@@ -68,7 +68,6 @@ public class RequisitionController {
         map.put("requisition", new Requisition());
         return null;
     }
-
 
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.POST)
     public String add(Requisition requisition ,HttpServletRequest request) {
@@ -90,7 +89,7 @@ public class RequisitionController {
     }
     /**
      * 修改接口；
-     *
+     *  跳转修改页面
      * @param id
      * @param map
      * @return
@@ -128,7 +127,7 @@ public class RequisitionController {
 
     /**
      * 这个是ajax 请求不要跳转，删除接口
-     *
+     * 删除接口
      * @param id
      * @return
      */
