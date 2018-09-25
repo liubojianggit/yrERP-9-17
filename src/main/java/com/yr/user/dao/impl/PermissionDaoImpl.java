@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.security.Permissions;
 import java.util.List;
 
 @Repository("permissionDaoImpl")
@@ -26,7 +27,7 @@ public class PermissionDaoImpl implements PermissionDao {
      */
     public Long getCount(Page<PermissionBo> page){//@Param指定的是别名
         String jpql = "select count(*) from Permission p where 1 = 1 ";
-        if(!StringUtils.isEmpty(page.getT().getPermission().getName())){//判断是否为null和空
+        if(!StringUtils.isEmpty(page.getT().getName())){//判断是否为null和空
             jpql += "and r.name like :name ";
         }
         /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
@@ -39,8 +40,8 @@ public class PermissionDaoImpl implements PermissionDao {
             jpql += "and u.addr like :addr ";
         }*/
         Query query = entityManager.createQuery(jpql);
-        if(!StringUtils.isEmpty(page.getT().getPermission().getName())){
-            query.setParameter("name", "%"+page.getT().getPermission().getName()+"%");
+        if(!StringUtils.isEmpty(page.getT().getName())){
+            query.setParameter("name", "%"+page.getT().getName()+"%");
         }
         /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
             query.setParameter("startBirthday", DateUtils.toDate(page.getT().getStartBirthday()));
@@ -56,12 +57,12 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 分页的形式查询user表的数据
-     * @return List<RoleBo>
+     * 分页的形式查询权限表的数据
+     * @return List<PermissionBo>
      */
     public List<PermissionBo> query(Page<PermissionBo> page){
         String jpql = "select p from Permission p where 1 = 1 ";
-        if(!StringUtils.isEmpty(page.getT().getPermission().getName())){//判断是否为null和空
+        if(!StringUtils.isEmpty(page.getT().getName())){//判断是否为null和空
             jpql += "and r.name like :name ";
         }
         /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
@@ -79,8 +80,8 @@ public class PermissionDaoImpl implements PermissionDao {
             jpql += "order by u.id desc ";
         }*/
         Query query = entityManager.createQuery(jpql);
-        if(!StringUtils.isEmpty(page.getT().getPermission().getName())){
-            query.setParameter("name", "%"+page.getT().getPermission().getName()+"%");
+        if(!StringUtils.isEmpty(page.getT().getName())){
+            query.setParameter("name", "%"+page.getT().getName()+"%");
         }
        /* if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
             query.setParameter("startBirthday", DateUtils.toDate(page.getT().getStartBirthday()));
@@ -91,13 +92,13 @@ public class PermissionDaoImpl implements PermissionDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
             query.setParameter("addr", "%"+page.getT().getUser().getAddr()+"%");
         }*/
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<PermissionBo> list = query.getResultList();//获得分页后的数据集合
         return list;
     }
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     public void add(Permission permission){
@@ -119,7 +120,7 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     public void delete(Integer id){
@@ -131,7 +132,7 @@ public class PermissionDaoImpl implements PermissionDao {
     }
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return ole
      */
@@ -142,4 +143,40 @@ public class PermissionDaoImpl implements PermissionDao {
         Permission permission = entityManager.find(Permission.class,id);
         return permission;
     }
+
+    /**
+     * 回显角色具有哪些权限
+     */
+    public List<PermissionBo> getPermission(Integer id){
+        String sql = "select p.id,rp.rid roleId,p.name,p.url,p.sup_id,ifnull(rp.rid,0) mark from u_permission p left join (select * from u_role_permission where rid = 1) rp on p.id = rp.pid";
+        Query query = entityManager.createNativeQuery(sql).setParameter(1,id);
+        List<PermissionBo> permissions = query.getResultList();
+        return permissions;
+    }
+
+    /**
+     * 根据父权限获得子权限
+     * @param rid 角色id
+     * @param pid 权限id
+     * @return List<PermissionBo>
+     */
+    public List<PermissionBo> getchildren(Integer rid, Integer pid){
+        String sql = "select p.id,rp.rid roleId,p.name,p.url,p.sup_id,ifnull(rp.rid,0) mark from (select * from u_permission where sup_id = ?1) p left join (select * from u_role_permission where rid = ?2) rp on p.id = rp.pid";
+        Query query = entityManager.createQuery(sql).setParameter(1,pid).setParameter(2,rid);
+        List<PermissionBo> permissions = query.getResultList();
+        return permissions;
+    }
+
+    /**
+     * 根据子id获取所有父级id
+     * @param id
+     * @return Permission
+     */
+    public Permission getParent(Integer id){
+        String sql = "select * from u_permission where id = (select sup_id from u_permission where id = ?1)";
+        Query query = entityManager.createNativeQuery(sql).setParameter(1,id);
+        Permission permission = (Permission)query.getSingleResult();
+        return permission;
+    }
+
 }

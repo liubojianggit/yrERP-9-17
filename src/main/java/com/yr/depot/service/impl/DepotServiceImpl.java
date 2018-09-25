@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service("deposServiceImpl")
+@Service("depotServiceImpl")
 @Transactional
 public class DepotServiceImpl implements DepotService {
-    @Qualifier("depoDaoImpl")
+    @Qualifier("depotDaoImpl")
     @Autowired
     private DepotDao depotDao;
 

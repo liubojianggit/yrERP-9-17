@@ -3,14 +3,20 @@ package com.yr.user.controller;
 import com.yr.entitys.bo.user.PermissionBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * 操纵权限
+ */
 @Controller
 @RequestMapping("u_permission")
 public class PermissionController {
@@ -85,7 +91,7 @@ public class PermissionController {
     }
 
     /**
-     * 删除用户
+     * 删除权限
      * @return String
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.DELETE)
@@ -94,4 +100,28 @@ public class PermissionController {
         permissionService.delete(id);
     }
 
+    /**
+     * 回显角色所有的权限
+     */
+    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    @ResponseBody
+    public List<PermissionBo> getPermission(Integer id){
+        return permissionService.getPermission(id);
+    }
+
+    /**
+     * 通过父级权限获得子级权限
+     */
+    @RequestMapping(value="/permissionTable/permission",method = RequestMethod.GET)
+    public List<PermissionBo> getChildren(Integer rid, Integer pid){
+        return permissionService.getchildren(rid, pid);
+    }
+
+    /**
+     * 根据权限id获得所有父级权限
+     */
+    @RequestMapping(value="/permissionTable/getParent",method = RequestMethod.GET)
+    public List<Permission> getParent(Integer id){
+        return permissionService.getParent(id);
+    }
 }

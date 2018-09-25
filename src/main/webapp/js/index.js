@@ -11,7 +11,7 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
     	layer = parent.layer === undefined ? layui.layer : top.layer;
 		tab = layui.bodyTab({
 			openTabNum : "50",  //最大可打开窗口数量
-			url : "menu/menuTable", //获取菜单json地址
+			url : "menu/menuTable/json", //获取菜单json地址
             type: "get"
 		});
 

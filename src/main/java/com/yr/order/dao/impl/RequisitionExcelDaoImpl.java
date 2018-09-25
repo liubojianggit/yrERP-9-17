@@ -1,7 +1,7 @@
 package com.yr.order.dao.impl;
 
 import com.yr.entitys.order.Requisition;
-import com.yr.order.dao.ExcelDao;
+import com.yr.order.dao.RequisitionExcelDao;
 import com.yr.util.ExcelBean;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Repository;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class ExcelDaoImpl implements ExcelDao {
+public class RequisitionExcelDaoImpl implements RequisitionExcelDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -63,5 +63,10 @@ public class ExcelDaoImpl implements ExcelDao {
         excel.add(new ExcelBean("修改时间", "updateTime", 0));
         map.put(0, excel);
         return map;
+    }
+
+    @Override
+    public void add(Requisition requisition) {
+        entityManager.persist(requisition);
     }
 }

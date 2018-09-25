@@ -6,7 +6,7 @@ import com.yr.util.ExcelBean;
 import java.util.List;
 import java.util.Map;
 
-public interface ExcelDao {
+public interface RequisitionExcelDao {
     /**
      * 查询数据库，并以List集合的方式返回回来
      * @return
@@ -24,4 +24,10 @@ public interface ExcelDao {
      * @return
      */
     public Map<Integer, List<ExcelBean>> contentExcel();
+
+    /**
+     * 给采购表添加采购信息
+     * @param requisition
+     */
+    public void add(Requisition requisition);
 }

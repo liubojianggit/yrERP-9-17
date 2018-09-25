@@ -96,7 +96,7 @@ public class UserDaoImpl implements UserDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
             query.setParameter("addr", "%"+page.getT().getUser().getAddr()+"%");
         }*/
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<UserBo> list = query.getResultList();//获得分页后的数据集合
         return list;
     }
@@ -209,5 +209,13 @@ public class UserDaoImpl implements UserDao {
         String jpql = "select u from User u where u.name = ?1";
         User user = (User)entityManager.createQuery(jpql).setParameter(1,name).getSingleResult();
         return user;
+    }
+
+    /**
+     * 部门删除时调用,根据部门编号删除用户
+     */
+    public void delete(String department){
+        String jpql = "select u from User u where depa_code = ?1";
+        entityManager.createQuery(jpql).setParameter(1,department).executeUpdate();
     }
 }

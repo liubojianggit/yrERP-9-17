@@ -18,33 +18,53 @@ public interface PermissionDao {
     Long getCount(Page<PermissionBo> page);//@Param指定的是别名
 
     /**
-     * 分页的形式查询user表的数据
+     * 分页的形式查询权限表的数据
      * @return List<PermissionBo>
      */
     List<PermissionBo> query(Page<PermissionBo> page);
 
     /**
-     * 添加用户信息
+     * 添加权限信息
      * @param permission
      */
     void add(Permission permission);
 
     /**
-     * 修改用户信息
+     * 修改权限信息
      * @param permission
      */
     void update(Permission permission);
 
     /**
-     * 删除用户信息
+     * 删除权限信息
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询权限数据
      * @param id
      * @return Permission
      */
     Permission getById(Integer id);
+
+    /**
+     * 回显角色具有哪些权限
+     */
+    List<PermissionBo> getPermission(Integer id);
+
+    /**
+     * 根据父权限获得子权限
+     * @param rid 角色id
+     * @param pid 权限id
+     * @return List<PermissionBo>
+     */
+    List<PermissionBo> getchildren(Integer rid, Integer pid);
+
+    /**
+     * 根据子id获取所有父级id
+     * @param id
+     * @return Permission
+     */
+    Permission getParent(Integer id);
 }

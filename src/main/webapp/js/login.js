@@ -22,7 +22,7 @@ layui.use(['form','layer','jquery'],function(){
     	//登录请求
     	  $.ajax({
 			type: 'post',
-			url: 'login/index',//请求登录验证接口
+			url: '/u_user/userTable/login',//请求登录验证接口
 			dataType : 'json',
 			data: $('#form1').serialize(),
 			success: function(str){

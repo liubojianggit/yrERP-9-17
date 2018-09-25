@@ -1,8 +1,6 @@
 package com.yr.supplier.dao.impl;
 
-import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.bo.supplierBO.SupplierBo;
-import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 import com.yr.supplier.dao.SupplierDao;

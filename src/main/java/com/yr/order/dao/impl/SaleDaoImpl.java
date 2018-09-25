@@ -1,6 +1,6 @@
 package com.yr.order.dao.impl;
 
-import com.yr.entitys.bo.orderBO.SaleBo;
+import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.order.Sale;
 import com.yr.order.dao.SaleDao;
@@ -18,6 +18,10 @@ public class SaleDaoImpl implements SaleDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * 导出销售订单的Excel表
+     * @return
+     */
     @Override
     public List<Sale> ExcelQuery() {
         String jpql = "select s from Sale s where 1=1";
@@ -33,7 +37,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public Integer getCount(Page<SaleBo> page) {
+    public Long getCount(Page<SaleBO> page) {
         String jpql="select count(*) from Sale s where 1=1";
         if(!StringUtils.isEmpty(page.getT().getSale().getCode())){//判断是否为空
             jpql +="and s.code like :code";//模糊查询编号
@@ -42,14 +46,14 @@ public class SaleDaoImpl implements SaleDao {
             jpql +="and s.customer_buy like :customer_buy";//模糊查询购买客户
         }
         Query query =entityManager.createQuery(jpql);
-        if (!StringUtils.isEmpty(page.getT().getSale().getCode())){
+       if (!StringUtils.isEmpty(page.getT().getSale().getCode())){
             query.setParameter("code","%"+page.getT().getSale().getCode()+"%");
         }
         if (!StringUtils.isEmpty(page.getT().getSale().getCustomerBuy())){
             query.setParameter("customer_buy","%"+page.getT().getSale().getCustomerBuy()+"%");
         }
         Long count = (Long) query.getSingleResult();
-        return count.intValue();//将long转为int
+        return (long) count.intValue();//将long转为int
     }
 
     /**
@@ -58,7 +62,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public List<SaleBo> query(Page<SaleBo> page) {
+    public List<SaleBO> query(Page<SaleBO> page) {
         String jpql = "select s from Sale s where 1=1";
         if (!StringUtils.isEmpty(page.getT().getSale().getCode())){//判断是否为null
             jpql +="and s.code like :code";
@@ -79,30 +83,29 @@ public class SaleDaoImpl implements SaleDao {
         if (!StringUtils.isEmpty(page.getT().getSale().getCustomerBuy())){
             query.setParameter("customer_buy","&"+page.getT().getSale().getCustomerBuy()+"%");
         }
-        query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
-        List<SaleBo> list = query.getResultList();
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
+        List<SaleBO> list = query.getResultList();
         return list;
     }
 
     @Override
     public void add(Sale sale) {
-      /*  String jpql = "insert into Sale(code,customer_buy,salesperson,ware_code,number,money,s_phoneNumber,remark,states)values(?1,?2,?3,?4,?5,?6,?7,?8,?9)";
+       /* String jpql = "insert into sale_order(code,customer_buy,salesperson,ware_code,number,money,s_phoneNumber,remark,states)values(?1,?2,?3,?4,?5,?6,?7,?8,?9)";
         Query query = entityManager.createNativeQuery(jpql).setParameter(1,sale.getCode()).setParameter(2,sale.getCustomerBuy()).setParameter(3,sale.getSalesperson())
                 .setParameter(4,sale.getWareCode()).setParameter(5,sale.getNumber()).setParameter(6,sale.getMoney()).setParameter(7,sale.getsPhoneNumber())
                 .setParameter(8,sale.getRemark()).setParameter(9,sale.getStates());
         query.executeUpdate();*/
-      entityManager.persist(sale);
+        entityManager.persist(sale);
     }
 
     @Override
     public void update(Sale sale) {
-        /*String jpql = "update Sale s set s.code=?1,s.customer_buy=?2,s.salesperson=?3,s.ware_code=?4,s.number=?5,s.money=?6,s.s_phoneNumber=?7," +
+       /* String jpql = "update Sale s set s.code=?1,s.customer_buy=?2,s.salesperson=?3,s.ware_code=?4,s.number=?5,s.money=?6,s.s_phoneNumber=?7," +
                 "s.remark=?8,s.states=?9 where s.id=?10";
         Query query = entityManager.createNativeQuery(jpql).setParameter(1,sale.getCode()).setParameter(2,sale.getCustomerBuy()).setParameter(3,sale.getSalesperson())
                 .setParameter(4,sale.getWareCode()).setParameter(5,sale.getNumber()).setParameter(6,sale.getMoney()).setParameter(7,sale.getsPhoneNumber())
                 .setParameter(8,sale.getRemark()).setParameter(9,sale.getStates()).setParameter(10,sale.getId());
-        query.executeUpdate();
-        */
+        query.executeUpdate();*/
         entityManager.merge(sale);
 
     }

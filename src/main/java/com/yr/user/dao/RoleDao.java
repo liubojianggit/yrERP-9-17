@@ -16,31 +16,31 @@ public interface RoleDao {
     Long getCount(Page<RoleBo> page);//@Param指定的是别名
 
     /**
-     * 分页的形式查询user表的数据
+     * 分页的形式查询角色表的数据
      * @return List<oleBo>
      */
     List<RoleBo> query(Page<RoleBo> page);
 
     /**
-     * 添加用户信息
+     * 添加角色信息
      * @param role
      */
     void add(Role role);
 
     /**
-     * 修改用户信息
+     * 修改角色信息
      * @param role
      */
     void update(Role role);
 
     /**
-     * 删除用户信息
+     * 删除角色信息
      * @param id
      */
     void delete(Integer id);
 
     /**
-     * 根据id查询用户数据
+     * 根据id查询角色数据
      * @param id
      * @return Role
      */

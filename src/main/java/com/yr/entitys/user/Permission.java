@@ -1,6 +1,9 @@
 package com.yr.entitys.user;
 
+import com.yr.common.entity.BaseEntity;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -8,7 +11,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="u_permission")
-public class Permission {
+public class Permission extends BaseEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,7 +21,7 @@ public class Permission {
     private String name;//权限名字
     @Column(nullable = false)
     private String method;//权限方法
-    @Column(nullable = false)
+    @Column(name="sup_id",nullable = false)
     private Integer supId;//上级id
     @ManyToMany//多对多
     @JoinTable(name="u_role_permission",//中间表的名字
@@ -73,7 +76,7 @@ public class Permission {
     public void setRole(Set<Role> roles) {
         this.role = role;
     }
-
+    
     @Override
     public String toString() {
         return "Permissions{" +

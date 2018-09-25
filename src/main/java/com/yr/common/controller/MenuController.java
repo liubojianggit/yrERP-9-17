@@ -6,38 +6,87 @@ import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.menu.Menu;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 菜单模块请求controller接口
+ */
 @Controller
 @RequestMapping("/menu")
 public class MenuController {
     @Autowired
     private MenuService menuService;
     /**
-     * 查询菜单表，返回json格式字符串
+     * 查询菜单表，返回json格式字符串，生成主页面的左侧垂直菜单
      * @return List<User>
      */
-    @RequestMapping(value="/menuTable", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value="/menuTable/json", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String query(){
         return menuService.query();
     }
 
+
+
     /**
-     * 跳转添加页面
-     * @return String
+     * 放回固定格式的字符串，生成菜单树形表
+     * @return
+     */
+    @RequestMapping(value="/menuTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String queryMenus(){
+        return menuService.queryMenus();
+    }
+
+    /**
+     * 跳转到菜单树形列表页面
+     * @return
+     */
+    @RequestMapping(value="/menuTable", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    public String gotoMenuList(){
+        return "menu";
+    }
+
+
+    /**
+     * 调用这个类的所有方法前都要执行有@ModelAttribute的方法
+     * @RequestParam(value="id", required = false)表示执行该方法时不必要有id这个参数值，如果是ture则是必须要有id这个参数
+     * 因此要增加判断，当页面有表单提交且提交的表单中存在id这个属性时才执行相应的业务，
+     * 业务需求只能一个一个来修改，这里的目的是为了修改完成提交表单后先进入这个方法
+     * 用提交表单中的id来查询出修改的哪个对象并把修改前的数据保存在Map中（也就是request中），
+     * 接着进入修改方法 update(@ModelAttribute("user") User user,Model model)中，
+     * 这时@ModelAttribute("user")注解会把不同的字段覆盖掉实现了对象的修改
+     * @param id
+     * @param map
+     * @throws SQLException
+     */
+    @ModelAttribute
+    public void getOneMenu(@RequestParam(value="id", required = false) Integer id,Map<String,Object> map) throws SQLException {
+
+        if(id != null && !"".equals(id)){
+            MenuBO menuBO = menuService.getOneMenu(id);
+            map.put("menuBO", menuBO);
+        }
+    }
+
+    /**
+     * 新增前需要先进来此方法来跳转页面，目的是给页面的modelAttribute属性传值
+     * @return
      */
     @RequestMapping(value="/menuTable/add", method = RequestMethod.GET)
     public String jumpAdd(Map<String, Object> map){
-        map.put("menu", new Menu());//传入一个空的user对象
+        map.put("menuBO", new MenuBO());//传入一个空的user对象
+        map.put("supMenu",menuService.querySupMenuBO());//查询获取父菜单list集合（父菜单的pid为0）
         return "menuAU";
     }
 
@@ -45,10 +94,13 @@ public class MenuController {
      * 保存添加
      * @return String
      */
-    @RequestMapping(value="/menuTable", method=RequestMethod.POST)
-    public String saveAdd(Menu menu){
-        ((MenuServiceImpl)menuService).add(menu);
-        return "redirect:/user";
+    @ResponseBody
+    @RequestMapping(value="/menuTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+    public String saveAdd(MenuBO menuBO,HttpServletRequest request){
+        //获取页面登录对象
+        HttpSession session = request.getSession();
+        User loginUser = (User) session.getAttribute("user");
+        return menuService.add(menuBO,loginUser);
     }
 
     /**
@@ -56,10 +108,9 @@ public class MenuController {
      * @return String
      */
     @RequestMapping(value="/menuTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<UserBo> page){
-        Map<String, Object> map1 = new HashMap<>();
-        map.put("page", page);
-        map.put("user", ((MenuServiceImpl)menuService).getById(id));//根据id获取对象放入request中
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
+        map.put("menuBO", menuService.getOneMenu(id));//根据id获取对象放入request中
+        map.put("supMenu",menuService.querySupMenuBO());//查询获取父菜单list集合（父菜单的pid为0）
         return "menuAU";
     }
 
@@ -67,21 +118,20 @@ public class MenuController {
      * 保存修改
      * @return String
      */
-    @RequestMapping(value="/menuTable",method=RequestMethod.PUT)
-    public String saveUpdate(Menu menu, Page<MenuBO> page, Map<String, Object> map){
-        map.put("page", page);
-        ((MenuServiceImpl)menuService).update(menu);
-        return "userList";
+    @ResponseBody
+    @RequestMapping(value="/menuTable",method=RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    public String saveUpdate(@ModelAttribute("menuBO")MenuBO menuBO){
+        return menuService.update(menuBO);
     }
 
     /**
      * 删除用户
      * @return String
      */
-    @RequestMapping(value="/menuTable/{id}",method=RequestMethod.DELETE)
+    @RequestMapping(value="/menuTable/{id}",method=RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public void delete(@PathVariable Integer id){
-        ((MenuServiceImpl)menuService).delete(id);
+    public String delete(@PathVariable Integer id){
+        return menuService.delete(id);
     }
 
 }
