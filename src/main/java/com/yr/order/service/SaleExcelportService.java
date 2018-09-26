@@ -20,5 +20,5 @@ public interface SaleExcelportService {
 	 * @return
 	 */
 
-	  boolean batchImport(String name,MultipartFile file);
+	/*  boolean batchImport(String name,MultipartFile file);*/
 }

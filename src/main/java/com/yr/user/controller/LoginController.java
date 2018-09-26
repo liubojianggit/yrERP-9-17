@@ -76,18 +76,16 @@ public class LoginController {
     @RequestMapping(value = "/userTable/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request) {
-        String str = "";
+        String str = "";//用来接异常
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");// 获取正确的验证码
 
-
-        // if(loginVerifyCode != null && !"".equals(loginVerifyCode)){
-        if (!loginVerifyCode.isEmpty()) {
-            if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {
-                List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);
-                if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {
-                    User user = loginService.queryLoginUser(loginUser);
-                    if (!StringUtils.isEmpty(user)){
-                        if (user.getStates() == 1) {
+        if (!loginVerifyCode.isEmpty()) {//判断验证码 是非为空
+            if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {//先去掉验证码前后空格 在比较验证码是否正确
+                List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);//判断用户 账号是否存在
+                if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {//判断用户不能等于空 长度要大于1
+                    User user = loginService.queryLoginUser(loginUser);//判断用户 账号是否正确
+                    if (!StringUtils.isEmpty(user)){//判断是否为空
+                        if (user.getStates() == 1) {//查看状态 0未启用 1在职
                             // 登录验证通过，把对象存进session
                             request.getSession().setAttribute("user", user);// 获取session对象并赋值
                             str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功

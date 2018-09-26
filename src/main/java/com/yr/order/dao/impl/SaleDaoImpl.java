@@ -77,25 +77,21 @@ public class SaleDaoImpl implements SaleDao {
         return list;
     }
 
+    /**
+     * 根据对象对象添加销售订单信息
+     * @param saleOrder
+     */
     @Override
     public void add(SaleOrder saleOrder) {
-
-       /* String jpql = "insert into sale_order(code,customer_buy,salesperson,ware_code,number,money,s_phoneNumber,remark,states)values(?1,?2,?3,?4,?5,?6,?7,?8,?9)";
-        Query query = entityManager.createNativeQuery(jpql).setParameter(1,sale.getCode()).setParameter(2,sale.getCustomerBuy()).setParameter(3,sale.getSalesperson())
-                .setParameter(4,sale.getWareCode()).setParameter(5,sale.getNumber()).setParameter(6,sale.getMoney()).setParameter(7,sale.getsPhoneNumber())
-                .setParameter(8,sale.getRemark()).setParameter(9,sale.getStates());
-        query.executeUpdate();*/
         entityManager.persist(saleOrder);
     }
 
+    /**
+     * 根据对象修改销售订单信息
+     * @param saleOrder
+     */
     @Override
     public void update(SaleOrder saleOrder) {
-       /* String jpql = "update Sale s set s.code=?1,s.customer_buy=?2,s.salesperson=?3,s.ware_code=?4,s.number=?5,s.money=?6,s.s_phoneNumber=?7," +
-                "s.remark=?8,s.states=?9 where s.id=?10";
-        Query query = entityManager.createNativeQuery(jpql).setParameter(1,sale.getCode()).setParameter(2,sale.getCustomerBuy()).setParameter(3,sale.getSalesperson())
-                .setParameter(4,sale.getWareCode()).setParameter(5,sale.getNumber()).setParameter(6,sale.getMoney()).setParameter(7,sale.getsPhoneNumber())
-                .setParameter(8,sale.getRemark()).setParameter(9,sale.getStates()).setParameter(10,sale.getId());
-        query.executeUpdate();*/
         entityManager.merge(saleOrder);
 
     }
@@ -106,9 +102,6 @@ public class SaleDaoImpl implements SaleDao {
      */
     @Override
     public void delete(Integer id) {
-        /*String jpql = "delete from Sale s where s.id = ?1";
-        Query query = entityManager.createQuery(jpql).setParameter(1, id);
-        query.executeUpdate();*/
         SaleOrder saleOrder = entityManager.find(SaleOrder.class,id);
         entityManager.remove(saleOrder);
     }
@@ -120,8 +113,6 @@ public class SaleDaoImpl implements SaleDao {
      */
     @Override
     public SaleOrder getById(Integer id) {
-      /*  String jpql ="select s from Sale s where s.id = ?1";
-        Sale sale = (Sale)entityManager.createQuery(jpql).setParameter(1,id).getSingleResult();*/
         SaleOrder saleOrder = entityManager.find(SaleOrder.class,id);
         return saleOrder;
     }

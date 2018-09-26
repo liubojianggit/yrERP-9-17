@@ -16,11 +16,21 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginDao loginDao;
 
+    /**
+     * 查询用户 账号是否存在
+     * @param loginUser
+     * @return
+     */
     @Override
     public List<User> queryLoginUserName(User loginUser) {
         return loginDao.queryLoginUserName(loginUser);
     }
 
+    /**
+     * 查询登录用户密码 账号是否正确
+     * @param loginUser
+     * @return
+     */
     @Override
     public User queryLoginUser(User loginUser) {
         return loginDao.queryLoginUser(loginUser);

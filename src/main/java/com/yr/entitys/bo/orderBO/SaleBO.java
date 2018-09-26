@@ -6,16 +6,8 @@ import java.io.Serializable;
 
 public class SaleBO implements Serializable{//销售的业务操作
     private SaleOrder saleOrder;
-
-    public SaleOrder getSaleOrder() {
-        return saleOrder;
-    }
-
-    public void setSaleOrder(SaleOrder saleOrder) {
-        this.saleOrder = saleOrder;
-    }
     //销售订单编号
-   /* private String code;
+    private String code;
     //购买客户
     private String customerBuy;
 
@@ -33,6 +25,12 @@ public class SaleBO implements Serializable{//销售的业务操作
 
     public void setCustomerBuy(String customerBuy) {
         this.customerBuy = customerBuy;
-    }*/
+    }
+    public SaleOrder getSaleOrder() {
+        return saleOrder;
+    }
 
+    public void setSaleOrder(SaleOrder saleOrder) {
+        this.saleOrder = saleOrder;
+    }
 }
