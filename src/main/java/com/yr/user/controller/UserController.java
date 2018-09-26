@@ -1,6 +1,7 @@
 package com.yr.user.controller;
 
 import com.yr.core.redis.JedisManager;
+import com.yr.department.service.DepartmentService;
 import com.yr.department.service.impl.DepartmentServiceImpl;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
@@ -46,7 +47,7 @@ public class UserController {
     private JedisManager jedisManager;
     @Autowired
     @Qualifier("departmentServiceImpl")
-    private DepartmentServiceImpl departmentService;
+    private DepartmentService departmentService;
     public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
 
     /**

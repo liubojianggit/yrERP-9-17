@@ -1,12 +1,9 @@
 package com.yr.common.service.impl;
 
 import com.yr.common.dao.MenuDao;
-import com.yr.common.dao.impl.MenuDaoImpl;
-import com.yr.common.service.BaseService;
 import com.yr.common.service.MenuService;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
-import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
 import com.yr.util.DateUtils;

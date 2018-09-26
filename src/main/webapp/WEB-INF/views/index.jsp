@@ -75,7 +75,7 @@
 		<!-- 左侧导航 -->
 		<div class="layui-side layui-bg-black">
 			<div class="user-photo">
-				<a class="img" title="我的头像" ><img src="${sessionScope.user.getHeadUrl()}" class="userAvatar"></a>
+				<a class="img" title="我的头像" ><img src="${sessionScope.user}" class="userAvatar"></a>
 				<p>你好！<span class="userName">${sessionScope.user.getName()}</span>, 欢迎登录</p>
 			</div>
 			<!-- 搜索 -->

@@ -2,18 +2,11 @@ package com.yr.user.service;
 
 import com.yr.entitys.user.User;
 
+import java.util.List;
+
 public interface LoginService {
-
-    //查看用户的状态
-    boolean userstates(Integer  states);
-
-    //验证用户和密码是否正确
-   boolean getMatchCount(String name , String password);
-
-    //判断用户不能为空
-   boolean All(String name );
-
-    //判断密码不能为空
-   boolean Alls(String passwrod);
-
+    //验证登录用户名是否存在
+    List<User> queryLoginUserName(User loginUser);
+    //验证登录用户名跟密码
+    User queryLoginUser(User loginUser);
 }

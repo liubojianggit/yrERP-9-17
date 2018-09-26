@@ -1,21 +1,15 @@
 package com.yr.common.controller;
 
 import com.yr.common.service.MenuService;
-import com.yr.common.service.impl.MenuServiceImpl;
 import com.yr.entitys.bo.menuBO.MenuBO;
-import com.yr.entitys.bo.user.UserBo;
-import com.yr.entitys.menu.Menu;
-import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

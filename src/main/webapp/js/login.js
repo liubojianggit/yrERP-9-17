@@ -3,6 +3,13 @@ layui.use(['form','layer','jquery'],function(){
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
 
+    //获得项目名字path，在js中可以直接用path调用
+    strFullPath = window.document.location.href,
+        strPath = window.document.location.pathname,
+        pos = strFullPath.indexOf(strPath),
+        prePath = strFullPath.substring(0, pos),
+        path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
+
     $(".loginBody .seraph").click(function(){
         layer.msg("这只是做个样式，至于功能，你见过哪个后台能这样登录的？还是老老实实的找管理员去注册吧",{
             time:5000
@@ -22,26 +29,17 @@ layui.use(['form','layer','jquery'],function(){
     	//登录请求
     	  $.ajax({
 			type: 'post',
-			url: '/u_user/userTable/login',//请求登录验证接口
+			url: path+'u_user/userTable/login',//请求登录验证接口
 			dataType : 'json',
 			data: $('#form1').serialize(),
-			success: function(str){
-				if("0" == str){
-					alert("账号密码错误，登录失败");
-				}else if("1" == str){
-					window.location.href = "index";
-				}else if("2" == str){
-					alert("账号未激活，禁止使用");
-				}else if("3" == str){
-					alert("验证码输入错误");
-				}else if("4" == str){
-					alert("请输入验证码");
-				}else if("5" == str){
-					alert("账号冲突");
-				}else if("6" == str){
-					alert("账号不存在");
-				}else{
-					alert("未知错误，请联系管理员");
+			success: function(data){
+                if(data.code==1) {
+                    layer.msg(data.msg, {icon: 1});
+                    setTimeout(function(){
+                        window.location.href = path+"index";
+                    },1500)
+                }else {
+                    layer.msg(data.msg, {icon: 2});
 				}
 			}
 		});

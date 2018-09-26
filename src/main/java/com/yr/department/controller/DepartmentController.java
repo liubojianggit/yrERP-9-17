@@ -1,14 +1,13 @@
 package com.yr.department.controller;
 
-import java.util.Map;
-
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.department.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 部门表Controller接口
