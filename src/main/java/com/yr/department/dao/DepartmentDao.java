@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.user.User;
 
 /**
  * 部门Dao接口类
@@ -17,6 +18,7 @@ public interface DepartmentDao {
      * @return
      */
      List<Department>query();
+
 
      /*//**
      * 查询总条数
@@ -55,5 +57,7 @@ public interface DepartmentDao {
      * @return
      */
     Map<String,Object>querys();
+
+    Department queryss(String name);
 
 }

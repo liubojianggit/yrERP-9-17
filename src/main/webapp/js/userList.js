@@ -243,42 +243,44 @@ layui.use(['form','layer','table','laytpl'],function(){
 	          	});
         	});
         	});
-           }else if(layEvent === 'usable'){ //启用禁用
+        }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
             usableText = "是否确定禁用此用户？",
             btnText = "已禁用";
-        if(_this.text()=="已禁用"){
-            usableText = "是否确定启用此用户？",
-            btnText = "已启用";
-        }
-        layer.confirm(usableText,{
-            icon: 3,
-            title:'系统提示',
-            cancel : function(index){
-                layer.close(index);
+            if(_this.text()=="已禁用"){
+                usableText = "是否确定启用此用户？",
+                btnText = "已启用";
             }
-        },function(index){
-            _this.text(btnText);
-            layer.close(index);
-        },function(index){
-            layer.close(index);
-        });
+            layer.confirm(usableText,{
+                icon: 3,
+                title:'系统提示',
+                cancel : function(index){
+                    layer.close(index);
+                }
+            },function(index){
+                _this.text(btnText);
+                layer.close(index);
+            },function(index){
+                layer.close(index);
+            });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
             	tableIns.reload();
                 layer.close(index);
             	$.ajax({
         			type: 'post',
-        			url: path+'u_user/userTable',//请求登录验证接口
+        			url: path+'u_user/userTable/'+data.id,//请求登录验证接口
         			dataType : 'json',
-        			data: {id:obj.data.id,_method:'delete'},
+        			data: {
+                        _method:'delete'
+                    },
         			success: function(data){
         				
         				if("0" == data.code){
         					layer.msg("删除用户失败",{icon:2});
         				}else if("1" == data.code){
         					layer.msg("删除成功",{icon:2});
-        					window.location.href = path+"userList";
+        					window.location.href = path+"u_user/userTable";
                             
         				}else{
         					layer.msg("未知错误，请联系管理员",{icon:2});

@@ -4,13 +4,17 @@ package com.yr.order.controller;
 import com.yr.entitys.bo.orderBO.SaleBO;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import com.yr.order.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
 
 @Controller
 @RequestMapping("/sale_order")
@@ -74,7 +78,9 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
-    public String saveAdd(SaleOrder sale){
+    public String saveAdd(SaleOrder sale, HttpServletRequest request){
+        sale.setCreateTime(new Date());//获取当前时间
+        sale.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         saleService.add(sale);
         /*  return "redirect:/sale";*/
         return "saleList";
@@ -100,7 +106,9 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
-    public String SaveOrUpdate(SaleOrder sale){
+    public String SaveOrUpdate(SaleOrder sale, HttpServletRequest request){
+        sale.setUpdateTime(new Date());//获取修改当前时间
+        sale.setUpdateEmp(((SaleOrder)request.getSession().getAttribute("sale")).getApprover());//获取修改人（审核人）
         saleService.update(sale);
         return "saleList";
     }

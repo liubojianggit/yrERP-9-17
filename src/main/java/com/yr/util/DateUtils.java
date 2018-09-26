@@ -58,18 +58,18 @@ public class DateUtils {
 
     /**
      *使用Calendar对象计算时间差，可以按照需求定制自己的计算逻辑
-     * @param strDate
+     * @param date
      * @throws Exception
      */
-    public static int calculateTimeDifferenceByCalendar(String strDate){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+    public static int calculateTimeDifferenceByCalendar(Date date){
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         int year = 0;
         int oldYear = 0;
         try {
-            Date date = formatter.parse(strDate);
+            //Date date = formatter.parse(strDate);
             Calendar c1 = Calendar.getInstance();   //当前日期
             Calendar c2 = Calendar.getInstance();
-            c2.setTime(date);   //设置为另一个时间
+            //c2.setTime(date);   //设置为另一个时间
 
             year = c1.get(Calendar.YEAR);
             oldYear = c2.get(Calendar.YEAR);

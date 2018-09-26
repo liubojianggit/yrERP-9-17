@@ -117,7 +117,6 @@
     var i=1000;
     //添加
     function add(pObj) {
-        //window.location.href='<%=request.getContextPath() %>/menu/menuTable/add';
         layer.open({
             type: 2,
             title: '添加部门',

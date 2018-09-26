@@ -1,6 +1,5 @@
 package com.yr.department.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.yr.department.service.DepartmentService;
@@ -27,7 +26,7 @@ public class DepartmentController {
     public void getAccount(@RequestParam (value="id" ,required=false) Integer id , Map<String ,Object> map){
         if(!"".equals(id) && id !=null){
             Departmentbo departmentbo = departmentService.departmentId(id);
-            map.put("department", departmentbo);
+            map.put("departmentbo", departmentbo);
         }
     }
 
@@ -56,15 +55,17 @@ public class DepartmentController {
      */
     @RequestMapping(value="/departmentTable/add",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String add(Map<String , Object>map){
-        map.put("department", new Department());//传入一个空的对象
+        map.put("departmentbo", new Departmentbo());//传入一个空的对象
+        map.put("supDepartment",departmentService.getDepartmentList());
         return "departmentAU";//返回新增 修改页面
     }
     /**
      * 保存添加
      */
+    @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String adds(Department department){
-        departmentService.add(department);//调用添加方法
+    public String add(Departmentbo departmentbo){
+        departmentService.add(departmentbo);//调用添加方法
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
     /**
@@ -81,19 +82,19 @@ public class DepartmentController {
      * 跳转修改 部门
      */
     @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
-    public String update(@PathVariable("id") Integer id){
-        Map<String,Object> map=new HashMap<>();
-        map.put("department", departmentService.departmentId(id));//调用查询ID方法回显数据
-        map.put("supDepartment",departmentService.query());
+    public String update(@PathVariable("id") Integer id,Map<String , Object>map){
+        map.put("departmentbo", departmentService.departmentId(id));//调用查询ID方法回显数据
+        map.put("supDepartment",departmentService.getDepartmentList());
         return "departmentAU";//返回新增 修改页面
     }
 
     /**
      * 保存修改 部门
      */
+    @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String updates(Department department){
-        departmentService.update(department);
+    public String updates(@ModelAttribute("departmentbo")Departmentbo departmentbo){
+        departmentService.update(departmentbo);
         return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }
 }

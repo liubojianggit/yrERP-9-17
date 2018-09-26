@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import com.yr.department.dao.DepartmentDao;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.user.User;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -61,6 +62,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public void add(Department department) {
+        department.setCreateEmp("宋春元");
+        department.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        department.setUpdateEmp("宋春元");
+        department.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         entityManager.persist(department);
     }
 
@@ -88,12 +93,17 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @SuppressWarnings("unchecked")
     public Map<String,Object>querys(){
-        String sql="select d from department d where 1=1";
+        String sql="select d from Department d where 1=1";
         List<Department> list = entityManager.createQuery(sql).getResultList();
         Map<String,Object>map=new HashMap<>();
         for (Department department : list) {
             map.put( department.getCode(),department.getName() );//编号key 名字为值
         }
         return map;
+    }
+
+    public Department queryss(String name){
+
+        return null;
     }
 }
