@@ -3,6 +3,7 @@ package com.yr.department.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 
 /**

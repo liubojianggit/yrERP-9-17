@@ -1,6 +1,5 @@
 package com.yr.department.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.yr.entitys.bo.departmentBo.Departmentbo;
@@ -15,14 +14,14 @@ public interface DepartmentService {
      * 查询所有
      * @return
      */
-    List<Departmentbo>query();
+    String query();
 
    /**
      * 根据ID查询部门 并回显
      * @param id
      * @return
      */
-    Department departmentId(Integer id);
+    Departmentbo departmentId(Integer id);
 
     /**
      * 新增部门
