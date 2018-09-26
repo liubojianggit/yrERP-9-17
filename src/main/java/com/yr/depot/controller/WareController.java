@@ -1,22 +1,37 @@
 package com.yr.depot.controller;
 
+import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.depot.service.WareService;
+import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 仓库商品的controller层
+ */
 @Controller
 @Repository(value = "wares")
 public class WareController {
     @Autowired
     private WareService ws;
-@ModelAttribute
+    @Autowired
+    private JedisManager jedisManager;
+    public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
+
+    @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
 if (id!=null){
     map.put("ware",ws.getWare(id));
@@ -49,6 +64,33 @@ public String addWare(@ModelAttribute("ware")Ware ware){
    ws.add(ware);
     return "";
 }
+    /**
+     * 实现静态头像上传，这里先将图片上传到服务器上
+     * @param file
+     * @param request
+     * @param response
+     * @return Map<String,Object>
+     * @throws IOException
+     */
+    @RequestMapping(value="/waresTable/upload",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
+        String path = request.getServletContext().getRealPath("/") + "photos";//获取服务器路径         --这里要改成服务器的路径
+        String fileName = file.getOriginalFilename();//获得文件名
+        fileName = startTime + fileName.substring(fileName.lastIndexOf("."), fileName.length());//构建出一个唯一的文件名
+        File filepath=new File(path,fileName);//构建成一个file对象
+        //判断目标文件所在的目录是否存在
+        if(!filepath.getParentFile().exists()) {
+            //如果目标文件所在的目录不存在，则创建父目录
+            filepath.getParentFile().mkdirs();
+        }
+        //将内存中的数据写入磁盘
+        file.transferTo(filepath);
+        Map<String,Object> map = new HashMap<>();
+        map.put("url", request.getServletContext().getContextPath() + File.separator  + "photos" + File.separator + fileName);
+        return map;
+    }
 
     /**
      * 根据id来删除商品
