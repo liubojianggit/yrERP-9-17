@@ -108,11 +108,6 @@ public class UserDaoImpl implements UserDao {
      */
     public void add(User user){
         entityManager.persist(user);
-        /*String sql = "insert into user(photo,jobNum,depaCode,name,sex,birthday,addr,phoneNumber,states,passwrod)values(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)";
-        Query query = entityManager.createQuery(sql).setParameter(1, user.getPhoto()).setParameter(2, user.getJobNum()).setParameter(3, user.getDepaCode())
-                .setParameter(4, user.getName()).setParameter(5, user.getSex()).setParameter(6, user.getBirthday()).setParameter(7, user.getAddr()).
-                        setParameter(8, user.getPhoneNumber()).setParameter(9, user.getStates()).setParameter(10, user.getPassword());
-        query.executeUpdate();*/
     }
 
     /**

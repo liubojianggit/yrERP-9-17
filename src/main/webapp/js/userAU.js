@@ -60,49 +60,52 @@ layui.use(['form','layer','upload','table'],function(){
     		}
     	}
     });
-    
+
+    //添加
     form.on("submit(addUser)",function(data){
     	//弹出loading
     	var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-    	
-    	$.ajax({
-    		type: 'post',
-    		url: path+'u_user/userTable',
-    		dataType : 'json',
-    		data: $('#form2').serialize(),
-    		success: function(data){
-    			if(data.code==1){
-    				setTimeout(function(){
-    					top.layer.close(index);
-    					top.layer.msg(data.msg);
-    					layer.closeAll("iframe");
-    					//刷新父页面
-    					parent.location.reload();
-    				},2000);
-    			}else if(data.code==2){
-    				setTimeout(function(){
-    					top.layer.close(index);
-    					top.layer.msg(data.msg);
-    					layer.closeAll("iframe");
-    					//刷新父页面
-    					parent.location.reload();
-    				},2000);
-    			}else {
-    				layer.msg("操作失败",{icon:2});
-    			}
-    		}
-    	});
-    	
-    	
-    	
-    	return false;
+        $.ajax({//删除用户
+            type : "post",
+            url : path+"u_user/userTable",
+            async : false,
+            data : $('#form2').serialize(),
+            dataType : 'json',
+            traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+            success : function(data) {
+                if(data.code==1){
+                    setTimeout(function(){
+                        top.layer.close(index);
+                        top.layer.msg(data.msg);
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    },2000);
+                }else if(data.code==2){
+                    setTimeout(function(){
+                        top.layer.close(index);
+                        top.layer.msg(data.msg);
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    },2000);
+                }else {
+                    layer.msg("操作失败",{icon:2});
+                }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+            }
+        });
+        return false;
     })
     
-    
+    //修改
     form.on("submit(updateUser)",function(data){
     	//弹出loading
-    	/*var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});*/
-    	
+    	var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
     	$.ajax({
     		type: 'post',
     		url: path+'u_user/userTable',
@@ -111,14 +114,12 @@ layui.use(['form','layer','upload','table'],function(){
     		success: function(data){
     			if(data.code==1){
     				top.layer.msg(data.msg);
-    				window.location.href = path+"userList";
-    				
+    				window.location.href = path+"u_user/userTable";
     			}else {
     				layer.msg("修改操作失败",{icon:2});
     			}
     		}
     	});
-    	
     	return false;
     })
 
