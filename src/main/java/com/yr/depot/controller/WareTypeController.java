@@ -85,11 +85,13 @@ public class WareTypeController {
      * @param map
      * @return 查询数据
      */
-    @RequestMapping(value = "ware_typeTable/list", method = RequestMethod.GET)
+    @RequestMapping(value = "ware_typeTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<WareType> queryWare(Page<WareType> wareType, WareTypeBo wareTypeBo, Map<String, Object> map) {
-        wareType = wts.query(wareType);
+    public Page<WareType> queryWare(Page<WareType> page,WareType wareType , Map<String, Object> map) {
+        page.setT(wareType);
+        page = wts.query(page);
         map.put("wareType", wareType);
-        return wareType;
+        System.out.println(page);
+        return page;
     }
 }
