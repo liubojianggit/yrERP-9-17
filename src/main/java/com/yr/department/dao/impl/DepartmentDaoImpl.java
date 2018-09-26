@@ -88,7 +88,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @SuppressWarnings("unchecked")
     public Map<String,Object>querys(){
-        String sql="select * from Department";
+        String sql="select d from department d where 1=1";
         List<Department> list = entityManager.createQuery(sql).getResultList();
         Map<String,Object>map=new HashMap<>();
         for (Department department : list) {
