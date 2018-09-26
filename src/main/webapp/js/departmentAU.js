@@ -15,13 +15,12 @@ layui.use(['form','layer','upload','table'],function(){
     ;
 
 
-    form.on("submit(addMenu)",function(data){
+    form.on("submit(addDepartment)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
-            url: path+'menu/menuTable',
+            url: path+'department/departmentTable',
             dataType : 'json',
             data: $('#form2').serialize(),
             error: function() {
@@ -48,13 +47,13 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    form.on("submit(updateMenu)",function(data){
+    form.on("submit(updateDepartment)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
 
         $.ajax({
             type: 'post',
-            url: path+'menu/menuTable',
+            url: path+'department/departmentTable',
             dataType : 'json',
             data: $('#form2').serialize(),
             error: function() {
