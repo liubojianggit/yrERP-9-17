@@ -94,7 +94,9 @@ public class SupplierWareController {
      */
     @RequestMapping(value = "supplierTable",method = RequestMethod.GET)
     @ResponseBody
-    public Page<SupplierWareBo> queryWare(Page<SupplierWareBo> supplierWare, Map<String,Object>map){
+    public Page<SupplierWareBo> queryWare(Page<SupplierWareBo> supplierWare,SupplierWareBo supplierWareBo, Map<String,Object>map){
+        System.out.println(supplierWareBo+"33333");
+        supplierWare.setT(supplierWareBo);
         supplierWare = sws.query(supplierWare);
         map.put("ware",supplierWare);
         System.out.println(supplierWare+"4");

@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import com.yr.department.dao.DepartmentDao;
+import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +29,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Department> query (){
-        String sql= "select u from department u where 1=1";
+        String sql= "select d from Department d where 1=1";
         Query query = entityManager.createQuery(sql);
         List<Department>list=query.getResultList();
         return list;
@@ -87,7 +88,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @SuppressWarnings("unchecked")
     public Map<String,Object>querys(){
-        String sql="select * from department";
+        String sql="select d from department d where 1=1";
         List<Department> list = entityManager.createQuery(sql).getResultList();
         Map<String,Object>map=new HashMap<>();
         for (Department department : list) {
