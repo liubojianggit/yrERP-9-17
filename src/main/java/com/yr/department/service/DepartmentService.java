@@ -47,4 +47,11 @@ public interface DepartmentService {
      * @return
      */
     Map<String,Object> querys();
+
+    /**
+     * 根据部门名字返回部门编号
+     * @param depaName
+     * @return
+     */
+    String getDepaCode(String depaName);
 }

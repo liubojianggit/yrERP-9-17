@@ -86,14 +86,24 @@ public class DepartmentDaoImpl implements DepartmentDao {
      * @param code
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public Map<String,Object>querys(){
-        String sql="select d from department d where 1=1";
+    public Map<String,Object> querys(){
+        String sql="select d from Department d where 1 = 1";
         List<Department> list = entityManager.createQuery(sql).getResultList();
         Map<String,Object>map=new HashMap<>();
         for (Department department : list) {
             map.put( department.getCode(),department.getName() );//编号key 名字为值
         }
         return map;
+    }
+
+    /**
+     * 根据部门名字返回部门编号
+     * @param depaName
+     * @return
+     */
+    public String getDepaCode(String depaName){
+        String sql = "select d.code from Department d where name = ?1";
+        String name = (String) entityManager.createQuery(sql).setParameter(1,depaName).getSingleResult();
+        return name;
     }
 }

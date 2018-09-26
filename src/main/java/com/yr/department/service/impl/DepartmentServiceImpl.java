@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,5 +104,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Map<String,Object> querys(){
 
         return departmentDao.querys();
+    }
+
+    /**
+     * 根据部门名字返回部门编号
+     * @param depaName
+     * @return
+     */
+    public String getDepaCode(String depaName){
+        return departmentDao.getDepaCode(depaName);
     }
 }
