@@ -79,6 +79,7 @@ public class SaleDaoImpl implements SaleDao {
 
     @Override
     public void add(SaleOrder saleOrder) {
+
        /* String jpql = "insert into sale_order(code,customer_buy,salesperson,ware_code,number,money,s_phoneNumber,remark,states)values(?1,?2,?3,?4,?5,?6,?7,?8,?9)";
         Query query = entityManager.createNativeQuery(jpql).setParameter(1,sale.getCode()).setParameter(2,sale.getCustomerBuy()).setParameter(3,sale.getSalesperson())
                 .setParameter(4,sale.getWareCode()).setParameter(5,sale.getNumber()).setParameter(6,sale.getMoney()).setParameter(7,sale.getsPhoneNumber())

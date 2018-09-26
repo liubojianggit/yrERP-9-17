@@ -7,8 +7,13 @@ import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
 import com.yr.user.dao.UserDao;
 import com.yr.user.service.UserService;
+import com.yr.util.JsonDateValueProcessor;
+import com.yr.util.JsonUtils;
 import com.yr.util.Md5Utils;
 import com.yr.util.SerializeUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.JSONUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +40,14 @@ public class UserServiceImpl implements UserService {
      * 分页的形式查询user表的数据
      * @param page
      */
-    public void query(Page<UserBo> page){
+    public String query(Page<UserBo> page){
         page.setTotalRecord(userDao.getCount(page));//查询总条数加入page中
         List<UserBo> list = userDao.query(page);//分页查询的数据
-        page.setPageData(list);//将集合放入page中
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     /**

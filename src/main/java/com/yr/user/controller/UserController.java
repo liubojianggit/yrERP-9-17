@@ -1,11 +1,13 @@
 package com.yr.user.controller;
 
 import com.yr.core.redis.JedisManager;
+import com.yr.department.service.impl.DepartmentServiceImpl;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
 import com.yr.user.service.UserService;
+import com.yr.util.DateUtils;
 import com.yr.util.FileUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * 操纵用户
@@ -41,6 +44,9 @@ public class UserController {
     private UserService userService;
     @Autowired
     private JedisManager jedisManager;
+    @Autowired
+    @Qualifier("departmentServiceImpl")
+    private DepartmentServiceImpl departmentService;
     public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
 
     /**
@@ -69,11 +75,17 @@ public class UserController {
      * 分页的形式查询user表的数据
      * @return List<User>
      */
-    @RequestMapping(value="/userTable/list", method = RequestMethod.GET)
+    @RequestMapping(value="/userTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<UserBo> query(Page<UserBo> page){
-        userService.query(page);
-        return page;
+    public String query(UserBo userBo,Page<UserBo> page){
+        String depaCode = userBo.getUser().getDepaCode();//这里可能是部门名可能是部门编号
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        if(depaCode != null && !pattern.matcher(depaCode).matches()){//判断字符是否是数字,如果不是就去部门查询部门编号
+            userBo.getUser().setDepaCode(departmentService.getDepaCode(depaCode));
+        }
+        page.setT(userBo);//将bo类置入对象
+        String json = userService.query(page);//将list返回一个json字符串
+        return json;
     }
 
     /**
@@ -86,22 +98,24 @@ public class UserController {
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
         map1.put("2", "女");
-        map1.put("3", "保密");
         map.put("sexs", map1);
+        Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
+        map.put("depaList",departmentList);
         //部门编号为键，名字为值
         return "userAU";
     }
 
     /**
-     * 保存添加,先将图片保存到本地，然后将用户的信息保存到数据库
+     * 保存添加,先将图片保存到服务器，然后将用户的信息保存到数据库
      * @param user
      * @param filesCopy 传入路径
      * @param request
      * @return String
      */
-    @RequestMapping(value="/userTable", method=RequestMethod.POST)
-    public String saveAdd(User user, @RequestParam(value="filesCopy") String filesCopy, HttpServletRequest request){
-        String phone = String.valueOf(FileUtils.getTimeStamp());
+    @RequestMapping(value="/userTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String saveAdd(User user, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
+        /*String phone = String.valueOf(FileUtils.getTimeStamp());
         File file = new File(path, phone + ".jpg");//第一个是父级文件路径，第二个是文件名
         if(!file.getParentFile().exists()){//判断父级路径是否存在
             file.mkdir();//创建文件夹
@@ -119,11 +133,14 @@ public class UserController {
             filesCopy = request.getServletContext().getRealPath("/") + "photos" + filesCopy.substring(filesCopy.lastIndexOf("\\"),filesCopy.length());
         }
         FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
-        user.setPhoto(phoneStr);//替换掉原本的路径
+        user.setPhoto(phoneStr);//替换掉原本的路径*/
+
+        user.setAge(DateUtils.calculateTimeDifferenceByCalendar(user.getBirthday()));//计算当前时间-生日日期=现在年龄
+        user.setStates(1);//默认是启用的
         user.setCreateTime(new Date());//获取当前时间
-        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        //user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         userService.add(user);
-        return "redirect:/user";
+        return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
     /**
@@ -131,12 +148,14 @@ public class UserController {
      * @return String
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<UserBo> page){
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map,UserBo userBo, Page<UserBo> page){
+        page.setT(userBo);
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
         map1.put("2", "女");
-        map1.put("3", "保密");
         map.put("sexs", map1);
+        Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
+        map.put("depaList",departmentList);
         map.put("page", page);
         map.put("user", userService.getById(id));//根据id获取对象放入request中
         return "userAU";
@@ -146,13 +165,14 @@ public class UserController {
      * 保存修改
      * @return String
      */
-    @RequestMapping(value="/userTable",method=RequestMethod.PUT)
+    @RequestMapping(value="/userTable",method=RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String saveUpdate(User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
         map.put("page", page);
         user.setUpdateTime(new Date());//获取修改当前时间
-        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        //user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         userService.update(user);
-        return "userList";
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -161,8 +181,9 @@ public class UserController {
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer id){
         userService.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
     /**
@@ -254,5 +275,17 @@ public class UserController {
         stream.flush();
         stream.close();
     }
+
+    /**
+     * 根据用户id返回部门的编号，再根据部门的编号查询部门的名字
+     * @return String
+     */
+    /*@RequestMapping(value = "/userTable/getDepaName",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getDepaName(@RequestParam(value="id") Integer id){
+        User user = userService.getById(id);
+        Map<String,Object> map = departmentService.querys();
+        return (String)map.get(user.getDepaCode());
+    }*/
 
 }

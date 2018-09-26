@@ -24,9 +24,9 @@ public class Role extends BaseEntity implements Serializable{
     @JoinTable(name="u_user_role",//中间表的名字
             joinColumns={@JoinColumn(name="uid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
             inverseJoinColumns={@JoinColumn(name="rid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> user;
-    @ManyToMany(mappedBy = "role")//放弃本端的维护，使用role维护
+    @ManyToMany(mappedBy = "role",fetch = FetchType.EAGER)//放弃本端的维护，使用role维护
     private Set<Permission> permission;
 
     public void setId(Integer id) {

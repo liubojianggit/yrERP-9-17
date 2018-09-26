@@ -15,7 +15,7 @@ public class Page<T> implements Serializable {
 	private Integer start;// 分页开始记录条数
 	private Long totalRecord;// 总记录数
 	private Integer totalPage;// 总页数
-	private List<T> pageData; // 页数据 
+	private List<T> pageData; // 页数据
 	private T t;//分页记录的实体类
 	//private StudentBO studentBO;
 	
