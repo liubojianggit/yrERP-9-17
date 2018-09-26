@@ -4,9 +4,9 @@ package com.yr.department.service.impl;
 import com.yr.department.dao.DepartmentDao;
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.department.Department;
-import com.yr.entitys.menu.Menu;
+import com.yr.util.DateUtils;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,30 +27,43 @@ public class DepartmentServiceImpl implements DepartmentService {
      * 查询所有部门
      */
     @Override
-    public List<Departmentbo>query(){
-        List<Department>list=departmentDao.query();
-        List<Departmentbo>listbo=new ArrayList<>();
-        for (Department department:list){
-            Departmentbo departmentbo=new Departmentbo();
-            departmentbo.setDepartment(department);
-            listbo.add(departmentbo);
+    public String query(){
+        List<Departmentbo> departmentboList= new ArrayList<Departmentbo>();
+        for (Department department : departmentDao.query()) {
+            //这里new对象，要使用自动注入吗？？
+            Departmentbo departmentbo = new Departmentbo();
+            departmentbo.setId(department.getId());
+            departmentbo.setName(department.getName());
+            departmentbo.setCode(department.getCode());
+            departmentbo.setSupCode(department.getSupCode());
+            departmentbo.setCreateEmp(department.getCreateEmp());
+            departmentbo.setCreateTime(DateUtils.dateToStr(department.getCreateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
+            departmentbo.setUpdateEmp(department.getUpdateEmp());
+            departmentbo.setUpdateTime(DateUtils.dateToStr(department.getUpdateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
+            departmentboList.add(departmentbo);
         }
-        Department department1=new Department();
-        department1.setName("无");
-        department1.setPid(0);
-        department1.setId(0);
-        Departmentbo departmentbo1=new Departmentbo();
-        departmentbo1.setDepartment(department1);
-        listbo.add(departmentbo1);
-        return listbo;
+        String menuJsonStr = JSONArray.fromObject(departmentboList).toString();
+        String strJson = "{" +
+                "\"msg\": \"\"," +
+                "\"code\": 0," +
+                "\"data\":"+menuJsonStr+"," +
+                "\"count\": 924," +
+                "\"is\": true," +
+                "\"tip\": \"操作成功！\"" +
+                "}";
+        System.out.println(strJson);
+        return strJson;
     }
 
     /**
      * 根据ID查询部门 并回显
      */
     @Override
-    public Department departmentId(Integer id) {
-        return departmentDao.departmentId(id);
+    public Departmentbo departmentId(Integer id) {
+        Department department=departmentDao.departmentId(id);
+        Departmentbo departmentbo = new Departmentbo();
+        departmentbo.setDepartment(department);
+        return departmentbo;
     }
 
     /**
@@ -84,7 +97,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * 查询部门编号,提供给用户调用
-     * @param code
+     * @param
      * @return
      */
     public Map<String,Object> querys(){
