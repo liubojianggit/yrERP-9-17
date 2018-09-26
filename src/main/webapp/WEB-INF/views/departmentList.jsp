@@ -31,11 +31,11 @@
             ,idField:'id'
             ,url:'<%=request.getContextPath() %>/department/departmentTable/list'
             ,cellMinWidth: 100
-            ,treeId:'id'//树形id字段名称
-            ,treeUpId:'pid'//树形父id字段名称
+            ,treeId:'code'//树形id字段名称
+            ,treeUpId:'supCode'//树形父id字段名称
             ,treeShowName:'name'//以树形式显示的字段
             ,cols: [[
-                {field:'name', edit:'name',width:'15%', title: '菜单名称'},
+                {field:'name', edit:'name',width:'15%', title: '部门名称'},
                 {field:'code',width:'15%', title: '部门编号'},
                 {field:'supCode',width:'20%', title: 'supCode'},
                 {field:'createTime',width:'20%', title: '创建时间'},
@@ -103,7 +103,7 @@
     function upd(uObj) {
         layer.open({
             type: 2,
-            title: '修改菜单',
+            title: '修改部门',
             maxmin: true,
             shadeClose: true, //点击遮罩关闭层
             area : ['800px' , '520px'],
@@ -120,7 +120,7 @@
         //window.location.href='<%=request.getContextPath() %>/menu/menuTable/add';
         layer.open({
             type: 2,
-            title: '添加菜单',
+            title: '添加部门',
             maxmin: true,
             shadeClose: true, //点击遮罩关闭层
             area : ['800px' , '520px'],
