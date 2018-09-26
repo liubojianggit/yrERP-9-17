@@ -3,14 +3,11 @@ package com.yr.order.service.impl;
 import java.util.List;
 
 import com.yr.entitys.bo.orderBO.SaleImportExcelBO;
-import com.yr.entitys.bo.orderBO.SaleReadExcel;
 import com.yr.entitys.order.SaleOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.yr.order.dao.SaleDao;
 import com.yr.order.dao.SaleExportDao;
 import com.yr.order.service.SaleExcelportService;
 @Service
@@ -31,7 +28,7 @@ public class SaleExcelportImplService implements SaleExcelportService{
 
 		int result = 0;
 		//解析xml文件
-		SaleReadExcel readExcel=new SaleReadExcel();
+		SaleImportExcelBO readExcel=new SaleImportExcelBO();
 		List<SaleOrder> saleOrderList = readExcel.getExcelInfo(filePath);
 		result = saleExportDao.addExcel(saleOrderList);
 		if(result > 0){
