@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -66,14 +67,6 @@ public class Department implements Serializable{
         this.createTime = createTime;
     }
 
-    public String getCreateEmp() {
-        return createEmp;
-    }
-
-    public void setCreateEmp(String createEmp) {
-        this.createEmp = createEmp;
-    }
-
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -88,6 +81,14 @@ public class Department implements Serializable{
 
     public void setUpdateEmp(String updateEmp) {
         this.updateEmp = updateEmp;
+    }
+
+    public String getCreateEmp() {
+        return createEmp;
+    }
+
+    public void setCreateEmp(String createEmp) {
+        this.createEmp = createEmp;
     }
 
     @Override

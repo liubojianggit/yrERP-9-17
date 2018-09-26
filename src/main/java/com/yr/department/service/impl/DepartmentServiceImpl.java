@@ -4,7 +4,9 @@ package com.yr.department.service.impl;
 import com.yr.department.dao.DepartmentDao;
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.user.User;
 import com.yr.util.DateUtils;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +54,28 @@ public class DepartmentServiceImpl implements DepartmentService {
                 "\"is\": true," +
                 "\"tip\": \"操作成功！\"" +
                 "}";
-        System.out.println(strJson);
         return strJson;
     }
+
+    @Override
+    public List<Departmentbo> getDepartmentList() {
+        List<Department> list = departmentDao.query();
+        List<Departmentbo> listBO = new ArrayList<>();
+        for (Department department:list) {
+            Departmentbo departmentbo = new Departmentbo();
+            departmentbo.setDepartment(department);
+            listBO.add(departmentbo);
+        }
+        Department department1 = new Department();
+        department1.setName("无");
+        department1.setSupCode("0");
+        department1.setCode("0");
+        Departmentbo departmentbo1 = new Departmentbo();
+        departmentbo1.setDepartment(department1);
+        listBO.add(departmentbo1);
+        return listBO;
+    }
+
 
     /**
      * 根据ID查询部门 并回显
@@ -71,9 +92,9 @@ public class DepartmentServiceImpl implements DepartmentService {
      * 新增部门
      */
     @Override
-    public void add(Department department) {
+    public void add(Departmentbo departmentbo) {
 
-        departmentDao.add(department);
+        departmentDao.add(departmentbo.getDepartment());
     }
 
     /**
@@ -90,9 +111,9 @@ public class DepartmentServiceImpl implements DepartmentService {
      * 修改部门
      */
     @Override
-    public void update(Department department) {
+    public void update(Departmentbo departmentbo) {
 
-        departmentDao.update(department);
+        departmentDao.update(departmentbo.getDepartment());
 
     }
 

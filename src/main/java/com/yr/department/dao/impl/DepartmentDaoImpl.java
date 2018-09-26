@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import com.yr.department.dao.DepartmentDao;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.user.User;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -61,6 +62,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public void add(Department department) {
+        department.setCreateEmp("宋春元");
+        department.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        department.setUpdateEmp("宋春元");
+        department.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         entityManager.persist(department);
     }
 

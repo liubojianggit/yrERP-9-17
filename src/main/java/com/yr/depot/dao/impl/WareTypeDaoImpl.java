@@ -105,7 +105,7 @@ public class WareTypeDaoImpl implements WareTypeDao {
         }
         jpql.append("order by id desc");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setFirstResult(wareType.getCurrentPage());
+        query.setFirstResult(wareType.getStart());
         query.setMaxResults(wareType.getPageSize());
         List<WareType> wareTypes = query.getResultList();
         return wareTypes;
