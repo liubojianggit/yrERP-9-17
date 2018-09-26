@@ -17,14 +17,13 @@ public class Department implements Serializable{
     private Integer id;//部门id
     private String  code;//部门编号
     private String name;//部门昵称
-    private Integer pid;//父ID
     @Column(name = "sup_code",nullable = false)
     private String supCode;//父级部门编号
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private String createTime;//创建时间
+    private Date createTime;//创建时间
     private String createEmp;//创建人
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private String updateTime;//修改时间
+    private Date updateTime;//修改时间
     private String updateEmp;//修改人
 
     public Integer getId() {
@@ -59,19 +58,11 @@ public class Department implements Serializable{
         this.supCode = supCode;
     }
 
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -83,11 +74,11 @@ public class Department implements Serializable{
         this.createEmp = createEmp;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -105,11 +96,10 @@ public class Department implements Serializable{
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
-                ", pid=" + pid +
                 ", supCode='" + supCode + '\'' +
-                ", createTime='" + createTime + '\'' +
+                ", createTime=" + createTime +
                 ", createEmp='" + createEmp + '\'' +
-                ", updateTime='" + updateTime + '\'' +
+                ", updateTime=" + updateTime +
                 ", updateEmp='" + updateEmp + '\'' +
                 '}';
     }
