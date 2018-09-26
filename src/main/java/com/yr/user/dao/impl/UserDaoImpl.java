@@ -34,30 +34,30 @@ public class UserDaoImpl implements UserDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getName())){//判断是否为null和空
             jpql += "and u.name like :name ";
         }
-        /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
-            jpql += "and u.birthday >= :startBirthday ";
+        if(!StringUtils.isEmpty(page.getT().getUser().getDepaCode())){//部门编号
+            jpql += "and u.depaCode like :depaCode ";
         }
-        if(!StringUtils.isEmpty(page.getT().getEndBirthday())){
-            jpql += "and u.birthday <= :endBirthday ";
+        if(page.getT().getMinAge() != null){//最小年龄
+            jpql += "and u.age >= :minAge ";
         }
-        if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
-            jpql += "and u.addr like :addr ";
-        }*/
+        if(page.getT().getMaxAge() != null){//最大年龄
+            jpql += "and u.age <= :maxAge ";
+        }
         Query query = entityManager.createQuery(jpql);
         if(!StringUtils.isEmpty(page.getT().getUser().getName())){
             query.setParameter("name", "%"+page.getT().getUser().getName()+"%");
         }
-        /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
-            query.setParameter("startBirthday", DateUtils.toDate(page.getT().getStartBirthday()));
+        if(!StringUtils.isEmpty(page.getT().getUser().getDepaCode())){//部门编号
+            query.setParameter("depaCode", "%"+page.getT().getUser().getDepaCode()+"%");
         }
-        if(!StringUtils.isEmpty(page.getT().getEndBirthday())){
-            query.setParameter("endBirthday", DateUtils.toDate(page.getT().getEndBirthday()));
+        if(page.getT().getMinAge() != null){//最小年龄
+            query.setParameter("minAge", page.getT().getMinAge());
         }
-        if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
-            query.setParameter("addr", "%"+page.getT().getUser().getAddr()+"%");
-        }*/
+        if(page.getT().getMaxAge() != null){//最大年龄
+            query.setParameter("maxAge", page.getT().getMaxAge());
+        }
         Long count = (Long)query.getSingleResult();//获取到结果
-        return count;//将long转int
+        return count;
     }
 
     /**
@@ -69,15 +69,16 @@ public class UserDaoImpl implements UserDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getName())){//判断是否为null和空
             jpql += "and u.name like :name ";
         }
-        /*if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
-            jpql += "and u.birthday >= :startBirthday ";
+        if(!StringUtils.isEmpty(page.getT().getUser().getDepaCode())){//部门编号
+            jpql += "and u.depaCode like :depaCode ";
         }
-        if(!StringUtils.isEmpty(page.getT().getEndBirthday())){
-            jpql += "and u.birthday <= :endBirthday ";
+        if(page.getT().getMinAge() != null){//最小年龄
+            jpql += "and u.age >= :minAge ";
         }
-        if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
-            jpql += "and u.addr like :addr ";
+        if(page.getT().getMaxAge() != null){//最大年龄
+            jpql += "and u.age <= :maxAge ";
         }
+        /*
         if(page.getT().getOrder() == 0){
             jpql += "order by u.id asc ";
         }else if(page.getT().getOrder() == 1){
@@ -87,15 +88,15 @@ public class UserDaoImpl implements UserDao {
         if(!StringUtils.isEmpty(page.getT().getUser().getName())){
             query.setParameter("name", "%"+page.getT().getUser().getName()+"%");
         }
-       /* if(!StringUtils.isEmpty(page.getT().getStartBirthday())){
-            query.setParameter("startBirthday", DateUtils.toDate(page.getT().getStartBirthday()));
+        if(!StringUtils.isEmpty(page.getT().getUser().getDepaCode())){//部门编号
+            query.setParameter("depaCode", "%"+page.getT().getUser().getDepaCode()+"%");
         }
-        if(!StringUtils.isEmpty(page.getT().getEndBirthday())){
-            query.setParameter("endBirthday", DateUtils.toDate(page.getT().getEndBirthday()));//转sql date
+        if(page.getT().getMinAge() != null){//最小年龄
+            query.setParameter("minAge", page.getT().getMinAge());
         }
-        if(!StringUtils.isEmpty(page.getT().getUser().getAddr())){
-            query.setParameter("addr", "%"+page.getT().getUser().getAddr()+"%");
-        }*/
+        if(page.getT().getMaxAge() != null){//最大年龄
+            query.setParameter("maxAge", page.getT().getMaxAge());
+        }
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<UserBo> list = query.getResultList();//获得分页后的数据集合
         return list;

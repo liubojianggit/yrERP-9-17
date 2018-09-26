@@ -13,7 +13,7 @@ public interface UserService {
      * 分页的形式查询user表的数据
      * @param page
      * */
-    void query(Page<UserBo> page);
+    String query(Page<UserBo> page);
 
     /**
      * 添加用户信息
