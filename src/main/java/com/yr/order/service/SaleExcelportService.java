@@ -13,12 +13,12 @@ public interface SaleExcelportService {
 	 * @return
 	 */
 	 List<SaleOrder> queryForList();
+
 	/**
 	 * 导入Excel表格
-	 * @param name
-	 * @param file
+	 * @param filePath
 	 * @return
 	 */
 
-	/*  boolean batchImport(String name,MultipartFile file);*/
+	boolean addExcel(String filePath);
 }
