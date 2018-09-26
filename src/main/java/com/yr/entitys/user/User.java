@@ -28,9 +28,10 @@ public class User extends BaseEntity implements Serializable{
     @Column(unique = true, nullable = false)
     private String name;//姓名
     private Integer sex;//性别
+    private Integer age;//年龄
     //定义时间格式	自动更新时间
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @Column(columnDefinition = "date")//columnDefinition设置数据库映射类型
+    @DateTimeFormat( pattern = "yyyy-MM-dd" )
     private Date birthday;//生日
     private String addr;//地址
     @Column(nullable = false)
@@ -40,8 +41,9 @@ public class User extends BaseEntity implements Serializable{
     private Integer states;//状态
     @Column(nullable = false)
     private String password;//密码
-    @ManyToMany(mappedBy = "user",cascade = CascadeType.REMOVE)//多对多，放弃本端的维护，使用user维护
-    private Set<Role> role;
+    //这里必须要使用急加载，否则分页的role类出现无法构建
+    @ManyToMany(mappedBy = "user",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)//多对多，放弃本端的维护，使用user维护
+    private Set<Role> role = null;
 
     public Integer getId() {
         return id;
@@ -139,6 +141,14 @@ public class User extends BaseEntity implements Serializable{
         this.role = role;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -148,12 +158,12 @@ public class User extends BaseEntity implements Serializable{
                 ", depaCode='" + depaCode + '\'' +
                 ", name='" + name + '\'' +
                 ", sex=" + sex +
+                ", age=" + age +
                 ", birthday=" + birthday +
                 ", addr='" + addr + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", states=" + states +
                 ", password='" + password + '\'' +
-                ", role=" + role +
                 '}';
     }
 }

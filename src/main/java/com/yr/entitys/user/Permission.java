@@ -23,10 +23,10 @@ public class Permission extends BaseEntity implements Serializable {
     private String method;//权限方法
     @Column(name="sup_id",nullable = false)
     private Integer supId;//上级id
-    @ManyToMany//多对多
     @JoinTable(name="u_role_permission",//中间表的名字
             joinColumns={@JoinColumn(name="rid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
             inverseJoinColumns={@JoinColumn(name="pid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
+    @ManyToMany(fetch = FetchType.EAGER)//多对多
     private Set<Role> role;
 
     public Integer getId() {

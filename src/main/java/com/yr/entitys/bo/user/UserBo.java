@@ -7,10 +7,29 @@ import java.io.Serializable;
 
 public class UserBo implements Serializable{
     private static final long serialVersionUID = 1L;
+    private Integer minAge;//最小年龄
+    private Integer maxAge;//最大年龄
     private User user;
-    /*private String startBirthday;//起始生日
-    private String endBirthday;//结束生日
-    private Integer order;//id顺序为0,id倒序为1*/
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getMinAge() {
+        return minAge;
+    }
+
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge;
+    }
+
+    public Integer getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(Integer maxAge) {
+        this.maxAge = maxAge;
+    }
 
     public User getUser() {
         return user;
@@ -20,34 +39,12 @@ public class UserBo implements Serializable{
         this.user = user;
     }
 
-    /*public String getStartBirthday() {
-        return startBirthday;
-    }
-
-    public void setStartBirthday(String startBirthday) {
-        this.startBirthday = startBirthday;
-    }
-
-    public String getEndBirthday() {
-        return endBirthday;
-    }
-
-    public void setEndBirthday(String endBirthday) {
-        this.endBirthday = endBirthday;
-    }
-
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
-    }*/
-
     @Override
     public String toString() {
         return "UserBo{" +
-                "user=" + user +
+                "minAge=" + minAge +
+                ", maxAge=" + maxAge +
+                ", user=" + user +
                 '}';
     }
 }
