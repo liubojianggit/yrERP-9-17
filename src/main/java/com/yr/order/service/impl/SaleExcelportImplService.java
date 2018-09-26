@@ -27,7 +27,7 @@ public class SaleExcelportImplService implements SaleExcelportService{
      * @param file
      * @return
      */
-    public boolean batchImport(String name,MultipartFile file){
+   /* public boolean batchImport(String name,MultipartFile file){
         boolean b = false;
         //创建处理EXCEL
         SaleImportExcelBO readExcel=new SaleImportExcelBO();
@@ -43,7 +43,7 @@ public class SaleExcelportImplService implements SaleExcelportService{
         	saleDao.add(sale);
         }
         return b;
-    }
+    }*/
 
     /**
      * 销售订单表的Excel导出
