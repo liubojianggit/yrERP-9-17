@@ -73,12 +73,21 @@ public class SupplierDaoImpl implements SupplierDao {
         return count;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Supplier getById(Integer id) {
         Supplier supplier = entityManager.find(Supplier.class,id);
         return supplier;
     }
-
+    @Override
+    public Supplier getByCode(String code){
+        Supplier supplier=entityManager.find(Supplier.class,code);
+        return supplier;
+    }
     @Override
     public List<SupplierBo> query(Page<SupplierBo> page) {
         String jpql="select d from Supplier d where 1=1 ";

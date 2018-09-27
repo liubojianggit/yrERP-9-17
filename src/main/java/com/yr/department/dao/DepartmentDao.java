@@ -27,6 +27,8 @@ public interface DepartmentDao {
   */
  List<Departmentbo> queryDepartmentbo(Page<Departmentbo> page);
 
+    Deprecated getByCode(String code);
+
 
      /**
      * 查询总条数
