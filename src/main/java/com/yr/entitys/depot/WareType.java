@@ -21,9 +21,8 @@ public class WareType {
     private String createTime;//
     @Column(nullable = false)
     private String createEmp;//创建人
-    @Column(nullable = false,columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE")
     private String updateTime;//修改时间
-    @Column(nullable = false)
     private  String updateEmp;//修改人
 
     public Integer getId() {
