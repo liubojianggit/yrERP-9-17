@@ -45,5 +45,5 @@ public interface DepotService {
      * @param name
      * @return
      */
-    List<Depot> getname(String name);
+    List<Depot> getname();
 }

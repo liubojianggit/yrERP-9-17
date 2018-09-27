@@ -138,7 +138,7 @@ public class DepotDaoImpl implements DepotDao {
      * @param name
      * @return
      */
-    public List<Depot> getname(String name){
+    public List<Depot> getname(){
         String jpql="select d from where Depot d where 1=1";
         List<Depot> list=entityManager.createQuery(jpql).getResultList();
         return  list;
