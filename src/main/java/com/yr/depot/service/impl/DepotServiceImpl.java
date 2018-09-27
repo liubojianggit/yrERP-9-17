@@ -82,4 +82,15 @@ public class DepotServiceImpl implements DepotService {
 
         return depotDao.getname();
     }
+
+    /**
+     *
+     * @param code
+     * @return
+     */
+    @Override
+    public Depot getcode(String code) {
+
+        return depotDao.getcode(code);
+    }
 }

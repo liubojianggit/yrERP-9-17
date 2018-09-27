@@ -52,4 +52,6 @@ public interface DepotDao {
      * @return
      */
     List<Depot> getname();
+
+    Depot getcode(String code);
 }

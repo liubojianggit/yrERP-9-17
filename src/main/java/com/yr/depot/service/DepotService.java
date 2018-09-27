@@ -46,4 +46,6 @@ public interface DepotService {
      * @return
      */
     List<Depot> getname();
+
+    Depot getcode(String code);
 }

@@ -56,4 +56,11 @@ public interface SupplierWareDao {
      * @return
      */
     public Long getCount(Page<SupplierWareBo> page);
+
+    /**
+     * 根据商品编号去查供应商品
+     * @param code
+     * @return
+     */
+    public SupplierWares getSuppLierWareByCode(String code);
 }
