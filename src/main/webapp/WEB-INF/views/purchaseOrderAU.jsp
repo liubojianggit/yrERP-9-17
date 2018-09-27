@@ -18,92 +18,96 @@
 </head>
 <body class="childrenBody">
 
-<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareBO">
+<%--@elvariable id="purchaseOrder" type="aj"--%>
+<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="purchaseOrder">
     <form:errors path="*"></form:errors>
-    <c:if test="${wareBO.ware.id != null }">
+    <c:if test="${purchaseOrder.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="id" value="${wareBO.ware.getId() }">
+        <input type="hidden" name="id" value="${purchaseOrder.id }">
     </c:if>
-    <div class="layui-form-item layui-row layui-col-xs12">
+    <%--<div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">订单编号</label>
         <div class="layui-input-block">
-            <form:input path="ware.name" class="layui-input"  lay-verify="required" placeholder="请输入订单编号："/>
+            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入订单编号："></form:input>
         </div>
-    </div>
+
+    </div>--%>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">申请人姓名</label>
         <div class="layui-input-block">
-            <form:input path="ware.code" class="layui-input"  lay-verify="required" placeholder="请输入申请人姓名："/>
+            <form:input path="" class="layui-input"  lay-verify="required" placeholder="请输入申请人姓名："/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">申请人电话</label>
         <div class="layui-input-block">
-            <form:input path="ware.code" class="layui-input"  lay-verify="required" placeholder="请输入申请人电话："/>
+            <form:input path="" class="layui-input"  lay-verify="required" placeholder="请输入申请人电话："/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">采购部门</label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+            <%--<form:select path="departmentCode" items="${departmentList }" itemLabel="name" itemValue="id"></form:select>--%>
+                <form:select path="departmentCode" items="${departmentList}" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">供应商</label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+           <%-- <form:select path="" items="${}" itemLabel="" itemValue=""></form:select>--%>
+               <form:select path="supplierCode" items="${supplierList}" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+            <%--<form:select path="" items="${}" itemLabel="" itemValue=""></form:select>--%>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品品牌 </label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+            <%--<form:select path="" items="${}" itemLabel="" itemValue=""></form:select>--%>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+            <%--<form:select path="" items="${}" itemLabel="" itemValue=""></form:select>--%>
         </div>
     </div>
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">采购数量</label>
         <div class="layui-input-block">
-            <form:input path="ware.brand" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="purchaseNumber" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-block">
-            <form:input path="ware.brand" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="unitPrice" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">总价</label>
         <div class="layui-input-block">
-            <form:input path="ware.brand" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="totalPrice" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">收货人</label>
         <div class="layui-input-block">
-            <form:input path="ware.barCode" class="layui-input"  lay-verify="required" placeholder="请输入商品条码"/>
+            <form:input path="consignee" class="layui-input"  lay-verify="required" placeholder="请输入商品条码"/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">收货仓库</label>
         <div class="layui-input-inline">
-            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
+            <%--<form:select path="depotCode" items="${depotList }" itemLabel="" itemValue=""></form:select>--%>
+                <form:select path="depotCode" items="${depotList }" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
-
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
             <c:if test="${user.id == null }">
