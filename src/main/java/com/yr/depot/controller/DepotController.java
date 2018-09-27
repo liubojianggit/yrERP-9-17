@@ -10,11 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("depot")
+@RequestMapping("/depot")
 public class DepotController {
     @Qualifier("depotServiceImpl")
     @Autowired
@@ -28,7 +27,7 @@ public class DepotController {
      */
     @ModelAttribute
     public void query(@RequestParam(value ="id",required=false) Integer id,Map<String, Object> map) throws SQLException{// 绑定站位符
-        if (id != null&&id !=0) {
+        if (id != null && id != 0) {
             Depot depot=service.getById(id);
             map.put("depot", depot);
         }
@@ -38,12 +37,21 @@ public class DepotController {
      * @param depotbo 仓库对象
      * @return
      */
-    @RequestMapping(value="/depotTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @RequestMapping(value="/depotTable/list",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<Depotbo> query(Depotbo depotbo ,Page<Depotbo>page){
-       page.setT(depotbo);
-        service.query(page);
-        return page;
+    public String query(Depotbo depotbo ,Page<Depotbo>page){
+        page.setT(depotbo);//将bo类置入对象
+        String json = service.query(page);//将list返回一个json字符串
+        return json;
+    }
+
+    /**
+     * 跳转仓库主页面
+     * @return
+     */
+    @RequestMapping(value = "/depotTable",method=RequestMethod.GET)
+    public String JumpDepot(){
+        return "depotList";
     }
 
     /**
@@ -53,36 +61,32 @@ public class DepotController {
     @RequestMapping(value="/depotTable/add",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String AddEcho(){
 
-        return "depotAdd";//添加页面的jsp前缀
+        return "depotAU";//添加页面的jsp前缀
     }
 
     /**
-     * 保存仓库添加的数据，前提添加数据不能为空
+     * 保存仓库添加的数据
      * @param depot
      * @param map
      * @return
      */
     @RequestMapping(value="/depotTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String add(Depot depot, Map<String, Object> map){
-        boolean isNull =service.isNullAdd(depot);
-        if(isNull == false){
-            map.put("depot",depot);
-            map.put("uperror", 1);//如果修改的值为空就不修改并且跳转到修改页面(重新刷新页面)
-            return "depotAdd";
-        }else{
-            service.add(depot);
-            return "depotList";
-        }
+    public void add(Depot depot, Map<String, Object> map){
+
+        service.add(depot);
+
     }
+
     /**
      * 根据id删除仓库数据
      * @return 返回分页查询页面
      */
     @RequestMapping(value = "/depotTable/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable("id") Integer id) {
         service.delete(id);
-        return "depotList";
+        return "{\"code\":1,\"msg\":\"删除" + "成功\"}";
     }
+
     /**
      * 根据id回显修改的用户
      * @param id
@@ -95,28 +99,18 @@ public class DepotController {
         Depot depots = service.getById(id);
         map.put("depot",depots);
         map.put("page", page);
-        return "depotAdd";
+        return "depotAU";
     }
+
     /**
      * 保存修改仓库
      * @param
-     * @param map
      * @return
      */
-    @RequestMapping(value="/depotTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String update(Depot depot
-            ,@RequestParam("id")Integer id,Map<String, Object> map,Depotbo acon,Page<Depotbo>page){
-        boolean isNull =service.isNullUpdate(depot);
-        if(isNull == false ){
-           Depot depot1 = service.getById(id);
-            map.put("depot", depot1);
-            map.put("uperror",2);
-            return "depotAdd";
-        }else{
-            page.setT(acon);
-            map.put("page", page);
-            service.update(depot);
-            return "depotList";
-        }
+    @ResponseBody
+    @RequestMapping(value="/depotTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
+    public String updates(Depot depot){
+        service.update(depot);
+        return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }
 }
