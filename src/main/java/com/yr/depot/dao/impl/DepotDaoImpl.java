@@ -143,4 +143,12 @@ public class DepotDaoImpl implements DepotDao {
         List<Depot> list=entityManager.createQuery(jpql).getResultList();
         return  list;
     }
+
+    @Override
+    public Depot getcode(String code) {
+        String jqpl="select d from Depot d where code=?";
+        Query query=entityManager.createQuery(jqpl).setParameter(1,code);
+        Depot depot= (Depot) query.getSingleResult();
+        return depot;
+    }
 }
