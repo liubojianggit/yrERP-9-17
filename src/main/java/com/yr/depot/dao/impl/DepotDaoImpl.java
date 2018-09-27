@@ -2,7 +2,6 @@ package com.yr.depot.dao.impl;
 
 import com.yr.depot.dao.DepotDao;
 import com.yr.entitys.bo.depotBo.Depotbo;
-import com.yr.entitys.department.Department;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import org.springframework.stereotype.Repository;
@@ -139,11 +138,16 @@ public class DepotDaoImpl implements DepotDao {
      * @return
      */
     public List<Depot> getname(){
-        String jpql="select d from where Depot d where 1=1";
+        String jpql="select d from where Depot d ";
         List<Depot> list=entityManager.createQuery(jpql).getResultList();
         return  list;
     }
 
+    /**
+     *根据编号 返回仓库对象
+     * @param code
+     * @return
+     */
     @Override
     public Depot getcode(String code) {
         String jqpl="select d from Depot d where code=?";
