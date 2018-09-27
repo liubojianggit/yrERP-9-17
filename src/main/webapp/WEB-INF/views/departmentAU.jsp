@@ -22,7 +22,7 @@
     <form:errors path="*"></form:errors>
     <c:if test="${departmentbo.department.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="department.id" value="${department.getId() }">
+        <input type="hidden" name="department.id" value="${departmentbo.department.id }">
     </c:if>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">部门名称</label>

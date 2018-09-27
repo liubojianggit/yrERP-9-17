@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>权限管理</title>
+    <title>用户中心--layui后台管理模板 2.0</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -20,30 +20,29 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="pName" placeholder="请输入权限名：" />
-                    <input type="text" class="layui-input searchVal" id="pUrl" placeholder="请输入权限url：" />
-                    <input type="text" class="layui-input searchVal" id="pMethod" placeholder="请输入请求方式：" />
+                    <input type="text" class="layui-input searchVal" id="depaNameOrCode" value="" placeholder="请输入部门名称/编号：" />
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">添加权限</a>
+                <a class="layui-btn layui-btn-normal addNews_btn">添加部门</a>
             </div>
             <div class="layui-inline">
                 <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
             </div>
         </form>
     </blockquote>
-    <table id="userList" lay-filter="userList"></table>
+    <table id="departmentList" lay-filter="departmentList"></table>
 
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
-    <!--操作-->
-    <script type="text/html" id="userListBar">
+    <!--操作		这里的d是固定，可以通过d对象点属性获取到值-->
+    <script type="text/html" id="departmentListBar">
+
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/permissionList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/departmentListPage.js"></script>
 </body>
 </html>

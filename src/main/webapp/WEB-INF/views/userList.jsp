@@ -13,18 +13,35 @@
 	<meta name="format-detection" content="telephone=no">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.0.js"></script>
 </head>
+<script type="text/javascript">
+	$(function(){
+
+	});
+</script>
+<style>
+	.layui-form-checkbox[lay-skin=primary] i{top:5px;}
+</style>
 <body class="childrenBody">
 <form class="layui-form">
 	<blockquote class="layui-elem-quote quoteBox">
 		<form class="layui-form" id="searchFormId">
 			<div class="layui-inline">
-				<div class="layui-input-inline">
+				<div class="layui-input-inline" style="width: 700px;">
+					<div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
 					<input type="text" class="layui-input searchVal" id="userName" placeholder="请输入姓名：" />
-					<input type="text" class="layui-input searchVal" id="depaCode" value="" placeholder="请输入部门名称/编号：" />
-					<input type="text" class="layui-input searchVal" id="minAge" value="" placeholder="请输入最小年龄：" />
-					<input type="text" class="layui-input searchVal" id="maxAge" value="" placeholder="请输入最大年龄" />
-				</div>
+					</div>
+					<div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+						<input type="text" class="layui-input searchVal" id="depaCode" value="" placeholder="请输入部门名称/编号：" />
+					</div>
+					<div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+						<input type="text" class="layui-input searchVal" id="minAge" value="" placeholder="请输入最小年龄：" />
+					</div>
+					<div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+						<input type="text" class="layui-input searchVal" id="maxAge" value="" placeholder="请输入最大年龄" />
+					</div>
+					</div>
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">

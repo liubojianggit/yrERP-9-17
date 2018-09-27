@@ -2,6 +2,7 @@ package com.yr.department.controller;
 
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.page.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -35,8 +36,9 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable/list",method=RequestMethod.GET,produces="application/json;charset=UTF-8")//防止ajxa页面出现乱码
-    public String query(){
-        return departmentService.query();
+    public String query(Departmentbo departmentbo,Page<Departmentbo> page){
+        page.setT(departmentbo);
+        return departmentService.queryDepartmentbo(page);
     }
 
     /**
@@ -46,7 +48,7 @@ public class DepartmentController {
     @RequestMapping(value = "/departmentTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String List(){
 
-        return "departmentList";
+        return "departmentListPage";
     }
     /**
      * 跳转添加页面
