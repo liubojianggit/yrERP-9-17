@@ -55,6 +55,17 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     /**
+     * 根据编号查询供应商对象
+     * @param code
+     * @return
+     */
+    @Override
+    public Supplier getByCode(String code){
+        Supplier supplier=dao.getByCode(code);
+        return supplier;
+    }
+
+    /**
      * 添加供应商数据
      * @param supplierBo
      */
