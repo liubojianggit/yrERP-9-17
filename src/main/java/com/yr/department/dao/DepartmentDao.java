@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
 
 /**
@@ -13,19 +14,25 @@ import com.yr.entitys.user.User;
 public interface DepartmentDao {
 
    /**
-     * 分页查询所有
-     * @param page
+     * 查询所有
+     * @param
      * @return
      */
      List<Department>query();
 
+ /**
+  * 分页查询
+  * @param page
+  * @return
+  */
+ List<Departmentbo> queryDepartmentbo(Page<Departmentbo> page);
 
-     /*//**
+
+     /**
      * 查询总条数
-     * @param search
      * @return Integer
-     *//*
-    Long departmentCount(Page<Departmentbo> page);*/
+     */
+    Long departmentCount(Page<Departmentbo> page);
 
     /**
      * 根据ID查询部门 并回显

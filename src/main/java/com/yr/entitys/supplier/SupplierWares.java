@@ -1,31 +1,32 @@
 package com.yr.entitys.supplier;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 供应商品实体类
  */
 @Entity
 @Table(name = "supp_wares")
-public class supplierWares {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Integer  id ;//自动增长
- @Column(nullable = false,unique = true)
- private String code;//供应商品的编号，不能为null，唯一约束
- @Column(nullable = false)
+public class SupplierWares implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer  id ;//自动增长
+    @Column(nullable = false,unique = true)
+    private String code;//供应商品的编号，不能为null，唯一约束
+    @Column(nullable = false)
     private String name;//供应商品的名称，不能为null
- @Column(nullable = false)
+    @Column(nullable = false)
     private String suppPhoto;//供应商品的头像，不能为null
- @Column(nullable = false)
+    @Column(nullable = false)
     private String type;//供应商品的类型，不能为null
- @Column(nullable = false,name = "total_inventory")
+    @Column(nullable = false,name = "total_inventory")
     private Long totalInventory;//供应商品的总价格，不能为null
- @Column(nullable = false,name = "unit_price")
+    @Column(nullable = false,name = "unit_price")
     private double unitPrice;//供应商品的单价，不能为null
- @Column(nullable = false)
+    @Column(nullable = false)
     private String brand;//供应商品的品牌，不能为null
- @Column(nullable = false)
+    @Column(nullable = false)
     private String addr;//供应商品的地址，不能为null
     @Column(nullable = false,columnDefinition = "DATE")
     private String createTime;
@@ -142,7 +143,7 @@ public class supplierWares {
 
     @Override
     public String toString() {
-        return "supplierWares{" +
+        return "SupplierWares{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +

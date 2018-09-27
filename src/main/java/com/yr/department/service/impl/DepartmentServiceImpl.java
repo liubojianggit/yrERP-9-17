@@ -5,7 +5,9 @@ import com.yr.department.dao.DepartmentDao;
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.page.Page;
 import com.yr.util.DateUtils;
+import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,6 +52,28 @@ public class DepartmentServiceImpl implements DepartmentService {
                 "\"code\": 0," +
                 "\"data\":"+menuJsonStr+"," +
                 "\"count\": 924," +
+                "\"is\": true," +
+                "\"tip\": \"操作成功！\"" +
+                "}";
+        return strJson;
+    }
+
+    /**
+     * 查询所有部门
+     */
+    @Override
+    public String queryDepartmentbo(Page<Departmentbo> page){
+        Long count = departmentDao.departmentCount(page);
+        page.setTotalRecord(count);
+        List<Departmentbo> list = departmentDao.queryDepartmentbo(page);
+        //page.setPageData(list);
+        // pageJson = JsonUtils.beanToJson(page);
+        String deStr = JsonUtils.listToJson(list);
+        String strJson = "{" +
+                "\"msg\": \"\"," +
+                "\"code\": 0," +
+                "\"data\":"+deStr+"," +
+                "\"count\": "+count+"," +
                 "\"is\": true," +
                 "\"tip\": \"操作成功！\"" +
                 "}";
