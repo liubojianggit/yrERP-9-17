@@ -91,10 +91,10 @@
 			<form:select path="depaCode" items="${depaList }" cssStyle="width:80px;height: 40px;"></form:select>
 		</div>
 	</div>
-	<div class="layui-form-item layui-row layui-col-xs12">
+	<div class="layui-inline">
 		<label class="layui-form-label">生日</label>
-		<div class="layui-input-block">
-			<form:input path="birthday" class="layui-input" type="Date" lay-verify="required" placeholder="请输入生日"/>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" id="birthday" placeholder="请输入生日：yyyy-MM-dd">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -130,7 +130,16 @@
 		</div>
 	</div>
 </form:form>
+
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/userAU.js"></script>
+<script>
+	layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#birthday'
+        });
+    })
+</script>
 </body>
 </html>
