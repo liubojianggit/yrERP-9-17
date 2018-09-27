@@ -17,6 +17,8 @@ import java.util.List;
  */
 @Repository
 public class SupplierWareDaoImpl implements SupplierWareDao {
+
+
     //如何获取到和当前事务关联的 EntityManager 对象呢 ?
     //通过 @PersistenceContext 注解来标记成员变量!
     @PersistenceContext
@@ -173,5 +175,20 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
 
         Long count = (Long) query.getSingleResult();
         return count;
+    }
+
+    /**
+     * 根据编号去查商品
+     * @param code
+     * @return
+     */
+    @Override
+    public SupplierWares getSuppLierWareByCode(String code) {
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select s from SupplierWares s where code =?");
+        Query query = entityManager.createQuery(jpql.toString());
+        query.setParameter(1, code);
+        SupplierWares supplierWare = (SupplierWares) query.getSingleResult();
+        return supplierWare;
     }
 }
