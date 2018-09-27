@@ -31,24 +31,17 @@ public interface DepotService {
      */
 
     void update(Depot depot);
+
     /**
-     * 仓库删除数据
+     * 删除 和批量删除
      * @param id
      */
-    void delete(Integer id);
+    void delete(Integer [] id);
 
-     /*  *//**
-     * 判断添加仓库数据是否为null
-     * @param depot
+    /**
+     * 查询仓库名称 提供给销售调
+     * @param name
      * @return
-     *//*
-    boolean isNullAdd(Depot depot);
-
-    *//**
-     * 判断修改数据是否为null
-     * @param depot
-     * @return
-     *//*
-    boolean isNullUpdate(Depot depot);*/
-
+     */
+    Depot getname(String name);
 }

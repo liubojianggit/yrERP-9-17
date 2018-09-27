@@ -3,8 +3,7 @@ package com.yr.supplier.controller;
 import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.supplier.supplierWares;
-import com.yr.entitys.user.User;
+import com.yr.entitys.supplier.SupplierWares;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +58,7 @@ public class SupplierWareController {
      * @return
      */
     @RequestMapping(value = "supplierTable",method =RequestMethod.POST)
-    public String addWare(@ModelAttribute("supplierWare")supplierWares supplierWare){
+    public String addWare(@ModelAttribute("supplierWare")SupplierWares supplierWare){
         sws.add(supplierWare);
         return "";
     }
@@ -82,7 +81,7 @@ public class SupplierWareController {
      * @return
      */
     @RequestMapping(value = "supplierTable",method = RequestMethod.PUT)
-    public String updateWare(@ModelAttribute("supplierWare") supplierWares supplierWare, Map<String,Object>map){
+    public String updateWare(@ModelAttribute("supplierWare") SupplierWares supplierWare, Map<String,Object>map){
         sws.update(supplierWare);
         return"";
     }
@@ -107,7 +106,7 @@ public class SupplierWareController {
      */
     @RequestMapping("supplierTable/icons/{id}")
     public void getIcons(@PathVariable(value="id") Integer id , HttpServletRequest request, HttpServletResponse response) throws IOException {
-        supplierWares supplierWare  = sws.getSupplierWare(id);//根据id获得user对象
+        SupplierWares supplierWare  = sws.getSupplierWare(id);//根据id获得user对象
         byte[] data = FileUtils.getFileFlow(supplierWare.getSuppPhoto());//调用方法将流传出
         response.setContentType("image/png");
         OutputStream stream = response.getOutputStream();

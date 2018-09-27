@@ -52,4 +52,8 @@ public interface WareDao {
      */
 
     public Long getCount(Page<WareBo> ware);
+    /**
+     * 获取商品的list集合
+     * */
+    public List<Ware> getWare();
 }

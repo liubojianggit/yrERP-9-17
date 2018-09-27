@@ -1,8 +1,11 @@
 package com.yr.depot.service;
 
 import com.yr.entitys.bo.depotBo.WareBo;
+import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
+
+import java.util.List;
 
 /**
  * 商品业务逻辑层的接口
@@ -42,4 +45,8 @@ public interface WareService {
      * @return true 表示修改成功；false表示修改失败
      */
     public boolean update(Ware ware);
+    /**
+     * 获取商品的list集合
+     * */
+    public List<Ware> getWare();
 }

@@ -29,12 +29,6 @@ public interface DepotDao {
     void add(Depot depot);
 
     /**
-     * 根据id删除仓库数据
-     * @param id
-     */
-    void delete(Integer id);
-
-    /**
      * 根据对象修改仓库数据
      * @param depot
      */
@@ -46,4 +40,11 @@ public interface DepotDao {
      */
     Depot getById(Integer id);
 
+    /**
+     * 批量删除 提供给销售调
+     * @param id
+     */
+    void delete(Integer[] id);
+
+    Depot getname(String name);
 }

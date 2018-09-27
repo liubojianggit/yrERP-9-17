@@ -181,4 +181,16 @@ public class WareDaoImpl implements WareDao {
         return count.longValue();
 
     }
+    /**
+     * 获取商品的list集合
+     * */
+    @Override
+    public List<Ware> getWare(){
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select w from Ware w where 1=1");
+        jpql.append("order by id desc");
+        Query query = entityManager.createQuery(jpql.toString());
+        List<Ware> wares = query.getResultList();
+        return wares;
+    };
 }
