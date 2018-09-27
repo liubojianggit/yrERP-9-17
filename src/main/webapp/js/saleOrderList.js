@@ -13,68 +13,69 @@ layui.use(['form','layer','table','laytpl'],function(){
         path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
     ;
 
-    //用户列表
+    //销售订单列表
     var tableIns = table.render({
         elem: '#userList',
-        url :path+ 'sale_order/sale_orderTable/list',
+        url :path+ 'sale_orderTable/list',
         request: {//request下面是请求后台的参数的别名,response是响应的别名
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "user.name": $("#rCode").val(),  //搜索的关键字
-            "depaCode": $("#rName").val(),  //搜索的关键字
-            "minAge": $("#rStates").val(),  //搜索的关键字
+            "saleOrder.code": $("#code").val(),  //搜索的关键字
+            "saleOrder.customerBuy": $("#customerBuy").val(),  //搜索的关键字
+          /*  "minAge": $("#rStates").val(),  //搜索的关键字*/
         },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,25,50,100],
         limit : 10,
-        id : "userListTable",
+        id : "saleOrderTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'name', title: '销售员姓名', align:"center",unresize: true},
-            {field: 'name', title: '销售员电话', align:"center",unresize: true},
-            {field: 'jobNum', title: '订单编号', align:"center", unresize: true},
-            {field: 'depaCode', title: '购买客户', align:"center", unresize: true},
-            {field: 'depaCode', title: '销售商品编号', align:"center", unresize: true},
-            {field: 'depaCode', title: '销售单价', align:"center", unresize: true},
-            {field: 'depaCode', title: '销售数量', align:"center", unresize: true},
-            {field: 'depaCode', title: '销售总价', align:"center", unresize: true},
-            {field: 'depaCode', title: '申请退货人姓名', align:"center", unresize: true},
-            {field: 'depaCode', title: '申请退货人联系电话', align:"center", unresize: true},
-            {field: 'depaCode', title: '销售商品的仓库', align:"center", unresize: true},
-            {field: 'sex', title: '订单状态', align:"center", unresize: true,templet:function(d){
-                    if(d == 0){
+            {field: 'code', title: '销售订单编号', align:"center",unresize: true},
+            {field: 'customerBuy', title: '购买客户', align:"center",unresize: true},
+            {field: 'salesperson', title: '销售员', align:"center",unresize: true},
+            {field: 'wareCode', title: '商品编号', align:"center", unresize: true},
+            {field: 'number', title: '销售商品数量', align:"center", unresize: true},
+            {field: 'salePrice', title: '销售总价', align:"center", unresize: true},
+            {field: 'money', title: '销售金额', align:"center", unresize: true},
+            {field: 'sPhoneNumber', title: '销售员联系电话', align:"center", unresize: true},
+            {field: 'requName', title: '申请退货人姓名', align:"center", unresize: true},
+            {field: 'rPhoneNumber', title: '申请退货人联系电话', align:"center", unresize: true},
+            {field: 'depotCode', title: '销售商品的仓库编号', align:"center", unresize: true},
+            {field: 'states', title: '订单状态', align:"center", unresize: true,templet:function(d){
+                   if(d == 0){
                         return "驳回";
-                    }else if(d == 1){
+                    }
+                    else if(d == 1){
                         return "销售成功";
-                    }else if(d == 2){
+                    }
+                    else if(d == 2){
                         return "申请退货";
-                    }else if(d == 3){
+                    }
+                    else if(d == 3){
                         return "退货成功";
                     }
                 }},
-            {field: 'depaCode', title: '退货收货人', align:"center", unresize: true},
-            {field: 'depaCode', title: '备注', align:"center", unresize: true},
+            {field: 'consignee', title: '退货收货人', align:"center", unresize: true},
+            {field: 'remark', title: '备注', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        table.reload("userListTable",{
+        table.reload("saleOrderTable",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },
             where: {
-                "user.name": $("#userName").val(),  //搜索的关键字
-                "user.depaCode": $("#depaCode").val(),  //搜索的关键字
-                "minAge": $("#minAge").val(),  //搜索的关键字
-                "maxAge": $("#maxAge").val() //搜索的关键字
+                "saleOrder.code": $("#code").val(),  //搜索的关键字
+                "saleOrder.customerBuy": $("#customerBuy").val(),  //搜索的关键字
             }
         })
     });
@@ -85,11 +86,11 @@ layui.use(['form','layer','table','laytpl'],function(){
 
 
         var index = layui.layer.open({
-            title : "添加用户",
+            title : "添加销售订单",
             type : 2,
-            content : path+"sale_order/sale_orderTable/add",//发送请求
+            content : path+"sale_orderTable/add",//发送请求
             end: function(){
-                window.location.href='<%=request.getContextPath() %>/sale_order/sale_orderTable';
+                window.location.href='<%=request.getContextPath() %>/sale_orderTable';
             }
         })
         layui.layer.full(index);
@@ -104,19 +105,19 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //批量删除
-    $(".delAll_btn").click(function(){
+   /* $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('saleOrderTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
                 newsId.push(data[i].id);
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                $.ajax({//删除用户
+            layer.confirm('确定删除选中的销售订单？', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({//删除销售订单
                     type : "post",
-                    url : path+"sale_order/sale_orderTable/"+newsId,
+                    url : path+"sale_orderTable/"+newsId,
                     async : false,
                     data : {
                         "_method" : "DELETE"
@@ -125,10 +126,10 @@ layui.use(['form','layer','table','laytpl'],function(){
                     dataType : "json",
                     success : function(data) {
                         if("0" == data.code){
-                            layer.msg("删除用户失败",{icon:2});
+                            layer.msg("删除订单失败",{icon:2});
                         }else if("1" == data.code){
                             layer.msg("删除成功",{icon:2});
-                            window.location.href = path+"sale_order/sale_orderTable";
+                            window.location.href = path+"sale_orderTable";
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }
@@ -141,9 +142,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                 });
             })
         }else{
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的销售订单");
         }
-    })
+    })*/
 
     //列表操作
     table.on('tool(userList)', function(obj){
@@ -151,15 +152,15 @@ layui.use(['form','layer','table','laytpl'],function(){
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             //addUser(data);
-            window.location.href = path+"sale_order/sale_orderTable/"+data.id;
+            window.location.href = path+"sale_orderTable/"+data.id;
 
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
+            layer.confirm('确定删除此销售订单？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'sale_order/sale_orderTable/'+data.id,//请求登录验证接口
+                    url: path+'sale_orderTable/delete/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {
                         _method:'delete'
@@ -169,12 +170,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                         if("1" == data.code){
                             layer.msg(data.msg,{icon:1});
                             setTimeout(function(){
-                                window.location.href = path+"sale_order/sale_orderTable";
+                                window.location.href = path+"sale_orderTable";
                             },1200);
                         }else{
                             layer.msg(data.msg,{icon:2});
                             setTimeout(function(){
-                                window.location.href = path+"sale_order/sale_orderTable";
+                                window.location.href = path+"sale_orderTable";
                             },1200);
                         }
                     }

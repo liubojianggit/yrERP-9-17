@@ -1,16 +1,15 @@
 package com.yr.order.service;
 
-import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface SaleService {
     /**
      * 分页的形式查询user表的数据
      * @param page
      */
-    String query(Page<SaleBO> page);
+    String query(Page<SaleOrderBO> page);
 
     /**
      * 添加用户信息
@@ -35,5 +34,5 @@ public interface SaleService {
      * @param id
      * @return Sale
      */
-    SaleOrder getById(Integer id);
+    SaleOrderBO getById(Integer id);
 }

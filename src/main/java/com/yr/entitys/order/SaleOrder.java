@@ -36,9 +36,9 @@ public class SaleOrder extends BaseEntity implements Serializable{//销售订单
     @Column(nullable = false)//不为null
     private Long number;
 
-    //销售金额
+    //销售总金额
     @Column(nullable = false)//不为null
-    private Double money;
+    private Double money;//(商品的单价ware.outUnitPrice*销售商品的数量number)
 
     //销售员联系电话
     //@Pattern(Pattern="1[3|4|5|7|8][0-9]\\d{8}")   暂留，这里考虑使用springmvc做效验

@@ -1,6 +1,6 @@
 package com.yr.order.dao;
 
-import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
 
@@ -13,13 +13,13 @@ public interface SaleDao {
      * @param
      * @return Integer
      */
-    Long getCount(Page<SaleBO> page);//@Param指定的是别名
+    Long getCount(Page<SaleOrderBO> page);//@Param指定的是别名
 
     /**
      * 分页的形式查询user表的数据
      * @return List<SaleOrder>
      */
-    List<SaleBO> query(Page<SaleBO> page);
+    List<SaleOrderBO> query(Page<SaleOrderBO> page);
 
     /**
      * 添加用户信息
