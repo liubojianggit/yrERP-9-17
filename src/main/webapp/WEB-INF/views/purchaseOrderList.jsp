@@ -41,8 +41,8 @@
             </div>
         </form>
     </blockquote>
-    <table id="userList" lay-filter="userList"></table>
-
+    <!-- <table id="userList" lay-filter="userList"></table> -->
+    <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
     <script type="text/html" id="userListBar">
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
