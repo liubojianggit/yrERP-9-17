@@ -130,6 +130,10 @@ public class SupplierController {
     @RequestMapping(value="/supplierTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
     @ResponseBody
     public String update(Map<String, Object> map,SupplierBo supplierBo){
+        /* 获取String类型的时间 */
+        supplierBo.getSupplier().setUpdateTime(new Date());
+        supplierBo.getSupplier().setUpdateEmp("吕");
+        //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
             service.update(supplierBo);
             return "{\"code\":1,\"msg\":\"修改成功\"}";
 
