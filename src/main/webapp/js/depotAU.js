@@ -16,13 +16,13 @@ layui.use(['form','layer','upload','table'],function(){
     ;
 
 
-    form.on("submit(addMenu)",function(data){
+    form.on("submit(addDepot)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
 
         $.ajax({
             type: 'post',
-            url: path+'menu/menuTable',
+            url: path+'depot/depotTable',
             dataType : 'json',
             data: $('#form2').serialize(),
             error: function() {
@@ -42,20 +42,20 @@ layui.use(['form','layer','upload','table'],function(){
                 }else if(data.code==2){
                     layer.msg(data.msg,{icon:2});
                 }else{
-                    layer.msg("操作失败",{icon:2});
+                    layer.msg("新增操作失败",{icon:2});
                 }
             }
         });
         return false;
     })
 
-    form.on("submit(updateMenu)",function(data){
+    form.on("submit(updateDepot)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
 
         $.ajax({
             type: 'post',
-            url: path+'menu/menuTable',
+            url: path+'depot/depotTable',
             dataType : 'json',
             data: $('#form2').serialize(),
             error: function() {
