@@ -78,8 +78,8 @@ public class DepotServiceImpl implements DepotService {
      * @param name
      * @return
      */
-    public List<Depot> getname(String name){
+    public List<Depot> getname(){
 
-        return depotDao.getname(name);
+        return depotDao.getname();
     }
 }

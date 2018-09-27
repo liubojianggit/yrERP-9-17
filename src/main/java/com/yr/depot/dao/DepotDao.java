@@ -51,5 +51,5 @@ public interface DepotDao {
      * @param name
      * @return
      */
-    List<Depot> getname(String name);
+    List<Depot> getname();
 }
