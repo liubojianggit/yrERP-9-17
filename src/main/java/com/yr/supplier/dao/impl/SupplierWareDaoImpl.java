@@ -2,7 +2,7 @@ package com.yr.supplier.dao.impl;
 
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.supplier.supplierWares;
+import com.yr.entitys.supplier.SupplierWares;
 import com.yr.supplier.dao.SupplierWareDao;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +28,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public boolean add(supplierWares sw) {
+    public boolean add(SupplierWares sw) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("insert into supp_wares(name,code,type,total_inventory,unit_price,brand,addr,createTime,createEmp) values(?,?,?,?,?,?,?,?,?,?)");
         Query query = entityManager.createQuery(jpql.toString());
@@ -58,7 +58,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
     @Override
     public boolean delete(Integer id) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("delete s from supplierWares s where s.id = ?");
+        jpql.append("delete s from SupplierWares s where s.id = ?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, id);
         try {
@@ -76,9 +76,9 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public boolean update(supplierWares sw) {
+    public boolean update(SupplierWares sw) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("update supplierWares set name = ?,code = ?,type=?,total_inventory=?,unit_price=?," +
+        jpql.append("update SupplierWares set name = ?,code = ?,type=?,total_inventory=?,unit_price=?," +
                 "brand = ?,addr = ?, updateEmp = ?,updateTime = ?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, sw.getName());
@@ -109,7 +109,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
 
 
         StringBuffer jpql = new StringBuffer();
-        jpql.append("select s from supplierWares s where 1=1");
+        jpql.append("select s from SupplierWares s where 1=1");
         String brand = page.getT().getBrand();
         String name = page.getT().getName();
         String type = page.getT().getType();
@@ -137,12 +137,12 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public supplierWares getSupplierWare(Integer id) {
+    public SupplierWares getSupplierWare(Integer id) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("select s from supplierWares s where id =?");
+        jpql.append("select s from SupplierWares s where id =?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, id);
-        supplierWares supplierWare = (supplierWares) query.getSingleResult();
+        SupplierWares supplierWare = (SupplierWares) query.getSingleResult();
         return supplierWare;
     }
 
@@ -154,7 +154,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
     @Override
     public Long getCount(Page<SupplierWareBo> page) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("select count(*) from supplierWares s where 1=1");
+        jpql.append("select count(*) from SupplierWares s where 1=1");
        System.out.println("3");
         System.out.println(page.getT().getBrand());
         String brand = page.getT().getBrand();
