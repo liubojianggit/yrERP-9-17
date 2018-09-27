@@ -1,10 +1,8 @@
 package com.yr.supplier.dao;
 
 import com.yr.entitys.bo.supplierBO.SuppWareTypeBo;
-import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
-import com.yr.entitys.supplier.supplierWares;
 
 import java.util.List;
 

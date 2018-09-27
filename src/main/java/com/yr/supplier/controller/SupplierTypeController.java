@@ -1,21 +1,13 @@
 package com.yr.supplier.controller;
 
-import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.supplierBO.SuppWareTypeBo;
-import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
-import com.yr.entitys.supplier.supplierWares;
 import com.yr.supplier.service.SuppWareTypeService;
-import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Map;
 
 /**
