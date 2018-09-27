@@ -22,7 +22,7 @@ import java.util.Map;
  * @since
  */
 @Controller
-@RequestMapping("/requisition")
+@RequestMapping("/log")
 public class LogController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class LogController {
      * 进入日志列表页面
      * @return
      */
-    @RequestMapping(value = "/requisitionTable")
+    @RequestMapping(value = "/logTable")
     public  String jumpList()
     {
         return  null;
@@ -42,7 +42,7 @@ public class LogController {
      * 以分页的形势查询出log表的数据信息l
      * @return
      */
-    @RequestMapping(value = "/requisitionTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/logTable/list",method = RequestMethod.GET)
     public String query(LogBo logBo, Page<LogBo> page)
     {
         page.setT(logBo);
