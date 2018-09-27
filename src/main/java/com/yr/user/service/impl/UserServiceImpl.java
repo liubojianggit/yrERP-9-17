@@ -68,14 +68,6 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 删除用户信息
-     * @param id
-     */
-    public void delete(Integer id){
-        userDao.delete(id);
-    }
-
-    /**
      * 根据id查询用户数据
      * @param id
      * @return User
@@ -130,5 +122,31 @@ public class UserServiceImpl implements UserService {
      */
     public void delete(String department){
         userDao.delete(department);
+    }
+
+    /**
+     * 用户进行批量删除
+     * @param id
+     */
+    public void delete(Integer[] id){
+        userDao.delete(id);
+    }
+
+    /**
+     * 修改用户的状态
+     * @param id
+     * @param state
+     */
+    public void updateState(Integer id, Integer state){
+        userDao.updateState(id,state);
+    }
+
+    /**
+     * 根据员工工号查询user对象
+     * @param jobNum
+     * @return User
+     */
+    public User getByJobNum(String jobNum){
+        return  userDao.getByJobNum(jobNum);
     }
 }

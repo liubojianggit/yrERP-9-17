@@ -18,7 +18,7 @@ import java.util.Map;
  * 操纵角色
  */
 @Controller
-@RequestMapping("u_role")
+@RequestMapping("/u_role")
 public class RoleController {
     @Autowired
     @Qualifier("roleServiceImpl")
@@ -51,9 +51,10 @@ public class RoleController {
      * 分页的形式查询role表的数据
      * @return List<RoleBo>
      */
-    @RequestMapping(value="/roleTable/list", method = RequestMethod.GET)
+    @RequestMapping(value="/roleTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<RoleBo> query(Page<RoleBo> page){
+    public Page<RoleBo> query(RoleBo roleBo, Page<RoleBo> page){
+        page.setT(roleBo);
         roleService.query(page);
         return page;
     }
@@ -72,12 +73,14 @@ public class RoleController {
      * 保存添加
      * @return String
      */
-    @RequestMapping(value="/roleTable", method=RequestMethod.POST)
-    public String saveAdd(Role role, HttpServletRequest request){
+    @RequestMapping(value="/roleTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String saveAdd(RoleBo roleBo, HttpServletRequest request){
+        Role role = new Role();
         role.setCreateTime(new Date());//获取当前时间
         role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         roleService.add(role);
-        return "redirect:/role";
+        return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
     /**
@@ -85,7 +88,8 @@ public class RoleController {
      * @return String
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<RoleBo> page){
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map,RoleBo roleBo, Page<RoleBo> page){
+        page.setT(roleBo);
         map.put("page", page);
         map.put("role", roleService.getById(id));//根据id获取对象放入request中
         return "roleAU";
@@ -95,13 +99,14 @@ public class RoleController {
      * 保存修改
      * @return String
      */
-    @RequestMapping(value="/roleTable",method= RequestMethod.PUT)
-    public String saveUpdate(Role role, Page<RoleBo> page, Map<String, Object> map, HttpServletRequest request){
-        role.setUpdateTime(new Date());//获取修改当前时间
-        role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+    @RequestMapping(value="/roleTable",method= RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String saveUpdate(RoleBo roleBo, Page<RoleBo> page, Map<String, Object> map, HttpServletRequest request){
+        roleBo.getRole().setUpdateTime(new Date());//获取修改当前时间
+        roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         map.put("page", page);
-        roleService.update(role);
-        return "roleList";
+        roleService.update(roleBo.getRole());
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -110,8 +115,9 @@ public class RoleController {
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer[] id){
         roleService.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
     /**
@@ -123,6 +129,4 @@ public class RoleController {
     public void setRoles(Integer id,Integer[] roleIds){
         roleService.setPermissions(id,roleIds);
     }
-
-
 }
