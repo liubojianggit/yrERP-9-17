@@ -86,8 +86,10 @@ public class SupplierController {
     @RequestMapping(value="/supplierTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     @ResponseBody
     public String add(SupplierBo supplierBo,HttpServletRequest request) {
-
-        /* 获取String类型的时间 */
+       /* boolean isTell=service.isTell(supplierBo.getSupplier().getPhoneNumber());
+        if(isTell){
+            return "{\"code\":2,\"msg\":\"电话格式错误\"}";
+        }*/
        supplierBo.getSupplier().setCreateTime(new Date());
        supplierBo.getSupplier().setCreateEmp("吕");
        //supplierBo.getSupplier().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
@@ -99,6 +101,7 @@ public class SupplierController {
      * 根据id删除供应商表数据
      * @return 返回分页查询页面
      */
+    @ResponseBody
     @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public String delete(@PathVariable Integer id) {
         service.delete(id);

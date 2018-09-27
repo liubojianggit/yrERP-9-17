@@ -11,7 +11,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *仓库模块数据层实现增删改查
@@ -134,7 +136,6 @@ public class DepotDaoImpl implements DepotDao {
 
     /**
      * 查询仓库 提供给销售调
-     * @param name
      * @return
      */
     public List<Depot> getname(){
@@ -154,5 +155,20 @@ public class DepotDaoImpl implements DepotDao {
         Query query=entityManager.createQuery(jqpl).setParameter(1,code);
         Depot depot= (Depot) query.getSingleResult();
         return depot;
+    }
+
+    /**
+     * 将仓库对象集合封装到map 集合中
+     * @return map
+     */
+    @Override
+    public Map<String, Object> queryDepots() {
+        String jpql = "select d from Depot d where 1 = 1";
+        List<Depot> depotList = entityManager.createQuery(jpql).getResultList();
+        Map<String,Object> map = new HashMap<>();
+        for (Depot det:depotList) {
+            map.put(det.getCode(),det.getName());
+        }
+        return map;
     }
 }
