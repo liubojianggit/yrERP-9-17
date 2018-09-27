@@ -43,7 +43,7 @@ public class SaleImportExcelBO {
           else{//当excel是2007时
               wb = new XSSFWorkbook(is);
           }
-          //读取Excel里面客户的信息
+          //读取Excel里面销售订单表的信息
           lList=readExcelValue(wb);
           is.close();
       }catch(Exception e){
@@ -62,110 +62,109 @@ public class SaleImportExcelBO {
       return lList;
   }
     /**
-     * 读取Excel里面客户的信息
+     * 读取Excel里面销售订单表的信息
      * @param wb
      * @return
      */
-  private List<SaleOrder> readExcelValue(Workbook wb){
+    private List<SaleOrder> readExcelValue(Workbook wb){
 
-      List<SaleOrder> lList = new ArrayList<SaleOrder>();
-      //得到第一个shell
-      Sheet sheet = wb.getSheetAt(0);
+        List<SaleOrder> lList = new ArrayList<SaleOrder>();
+        //得到第一个shell
+        Sheet sheet = wb.getSheetAt(0);
 
-      //得到Excel的行数
-      this.totalRows=sheet.getPhysicalNumberOfRows();
+        //得到Excel的行数
+        this.totalRows=sheet.getPhysicalNumberOfRows();
 
-      //得到Excel的列数(前提是有行数)
-      if((totalRows >= 1) && (sheet.getRow(0) != null)) {
-          int a = sheet.getRow(2).getPhysicalNumberOfCells();
-          this.totalCells=sheet.getRow(2).getPhysicalNumberOfCells();
-      }
+        //得到Excel的列数(前提是有行数)
+        if((totalRows >= 1) && (sheet.getRow(0) != null)) {
+            sheet.getRow(2).getPhysicalNumberOfCells();
+            /*          int a = sheet.getRow(2).getPhysicalNumberOfCells();
+             */          this.totalCells=sheet.getRow(2).getPhysicalNumberOfCells();
+        }
 
-      //循环Excel行数,从第二行开始。标题不入库
-      for(int r = 2; totalRows > r; r++){
-          Row row = sheet.getRow(r);
-          if (row == null) continue;
-          SaleOrder saleOrder = new SaleOrder();
+        //循环Excel行数,从第二行开始。标题不入库
+        for(int r = 2; totalRows > r; r++){
+            Row row = sheet.getRow(r);
+            if (row == null) continue;
+            SaleOrder sale = new SaleOrder();
 
-          //循环Excel的列
-          for(int c = 2; c <this.totalCells; c++){//忽略excel 表的id,从下标为2的第三个单元格数据开始
-              Cell cell = row.getCell(c);
-              if (null != cell)
-              {
+            //循环Excel的列
+            for(int c = 2; c <this.totalCells; c++){//忽略excel 表的id,从下标为2的第三个单元格数据开始
+                Cell cell = row.getCell(c);
+                if (null != cell)
+                {
                  /* if (c == 1)
                   {
                       cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
                       //requisition.setId(Integer.valueOf(cell.getStringCellValue()));
                       requisition.setId((int)cell.getNumericCellValue());
                   }*/
-                  if (c == 2)
-                  {
-                      saleOrder.setCode(cell.getStringCellValue());
-                  }
-                  if (c == 3)
-                  {
-                      saleOrder.setCustomerBuy(cell.getStringCellValue());
-                  }
-                  if (c == 4)
-                  {
-                      saleOrder.setCustomerBuy(cell.getStringCellValue());
-                  }
-                  if (c == 5)
-                  {
-                      saleOrder.setSalesperson(cell.getStringCellValue());
-                  }
-                  if (c == 6)
-                  {
-                      saleOrder.setWareCode(cell.getStringCellValue());
-                  }
-                  if (c == 7)
-                  {
-                      cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                      saleOrder.setNumber((long) cell.getNumericCellValue());
-                  }
-                  if (c == 8)
-                  {
-                      saleOrder.setMoney((Double) cell.getNumericCellValue());
-                  }
-                  if (c == 9)
-                  {
-                      saleOrder.setsPhoneNumber(cell.getStringCellValue());
-                  }
-                  if (c == 10)
-                  {
-                      saleOrder.setRemark(cell.getStringCellValue());
-                  }
-                  if (c == 11)
-                  {
-                      saleOrder.setStates((int)cell.getNumericCellValue());
-                  }
-                  if (c == 12)
-                  {
-                      //requisition.setTotalPrice(Double.valueOf(cell.getStringCellValue()));
-                      saleOrder.setConsignee(cell.getStringCellValue());
-                  }
-                  if (c == 13)
-                  {
-                      cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                      saleOrder.setApprover(cell.getStringCellValue());
-                  }
-                  if (c == 14)
-                  {
-                      saleOrder.setRequName(cell.getStringCellValue());
-                  }
-                  if (c == 15)
-                  {
-                      saleOrder.setrPhoneNumber(cell.getStringCellValue());
-                  }
-                  if (c == 16)
-                  {
-                      saleOrder.setDepotCode(cell.getStringCellValue());
-                  }
-                  //添加采购信息；
-                  lList.add(saleOrder);
-              }
-          }
-      }
-      return lList;
-  }
+                    if (c == 2)
+                    {
+                        sale.setCode(cell.getStringCellValue());//销售订单编号(唯一)
+                    }
+                    if (c == 3)
+                    {
+                        sale.setCustomerBuy(cell.getStringCellValue());//购买客户
+                    }
+                    if (c == 4)
+                    {
+                        //销售员
+                        sale.setSalesperson(cell.getStringCellValue());
+                    }
+                    if (c == 5)
+                    {
+                        sale.setWareCode(cell.getStringCellValue());//销售商品编号
+
+                    }
+                    if (c == 6)
+                    {
+                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                        sale.setNumber((long) cell.getNumericCellValue());//销售商品数量
+                    }
+                    if (c == 7)
+                    {
+                        sale.setMoney(Double.valueOf(cell.getStringCellValue()));//销售金额
+                    }
+                    if (c == 8)
+                    {
+                        sale.setsPhoneNumber(cell.getStringCellValue());//销售员联系电话
+                    }
+                    if (c == 9)
+                    {
+                        sale.setRemark(cell.getStringCellValue());//备注
+                    }
+                    if (c == 10)
+                    {
+                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                        sale.setStates((int)cell.getNumericCellValue());//销售单状态（0退货，1交易成功）
+                    }
+                    if (c == 11)
+                    {
+                        sale.setConsignee(cell.getStringCellValue());//收货人
+                    }
+                    if (c == 12)
+                    {
+                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
+                        sale.setApprover(cell.getStringCellValue());//审批人
+                    }
+                    if (c == 13)
+                    {
+                        sale.setRequName(cell.getStringCellValue()); //申请退货人姓名
+                    }
+                    if (c == 14)
+                    {
+                        sale.setrPhoneNumber(cell.getStringCellValue());//申请退货人联系电话
+                    }
+                    if (c == 15)
+                    {
+                        sale.setDepotCode(cell.getStringCellValue()); //销售商品的仓库编号
+                    }
+                    //添加销售订单信息；
+                    lList.add(sale);
+                }
+            }
+        }
+        return lList;
+    }
 }

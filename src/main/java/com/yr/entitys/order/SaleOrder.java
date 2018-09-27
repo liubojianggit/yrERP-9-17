@@ -34,7 +34,7 @@ public class SaleOrder extends BaseEntity implements Serializable{//销售订单
 
     //销售商品数量
     @Column(nullable = false)//不为null
-    private long number;
+    private Long number;
 
     //销售金额
     @Column(nullable = false)//不为null
@@ -109,11 +109,11 @@ public class SaleOrder extends BaseEntity implements Serializable{//销售订单
         this.wareCode = wareCode;
     }
 
-    public long getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
@@ -187,5 +187,26 @@ public class SaleOrder extends BaseEntity implements Serializable{//销售订单
 
     public void setDepotCode(String depotCode) {
         this.depotCode = depotCode;
+    }
+
+    @Override
+    public String toString() {
+        return "SaleOrder{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", customerBuy='" + customerBuy + '\'' +
+                ", salesperson='" + salesperson + '\'' +
+                ", wareCode='" + wareCode + '\'' +
+                ", number=" + number +
+                ", money=" + money +
+                ", sPhoneNumber='" + sPhoneNumber + '\'' +
+                ", remark='" + remark + '\'' +
+                ", states=" + states +
+                ", consignee='" + consignee + '\'' +
+                ", approver='" + approver + '\'' +
+                ", requName='" + requName + '\'' +
+                ", rPhoneNumber='" + rPhoneNumber + '\'' +
+                ", depotCode='" + depotCode + '\'' +
+                '}';
     }
 }

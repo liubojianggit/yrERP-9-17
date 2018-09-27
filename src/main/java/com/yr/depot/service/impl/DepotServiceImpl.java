@@ -5,12 +5,15 @@ import com.yr.depot.service.DepotService;
 import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
-import com.yr.util.StringUtils;
+import com.yr.util.JsonDateValueProcessor;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("depotServiceImpl")
@@ -26,11 +29,14 @@ public class DepotServiceImpl implements DepotService {
      * @return
      */
     @Override
-    public Page<Depotbo> query(Page<Depotbo> page) {
+    public String query(Page<Depotbo> page) {
        page.setTotalRecord(depotDao.getCount(page));
         List<Depotbo> list=depotDao.query(page);
-        page.setPageData(list);
-        return page;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
     /**
      * 根据id查询仓库数据
@@ -48,6 +54,7 @@ public class DepotServiceImpl implements DepotService {
      */
     @Override
     public void add(Depot depot) {
+
         depotDao.add(depot);
     }
     /**
@@ -65,14 +72,15 @@ public class DepotServiceImpl implements DepotService {
      */
     @Override
     public void delete(Integer id) {
+
         depotDao.delete(id);
     }
 
-    /**
+   /* *//**
      * 判断添加数据时是否为空值，如果是空的就放回false,不是空就放回true
      * @param depot
      * @return
-     */
+     *//*
     @Override
     public boolean isNullAdd(Depot depot) {
         if(StringUtils.isNull(depot.getCode())){
@@ -86,11 +94,11 @@ public class DepotServiceImpl implements DepotService {
         }
         return true;
     }
-    /**
+    *//**
      * 判断修改数据时是否为空值，如果是空的就放回false,不是空就放回true
      * @param depot
      * @return
-     */
+     *//*
     @Override
     public boolean isNullUpdate(Depot depot) {
         if (StringUtils.isNull(depot.getName())) {
@@ -101,5 +109,5 @@ public class DepotServiceImpl implements DepotService {
             return false;
         }
         return true;
-    }
+    }*/
 }

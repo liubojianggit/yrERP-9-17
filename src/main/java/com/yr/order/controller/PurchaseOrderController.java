@@ -35,24 +35,23 @@ public class PurchaseOrderController {
      * 跳转查询页面
      * @return
      */
-    @RequestMapping(value = "/requisitionTable/list", method = RequestMethod.GET)
+    @RequestMapping(value = "requisitionTable",method = RequestMethod.GET)
     public String index() {
         return null;
     }
 
     /**
-     * 数据查询，并且返回json 数据；
+     * 分页查询采购表数据，并且返回json 数据；
      * @param requisitionBO
      * @param page
      * @return json
      */
-    @RequestMapping(value = "/requisitionTable", method = RequestMethod.GET)
+    @RequestMapping(value = "/requisitionTable/list", method = RequestMethod.GET)
     @ResponseBody
     public String query(purchaseOrderBO requisitionBO, Page<purchaseOrderBO> page) {
         page.setT(requisitionBO);
         String json  = purchaseOrderServiceImpl.query(page);
         return json;
-
     }
     /**
      * 添加数据接口；
@@ -100,7 +99,7 @@ public class PurchaseOrderController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "/requisitionTable/update/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.GET)
     public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map) {
         PurchaseOrder purchaseOrder = purchaseOrderServiceImpl.getRequisitionById(id);
         Map<Integer,String> status = new HashMap<Integer, String>();
