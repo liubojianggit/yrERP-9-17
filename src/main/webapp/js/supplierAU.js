@@ -32,18 +32,29 @@ layui.use(['form','layer','upload','table'],function(){
             },
             success: function(data){
                 if(data.code==1){
-                    layer.msg(data.msg,{icon:1});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
-                }else if(data.code==0){
-                    layer.msg(data.msg,{icon:2});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
+                    setTimeout(function(){
+                        top.layer.close(index);
+                        top.layer.msg(data.msg);
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    },2000);
                 }else if(data.code==2){
-                    layer.msg(data.msg,{icon:2});
-                }else{
+                    setTimeout(function(){
+                        top.layer.close(index);
+                        top.layer.msg(data.msg);
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    },2000);
+                }else {
                     layer.msg("操作失败",{icon:2});
                 }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
             }
         });
         return false;
