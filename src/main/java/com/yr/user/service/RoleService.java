@@ -10,7 +10,7 @@ public interface RoleService {
      * 分页的形式查询role表的数据
      * @param page
      * */
-    void query(Page<RoleBo> page);
+    String query(Page<RoleBo> page);
 
     /**
      * 添加角色信息

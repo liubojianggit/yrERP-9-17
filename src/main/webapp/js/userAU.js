@@ -13,8 +13,8 @@ layui.use(['form','layer','upload','table'],function(){
     	prePath = strFullPath.substring(0, pos),
     	path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
         ;
-    
-    
+
+
     //新增页面头像上传
     //入口函数
     upload.render({
