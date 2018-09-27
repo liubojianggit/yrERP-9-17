@@ -6,7 +6,7 @@ import com.yr.entitys.order.SaleOrder;
 
 public interface SaleExportDao {
 
-    int addExcel(List<SaleOrder> saleOrderListList);
+    int addExcel(List<SaleOrder> saleOrderList);
 
 	 /**
      * 查询数据库，并以List集合的方式返回回来
