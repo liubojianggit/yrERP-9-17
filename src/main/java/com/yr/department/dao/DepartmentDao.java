@@ -25,9 +25,14 @@ public interface DepartmentDao {
   * @param page
   * @return
   */
- List<Departmentbo> queryDepartmentbo(Page<Departmentbo> page);
+    List<Departmentbo> queryDepartmentbo(Page<Departmentbo> page);
 
-    Deprecated getByCode(String code);
+    /**
+     * 根据编号查询部门名称
+     * @param code
+     * @return
+     */
+    Department getByCode(String code);
 
 
      /**

@@ -53,12 +53,12 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     @Override
-    public Deprecated getByCode(String code) {
+    public Department getByCode(String code) {
         String jpql = "select d from Department d where d.code = ? ";
         Query query = entityManager.createQuery(jpql);
         query.setParameter(1,code);
-        Deprecated deprecated = (Deprecated) query.getSingleResult();
-        return deprecated;
+        Department department = (Department) query.getSingleResult();
+        return department;
     }
 
     /**
@@ -122,7 +122,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 查询部门编号,提供给用户调用
-     * @param code
+     * @param
      * @return
      */
     public Map<String,Object> querys(){

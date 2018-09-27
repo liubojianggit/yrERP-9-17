@@ -81,7 +81,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Deprecated getByCode(String code) {
+    public Department getByCode(String code) {
         return departmentDao.getByCode(code);
     }
 
