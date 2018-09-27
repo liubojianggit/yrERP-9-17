@@ -38,12 +38,12 @@
 	<table id="userList" lay-filter="userList"></table>
 
 	<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
-	<!--操作-->
+	<!--操作		这里的d是固定，可以通过d对象点属性获取到值-->
 	<script type="text/html" id="userListBar">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="auth"><i class="layui-icon"></i>独立权限</a>
 		<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="setRole"><i class="layui-icon"></i>角色设置</a>
 		<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
-		<a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable" id="abc">已启用</a>
+		<a {{d.states == "1" ? "class='layui-btn layui-btn-xs' lay-event='usable'>已启用" : "class='layui-btn layui-btn-xs layui-btn-danger' lay-event='usable'>已禁用"}}</a>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 	</script>
 </form>
