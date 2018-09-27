@@ -16,6 +16,7 @@ public class Departmentbo implements Serializable{
     private String updateTime;//修改时间
     private String updateEmp;//修改人
     private Department department;//部门
+    private String depaNameOrCode;//部门名/编号
 
     public Integer getId() {
         return id;
@@ -89,6 +90,14 @@ public class Departmentbo implements Serializable{
         this.department = department;
     }
 
+    public String getDepaNameOrCode() {
+        return depaNameOrCode;
+    }
+
+    public void setDepaNameOrCode(String depaNameOrCode) {
+        this.depaNameOrCode = depaNameOrCode;
+    }
+
     @Override
     public String toString() {
         return "Departmentbo{" +
@@ -101,6 +110,7 @@ public class Departmentbo implements Serializable{
                 ", updateTime='" + updateTime + '\'' +
                 ", updateEmp='" + updateEmp + '\'' +
                 ", department=" + department +
+                ", depaNameOrCode='" + depaNameOrCode + '\'' +
                 '}';
     }
 }

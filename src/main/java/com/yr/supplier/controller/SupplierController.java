@@ -6,13 +6,18 @@ import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
+import com.yr.entitys.user.User;
 import com.yr.supplier.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,70 +39,70 @@ public class SupplierController {
     @ModelAttribute
     public void query(@RequestParam(value ="id",required=false) Integer id,Map<String, Object> map) throws SQLException{// 绑定站位符
         if (id != null&&id !=0) {
-            Supplier supplier=service.getById(id);
-            map.put("depot", supplier);
+            SupplierBo supplierBO=service.getById(id);
+            map.put("supplierBo",supplierBO);
         }
     }
     /**
      * 跳转到拥有供应商的查询列表，没有数据操作
      * @return
      */
-    @RequestMapping(value = "/supplierTable/List",method = RequestMethod.GET)
+    @RequestMapping(value = "/supplierTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String list(){
         System.out.println("aa");
-        return "test";
+        return "supplierList";
     }
     /**
      *分页查询供应商列表数据
      * @param supplierBo 供应商对象
      * @return
      */
-    @RequestMapping(value="/supplierTable",method = RequestMethod.GET)
+    @RequestMapping(value="/supplierTable/list",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<SupplierBo> query(SupplierBo supplierBo,Page<SupplierBo>page){
+    public String query(SupplierBo supplierBo,Page<SupplierBo>page){
        page.setT(supplierBo);
-       service.query(page);
-        return page;
+       String json = service.query(page);
+        return json;
     }
     /**
      * 没业务据操作，只跳转到供应商添加页面
      * @return
      */
     @RequestMapping(value="/supplierTable/add",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
-    public String AddEcho(){
-
-        return "supplierAdd";//添加页面的jsp前缀
+    public String AddEcho(Map<String , Object>map){
+        map.put("supplierBo",new SupplierBo());
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("一级","一级");
+        map1.put("二级","二级");
+        map1.put("三级","三级");
+        map.put("rankList",map1);
+        return "supplierAU";
     }
     /**
      * 保存供应商添加的数据，前提添加数据不能为空
-     * @param supplier
-     * @param map
+     * @param supplierBo
      * @return
      */
     @RequestMapping(value="/supplierTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String add(Supplier supplier, Map<String, Object> map) {
-        boolean isNull = service.isNullAdd(supplier);
-        boolean isTell=service.isTell(supplier.getPhoneNumber());
-        if(isNull == false){
-            map.put("depot",supplier);
-            map.put("uperror", 1);
-            return "supplieradd";
-        }if(isTell){
-            map.put("tell",2);//电话错误
-            return "supplieradd";
-        }
-            service.add(supplier);
-            return "supplierList";
+    @ResponseBody
+    public String add(SupplierBo supplierBo,HttpServletRequest request) {
+
+        /* 获取String类型的时间 */
+       supplierBo.getSupplier().setCreateTime(new Date());
+       supplierBo.getSupplier().setCreateEmp("吕");
+       //supplierBo.getSupplier().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
+        service.add(supplierBo);
+            return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
+
     /**
      * 根据id删除供应商表数据
      * @return 返回分页查询页面
      */
-
     @RequestMapping(value = "/supplierTable/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public String delete(@PathVariable Integer id) {
         service.delete(id);
-        return "supplierList";
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
     /**
@@ -107,12 +112,14 @@ public class SupplierController {
      * @return
      */
     @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
-    public String upEcho(@PathVariable Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page) {
-        page.setT(supplierBo);
-        Supplier depots = service.getById(id);
-        map.put("supplier",depots);
-        map.put("page", page);
-        return "supplierAdd";
+    public String upEcho(@PathVariable Integer id,Map<String, Object> map) {
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("一级","一级");
+        map1.put("二级","二级");
+        map1.put("三级","三级");
+        map.put("rankList",map1);
+        map.put("supplierBo",service.getById(id));
+        return "supplierAU";
     }
     /**
      * 根据id回显后的值修供应商库数据
@@ -121,20 +128,11 @@ public class SupplierController {
      * @return
      */
     @RequestMapping(value="/supplierTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String update(Supplier supplier
-            ,@RequestParam("id")Integer id,Map<String, Object> map,SupplierBo supplierBo,Page<SupplierBo>page){
-        boolean isNull =service.isNullUpdate(supplier);
-        if(isNull == false ){
-            Supplier supplier1 = service.getById(id);
-            map.put("supplier", supplier1);
-            map.put("uperror",2);//修改数据为空返回一个值2，
-            return "supplierAadd";
-        }else{
-            page.setT(supplierBo);
-            map.put("page", page);
-            service.update(supplier);
-            return "supplierList";
-        }
+    @ResponseBody
+    public String update(Map<String, Object> map,SupplierBo supplierBo){
+            service.update(supplierBo);
+            return "{\"code\":1,\"msg\":\"修改成功\"}";
+
     }
 
 }

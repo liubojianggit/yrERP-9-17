@@ -1,6 +1,7 @@
 package com.yr.department.service;
 
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.page.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,8 @@ public interface DepartmentService {
      * @return
      */
     String query();
+
+    String queryDepartmentbo(Page<Departmentbo> page);
 
     /**
     * 获取部门的list集合

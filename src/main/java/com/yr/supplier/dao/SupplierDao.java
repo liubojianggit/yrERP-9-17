@@ -11,9 +11,9 @@ import java.util.List;
 public interface SupplierDao {
     /**
      * 为供应商表添加数据
-     * @param supplier
+     * @param supplierBo
      */
-    void add(Supplier supplier);
+    void add(SupplierBo supplierBo);
 
     /**
      * 根据id删除供应商数 据
@@ -23,9 +23,9 @@ public interface SupplierDao {
 
     /**
      * 根据对象修改供应商数据
-     * @param supplier
+     * @param
      */
-    void update(Supplier supplier);
+    void update(SupplierBo supplierBo);
 
     /**
      * 查询总数（模糊查询总数）
