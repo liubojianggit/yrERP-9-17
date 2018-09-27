@@ -35,12 +35,6 @@ public interface UserDao {
     void update(User user);
 
     /**
-     * 删除用户信息
-     * @param id
-     */
-    void delete(Integer id);
-
-    /**
      * 根据id查询用户数据
      * @param id
      * @return User
@@ -86,4 +80,23 @@ public interface UserDao {
      */
     void delete(String department);
 
+    /**
+     * 用户进行批量删除
+     * @param id
+     */
+    void delete(Integer[] id);
+
+    /**
+     * 修改用户的状态
+     * @param id
+     * @param state
+     */
+    void updateState(Integer id, Integer state);
+
+    /**
+     * 根据员工工号查询user对象
+     * @param jobNum
+     * @return User
+     */
+    User getByJobNum(String jobNum);
 }
