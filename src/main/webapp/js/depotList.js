@@ -15,28 +15,19 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     ;
 
-    //用户列表
+    //仓库列表
     var tableIns = table.render({
         elem: '#depotList',
         url :path+ 'depot/depotTable/list',
-        /* parseData: function(res){ //res 即为原始返回的数据
-             return {
-                 //"code": res.status, //解析接口状态
-                 //"msg": res.message, //解析提示文本
-                 "count": res.totalRecord, //解析数据长度
-                 "data": res.pageDataList //解析数据列表
-             };
-         },*/
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
-        response: {
-            // statusName: 'status' //规定数据状态的字段名称，默认：code
-            //,statusCode: 200 //规定成功的状态码，默认：0
-            //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-            countName: 'totalRecord' //规定数据总数的字段名称，默认：count
-            ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
+        where:{//需要传入的值
+            "depot.name": $("#name").val(),  //搜索的关键字
+            "depot.code": $("#code").val(),  //搜索的关键字
+            "depot.addr": $("#addr").val(),  //搜索的关键字
+
         },
         cellMinWidth : 95,
         page : true,
@@ -48,13 +39,12 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'depot.code', title: '部门编号', align:"center",unresize: true},
-            {field: 'depot.name', title: '部门名称', align:"center",unresize: true},
-            {field: 'depot.addr', title: '仓库地址', align:"center", unresize: true},
-            {field: 'principal', title: '负责人', align:"center", unresize: true},
-            {field: 'depot.createTime', title: '创建时间', align:"center", unresize: true},
-            {field: 'depot.createEmpno', title: '创建人', align:"center", unresize: true},
-            {field: 'phoneNumber', title: '电话', align:"center", unresize: true},
+            {field: 'code', title: '仓库编号', align:"center",unresize: true},
+            {field: 'name', title: '仓库名称', align:"center",unresize: true},
+            {field: 'addr', title: '仓库地址', align:"center", unresize: true},
+            {field: 'jobnum', title: '负责人', align:"center", unresize: true},
+            {field: 'createTime', title: '创建时间', align:"center", unresize: true},
+            {field: 'createEmp', title: '创建人', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
         ]]
     });
@@ -67,7 +57,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "depot.name": $("#depotName").val(),  //搜索的关键字
+                    "name": $("#depotName").val(),  //搜索的关键字
                 }
             })
         }else{
@@ -78,11 +68,11 @@ layui.use(['form','layer','table','laytpl'],function(){
     //添加用户
     function addDepot(){
         var index = layui.layer.open({
-            title : "添加用户",
+            title : "添加仓库",
             type : 2,
-            content : path+"/menu/menuTable/add",//发送请求
+            content : path+"/depot/depotTable/add",//发送请求
             end: function(){
-                window.location.href=path+"/menu/menuTable";
+                window.location.href=path+"/depot/depotTable";
             }
         })
         layui.layer.full(index);
@@ -97,7 +87,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //批量删除
-    $(".delAll_btn").click(function(){
+/*    $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('depotListTable'),
             data = checkStatus.data,
             newsId = [];
@@ -106,12 +96,49 @@ layui.use(['form','layer','table','laytpl'],function(){
                 newsId.push(data[i].newsId);
             }
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
                 tableIns.reload();
                 layer.close(index);
-                // })
+            })
+        }else{
+            layer.msg("请选择需要删除的用户");
+        }
+    })*/
+    //批量删除
+    $(".delAll_btn").click(function(){
+
+        var checkStatus = table.checkStatus('depotListTable'),
+            data = checkStatus.data,
+            newsId = [];
+        if(data.length > 0) {
+            for (var i in data) {
+                newsId.push(data[i].id);
+            }
+            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({//删除用户
+                    type : "post",
+                    url : path+"depot/depotTable/"+newsId,
+                    async : false,
+                    data : {
+                        "_method" : "DELETE"
+                    },
+                    traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+                    dataType : "json",
+                    success : function(data) {
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"depot/depotTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
             })
         }else{
             layer.msg("请选择需要删除的用户");
@@ -125,18 +152,18 @@ layui.use(['form','layer','table','laytpl'],function(){
         if(layEvent === 'edit'){ //编辑
             layer.open({
                 type: 2,
-                title: '添加菜单',
+                title: '修改仓库',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['800px' , '520px'],
-                content: path+'/menu/menuTable/'+data.id,
+                content: path+'/depot/depotTable/'+data.id,
                 end: function(){
                     window.location.href = path+"/depot/depotTable";
                 }
             });
 
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
+            layer.confirm('确定删除此仓库？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
                 $.ajax({
@@ -150,20 +177,11 @@ layui.use(['form','layer','table','laytpl'],function(){
                             window.location.href = path+"/depot/depotTable";
 
                         }else{
-                            layer.msg("删除用户失败",{icon:2});
+                            layer.msg("删除仓库失败",{icon:2});
                             window.location.href = path+"/depot/depotTable";
                         }
                     }
                 });
-
-
-
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                //    tableIns.reload();
-                //   layer.close(index);
-                // })
                 return false;
             });
         }
