@@ -10,8 +10,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 public class RoleFilter extends AccessControlFilter {
-    static final String LOGIN_URL = "http://www.sojson.com/user/open/toLogin.shtml";//登陆页面
-    static final String UNAUTHORIZED_URL = "http://www.sojson.com/unauthorized.html";//没有权限的页面
+    static final String LOGIN_URL = "http://localhost:8080/yrERP-9-17/login";//登陆页面
+    static final String UNAUTHORIZED_URL = "http://localhost:8080/unauthorized.html";//没有权限的页面
 
     /**
      * 验证是否有角色

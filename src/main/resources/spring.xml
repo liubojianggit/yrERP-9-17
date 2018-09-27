@@ -23,7 +23,7 @@
 	<context:property-placeholder location="classpath:jdbc.properties"/>
 
 	<!-- 引入配置文件 -->
-	<!--<import resource="spring-shiro.xml"/>-->
+	<import resource="spring-shiro.xml"/>
 	<import resource="spring-redis-config.xml"/>
 
 	<!--配置数据源  -->
