@@ -109,7 +109,7 @@ public class UserController {
         map.put("user", new User());//传入一个空的user对象
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
-        map1.put("2", "女");
+        map1.put("0", "女");
         map.put("sexs", map1);
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
         map.put("depaList",departmentList);
@@ -127,7 +127,7 @@ public class UserController {
     @RequestMapping(value="/userTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(User user, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
-        /*String phone = String.valueOf(FileUtils.getTimeStamp());
+        String phone = String.valueOf(FileUtils.getTimeStamp());
         File file = new File(path, phone + ".jpg");//第一个是父级文件路径，第二个是文件名
         if(!file.getParentFile().exists()){//判断父级路径是否存在
             file.mkdir();//创建文件夹
@@ -141,11 +141,11 @@ public class UserController {
         }
         String phoneStr = path + File.separator + phone + ".jpg";//组成一个图片的路径字符串
         //截取指定路径组成一个本地路径
-        if(!filesCopy.equals("F:/workspace/MyJurisdiction/WebContent/images/587c589d26802.jpg")){//这是默认显示的图片路径
+        if(!filesCopy.equals("E:\\idea\\yrERP\\yrERP-9-17\\src\\main\\webapp\\images")){//这是默认显示的图片路径
             filesCopy = request.getServletContext().getRealPath("/") + "photos" + filesCopy.substring(filesCopy.lastIndexOf("\\"),filesCopy.length());
         }
         FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
-        user.setPhoto(phoneStr);//替换掉原本的路径*/
+        user.setPhoto(phoneStr);//替换掉原本的路径
 
         user.setAge(DateUtils.calculateTimeDifferenceByCalendar(user.getBirthday()));//计算当前时间-生日日期=现在年龄
         user.setStates(1);//默认是启用的
@@ -164,7 +164,7 @@ public class UserController {
         page.setT(userBo);
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
-        map1.put("2", "女");
+        map1.put("0", "女");
         map.put("sexs", map1);
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
         map.put("depaList",departmentList);
@@ -195,8 +195,11 @@ public class UserController {
     @ResponseBody
     public String delete(@PathVariable Integer[] id){
         userService.delete(id);//删除用户
-        /*User user = userService.queryById(id[i]);//根据用户id查询出对象
-        FileUtils.delete(user.getHeadUrl());//获得用户的图片路径删除*/
+        //删除图片用户
+        for (Integer id1:id) {
+            User user = userService.getById(id1);//根据用户id查询出对象
+            FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
+        }
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
@@ -300,17 +303,4 @@ public class UserController {
         userService.updateState(id, state);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
-
-    /**
-     * 根据用户id返回部门的编号，再根据部门的编号查询部门的名字
-     * @return String
-     */
-    /*@RequestMapping(value = "/userTable/getDepaName",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
-    @ResponseBody
-    public String getDepaName(@RequestParam(value="id") Integer id){
-        User user = userService.getById(id);
-        Map<String,Object> map = departmentService.querys();
-        return (String)map.get(user.getDepaCode());
-    }*/
-
 }

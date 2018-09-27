@@ -14,16 +14,25 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 </head>
+<style>
+    .layui-form-checkbox[lay-skin=primary] i{top:5px;}
+</style>
 <body class="childrenBody">
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <form class="layui-form" id="searchFormId">
-            <div class="layui-inline">
-                <div class="layui-input-inline">
+            <div class="layui-inline" style="width: 500px;">
+                <div style='width:33.3%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
                     <input type="text" class="layui-input searchVal" id="pName" placeholder="请输入权限名：" />
+                </div>
+                <div style='width:33.3%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
                     <input type="text" class="layui-input searchVal" id="pUrl" placeholder="请输入权限url：" />
+                </div>
+                <div style='width:33.3%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
                     <input type="text" class="layui-input searchVal" id="pMethod" placeholder="请输入请求方式：" />
                 </div>
+            </div>
+            <div class="layui-inline">
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
             <div class="layui-inline">

@@ -7,6 +7,7 @@ import com.yr.user.service.LoginService;
 import com.yr.user.service.UserService;
 import com.yr.util.SerializeUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -83,17 +84,13 @@ public class LoginController {
             if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {//先去掉验证码前后空格 在比较验证码是否正确
                 List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);//判断用户 账号是否存在
                 if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {//判断用户不能等于空 长度要大于1
-                    User user = loginService.queryLoginUser(loginUser);//判断用户 账号是否正确
-                    if (!StringUtils.isEmpty(user)){//判断是否为空
-                        if (user.getStates() == 1) {//查看状态 0未启用 1在职
-                            // 登录验证通过，把对象存进session
-                            request.getSession().setAttribute("user", user);// 获取session对象并赋值
-                            str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
-                        } else if (user.getStates() == 0) {
-                            str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
-                        }
-                    }else {
-                        str = "{\"code\":3,\"msg\":\"账号/密码错误\"}";
+                    Subject subject = SecurityUtils.getSubject();//获得subject对象
+                    UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getName(), loginUser.getPassword());//根据账号密码获得token令牌
+                    try {
+                        subject.login(token);//进入权限的认证
+                    } catch (Exception ae) {
+                        System.out.println("登陆失败: " + ae.getMessage());
+                        return "{\"code\":4,\"msg\":\"账号或密码错误\"}";
                     }
                 }else{
                     str = "{\"code\":4,\"msg\":\"账号无法登录\"}";//账号不存在

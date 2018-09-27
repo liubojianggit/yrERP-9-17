@@ -14,13 +14,16 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 </head>
+<style>
+	.layui-form-checkbox[lay-skin=primary] i{top:5px;}
+</style>
 <body class="childrenBody">
 <form class="layui-form">
 	<blockquote class="layui-elem-quote quoteBox">
 		<form class="layui-form">
 			<div class="layui-inline">
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input searchVal" placeholder="请输入搜索的内容" />
+					<input type="text" id="rName" class="layui-input searchVal" placeholder="请输入角色的名字" />
 				</div>
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
@@ -43,6 +46,6 @@
 	</script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/page/user/roleList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/roleList.js"></script>
 </body>
 </html>
