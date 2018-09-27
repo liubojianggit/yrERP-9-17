@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>仓库管理</title>
+    <title>权限管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -20,28 +20,30 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="depotName" placeholder="仓库名称/编号：" /><input type="text" class="layui-input searchVal" id="depaCode" value="" placeholder="请输入部门名称/编号：" /><input type="text" class="layui-input searchVal" id="minAge" value="" placeholder="请输入最小年龄：" /><input type="text" class="layui-input searchVal" id="maxAge" value="" placeholder="请输入最大年龄" />
+                    <input type="text" class="layui-input searchVal" id="pName" placeholder="请输入权限名：" />
+                    <input type="text" class="layui-input searchVal" id="PUrl" placeholder="请输入权限url：" />
+                    <input type="text" class="layui-input searchVal" id="PMethod" placeholder="请输入请求方式：" />
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">添加仓库</a>
+                <a class="layui-btn layui-btn-normal addNews_btn">添加权限</a>
             </div>
             <div class="layui-inline">
                 <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
             </div>
         </form>
     </blockquote>
-    <table id="depotList" lay-filter="depotList"></table>
+    <table id="userList" lay-filter="userList"></table>
 
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
     <!--操作-->
-    <script type="text/html" id="depotListBar">
+    <script type="text/html" id="userListBar">
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/userList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/permissionList.js"></script>
 </body>
 </html>

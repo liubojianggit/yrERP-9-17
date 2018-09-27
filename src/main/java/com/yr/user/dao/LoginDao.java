@@ -2,13 +2,20 @@ package com.yr.user.dao;
 
 import com.yr.entitys.user.User;
 
+import java.util.List;
+
 public interface LoginDao {
+    /**
+     * 查询用户 账号是否存在
+     * @param loginUser
+     * @return
+     */
+    List<User> queryLoginUserName(User loginUser);
 
-    //查看用户状态
-    int userstates( Integer states);
-
-
-    //验证用户名密码是否正确
-    int getMatchCount(String name, String password);
-
+    /**
+     * 查询用户 用户账号是否正确
+     * @param loginUser
+     * @return
+     */
+    User queryLoginUser(User loginUser);
 }

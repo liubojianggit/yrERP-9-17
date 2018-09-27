@@ -2,6 +2,7 @@ package com.yr.order.controller;
 
 
 import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/sale_order")
@@ -39,7 +41,7 @@ public class SaleController {//销售订单Controller
      * 销售订单表页面查询接口
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     public String index(){
         return "saleList";
     }
@@ -50,14 +52,14 @@ public class SaleController {//销售订单Controller
      * @param page
      * @return
      */
-    @RequestMapping(value = "/sale_orderTable",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<SaleBO>query(SaleBO saleBO, Page<SaleBO>page){
-        page.setT(saleBO);
-        saleService.query(page);
-        return page;
-    }
+    public String query(SaleBO saleBO, Page<SaleBO>page){
+        page.setT(saleBO);//将bo类置入对象
+        String json = saleService.query(page);//将list返回一个json字符串
+        return json;
 
+    }
     /**
      * 跳转添加销售订单表页面
      * @return
@@ -82,8 +84,7 @@ public class SaleController {//销售订单Controller
         sale.setCreateTime(new Date());//获取当前时间
         sale.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         saleService.add(sale);
-        /*  return "redirect:/sale";*/
-        return "saleList";
+        return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
     /**
@@ -110,7 +111,7 @@ public class SaleController {//销售订单Controller
         sale.setUpdateTime(new Date());//获取修改当前时间
         sale.setUpdateEmp(((SaleOrder)request.getSession().getAttribute("sale")).getApprover());//获取修改人（审核人）
         saleService.update(sale);
-        return "saleList";
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -119,7 +120,8 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public void delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer id){
         saleService.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 }

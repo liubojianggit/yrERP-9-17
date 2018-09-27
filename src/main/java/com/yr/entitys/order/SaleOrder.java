@@ -54,9 +54,6 @@ public class SaleOrder extends BaseEntity implements Serializable{//销售订单
 
     //收货人
     private String consignee;
-
-
-
     //审批人
     private String approver;
 

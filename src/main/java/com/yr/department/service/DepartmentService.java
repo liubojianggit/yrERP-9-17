@@ -1,11 +1,9 @@
 package com.yr.department.service;
 
+import com.yr.entitys.bo.departmentBo.Departmentbo;
+
 import java.util.List;
 import java.util.Map;
-
-import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.department.Department;
-import com.yr.entitys.user.User;
 
 /**
  *部门Service接口

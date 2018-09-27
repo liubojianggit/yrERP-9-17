@@ -1,19 +1,16 @@
 package com.yr.department.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.yr.department.dao.DepartmentDao;
+import com.yr.entitys.department.Department;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import com.yr.department.dao.DepartmentDao;
-import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.department.Department;
-import com.yr.entitys.user.User;
-import org.springframework.stereotype.Repository;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 部门Dao接口实现类

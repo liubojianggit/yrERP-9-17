@@ -4,16 +4,14 @@ package com.yr.department.service.impl;
 import com.yr.department.dao.DepartmentDao;
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.department.Department;
-import com.yr.entitys.user.User;
 import com.yr.util.DateUtils;
 import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +20,7 @@ import java.util.Map;
  * 部门Service实现类
  */
 @Service("departmentServiceImpl")
+@Transactional
 public class DepartmentServiceImpl implements DepartmentService {
     @Qualifier("departmentDaoImpl")
     @Autowired

@@ -40,14 +40,20 @@ public class PurchaseOrderController {
         return null;
     }
 
+    /**
+     * 数据查询，并且返回json 数据；
+     * @param requisitionBO
+     * @param page
+     * @return json
+     */
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.GET)
-    public Page<PurchaseOrder> query(purchaseOrderBO requisitionBO, Page<purchaseOrderBO> page) {
+    @ResponseBody
+    public String query(purchaseOrderBO requisitionBO, Page<purchaseOrderBO> page) {
         page.setT(requisitionBO);
-        Page<PurchaseOrder> page1 = purchaseOrderServiceImpl.query(page);
-        return page1;
+        String json  = purchaseOrderServiceImpl.query(page);
+        return json;
 
     }
-
     /**
      * 添加数据接口；
      * 跳转添加页面
@@ -84,7 +90,8 @@ public class PurchaseOrderController {
         double total = purchaseOrder.getUnitPrice()*purchaseOrder.getPurchaseNumber();
         purchaseOrder.setTotalPrice(total);
         purchaseOrderServiceImpl.add(purchaseOrder);
-        return null;
+
+        return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
     /**
      * 修改接口；
@@ -121,7 +128,7 @@ public class PurchaseOrderController {
         purchaseOrder.setTotalPrice(total);
 
         purchaseOrderServiceImpl.update(purchaseOrder);
-        return null;
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -133,6 +140,6 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         purchaseOrderServiceImpl.delete(id);
-        return null;
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 }

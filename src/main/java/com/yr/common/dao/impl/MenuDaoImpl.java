@@ -1,18 +1,15 @@
 package com.yr.common.dao.impl;
 
-import com.yr.common.dao.BaseDao;
 import com.yr.common.dao.MenuDao;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
 import com.yr.entitys.user.User;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Repository

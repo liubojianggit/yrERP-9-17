@@ -11,8 +11,10 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import redis.clients.jedis.Jedis;
 
@@ -60,7 +62,7 @@ public class LoginController {
         IdentifyCode code = new IdentifyCode(100, 30, 6, 10);
         // 存入session
         HttpSession session = req.getSession();
-        session.setAttribute("myCode", code.getCode());
+        session.setAttribute("verifyCode", code.getCode());
         // 响应图片
         ServletOutputStream out = resp.getOutputStream();
         code.write(out);
@@ -71,60 +73,40 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/userTable/login", method = RequestMethod.GET)
-    public String login(String s, HttpServletRequest request, String name, String password, String red, Map<String, Object> map, Integer states) {
-        String des = s.toUpperCase(); // 得到界面输入的验证码//显示验证码
-        String yzm = (String) request.getSession().getAttribute("rand");// 得到我们生成的正确的验证码
-        System.out.println(yzm + "验证码");
-        boolean sta = loginService.userstates(states);
-        if (sta) {//判断用户是否离职
-            boolean ll = loginService.All(name);
-            if (ll) { //判断用户不为空
-                boolean lls = loginService.Alls(password);
-                if (lls) {//判断密码不为空
-                    //if (!des.equals("")){//判断验证码不能为空
-                    if (des.equals(yzm)) {//比较验证码
-                        boolean an = loginService.getMatchCount(name, password);
-                        if (an) {
-                            HttpSession session = request.getSession();//得到用户和密码
-                            request.getSession().setAttribute("username", name);//先把数据取出来 在存进去
-                            session.setAttribute("users", loginService.getMatchCount(name, password));
-                            map.put("err", 4);//验证通过
+    @RequestMapping(value = "/userTable/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request) {
+        String str = "";//用来接异常
+        String verifyCode = (String) request.getSession().getAttribute("verifyCode");// 获取正确的验证码
 
-                            //别动我的        --熊定坤
-                            //将用户的权限存入redis中
-                            Subject subject = SecurityUtils.getSubject();//获取到用户对象
-                            String userName = subject.getPrincipal().toString();
-                            User user = userService.getByName(userName);//获取到user对象
-                            List<String> roles = userService.getRoles(user.getId());//获得角色对象
-                            Jedis jedis = jedisManager.getJedis();
-                            //将角色字符串序列化后放入redis中
-                            jedis.set("roles".getBytes(), SerializeUtil.serialize(roles));
-                            List<Permission> permissions = userService.getPermissions(user.getId());
-                            //将权限对象序列化后放入redis中
-                            jedis.set("permissions".getBytes(), SerializeUtil.serialize(permissions));
-
-                            return "redirect:/index";//通过返回到主页面
-                        } else {
-                            map.put("err", 2);//用户名或密码不正确
-                            return "redirect:/u_user/userTables";
+        if (!loginVerifyCode.isEmpty()) {//判断验证码 是非为空
+            if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {//先去掉验证码前后空格 在比较验证码是否正确
+                List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);//判断用户 账号是否存在
+                if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {//判断用户不能等于空 长度要大于1
+                    User user = loginService.queryLoginUser(loginUser);//判断用户 账号是否正确
+                    if (!StringUtils.isEmpty(user)){//判断是否为空
+                        if (user.getStates() == 1) {//查看状态 0未启用 1在职
+                            // 登录验证通过，把对象存进session
+                            request.getSession().setAttribute("user", user);// 获取session对象并赋值
+                            str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
+                        } else if (user.getStates() == 0) {
+                            str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
                         }
-                    } else {
-                        map.put("err", 3);//验证码不正确
-                        return "redirect:/u_user/userTables";
+                    }else {
+                        str = "{\"code\":3,\"msg\":\"账号/密码错误\"}";
                     }
-                    // }
-                } else {
-                    System.out.println("密码不能为空");
+                }else{
+                    str = "{\"code\":4,\"msg\":\"账号无法登录\"}";//账号不存在
                 }
-            } else {
-                System.out.println("用户不能为空");
+            }else {
+                str = "{\"code\":5,\"msg\":\"验证码错误\"}";// 验证码错误
             }
         } else {
-            map.put("err", 0);//用户以离职
-            return "redirect:/u_user/userTables";
+            str = "{\"code\":6,\"msg\":\"请输入验证码\"}";// 验证码是空的
         }
-        return null;
+
+        return str;
+
     }
 
     /**

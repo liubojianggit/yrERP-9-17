@@ -12,7 +12,8 @@ public interface PurchaseOrderService {
      * @param page
      * @return
      */
-    Page<PurchaseOrder> query(Page<purchaseOrderBO> page);
+    //Page<PurchaseOrder> query(Page<purchaseOrderBO> page);
+     String  query(Page<purchaseOrderBO> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
