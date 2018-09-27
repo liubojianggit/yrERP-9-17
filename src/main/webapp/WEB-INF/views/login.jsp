@@ -20,7 +20,7 @@
 		<div class="login_face"><img src="<%=request.getContextPath() %>/face.jpg" class="userAvatar"></div>
 		<div class="layui-form-item input-item">
 			<label for="userName">用户名</label>
-			<input type="text" placeholder="请输入用户名" autocomplete="off" id="userame" name="name" class="layui-input" lay-verify="required">
+			<input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" name="name" class="layui-input" lay-verify="required">
 		</div>
 		<div class="layui-form-item input-item">
 			<label for="password">密码</label>
