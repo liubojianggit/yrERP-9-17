@@ -71,7 +71,7 @@ public class WareTypeDaoImpl implements WareTypeDao {
 
     @Override
     public boolean updateWareType(WareType wareType) {
-        StringBuffer jpql = new StringBuffer();
+   /*     StringBuffer jpql = new StringBuffer();
         jpql.append("update WareType set name = ?,code = ?, sup_code = ?,updateEmp = ?,updateTime = ?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, wareType.getName());
@@ -84,9 +84,9 @@ public class WareTypeDaoImpl implements WareTypeDao {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //获取String类型的时间String createdate = sdf.format(date);
         String udpateDate = sdf.format(date);
-        query.setParameter(5, udpateDate);
+        query.setParameter(5, udpateDate);*/
         try {
-            query.executeUpdate();
+            entityManager.merge(wareType);
             return true;
 
         } catch (Exception e) {
