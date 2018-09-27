@@ -21,8 +21,8 @@
             <div class="layui-inline">
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input searchVal" id="pName" placeholder="请输入权限名：" />
-                    <input type="text" class="layui-input searchVal" id="PUrl" placeholder="请输入权限url：" />
-                    <input type="text" class="layui-input searchVal" id="PMethod" placeholder="请输入请求方式：" />
+                    <input type="text" class="layui-input searchVal" id="pUrl" placeholder="请输入权限url：" />
+                    <input type="text" class="layui-input searchVal" id="pMethod" placeholder="请输入请求方式：" />
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>

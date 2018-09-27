@@ -23,8 +23,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         },
         where:{//需要传入的值
             "permission.name": $("#pName").val(),  //搜索的关键字
-            "Permission.url": $("#pUrl").val(),  //搜索的关键字
-            "Permission.method": $("#pMethod").val(),  //搜索的关键字
+            "permission.url": $("#pUrl").val(),  //搜索的关键字
+            "permission.method": $("#pMethod").val(),  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
@@ -39,7 +39,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '权限名', align:"center",unresize: true},
             {field: 'url', title: '权限URL', align:"center", unresize: true},
             {field: 'method', title: '请求方式', align:"center", unresize: true},
-            {field: '', title: '父级权限', align:"center", unresize: true},
+            {field: 'supId', title: '父级权限', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
@@ -52,8 +52,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             },
             where:{//需要传入的值
                 "permission.name": $("#pName").val(),  //搜索的关键字
-                "Permission.url": $("#pUrl").val(),  //搜索的关键字
-                "Permission.method": $("#pMethod").val(),  //搜索的关键字
+                "permission.url": $("#pUrl").val(),  //搜索的关键字
+                "permission.method": $("#pMethod").val(),  //搜索的关键字
             }
         })
     });
@@ -61,8 +61,6 @@ layui.use(['form','layer','table','laytpl'],function(){
     //添加用户
     function addUser(){
         //window.location.href = "user/add";
-
-
         var index = layui.layer.open({
             title : "添加权限",
             type : 2,
@@ -84,20 +82,40 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
+
         var checkStatus = table.checkStatus('userListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                newsId.push(data[i].id);
             }
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax({//删除用户
+                    type : "post",
+                    url : path+"u_permission/permissionTable/"+newsId,
+                    async : false,
+                    data : {
+                        "_method" : "DELETE"
+                    },
+                    traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+                    dataType : "json",
+                    success : function(data) {
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"u_permission/permissionTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
             })
         }else{
             layer.msg("请选择需要删除的用户");
@@ -124,13 +142,11 @@ layui.use(['form','layer','table','laytpl'],function(){
                         _method:'delete'
                     },
                     success: function(data){
-
                         if("0" == data.code){
                             layer.msg("删除用户失败",{icon:2});
                         }else if("1" == data.code){
                             layer.msg("删除成功",{icon:2});
                             window.location.href = path+"u_permission/permissionTable";
-
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }

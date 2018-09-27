@@ -23,8 +23,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         },
         where:{//需要传入的值
             "user.name": $("#userName").val(),  //搜索的关键字
-            "depaCode": $("#depaCode").val(),  //搜索的关键字
-            "minAge": $("#minAge").val(),  //搜索的关键字
+            "user.depaCode": $("#depaCode").val(),  //搜索的关键字
+            "minAge": $("#minAge").val(),  //搜索的关键字   这里设置不进去，因为类型不匹配，但是输入数字后便可以进入
             "maxAge": $("#maxAge").val() //搜索的关键字
         },
         cellMinWidth : 95,
@@ -40,12 +40,12 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '用户名', align:"center",unresize: true},
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
             {field: 'photo', title: '头像',  align:'center',templet:function(d){
-                return '<img style="width: 28px;height: 28px;"  src="'+path + d + '"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
+                return '<img style="width: 28px;height: 28px;"  src="'+path + '/u_user/userTable/icons/'+ d.id + '"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
             }},
             {field: 'jobNum', title: '工号', align:"center", unresize: true},
             {field: 'depaCode', title: '部门编号', align:"center", unresize: true},
             {field: 'sex', title: '性别', align:"center", unresize: true,templet:function(d){
-                return d == 0 ? "女" : "男";
+                return d.sex == "0" ? "女" :"男";
             }},
             {field: 'age', title: '年龄', align:"center", unresize: true},
             {field: 'birthday', title: '生日', align:"center", unresize: true},
