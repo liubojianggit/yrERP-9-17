@@ -94,7 +94,8 @@ public class WareTypeController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "ware_typeTable", method = RequestMethod.PUT)
+    @RequestMapping(value = "ware_typeTable", method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String updateWare(@ModelAttribute("wareType") WareType wareType, Map<String, Object> map) {
         wareType.setUpdateEmp("wangyong1");
         boolean bool = wts.update(wareType);

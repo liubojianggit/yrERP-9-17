@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,12 @@ public class WareTypeServiceImpl implements WareTypeService {
         if (isUpdateParamNull(wareType)) {
             return false;
         }else{
+            Date date = new Date();
+            //设置要获取到什么样的时间SimpleDateFormat sdf = newSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //获取String类型的时间String createdate = sdf.format(date);
+            String udpateDate = sdf.format(date);
+            wareType.setUpdateTime(udpateDate);
             wt.updateWareType(wareType)  ;
             return true;
         }
