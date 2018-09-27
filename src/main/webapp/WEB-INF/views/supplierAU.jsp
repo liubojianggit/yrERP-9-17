@@ -27,33 +27,33 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">供应商名称</label>
         <div class="layui-input-block">
-            <form:input path="supplier.name" class="layui-input"  lay-verify="required" placeholder="请输入供应商名称："/>
+            <form:input path="name" class="layui-input"  lay-verify="required" placeholder="请输入供应商名称："/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">供应商编号</label>
         <div class="layui-input-block">
-            <form:input path="supplier.code" class="layui-input"  lay-verify="required" placeholder="请输入供应商编号："/>
+            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入供应商编号："/>
         </div>
     </div>
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">联系电话</label>
         <div class="layui-input-block">
-            <form:input path="supplier.phoneNumber" class="layui-input"  lay-verify="required" placeholder="请输入联系电话："/>
+            <form:input path="phoneNumber" class="layui-input"  lay-verify="required" placeholder="请输入联系电话："/>
         </div>
     </div>
 
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">地址</label>
         <div class="layui-input-inline">
-            <form:select path="supplier.addr" items="${addrList }" itemLabel="name" itemValue="name"></form:select>
+            <form:input path="addr" class="layui-input" lay-verify="required" placeholder="请输入地址"/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">级别</label>
         <div class="layui-input-inline">
-            <form:select path="supplier.rank" items="${rankList }" itemLabel="name" itemValue="name"></form:select>
+            <form:select path="rank" items="${rankList}" itemLabel="name" itemValue="name"></form:select>
         </div>
     </div>
 
