@@ -17,8 +17,22 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.0.js"></script>
 </head>
+<script type="text/javascript">
+	$(function(){
+	    $("#password").change(function(){
+            var oldPassword = $("#oldPassword").val();//获得第一次输入的密码
+            var newPassword = $(this).val();//获得
+			if(oldPassword != newPassword){
+                layer.msg("两次输入密码不正确",{icon:2});
+                $("#submits").attr("disabled",true);
+			}else{
+                $("#submits").attr("disabled",false);
+			}
+        });
+	});
+</script>
 <body class="childrenBody">
-<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="user">
+<form:form style="width:80%;" id="form2" method="POST" modelAttribute="user">
 <form:errors path="*"></form:errors>
 	<c:if test="${user.id != null }">
 		<input type="hidden" name="_method" value="PUT"/>
@@ -53,8 +67,14 @@
 			<form:input path="name" class="layui-input"  lay-verify="required" placeholder="请输入姓名"/>
 		</div>
 	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">密码</label>
+		<div class="layui-input-block">
+			<input id="oldPassword" name="oldPassword" type="password" class="layui-input"  lay-verify="required" placeholder="请输入密码"/>
+		</div>
+	</div>
     <div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">密码</label>
+        <label class="layui-form-label">确认密码</label>
         <div class="layui-input-block">
             <form:input path="password" type="password" class="layui-input"  lay-verify="required" placeholder="请输入密码"/>
         </div>
@@ -68,7 +88,7 @@
 	<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">所属部门</label>
 		<div class="layui-input-inline">
-			<form:select path="depaCode" items="${depaList }"></form:select>
+			<form:select path="depaCode" items="${depaList }" cssStyle="width:80px;height: 40px;"></form:select>
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -89,12 +109,6 @@
 			<form:radiobuttons path="sex" items="${sexs }"/>
 		</div>
 	</div>
-	<!-- layui-form-item 换行 -->
-	<%--<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
-	<label class="layui-form-label">账号状态</label>
-	<div class="layui-input-inline">
-		<form:select path="states" items="${statusMap }"></form:select>
-	</div>--%>
 	</div>
 		<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">地址</label>
@@ -106,12 +120,13 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-input-block">
 			<c:if test="${user.id == null }">
-				<button class="layui-btn layui-btn-sm" lay-submit lay-filter="addUser">立即添加</button>
+				<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="addUser">立即添加</button>
 			</c:if>
 			<c:if test="${user.id != null }">
-				<button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateUser">确认修改</button>
+				<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="updateUser">确认修改</button>
 			</c:if>
-			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+			<button type="reset" id="resets" class="layui-btn layui-btn-primary">重置</button>
+			<button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
 		</div>
 	</div>
 </form:form>

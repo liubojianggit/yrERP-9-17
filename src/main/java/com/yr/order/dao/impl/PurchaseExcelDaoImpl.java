@@ -23,4 +23,19 @@ public class PurchaseExcelDaoImpl implements PurchaseExcelDao {
         List<PurchaseOrder> purchaseOrderList  = entityManager.createQuery(jqpl).getResultList();
         return purchaseOrderList;
     }
+
+    /**
+     * 将采购excel表中的数据信息，导入到mysql 数据库中
+     * @param purchaseOrderList
+     * @return
+     */
+    @Override
+    public int addExcel(List<PurchaseOrder> purchaseOrderList) {
+        int values = 0 ;
+        for (PurchaseOrder purchaseOrder:purchaseOrderList) {
+            entityManager.persist(purchaseOrder);
+            values ++;
+        }
+        return values;
+    }
 }
