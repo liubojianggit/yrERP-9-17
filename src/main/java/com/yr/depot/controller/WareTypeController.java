@@ -60,7 +60,7 @@ public class WareTypeController {
      */
     @RequestMapping(value = "ware_typeTable", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("wareTypeBo") WareType waretype) {
+    public String addWare(@ModelAttribute("wareType") WareType waretype) {
         waretype.setCreateEmp("wangyong");
        boolean bool = wts.add(waretype);
         if(bool){

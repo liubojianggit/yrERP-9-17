@@ -134,12 +134,13 @@ public class DepotDaoImpl implements DepotDao {
     }
 
     /**
-     * 查询仓库名称 提供给销售调
+     * 查询仓库 提供给销售调
      * @param name
      * @return
      */
-    public Depot getname(String name){
-        Depot depot=entityManager.find(Depot.class, name);
-        return  depot;
+    public List<Depot> getname(){
+        String jpql="select d from where Depot d where 1=1";
+        List<Depot> list=entityManager.createQuery(jpql).getResultList();
+        return  list;
     }
 }

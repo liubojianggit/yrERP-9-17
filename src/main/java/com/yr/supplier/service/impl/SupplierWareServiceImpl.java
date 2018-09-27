@@ -2,7 +2,7 @@ package com.yr.supplier.service.impl;
 
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.supplier.supplierWares;
+import com.yr.entitys.supplier.SupplierWares;
 import com.yr.supplier.dao.SupplierWareDao;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.util.StringUtils;
@@ -25,7 +25,7 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return true表示添加成功，false表示添加失败
      */
     @Override
-    public boolean add(supplierWares sw) {
+    public boolean add(SupplierWares sw) {
         if (isParamNull(sw)) {
             return false;
         }else{
@@ -50,7 +50,7 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public boolean update(supplierWares sw) {
+    public boolean update(SupplierWares sw) {
         if (isUpdateParamNull(sw)) {
             return false;
         }else{
@@ -80,7 +80,7 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public supplierWares getSupplierWare(Integer id) {
+    public SupplierWares getSupplierWare(Integer id) {
         return swd.getSupplierWare(id);
     }
 
@@ -89,7 +89,7 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @param supplierWares
      * @return
      */
-    private boolean isUpdateParamNull(supplierWares supplierWares) {
+    private boolean isUpdateParamNull(SupplierWares supplierWares) {
         boolean t = false;
 
         if (StringUtils.isNull(supplierWares.getName())) {
@@ -114,7 +114,7 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @param supplierWares
      * @return
      */
-    private boolean isParamNull(supplierWares supplierWares) {
+    private boolean isParamNull(SupplierWares supplierWares) {
         boolean t = false;
 
         if (StringUtils.isNull(supplierWares.getName())) {

@@ -1,19 +1,28 @@
 package com.yr.depot.service.impl;
 
 import com.yr.depot.service.WareTypeService;
+import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.department.Department;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.WareType;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.StringUtils;
 import com.yr.depot.dao.WareTypeDao;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 商品类型的业务逻辑实现接口类
  */
 @Service
+@Transactional
 public class WareTypeServiceImpl implements WareTypeService {
     @Autowired
     private WareTypeDao wt;
@@ -73,11 +82,14 @@ public class WareTypeServiceImpl implements WareTypeService {
      * @return
      */
     @Override
-    public Page<WareType> query(Page<WareType> wareType) {
+    public String query(Page<WareType> wareType) {
         wareType.setTotalRecord(wt.getCount(wareType));
         List<WareType> wareList = wt.query(wareType);
-        wareType.setPageData(wareList);
-        return wareType;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(wareList,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+wareType.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
 
@@ -98,6 +110,10 @@ public class WareTypeServiceImpl implements WareTypeService {
         if (StringUtils.isNull(ware.getUpdateEmp())) {
             t = true;
         }
+        if (StringUtils.isNull(ware.getSupCode())) {
+            ware.setSupCode("0");
+        }
+
         return t;
     }
     /**
@@ -117,7 +133,30 @@ public class WareTypeServiceImpl implements WareTypeService {
         if (StringUtils.isNull(ware.getCreateEmp())) {
             t = true;
         }
+        if (StringUtils.isNull(ware.getSupCode())) {
+            ware.setSupCode("0");
+        }
 
         return t;
     }
+
+    /**
+     * 获取商品的父级类型
+     * @return
+     */
+    @Override
+    public List<WareType> getWareType() {
+        List<WareType> list = wt.query();
+        List<WareType> lists = new ArrayList<>();
+        for (WareType wareType:list) {
+            lists.add(wareType);
+        }
+        WareType wareTypes =new WareType();
+        wareTypes.setSupCode("0");
+        wareTypes.setCode("0");
+        wareTypes.setName("无");
+        lists.add(wareTypes);
+        return lists;
+    }
+
 }

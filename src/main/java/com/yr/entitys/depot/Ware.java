@@ -1,13 +1,15 @@
 package com.yr.entitys.depot;
 
 import javax.persistence.*;
+import javax.sql.rowset.serial.SerialArray;
+import java.io.Serializable;
 
 /**
  * 商品实体类
  */
 @Entity
 @Table(name = "wares")
-public class Ware {
+public class Ware implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
     private Integer id;
@@ -37,9 +39,8 @@ public class Ware {
     private String createTime;//创建时间，不能为null
     @Column(nullable = false)
     private String createEmp;//创建人，不能为null
-    @Column(nullable = false,columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE")
     private String updateTime;//修改时间
-    @Column(nullable = false)
     private  String updateEmp;//修改人
     private String remark;//备注
 
