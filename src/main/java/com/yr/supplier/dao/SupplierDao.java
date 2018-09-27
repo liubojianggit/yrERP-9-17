@@ -40,6 +40,11 @@ public interface SupplierDao {
      * @return
      */
     Supplier getById(Integer id);
+
+    /**
+     * 根据编号查询供应商的对象
+     */
+    Supplier getByCode(String code);
     /**
      * 分页查询供应商
      * @param page

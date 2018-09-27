@@ -46,5 +46,10 @@ public interface DepotDao {
      */
     void delete(Integer[] id);
 
-    Depot getname(String name);
+    /**
+     * 查询仓库 提供给销售
+     * @param name
+     * @return
+     */
+    List<Depot> getname(String name);
 }

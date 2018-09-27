@@ -52,6 +52,15 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return list;
     }
 
+    @Override
+    public Deprecated getByCode(String code) {
+        String jpql = "select d from Department d where d.code = ? ";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter(1,code);
+        Deprecated deprecated = (Deprecated) query.getSingleResult();
+        return deprecated;
+    }
+
     /**
      * 查询总数
      * @return

@@ -81,6 +81,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public Deprecated getByCode(String code) {
+        return departmentDao.getByCode(code);
+    }
+
+    @Override
     public List<Departmentbo> getDepartmentList() {
         List<Department> list = departmentDao.query();
         List<Departmentbo> listBO = new ArrayList<>();

@@ -24,6 +24,11 @@ public interface SupplierService {
     SupplierBo getById(Integer id);
 
     /**
+     * 根据编号查询供应商的对象
+     */
+    Supplier getByCode(String code);
+
+    /**
      * 添加供应商数据
      * @param supplierBo
      */
