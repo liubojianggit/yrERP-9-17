@@ -74,11 +74,11 @@ public class DepotServiceImpl implements DepotService {
         depotDao.delete(id);
     }
     /**
-     * 查询仓库名称 提供给销售调
+     * 查询仓库 提供给销售调
      * @param name
      * @return
      */
-    public Depot getname(String name){
+    public List<Depot> getname(String name){
 
         return depotDao.getname(name);
     }

@@ -4,6 +4,8 @@ import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 
+import java.util.List;
+
 public interface DepotService {
     /**
      * 分页搜索查询
@@ -39,9 +41,9 @@ public interface DepotService {
     void delete(Integer [] id);
 
     /**
-     * 查询仓库名称 提供给销售调
+     * 查询仓库 提供给销售调
      * @param name
      * @return
      */
-    Depot getname(String name);
+    List<Depot> getname(String name);
 }
