@@ -129,13 +129,14 @@ layui.use(['form','layer','table','laytpl'],function(){
                     dataType : 'json',
                     data: {_method:'delete'},
                     success: function(data){
-                        if("1" == data.code){
-                            layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"/supplier/supplierTable";
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"supplier/supplierTable";
 
                         }else{
-                            layer.msg("删除用户失败",{icon:2});
-                            window.location.href = path+"/supplier/supplierTable";
+                            layer.msg("未知错误，请联系管理员",{icon:2});
                         }
                     }
                 });
