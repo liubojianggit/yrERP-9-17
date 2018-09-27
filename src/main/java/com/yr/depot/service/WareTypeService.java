@@ -1,7 +1,10 @@
 package com.yr.depot.service;
 
+import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.WareType;
+
+import java.util.List;
 
 public interface WareTypeService {
     /**
@@ -36,6 +39,10 @@ public interface WareTypeService {
      * @param wareType
      * @return
      */
-    public Page<WareType> query(Page<WareType> wareType);
+    public String query(Page<WareType> wareType);
+    /**
+     * 获取商品的list集合
+     * */
+    public List<WareType> getWareType();
 
 }

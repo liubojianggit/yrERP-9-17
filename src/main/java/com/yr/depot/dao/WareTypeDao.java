@@ -44,6 +44,13 @@ public interface WareTypeDao {
     public List<WareType> query(Page<WareType> wareType);
 
     /**
+     * 根据wareType来查询商品类型
+     * @param
+     * @return
+     */
+    public List<WareType> query();
+
+    /**
      * 根据wareType来查询数据的数目
      * @param wareType
      * @return

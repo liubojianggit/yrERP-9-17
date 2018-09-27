@@ -1,13 +1,14 @@
 package com.yr.entitys.depot;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 商品类型实体类
  */
 @Entity
 @Table(name = "ware_type")
-public class WareType {
+public class WareType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
     private Integer id;
