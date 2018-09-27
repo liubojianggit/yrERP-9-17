@@ -102,8 +102,7 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, PermissionBo permissionBo, Page<PermissionBo> page){
-        page.setT(permissionBo);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<PermissionBo> page){
         map.put("page", page);
         PermissionBo permissionBos = new PermissionBo();//实例化一个对象
         Permission permission = permissionService.getById(id);//获得权限对象

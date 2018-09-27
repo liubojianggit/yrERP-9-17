@@ -51,7 +51,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "supplier.name": $("#supplierName").val(),  //搜索的关键字
+                    "supplier.name": $("#name").val(),  //搜索的关键字
                 }
             })
         }else{
@@ -129,12 +129,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                     dataType : 'json',
                     data: {_method:'delete'},
                     success: function(data){
-                        if("0" == data.code){
-                            layer.msg("删除用户失败",{icon:2});
-                        }else if("1" == data.code){
-                            layer.msg("删除成功",{icon:2});
+                        if("1" == data.code){
+                            layer.msg("删除成功",{icon:1});
                             window.location.href = path+"supplier/supplierTable";
-
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }

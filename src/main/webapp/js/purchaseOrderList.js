@@ -15,39 +15,38 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //用户列表
     var tableIns = table.render({
-        elem: '#userList',
+        elem: '#purchaseList',
         url :path+ 'requisition/requisitionTable/list',
         request: {//request下面是请求后台的参数的别名,response是响应的别名
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "user.name": $("#rCode").val(),  //搜索的关键字
-            "depaCode": $("#rName").val(),  //搜索的关键字
-            "minAge": $("#rStates").val(),  //搜索的关键字
+            "purchaseOrder.code": $("#rCode").val(),  //搜索的关键字
+            "purchaseName": $("#rName").val(),  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,25,50,100],
         limit : 10,
-        id : "userListTable",
+        id : "purchaseTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
             {field: 'name', title: '申请人姓名', align:"center",unresize: true},
-            {field: 'name', title: '申请人电话', align:"center",unresize: true},
-            {field: 'jobNum', title: '订单编号', align:"center", unresize: true},
-            {field: 'depaCode', title: '采购部门', align:"center", unresize: true},
-            {field: 'depaCode', title: '供应商', align:"center", unresize: true},
-            {field: 'depaCode', title: '商品类型', align:"center", unresize: true},
-            {field: 'depaCode', title: '商品品牌', align:"center", unresize: true},
-            {field: 'depaCode', title: '商品名称', align:"center", unresize: true},
-            {field: 'depaCode', title: '采购数量', align:"center", unresize: true},
-            {field: 'depaCode', title: '单价', align:"center", unresize: true},
-            {field: 'depaCode', title: '总价', align:"center", unresize: true},
-            {field: 'sex', title: '订单状态', align:"center", unresize: true,templet:function(d){
+            {field: 'tel', title: '申请人电话', align:"center",unresize: true},
+            {field: 'code', title: '订单编号', align:"center", unresize: true},
+            {field: 'departmentCode', title: '采购部门', align:"center", unresize: true},
+            {field: 'supplierCode', title: '供应商', align:"center", unresize: true},
+            {field: 'purchaseType', title: '商品类型', align:"center", unresize: true},
+            {field: 'brand', title: '商品品牌', align:"center", unresize: true},
+            {field: 'purchasName', title: '商品名称', align:"center", unresize: true},
+            {field: 'purchaseNumber', title: '采购数量', align:"center", unresize: true},
+            {field: 'unitPrice', title: '单价', align:"center", unresize: true},
+            {field: 'totalPrice', title: '总价', align:"center", unresize: true},
+            {field: 'status', title: '订单状态', align:"center", unresize: true,templet:function(d){
                 if(d == 0){
                     return "驳回";
                 }else if(d == 1){
@@ -60,23 +59,23 @@ layui.use(['form','layer','table','laytpl'],function(){
                     return "退货成功";
                 }
                 }},
-            {field: 'depaCode', title: '收货人', align:"center", unresize: true},
-            {field: 'depaCode', title: '收货仓库', align:"center", unresize: true},
+            {field: 'consignee', title: '收货人', align:"center", unresize: true},
+            {field: 'depotCode', title: '收货仓库', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        table.reload("userListTable",{
+        table.reload("purchaseTable",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },
             where: {
-                "user.name": $("#userName").val(),  //搜索的关键字
+                /*"user.name": $("#userName").val(),  //搜索的关键字
                 "user.depaCode": $("#depaCode").val(),  //搜索的关键字
                 "minAge": $("#minAge").val(),  //搜索的关键字
-                "maxAge": $("#maxAge").val() //搜索的关键字
+                "maxAge": $("#maxAge").val() //搜索的关键字*/
             }
         })
     });
@@ -108,7 +107,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //批量删除
     $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('purchaseTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
@@ -148,7 +147,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(purchaseList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑

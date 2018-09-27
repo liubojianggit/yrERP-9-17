@@ -22,8 +22,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "name": $("#rName").val(),  //搜索的关键字
-
+            "role.name": $("#rName").val(),  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
@@ -37,7 +36,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type:'numbers',title:'编号',width:50},
             {field: 'code', title: '角色编号', align:"center",unresize: true},
             {field: 'name', title: '角色名', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:386, templet:'#roleListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -48,7 +47,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 curr: 1 //重新从第 1 页开始
             },
             where:{//需要传入的值
-                "name": $("#rName").val(),  //搜索的关键字
+                "role.name": $("#rName").val(),  //搜索的关键字
             }
         })
     });
@@ -79,20 +78,40 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
-        var checkStatus = table.checkStatus('userListTable'),
+
+        var checkStatus = table.checkStatus('roleListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                newsId.push(data[i].id);
             }
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax({//删除用户
+                    type : "post",
+                    url : path+"u_role/roleTable/"+newsId,
+                    async : false,
+                    data : {
+                        "_method" : "DELETE"
+                    },
+                    traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+                    dataType : "json",
+                    success : function(data) {
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"u_role/roleTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
             })
         }else{
             layer.msg("请选择需要删除的用户");

@@ -25,7 +25,7 @@
     <bean id="shiroManager" class="com.yr.core.shiro.configure.ShiroManagerImpl"/>
     <bean id="role" class="com.yr.core.shiro.filter.RoleFilter"/>
     <bean id="permission" class="com.yr.core.shiro.filter.PermissionFilter"/>
-    <bean id="login" class="com.yr.core.shiro.filter.PermissionFilter"/>
+    <bean id="login" class="com.yr.core.shiro.filter.LoginFilter"/>
 
     <!-- 配置 ShiroFilter bean: 该 bean 的 id 必须和 web.xml 文件中配置的 shiro filter 的  name 一致 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
