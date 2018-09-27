@@ -7,12 +7,17 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 import com.yr.supplier.dao.SupplierDao;
 import com.yr.supplier.service.SupplierService;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.StringUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,11 +32,15 @@ public class SupplierServiceImpl implements SupplierService {
      * @return
      */
     @Override
-    public Page<SupplierBo> query(Page<SupplierBo> page) {
+    public String query(Page<SupplierBo> page) {
         page.setTotalRecord(dao.getCount(page));
         List<SupplierBo> list=dao.query(page);
-        page.setPageData(list);
-        return page;
+       // page.setPageData(list);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
     /**
      * 根据id查询供应商表
@@ -39,25 +48,39 @@ public class SupplierServiceImpl implements SupplierService {
      * @return
      */
     @Override
-    public Supplier getById(Integer id) {
-        return dao.getById(id);
+    public SupplierBo getById(Integer id) {
+        Supplier supplier = dao.getById(id);
+        SupplierBo supplierBo = new SupplierBo();
+        supplierBo.setSupplier(supplier);
+        return supplierBo;
+    }
+
+    /**
+     * 根据编号查询供应商对象
+     * @param code
+     * @return
+     */
+    @Override
+    public Supplier getByCode(String code){
+        Supplier supplier=dao.getByCode(code);
+        return supplier;
     }
 
     /**
      * 添加供应商数据
-     * @param supplier
+     * @param supplierBo
      */
     @Override
-    public void add(Supplier supplier) {
-        dao.add(supplier);
+    public void add(SupplierBo supplierBo) {
+        dao.add(supplierBo);
     }
     /**
      * 修改供应商数据
-     * @param supplier
+     * @param supplierBo
      */
     @Override
-    public void update(Supplier supplier) {
-        dao.update(supplier);
+    public void update(SupplierBo supplierBo) {
+        dao.update(supplierBo);
     }
     /**
      * 删除供应商数据
@@ -122,5 +145,14 @@ public class SupplierServiceImpl implements SupplierService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return
+     */
+    @Override
+    public Map<String, Object> querySuppliers() {
+        return dao.querySuppliers();
     }
 }

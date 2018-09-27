@@ -8,11 +8,14 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 @Repository
 public class WareTypeDaoImpl implements WareTypeDao {
+
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -27,7 +30,7 @@ public class WareTypeDaoImpl implements WareTypeDao {
         jpql.append("select w from WareType w where id =?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1,id);
-       WareType wareType = (WareType) query.getSingleResult();
+        WareType wareType = (WareType) query.getSingleResult();
         return wareType;
     }
 
@@ -35,7 +38,7 @@ public class WareTypeDaoImpl implements WareTypeDao {
     public boolean addWareType(WareType wareType) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("insert into ware_type(name,code,sup_code,createTime,createEmp) values(?,?,?,?,?)");
-        Query query = entityManager.createQuery(jpql.toString());
+        Query query = entityManager.createNativeQuery(jpql.toString());
         query.setParameter(1, wareType.getName());
         query.setParameter(2, wareType.getCode());
         query.setParameter(3, wareType.getSupCode());
@@ -54,7 +57,7 @@ public class WareTypeDaoImpl implements WareTypeDao {
     @Override
     public boolean deleteWareType(Integer id) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("delete w from WareType w where w.id = ?");
+        jpql.append("delete from WareType w where w.id = ?1");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, id);
         try {
@@ -68,16 +71,22 @@ public class WareTypeDaoImpl implements WareTypeDao {
 
     @Override
     public boolean updateWareType(WareType wareType) {
-        StringBuffer jpql = new StringBuffer();
+   /*     StringBuffer jpql = new StringBuffer();
         jpql.append("update WareType set name = ?,code = ?, sup_code = ?,updateEmp = ?,updateTime = ?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, wareType.getName());
         query.setParameter(2, wareType.getCode());
         query.setParameter(3, wareType.getSupCode());
         query.setParameter(4, wareType.getUpdateEmp());
-        query.setParameter(5, new Date());
+        //我要获取当前的日期Date date = newDate();
+        Date date = new Date();
+        //设置要获取到什么样的时间SimpleDateFormat sdf = newSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        //获取String类型的时间String createdate = sdf.format(date);
+        String udpateDate = sdf.format(date);
+        query.setParameter(5, udpateDate);*/
         try {
-            query.executeUpdate();
+            entityManager.merge(wareType);
             return true;
 
         } catch (Exception e) {
@@ -85,6 +94,19 @@ public class WareTypeDaoImpl implements WareTypeDao {
             return false;
 
         }
+    }
+
+    /**
+     * 查询商品类型
+     * @return
+     */
+    @Override
+    public List<WareType> query() {
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select w from WareType w where 1=1");
+        Query query = entityManager.createQuery(jpql.toString());
+        List<WareType> wareTypes = query.getResultList();
+        return wareTypes;
     }
 
     @Override

@@ -1,13 +1,14 @@
 package com.yr.entitys.depot;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 商品类型实体类
  */
 @Entity
 @Table(name = "ware_type")
-public class WareType {
+public class WareType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//主键自动增长
     private Integer id;
@@ -21,9 +22,8 @@ public class WareType {
     private String createTime;//
     @Column(nullable = false)
     private String createEmp;//创建人
-    @Column(nullable = false,columnDefinition = "DATE")
+    @Column(columnDefinition = "DATE")
     private String updateTime;//修改时间
-    @Column(nullable = false)
     private  String updateEmp;//修改人
 
     public Integer getId() {

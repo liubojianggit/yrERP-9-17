@@ -2,6 +2,7 @@ package com.yr.depot.service.impl;
 
 import com.yr.depot.service.WareService;
 import com.yr.entitys.bo.depotBo.WareBo;
+import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.util.StringUtils;
@@ -16,7 +17,9 @@ import java.util.List;
  */
 @Service
 public class WareServiceImpl implements WareService {
-@Autowired
+
+
+    @Autowired
 private WareDao wd;
 
     /**
@@ -151,5 +154,8 @@ private WareDao wd;
         }
         return t;
     }
-
+    @Override
+    public List<Ware> getWare() {
+        return wd.getWare();
+    }
 }

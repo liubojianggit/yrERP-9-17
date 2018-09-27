@@ -15,10 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service("depotServiceImpl")
 @Transactional
 public class DepotServiceImpl implements DepotService {
+
     @Qualifier("depotDaoImpl")
     @Autowired
     private DepotDao depotDao;
@@ -30,7 +32,7 @@ public class DepotServiceImpl implements DepotService {
      */
     @Override
     public String query(Page<Depotbo> page) {
-       page.setTotalRecord(depotDao.getCount(page));
+        page.setTotalRecord(depotDao.getCount(page));
         List<Depotbo> list=depotDao.query(page);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
@@ -54,7 +56,6 @@ public class DepotServiceImpl implements DepotService {
      */
     @Override
     public void add(Depot depot) {
-
         depotDao.add(depot);
     }
     /**
@@ -67,47 +68,39 @@ public class DepotServiceImpl implements DepotService {
     }
 
     /**
-     * 根据id删除仓库数据
+     * 删除 和批量删除
      * @param id
      */
-    @Override
-    public void delete(Integer id) {
-
+    public void delete(Integer[] id){
         depotDao.delete(id);
     }
+    /**
+     * 查询仓库 提供给销售调
+     * @param name
+     * @return
+     */
+    public List<Depot> getname(){
 
-   /* *//**
-     * 判断添加数据时是否为空值，如果是空的就放回false,不是空就放回true
-     * @param depot
-     * @return
-     *//*
-    @Override
-    public boolean isNullAdd(Depot depot) {
-        if(StringUtils.isNull(depot.getCode())){
-            return false;
-        }if (StringUtils.isNull(depot.getName())) {
-            return false;
-        }if(StringUtils.isNull(depot.getAddr())){
-            return false;
-        }if (StringUtils.isNull(depot.getCreateEmpno())){
-            return false;
-        }
-        return true;
+        return depotDao.getname();
     }
-    *//**
-     * 判断修改数据时是否为空值，如果是空的就放回false,不是空就放回true
-     * @param depot
+
+    /**
+     *根据编号 返回仓库对象
+     * @param code
      * @return
-     *//*
+     */
     @Override
-    public boolean isNullUpdate(Depot depot) {
-        if (StringUtils.isNull(depot.getName())) {
-            return false;
-        }if(StringUtils.isNull(depot.getAddr())){
-            return false;
-        }if (StringUtils.isNull(depot.getUpdateEmpno())){
-            return false;
-        }
-        return true;
-    }*/
+    public Depot getcode(String code) {
+
+        return depotDao.getcode(code);
+    }
+
+    /**
+     *  将仓库对象集合封装到map中
+     * @return  Map<String, Object>
+     */
+    @Override
+    public Map<String, Object> queryDepots() {
+        return depotDao.queryDepots();
+    }
 }

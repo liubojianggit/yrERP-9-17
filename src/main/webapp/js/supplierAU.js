@@ -33,16 +33,14 @@ layui.use(['form','layer','upload','table'],function(){
             success: function(data){
                 if(data.code==1){
                     layer.msg(data.msg,{icon:1});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
-                }else if(data.code==0){
-                    layer.msg(data.msg,{icon:2});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
-                }else if(data.code==2){
-                    layer.msg(data.msg,{icon:2});
+                    setTimeout(function(){
+                        window.location.href = path+"supplier/supplierTable";
+                    },1200);
                 }else{
-                    layer.msg("操作失败",{icon:2});
+                    layer.msg(data.msg,{icon:2});
+                    setTimeout(function(){
+                        window.location.href = path+"supplier/supplierTable";
+                    },1200);
                 }
             }
         });

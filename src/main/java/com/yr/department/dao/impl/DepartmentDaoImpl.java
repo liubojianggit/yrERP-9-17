@@ -1,7 +1,10 @@
 package com.yr.department.dao.impl;
 
 import com.yr.department.dao.DepartmentDao;
+import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
+import com.yr.entitys.page.Page;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -33,16 +36,50 @@ public class DepartmentDaoImpl implements DepartmentDao {
         return list;
     }
 
- /*   *//**
-     * 查询总条数
-     *//*
     @Override
-    public Long departmentCount(Page<Departmentbo>page){
-        String sql="select count(*) from department where 1=1";
-        Query query=entityManager.createQuery(sql);
-        Long count = (Long) query.getSingleResult();
+    public List<Departmentbo> queryDepartmentbo(Page<Departmentbo> page) {
+        String jpql = "select d from Department d where 1 = 1 ";
+        if(!StringUtils.isEmpty(page.getT().getDepaNameOrCode())){//判断是否为null和空
+            jpql += "and d.name like :name or d.code like :code ";
+        }
+        Query query = entityManager.createQuery(jpql);
+        if(!StringUtils.isEmpty(page.getT().getDepaNameOrCode())){
+            query.setParameter("name", "%"+page.getT().getDepaNameOrCode()+"%");
+            query.setParameter("code","%"+page.getT().getDepaNameOrCode()+"%");
+        }
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
+        List<Departmentbo> list = query.getResultList();//获得分页后的数据集合
+        return list;
+    }
+
+    @Override
+    public Department getByCode(String code) {
+        String jpql = "select d from Department d where d.code = ? ";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter(1,code);
+        Department department = (Department) query.getSingleResult();
+        return department;
+    }
+
+    /**
+     * 查询总数
+     * @return
+     */
+    @Override
+    public Long departmentCount(Page<Departmentbo> page) {
+        String jpql = "select count(*) from Department d where 1 = 1 ";
+        if(!StringUtils.isEmpty(page.getT().getDepaNameOrCode())){//判断是否为null和空
+            jpql += "and d.name like :name or d.code like :code ";
+        }
+        Query query = entityManager.createQuery(jpql);
+        if(!StringUtils.isEmpty(page.getT().getDepaNameOrCode())){
+            query.setParameter("name", "%"+page.getT().getDepaNameOrCode()+"%");
+            query.setParameter("code","%"+page.getT().getDepaNameOrCode()+"%");
+        }
+        Long count = (Long)query.getSingleResult();//获取到结果
         return count;
-    }*/
+    }
+
 
     /**
      * 根据ID查询部门 并回显
@@ -85,7 +122,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
     /**
      * 查询部门编号,提供给用户调用
-     * @param code
+     * @param
      * @return
      */
     public Map<String,Object> querys(){

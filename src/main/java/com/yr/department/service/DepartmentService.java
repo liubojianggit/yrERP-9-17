@@ -1,6 +1,8 @@
 package com.yr.department.service;
 
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.department.Department;
+import com.yr.entitys.page.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,12 @@ public interface DepartmentService {
      */
     String query();
 
+    //分页查询
+    String queryDepartmentbo(Page<Departmentbo> page);
+
+    //根据部门编号查询部门对象
+    Department getByCode(String code);
+
     /**
     * 获取部门的list集合
     * */
@@ -29,7 +37,7 @@ public interface DepartmentService {
 
     /**
      * 新增部门
-     * @param department
+     * @param
      */
     void add(Departmentbo departmentbo );
 
@@ -41,13 +49,13 @@ public interface DepartmentService {
 
     /**
      * 修改部门
-     * @param department
+     * @param
      */
     void update(Departmentbo departmentbo);
 
     /**
      * 查询部门编号,提供给用户调用
-     * @param code
+     * @param
      * @return
      */
     Map<String,Object> querys();

@@ -4,6 +4,9 @@ import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 
+import java.util.List;
+import java.util.Map;
+
 public interface DepotService {
     /**
      * 分页搜索查询
@@ -31,24 +34,31 @@ public interface DepotService {
      */
 
     void update(Depot depot);
+
     /**
-     * 仓库删除数据
+     * 删除 和批量删除
      * @param id
      */
-    void delete(Integer id);
+    void delete(Integer [] id);
 
-     /*  *//**
-     * 判断添加仓库数据是否为null
-     * @param depot
+    /**
+     * 查询仓库 提供给销售调
+     * @param
      * @return
-     *//*
-    boolean isNullAdd(Depot depot);
+     */
+    List<Depot> getname();
 
-    *//**
-     * 判断修改数据是否为null
-     * @param depot
+    /**
+     *根据编号 返回仓库对象
+     * @param code
      * @return
-     *//*
-    boolean isNullUpdate(Depot depot);*/
+     */
+    Depot getcode(String code);
 
+
+    /**
+     * 将仓库对象集合封装到map中
+     * @return
+     */
+    Map<String,Object> queryDepots();
 }

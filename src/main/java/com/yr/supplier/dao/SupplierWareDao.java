@@ -2,7 +2,7 @@ package com.yr.supplier.dao;
 
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.supplier.supplierWares;
+import com.yr.entitys.supplier.SupplierWares;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface SupplierWareDao {
      * @param sw
      * @return
      */
-    public boolean add(supplierWares sw);
+    public boolean add(SupplierWares sw);
 
     /**
      * 根据id来给供应商品表删除数据
@@ -32,7 +32,7 @@ public interface SupplierWareDao {
      * @param sw
      * @return
      */
-    public boolean update(supplierWares sw);
+    public boolean update(SupplierWares sw);
 
     /**
      * 根据page中的信息去供应商品表中查询数据
@@ -47,7 +47,7 @@ public interface SupplierWareDao {
      * @param id
      * @return
      */
-    public supplierWares getSupplierWare(Integer id);
+    public SupplierWares getSupplierWare(Integer id);
 
     /**
      * 根据page中的信息去供应商品表中查询数目
@@ -56,4 +56,11 @@ public interface SupplierWareDao {
      * @return
      */
     public Long getCount(Page<SupplierWareBo> page);
+
+    /**
+     * 根据商品编号去查供应商品
+     * @param code
+     * @return
+     */
+    public SupplierWares getSuppLierWareByCode(String code);
 }

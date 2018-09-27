@@ -1,6 +1,9 @@
 package com.yr.entitys.supplier;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 供应商实体类
@@ -21,12 +24,12 @@ public class Supplier {
     private String addr;
     @Column(nullable = false)
     private String rank;//供应商级别
-    @Column(nullable = false,columnDefinition = "DATE")
-    private String createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date createTime;
     @Column(nullable = false)
     private String createEmp;
-    @Column(columnDefinition = "DATE")
-    private String updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date updateTime;
     private  String updateEmp;
 
     public Integer getId() {
@@ -77,11 +80,11 @@ public class Supplier {
         this.rank = rank;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -93,11 +96,11 @@ public class Supplier {
         this.createEmp = createEmp;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -118,9 +121,9 @@ public class Supplier {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", addr='" + addr + '\'' +
                 ", rank='" + rank + '\'' +
-                ", createTime='" + createTime + '\'' +
+                ", createTime=" + createTime +
                 ", createEmp='" + createEmp + '\'' +
-                ", updateTime='" + updateTime + '\'' +
+                ", updateTime=" + updateTime +
                 ", updateEmp='" + updateEmp + '\'' +
                 '}';
     }

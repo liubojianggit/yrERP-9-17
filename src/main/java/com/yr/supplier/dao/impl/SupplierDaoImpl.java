@@ -9,8 +9,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  *供应商模块数据层实现增删改查
  */
@@ -21,12 +25,14 @@ public class SupplierDaoImpl implements SupplierDao {
     private EntityManager entityManager;
 
     @Override
-    public void add(Supplier supplier) {
-    String jpql="insert into supplier(code,name,phoneNumber,addr,rank,createTime,createEmpno)values(?1,?2,?3,?4,?5,?6,?7)";
-        Query query = (Query) entityManager.createNativeQuery(jpql).setParameter(1, supplier.getCode())
+    public void add(SupplierBo supplierBo) {
+    /*String jpql="insert into supplier(code,name,phoneNumber,addr,rank,createTime,createEmp)values(?1,?2,?3,?4,?5,?6,?7)";
+    Query query = (Query) entityManager.createNativeQuery(jpql).setParameter(1, supplier.getCode())
                 .setParameter(2, supplier.getName()).setParameter(3,supplier.getPhoneNumber()).setParameter(4, supplier.getAddr())
-                .setParameter(5,supplier.getRank()).setParameter(6,new Date()).setParameter(7,supplier.getCreateEmp());
-        query.executeUpdate();
+                .setParameter(5,supplier.getRank()).setParameter(6,new Date()).setParameter(7,"吕");
+    System.out.println(supplier.toString());
+    query.executeUpdate();*/
+        entityManager.persist(supplierBo.getSupplier());
 
 
     }
@@ -40,11 +46,8 @@ public class SupplierDaoImpl implements SupplierDao {
     }
 
     @Override
-    public void update(Supplier supplier) {
-        String jpql = "update Supplier d set d.name=?1,d.phoneNumber=?2,d.addr=?3,d.rank=?4,d.updateTime=?5,d.updateEmp=?6 where d.id=?7";
-        Query query = entityManager.createQuery(jpql).setParameter(1,supplier.getName()).setParameter(2,supplier.getPhoneNumber()).setParameter(3,supplier.getAddr())
-                .setParameter(4,supplier.getRank()).setParameter(5,new Date()).setParameter(6,supplier.getUpdateEmp()).setParameter(7,supplier.getId());
-        query.executeUpdate();
+    public void update(SupplierBo supplierBo) {
+        entityManager.merge(supplierBo.getSupplier());
     }
 
     @Override
@@ -73,14 +76,21 @@ public class SupplierDaoImpl implements SupplierDao {
         return count;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Supplier getById(Integer id) {
-        String jpql = "SELECT a FROM Supplier a WHERE  a.id = ?1";
-        Supplier supplier = (Supplier)entityManager.createQuery(jpql).setParameter(1, id).getSingleResult();
-
+        Supplier supplier = entityManager.find(Supplier.class,id);
         return supplier;
     }
-
+    @Override
+    public Supplier getByCode(String code){
+        Supplier supplier=entityManager.find(Supplier.class,code);
+        return supplier;
+    }
     @Override
     public List<SupplierBo> query(Page<SupplierBo> page) {
         String jpql="select d from Supplier d where 1=1 ";
@@ -107,5 +117,20 @@ public class SupplierDaoImpl implements SupplierDao {
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<SupplierBo> list = query.getResultList();
         return list;
+    }
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return map
+     */
+    @Override
+    public Map<String, Object> querySuppliers() {
+        String jpql = "select d from Supplier d where 1=1 ";
+        List<Supplier> supplierList = entityManager.createQuery(jpql).getResultList();
+        Map<String,Object> map = new HashMap<>();
+        for (Supplier sup: supplierList) {
+            map.put(sup.getCode(),sup.getName());//key是供应商的编号
+        }
+        return map;
     }
 }

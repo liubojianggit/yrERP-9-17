@@ -6,6 +6,7 @@ import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepotDao {
     /**
@@ -29,12 +30,6 @@ public interface DepotDao {
     void add(Depot depot);
 
     /**
-     * 根据id删除仓库数据
-     * @param id
-     */
-    void delete(Integer id);
-
-    /**
      * 根据对象修改仓库数据
      * @param depot
      */
@@ -46,4 +41,29 @@ public interface DepotDao {
      */
     Depot getById(Integer id);
 
+    /**
+     * 批量删除 提供给销售调
+     * @param id
+     */
+    void delete(Integer[] id);
+
+    /**
+     * 查询仓库 提供给销售
+     * @param name
+     * @return
+     */
+    List<Depot> getname();
+
+    /**
+     *根据编号 返回仓库对象
+     * @param code
+     * @return
+     */
+    Depot getcode(String code);
+
+    /**
+     * 将仓库对象集合封装到map中
+     * @return
+     */
+    Map<String,Object> queryDepots();
 }

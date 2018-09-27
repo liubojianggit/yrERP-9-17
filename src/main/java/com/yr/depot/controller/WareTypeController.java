@@ -34,12 +34,23 @@ public class WareTypeController {
         return "/wareTypeList";
     }
     /**
-     * 用于跳转到添加页面和修改页面
+     * 用于跳转到添加页面
      * @return
      */
-    @RequestMapping(value = "waresTable/addAndUpdate",method = RequestMethod.GET)
-    public String getAddPage(){
-        return "";
+    @RequestMapping(value = "ware_typeTable/add",method = RequestMethod.GET)
+    public String getAddPage(Map<String,Object>map){
+        map.put("wareType",new WareType());
+        map.put("supCode",wts.getWareType());
+        return "wareTypeAU";
+    }
+    /**
+     * 用于跳转到修改页面
+     */
+    @RequestMapping(value = "ware_typeTable/{id}",method = RequestMethod.GET)
+    public String getUpdatePage(@PathVariable Integer id,Map<String,Object>map){
+        map.put("wareType",wts.getWareType(id));
+        map.put("supCode",wts.getWareType());
+        return "wareTypeAU";
     }
     /**
      * 商品类型添加方法，用于前台添加数据
@@ -47,10 +58,16 @@ public class WareTypeController {
      * @param waretype
      * @return
      */
-    @RequestMapping(value = "ware_typeTable", method = RequestMethod.POST)
+    @RequestMapping(value = "ware_typeTable", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String addWare(@ModelAttribute("wareType") WareType waretype) {
-        wts.add(waretype);
-        return "";
+        waretype.setCreateEmp("wangyong");
+       boolean bool = wts.add(waretype);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"添加成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"添加失败\"}";
+        }
     }
 
     /**
@@ -59,10 +76,15 @@ public class WareTypeController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "ware_typeTable", method = RequestMethod.DELETE)
+    @RequestMapping(value = "ware_typeTable/{id}", method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String deleteWare(@PathVariable Integer id) {
-        wts.delete(id);
-        return "";
+        boolean bool = wts.delete(id);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"删除成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"删除失败\"}";
+        }
     }
 
     /**
@@ -72,10 +94,16 @@ public class WareTypeController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "ware_typeTable", method = RequestMethod.PUT)
+    @RequestMapping(value = "ware_typeTable", method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String updateWare(@ModelAttribute("wareType") WareType wareType, Map<String, Object> map) {
-        wts.update(wareType);
-        return "";
+        wareType.setUpdateEmp("wangyong1");
+        boolean bool = wts.update(wareType);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"修改成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"修改失败\"}";
+        }
     }
 
     /**
@@ -87,11 +115,10 @@ public class WareTypeController {
      */
     @RequestMapping(value = "ware_typeTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<WareType> queryWare(Page<WareType> page,WareType wareType , Map<String, Object> map) {
+    public String  queryWare(Page<WareType> page,WareType wareType , Map<String, Object> map) {
         page.setT(wareType);
-        page = wts.query(page);
-        map.put("wareType", wareType);
-        System.out.println(page);
-        return page;
+        String json = wts.query(page);
+        map.put("wareType", json);
+        return json;
     }
 }

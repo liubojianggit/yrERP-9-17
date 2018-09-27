@@ -4,6 +4,8 @@ import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 
+import java.util.Map;
+
 /**
  *供应商模块
  */
@@ -14,27 +16,32 @@ public interface SupplierService {
      * @param page
      * @return
      */
-    Page<SupplierBo> query(Page<SupplierBo> page);
+    String  query(Page<SupplierBo> page);
 
     /**
      * 根据id查询供应商表
      * @param id
      * @return
      */
-    Supplier getById(Integer id);
+    SupplierBo getById(Integer id);
+
+    /**
+     * 根据编号查询供应商的对象
+     */
+    Supplier getByCode(String code);
 
     /**
      * 添加供应商数据
-     * @param supplier
+     * @param supplierBo
      */
-    void add(Supplier supplier);
+    void add(SupplierBo supplierBo);
 
     /**
      * 修改供应商数据
-     * @param supplier
+     * @param supplierBo
      */
 
-    void update(Supplier supplier);
+    void update(SupplierBo supplierBo);
     /**
      * 删除供应商数据
      * @param id
@@ -61,5 +68,11 @@ public interface SupplierService {
      * @return
      */
     boolean isTell(String tell);
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return
+     */
+    Map<String,Object> querySuppliers();
 
 }

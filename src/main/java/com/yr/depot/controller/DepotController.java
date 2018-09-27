@@ -4,6 +4,7 @@ import com.yr.depot.service.DepotService;
 import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -59,8 +60,8 @@ public class DepotController {
      * @return
      */
     @RequestMapping(value="/depotTable/add",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
-    public String AddEcho(){
-
+    public String AddEcho(Map<String,Object>map){
+        map.put("depot", new Depot());//传入一个空的user对象
         return "depotAU";//添加页面的jsp前缀
     }
 
@@ -71,20 +72,21 @@ public class DepotController {
      * @return
      */
     @RequestMapping(value="/depotTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public void add(Depot depot, Map<String, Object> map){
-
+    @ResponseBody
+    public String add(Depot depot){
         service.add(depot);
-
+        return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
 
     /**
      * 根据id删除仓库数据
      * @return 返回分页查询页面
      */
+    @ResponseBody
     @RequestMapping(value = "/depotTable/{id}", method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer[] id) {
         service.delete(id);
-        return "{\"code\":1,\"msg\":\"删除" + "成功\"}";
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
     /**
