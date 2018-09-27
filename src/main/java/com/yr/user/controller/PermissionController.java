@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,18 +46,24 @@ public class PermissionController {
      */
     @RequestMapping(value = "/permissionTable",method = RequestMethod.GET)
     public String jumpList(){
-        return "roleList";
+        return "permissionList";
     }
 
     /**
      * 分页的形式查询permission表的数据
      * @return List<PermissionBo>
      */
-    @RequestMapping(value="/permissionTable/list", method = RequestMethod.GET)
+    @RequestMapping(value="/permissionTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<PermissionBo> query(Page<PermissionBo> page){
-        permissionService.query(page);
-        return page;
+    public String query(PermissionBo permissionBo, Page<PermissionBo> page){
+        //去空格
+        Permission permission = permissionBo.getPermission();
+        permission.setName(permission.getName().trim());
+        permission.setUrl(permission.getUrl().trim());
+        permission.setMethod(permission.getMethod().trim().toUpperCase());//并且转成大写
+
+        page.setT(permissionBo);
+        return permissionService.query(page);
     }
 
     /**
@@ -65,7 +72,15 @@ public class PermissionController {
      */
     @RequestMapping(value="/permissionTable/add", method = RequestMethod.GET)
     public String jumpAdd(Map<String, Object> map){
-        map.put("permission", new Permission());//传入一个空的permission对象
+        map.put("permissionBo", new PermissionBo());//传入一个空的permission对象
+        Map<String,Object> methodMap = new HashMap<>();//请求方式
+        methodMap.put("GET","GET");
+        methodMap.put("PUT","PUT");
+        methodMap.put("POST","POST");
+        methodMap.put("DELETE","DELETE");
+        map.put("methodMap",methodMap);
+        Map<Integer, Object> permissions = permissionService.getPermission();//获取所有权限的集合
+        map.put("permissions",permissions);
         return "permissionAU";
     }
 
@@ -73,12 +88,13 @@ public class PermissionController {
      * 保存添加
      * @return String
      */
-    @RequestMapping(value="/permissionTable", method=RequestMethod.POST)
-    public String saveAdd(Permission permission, HttpServletRequest request){
-        permission.setCreateTime(new Date());//获取当前时间
-        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
-        permissionService.add(permission);
-        return "redirect:/permission";
+    @RequestMapping(value="/permissionTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String saveAdd(PermissionBo permissionBo, HttpServletRequest request){
+        permissionBo.getPermission().setCreateTime(new Date());//获取当前时间
+        //permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        permissionService.add(permissionBo);
+        return "{\"code\":1,\"msg\":\"添加成功\"}";
     }
 
     /**
@@ -86,9 +102,22 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<PermissionBo> page){
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, PermissionBo permissionBo, Page<PermissionBo> page){
+        page.setT(permissionBo);
         map.put("page", page);
-        map.put("permission", permissionService.getById(id));//根据id获取对象放入request中
+        PermissionBo permissionBos = new PermissionBo();//实例化一个对象
+        Permission permission = permissionService.getById(id);//获得权限对象
+        permissionBos.setPermission(permission);
+        map.put("permissionBo", permissionBos);//根据id获取对象放入request中,进行修改
+        Map<String,Object> methodMap = new HashMap<>();//请求方式
+        methodMap.put("GET","GET");
+        methodMap.put("PUT","PUT");
+        methodMap.put("POST","POST");
+        methodMap.put("DELETE","DELETE");
+        map.put("methodMap",methodMap);
+        Map<Integer, Object> permissions = permissionService.getPermission();//获取所有权限的集合
+        permissions.remove(permission.getId());//删除该用户已经有的键，不能显示自己为自己的父级权限
+        map.put("permissions",permissions);
         return "permissionAU";
     }
 
@@ -96,13 +125,14 @@ public class PermissionController {
      * 保存修改
      * @return String
      */
-    @RequestMapping(value="/permissionTable",method= RequestMethod.PUT)
-    public String saveUpdate(Permission permission, Page<PermissionBo> page, Map<String, Object> map, HttpServletRequest request){
-        permission.setUpdateTime(new Date());//获取修改当前时间
-        permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
-        map.put("page", page);
-        permissionService.update(permission);
-        return "permissionList";
+    @RequestMapping(value="/permissionTable",method= RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String saveUpdate(PermissionBo permissionBo, Page<PermissionBo> page/*, Map<String, Object> map*/, HttpServletRequest request){
+        permissionBo.getPermission().setUpdateTime(new Date());//获取修改当前时间
+        //permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        permissionService.update(permissionBo.getPermission());
+        //map.put("page", page);
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -111,8 +141,9 @@ public class PermissionController {
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public void delete(@PathVariable Integer id){
+    public String delete(@PathVariable Integer[] id){
         permissionService.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
     /**

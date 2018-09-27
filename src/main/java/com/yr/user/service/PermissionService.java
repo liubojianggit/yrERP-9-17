@@ -7,6 +7,7 @@ import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PermissionService {
 
@@ -14,13 +15,13 @@ public interface PermissionService {
      * 分页的形式查询role表的数据
      * @param page
      * */
-    void query(Page<PermissionBo> page);
+    String query(Page<PermissionBo> page);
 
     /**
      * 添加权限信息
-     * @param permission
+     * @param permissionBo
      */
-    void add(Permission permission);
+    void add(PermissionBo permissionBo);
 
     /**
      * 修改权限信息
@@ -32,7 +33,7 @@ public interface PermissionService {
      * 删除权限信息
      * @param id
      */
-    void delete(Integer id);
+    void delete(Integer[] id);
 
     /**
      * 根据id查询权限数据
@@ -61,4 +62,9 @@ public interface PermissionService {
      */
     List<Permission> getParent(Integer id);
 
+    /**
+     * 返回一个所有权限的map集合，键为权限的id,值为权限的名字
+     * @return Map<String,Object>
+     */
+    Map<Integer,Object> getPermission();
 }

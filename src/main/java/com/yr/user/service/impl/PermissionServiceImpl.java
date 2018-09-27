@@ -5,13 +5,18 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
 import com.yr.user.dao.PermissionDao;
 import com.yr.user.service.PermissionService;
+import com.yr.util.JsonDateValueProcessor;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service("permissionServiceImpl")
 @Transactional
@@ -21,22 +26,26 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionDao permissionDao;
 
     /**
-     * 分页的形式查询role表的数据
+     * 分页的形式查询permission表的数据
      * @param page
      */
-    public void query(Page<PermissionBo> page){
+    public String query(Page<PermissionBo> page){
         page.setTotalRecord(permissionDao.getCount(page));//查询总条数加入page中
         List<PermissionBo> list = permissionDao.query(page);//分页查询的数据
-        page.setPageData(list);//将集合放入page中
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     /**
      * 添加权限信息
-     * @param permission
+     * @param permissionBo
      */
-    public void add(Permission permission){
-        permission.setMethod(permission.getMethod().toUpperCase());//将method转为大写
-        permissionDao.add(permission);
+    public void add(PermissionBo permissionBo){
+        //permission.setMethod(permission.getMethod().toUpperCase());//将method转为大写
+        permissionDao.add(permissionBo);
     }
 
     /**
@@ -51,7 +60,7 @@ public class PermissionServiceImpl implements PermissionService {
      * 删除权限信息
      * @param id
      */
-    public void delete(Integer id){
+    public void delete(Integer[] id){
         permissionDao.delete(id);
     }
 
@@ -71,12 +80,12 @@ public class PermissionServiceImpl implements PermissionService {
         List<PermissionBo> oldPermissionBo = permissionDao.getPermission(id);//获得该角色所有的权限
         List<PermissionBo> newPermissionBo = new ArrayList<>();//重新获得一个数组
         for (PermissionBo permissionBo:oldPermissionBo) {//循环获得的list集合
-            if(permissionBo.getSupId() == 0){//表示是顶级权限
-                Integer permissionId = permissionBo.getId();//顶级权限id
+            if(permissionBo.getPermission().getSupId() == 0){//表示是顶级权限
+                Integer permissionId = permissionBo.getPermission().getId();//顶级权限id
                 newPermissionBo.add(permissionBo);//加入新的权限list
             }else{//表示非顶级权限
                 for (PermissionBo permissionBos:newPermissionBo) {//循环新的集合
-                    if(permissionBo.getSupId() == permissionBos.getId()){//当父级id等于id的时候就满足条件
+                    if(permissionBo.getPermission().getSupId() == permissionBos.getPermission().getId()){//当父级id等于id的时候就满足条件
                         permissionBos.getPermissionBos().add(permissionBo);//将这个对象加入到新的对象中
                     }
                 }
@@ -111,5 +120,13 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
         return list;
+    }
+
+    /**
+     * 返回一个所有权限的map集合，键为权限的id,值为权限的名字
+     * @return Map<String,Object>
+     */
+    public Map<Integer,Object> getPermission(){
+        return permissionDao.getPermission();
     }
 }
