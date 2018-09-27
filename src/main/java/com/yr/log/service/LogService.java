@@ -11,12 +11,12 @@ public interface LogService {
      * 添加日志记录
      * @param log
      */
-    public  void add(Log log);
+    void addLog(Log log);
 
     /**
-     * 分页查询
+     * 分页的形式查询log表的数据
      * @param logBoPage
      * @return
      */
-    List<Log> query(Page<LogBo> logBoPage);
+    String query(Page<LogBo> logBoPage);
 }

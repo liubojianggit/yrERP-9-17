@@ -52,9 +52,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'phoneNumber', title: '电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             //{field: 'status', title: '状态', align:"center", unresize: true},
-            {field: 'status', title: '用户状态',  align:'center',templet:function(d){
-            	d.status == "0" ? $("#abc").text("禁用") : $("#abc").text("启用");
-                return d.status == "0" ? "限制使用" : "正常使用";
+            {field: 'states', title: '用户状态',  align:'center',templet:function(d){
+                return d.states == "0" ? "限制使用" : "正常使用";
             }},
             {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
@@ -101,20 +100,40 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //批量删除
     $(".delAll_btn").click(function(){
+
         var checkStatus = table.checkStatus('userListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                newsId.push(data[i].id);
             }
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.ajax({//删除用户
+                    type : "post",
+                    url : path+"u_user/userTable/"+newsId,
+                    async : false,
+                    data : {
+                        "_method" : "DELETE"
+                    },
+                    traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+                    dataType : "json",
+                    success : function(data) {
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"u_user/userTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
             })
         }else{
             layer.msg("请选择需要删除的用户");
@@ -245,11 +264,11 @@ layui.use(['form','layer','table','laytpl'],function(){
         	});
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
-            usableText = "是否确定禁用此用户？",
-            btnText = "已禁用";
+                usableText = "是否确定禁用此用户？",
+                btnText = "已禁用";
             if(_this.text()=="已禁用"){
                 usableText = "是否确定启用此用户？",
-                btnText = "已启用";
+                    btnText = "已启用";
             }
             layer.confirm(usableText,{
                 icon: 3,
@@ -257,9 +276,46 @@ layui.use(['form','layer','table','laytpl'],function(){
                 cancel : function(index){
                     layer.close(index);
                 }
-            },function(index){
+            },function(index){//确认进入
                 _this.text(btnText);
                 layer.close(index);
+                var id = data.id;
+                var state = data.states;
+                $.ajax({//改变状态
+                    type : "get",
+                    url : path+"/u_user/userTable/updateState",
+                    async : false,
+                    data : {
+                        "id" : id,
+                        "state" : state
+                    },
+                    dataType : "json",
+                    success : function(data) {
+                        if("0" == data.code){
+                            layer.msg("修改失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("修改成功",{icon:2});
+                            //window.location.href = path+"u_user/userTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert(textStatus);
+                    }
+                });
+                if(btnText == "已禁用"){//表示已经禁用
+                    $(_this).attr("class","layui-btn layui-btn-xs layui-btn-danger");
+                    var index = $(_this).parent("div[class='layui-table-cell laytable-cell-1-10']").parent("td").parent("tr").attr("data-index");//找到下标
+                    $(_this).parents("div[class='layui-table-fixed layui-table-fixed-r']").siblings("div[class='layui-table-body layui-table-main']").find("tr[data-index="+index+"]").children("td[data-field='status']").children("div").text("限制使用");//修改text
+                }else{//表示已经启用
+                    $(_this).attr("class", "layui-btn layui-btn-xs");//修改颜色
+                    var index = $(_this).parent("div[class='layui-table-cell laytable-cell-1-10']").parent("td").parent("tr").attr("data-index");
+                    $(_this).parents("div[class='layui-table-fixed layui-table-fixed-r']").siblings("div[class='layui-table-body layui-table-main']").find("tr[data-index="+index+"]").children("td[data-field='status']").children("div").text("正常使用");//修改text
+                }
+                tableIns.reload();
             },function(index){
                 layer.close(index);
             });
