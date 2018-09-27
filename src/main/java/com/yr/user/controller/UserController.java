@@ -78,7 +78,18 @@ public class UserController {
      */
     @RequestMapping(value="/userTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String query(UserBo userBo,Page<UserBo> page){
+    public String query(UserBo userBo,Page<UserBo> page){//这里必须写bo类，因为userBo对象需要手动set进去
+        //去空格
+        User user = userBo.getUser();
+        user.setName(user.getName().trim());
+        user.setDepaCode(user.getDepaCode().trim());
+        if(userBo.getMinAge() != null){
+            userBo.setMinAge(Integer.valueOf(userBo.getMinAge().toString().trim()));
+        }
+        if(userBo.getMaxAge() != null){
+            userBo.setMaxAge(Integer.valueOf(userBo.getMaxAge().toString().trim()));
+        }
+
         String depaCode = userBo.getUser().getDepaCode();//这里可能是部门名可能是部门编号
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         if(depaCode != null && !pattern.matcher(depaCode).matches()){//判断字符是否是数字,如果不是就去部门查询部门编号
@@ -182,8 +193,10 @@ public class UserController {
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public String delete(@PathVariable Integer id){
-        userService.delete(id);
+    public String delete(@PathVariable Integer[] id){
+        userService.delete(id);//删除用户
+        /*User user = userService.queryById(id[i]);//根据用户id查询出对象
+        FileUtils.delete(user.getHeadUrl());//获得用户的图片路径删除*/
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
@@ -275,6 +288,17 @@ public class UserController {
         stream.write(data);//将图片以流的形式返回出去
         stream.flush();
         stream.close();
+    }
+
+    /**
+     * 修改用户的状态
+     * @param id
+     */
+    @RequestMapping(value="/userTable/updateState",method=RequestMethod.GET)
+    @ResponseBody
+    public String updateState(Integer id, Integer state){
+        userService.updateState(id, state);
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**

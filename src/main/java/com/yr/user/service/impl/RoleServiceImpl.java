@@ -58,7 +58,7 @@ public class RoleServiceImpl implements RoleService {
      * 删除角色信息
      * @param id
      */
-    public void delete(Integer id){
+    public void delete(Integer[] id){
         roleDao.delete(id);
     }
 

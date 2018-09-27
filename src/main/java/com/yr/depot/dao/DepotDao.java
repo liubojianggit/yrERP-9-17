@@ -9,6 +9,20 @@ import java.util.List;
 
 public interface DepotDao {
     /**
+     * 查询总数（模糊查询总数）
+     * @param page
+     * @return
+     */
+    Long getCount(Page<Depotbo> page);
+
+    /**
+     * 分页查询用户
+     * @param page
+     * @return
+     */
+    List<Depotbo> query(Page<Depotbo> page);
+
+    /**
      * 为仓库添加数据
      * @param depot
      */
@@ -25,25 +39,11 @@ public interface DepotDao {
      * @param depot
      */
     void update(Depot depot);
-
-    /**
-     * 查询总数（模糊查询总数）
-     * @param page
-     * @return
-     */
-    Long getCount(Page<Depotbo> page);
-
     /**
      * 根据id查询仓库数据
      * @param id
      * @return
      */
     Depot getById(Integer id);
-    /**
-     * 分页查询用户
-     * @param page
-     * @return
-     */
-    List<Depotbo> query(Page<Depotbo> page);
 
 }

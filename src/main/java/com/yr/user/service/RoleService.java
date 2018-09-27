@@ -28,7 +28,7 @@ public interface RoleService {
      * 删除角色信息
      * @param id
      */
-    void delete(Integer id);
+    void delete(Integer[] id);
 
     /**
      * 根据id查询角色数据

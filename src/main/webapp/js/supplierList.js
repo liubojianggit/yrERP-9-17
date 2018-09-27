@@ -80,7 +80,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             type : 2,
             content : path+"/supplier/supplierTable/add",//发送请求
             end: function(){
-                window.location.href=path+"/supplier/supplierTable";
+                window.location.href='<%=request.getContextPath() %>/supplier/supplierTable';
             }
         })
         layui.layer.full(index);

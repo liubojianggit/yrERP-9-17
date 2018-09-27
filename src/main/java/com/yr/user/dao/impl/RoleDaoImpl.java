@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -105,9 +106,6 @@ public class RoleDaoImpl implements RoleDao {
      */
     public void add(Role role){
         entityManager.persist(role);
-        /*String sql = "insert into u_role(code,name)values(?1,?2)";
-        Query query = entityManager.createQuery(sql).setParameter(1, role.getCode()).setParameter(2, role.getName());
-        query.executeUpdate();*/
     }
 
     /**
@@ -116,21 +114,17 @@ public class RoleDaoImpl implements RoleDao {
      */
     public void update(Role role){
         entityManager.merge(role);
-        /*String jpql = "update Role r set r.code=?1,r.name=?2 where r.id=?3";
-        Query query = entityManager.createQuery(jpql).setParameter(1, role.getCode()).setParameter(2, role.getName()).setParameter(3, role.getId());
-        query.executeUpdate();*/
     }
 
     /**
-     * 删除角色信息
+     * 批量删除角色信息
      * @param id
      */
-    public void delete(Integer id){
-        Role role = entityManager.find(Role.class,id);
-        entityManager.remove(role);
-        /*String jpql = "delete from Role r where r.id = ?1";
-        Query query = entityManager.createQuery(jpql).setParameter(1, id);
-        query.executeUpdate();*/
+    public void delete(Integer[] id){
+        List<Integer> list = Arrays.asList(id);//将数组转成list
+        String jpql = "delete from Role r where r.id in(:ids)";
+        Query query = entityManager.createQuery(jpql).setParameter("ids",list);
+        query.executeUpdate();
     }
 
     /**
@@ -139,8 +133,6 @@ public class RoleDaoImpl implements RoleDao {
      * @return ole
      */
     public Role getById(Integer id){
-        /*String jpql = "select r from Role r where r.id = ?1";
-        Role role = (Role) entityManager.createQuery(jpql).setParameter(1, id).getSingleResult();*/
         Role role = entityManager.find(Role.class,id);
         return role;
     }

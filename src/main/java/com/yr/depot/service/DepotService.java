@@ -10,7 +10,7 @@ public interface DepotService {
      * @param page
      * @return
      */
-    Page<Depotbo> query(Page<Depotbo> page);
+     String query(Page<Depotbo> page);
 
     /**
      * 根据ID查数据
@@ -37,18 +37,18 @@ public interface DepotService {
      */
     void delete(Integer id);
 
-    /**
+     /*  *//**
      * 判断添加仓库数据是否为null
      * @param depot
      * @return
-     */
+     *//*
     boolean isNullAdd(Depot depot);
 
-    /**
+    *//**
      * 判断修改数据是否为null
      * @param depot
      * @return
-     */
-    boolean isNullUpdate(Depot depot);
+     *//*
+    boolean isNullUpdate(Depot depot);*/
 
 }
