@@ -46,4 +46,10 @@ public interface SupplierWareService {
      * @return
      */
     public SupplierWares getSupplierWare(Integer id);
+    /**
+     * 根据商品编号去查供应商品
+     * @param code
+     * @return
+     */
+    public SupplierWares getSuppLierWareByCode(String code);
 }
