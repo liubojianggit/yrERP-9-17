@@ -17,7 +17,11 @@ public interface DepartmentService {
      */
     String query();
 
+    //分页查询
     String queryDepartmentbo(Page<Departmentbo> page);
+
+    //根据部门编号查询部门对象
+    Deprecated getByCode(String code);
 
     /**
     * 获取部门的list集合
