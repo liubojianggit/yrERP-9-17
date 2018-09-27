@@ -1,5 +1,6 @@
 package com.yr.order.service.impl;
 
+import com.yr.entitys.bo.orderBO.PurchaseOrderReadExcel;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.order.dao.PurchaseExcelDao;
 import com.yr.order.service.PurchaseExcelService;
@@ -11,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 /**
- *
  * @author
  * @since
  */
@@ -20,8 +20,10 @@ import java.util.List;
 public class PurchaseExcelServiceImpl implements PurchaseExcelService {
     @Autowired
     private PurchaseExcelDao purchaseExcelDaoImpl;
+
     /**
      * 查询数据库所有数据信息用于导出Excel表格
+     *
      * @return list
      */
     @Override
@@ -29,8 +31,24 @@ public class PurchaseExcelServiceImpl implements PurchaseExcelService {
         return purchaseExcelDaoImpl.queryForList();
     }
 
+    /**
+     * 导出excel表中的数据信息
+     *
+     * @param filePath
+     * @return
+     */
     @Override
-    public boolean batchImport(String name, MultipartFile file) {
+    public boolean addExcel(String filePath) {
+
+        int result = 0;
+        //解析xml文件
+        //ReadExcel readExcel = new ReadExcel();
+        PurchaseOrderReadExcel readExcel = new PurchaseOrderReadExcel();
+        List<PurchaseOrder> requisitionList = readExcel.getExcelInfo(filePath);
+        result = purchaseExcelDaoImpl.addExcel(requisitionList);
+        if (result > 0) {
+            return true;
+        }
         return false;
     }
 }
