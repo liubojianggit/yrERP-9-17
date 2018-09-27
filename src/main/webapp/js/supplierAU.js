@@ -32,29 +32,16 @@ layui.use(['form','layer','upload','table'],function(){
             },
             success: function(data){
                 if(data.code==1){
+                    layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
-                        top.layer.close(index);
-                        top.layer.msg(data.msg);
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    },2000);
-                }else if(data.code==2){
+                        window.location.href = path+"supplier/supplierTable";
+                    },1200);
+                }else{
+                    layer.msg(data.msg,{icon:2});
                     setTimeout(function(){
-                        top.layer.close(index);
-                        top.layer.msg(data.msg);
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    },2000);
-                }else {
-                    layer.msg("操作失败",{icon:2});
+                        window.location.href = path+"supplier/supplierTable";
+                    },1200);
                 }
-            },
-            error : function(XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest.status);
-                alert(XMLHttpRequest.readyState);
-                alert(textStatus);
             }
         });
         return false;
