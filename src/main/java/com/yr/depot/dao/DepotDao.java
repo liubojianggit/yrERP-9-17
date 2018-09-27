@@ -6,6 +6,7 @@ import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepotDao {
     /**
@@ -53,5 +54,16 @@ public interface DepotDao {
      */
     List<Depot> getname();
 
+    /**
+     *根据编号 返回仓库对象
+     * @param code
+     * @return
+     */
     Depot getcode(String code);
+
+    /**
+     * 将仓库对象集合封装到map中
+     * @return
+     */
+    Map<String,Object> queryDepots();
 }

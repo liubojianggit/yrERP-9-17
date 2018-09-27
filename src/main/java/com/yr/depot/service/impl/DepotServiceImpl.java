@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service("depotServiceImpl")
 @Transactional
@@ -84,7 +85,7 @@ public class DepotServiceImpl implements DepotService {
     }
 
     /**
-     *
+     *根据编号 返回仓库对象
      * @param code
      * @return
      */
@@ -92,5 +93,14 @@ public class DepotServiceImpl implements DepotService {
     public Depot getcode(String code) {
 
         return depotDao.getcode(code);
+    }
+
+    /**
+     *  将仓库对象集合封装到map中
+     * @return  Map<String, Object>
+     */
+    @Override
+    public Map<String, Object> queryDepots() {
+        return depotDao.queryDepots();
     }
 }
