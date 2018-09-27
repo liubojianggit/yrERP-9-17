@@ -6,12 +6,11 @@ import com.yr.entitys.page.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface SaleService {
-    boolean batchImport(String name,MultipartFile file);
     /**
      * 分页的形式查询user表的数据
      * @param page
      */
-    void query(Page<SaleBO> page);
+    String query(Page<SaleBO> page);
 
     /**
      * 添加用户信息

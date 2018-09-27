@@ -12,12 +12,12 @@ public interface PurchaseExcelService {
      * @return list
      */
     List<PurchaseOrder> queryForList();
-    /**
-     * 导入Excel表格
-     * @param name
-     * @param file
-     * @return boolean
-     */
 
-    boolean batchImport(String name,MultipartFile file);
+    /**
+     * 导入excel表
+     * @param filePath
+     * @return
+     */
+    //boolean batchImport(String name, MultipartFile file);
+    public boolean addExcel(String filePath);
 }

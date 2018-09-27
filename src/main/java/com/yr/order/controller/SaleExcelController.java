@@ -1,20 +1,26 @@
 package com.yr.order.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.yr.entitys.order.SaleOrder;
+import com.yr.util.ImportExcelUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,37 +37,38 @@ public class SaleExcelController {// 销售订单的导出导入
 
     /**
      * 导入Excel表
-     *
-     * @param file
+     * @param excelFile
      * @param request
      * @param response
      * @return
-     * @throws IOException
      */
-    @RequestMapping(value = "Export", method = RequestMethod.POST)
-    public String batchimport(@RequestParam(value = "filename") MultipartFile file, HttpServletRequest request,
-                              HttpServletResponse response) throws IOException {
-        log.info("AddController ..batchimport() start");
-        // 判断文件是否为空
-        if (file == null)
-            return null;
-        // 获取文件名
-        String name = file.getOriginalFilename();
-        // 进一步判断文件是否为空（即判断其大小是否为0或其名称是否为null）
-        long size = file.getSize();
-        if (name == null || ("").equals(name) && size == 0)
-            return null;
+    @ResponseBody
+    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    public Map<String,Object> analyzeXml(@RequestParam("excelFile") MultipartFile excelFile, HttpServletRequest request, HttpServletResponse response) {
+        //上传xml文件
+        InputStream inputs;
+        boolean result = false;//导入标志
+        Map<String,Object> map = new HashMap<String, Object>();
+        try {
+            //上传
+            inputs = excelFile.getInputStream();
+            String fileName = excelFile.getOriginalFilename();
+            String filePath=request.getSession().getServletContext().getRealPath("uploadFile");
+            String uploadFileName = ImportExcelUtils.uploadFile(inputs, fileName, filePath);
 
-        // 批量导入。参数：文件名，文件。
-        boolean b = saleExcelport.batchImport(name, file);
-        if (b) {
-            String Msg = "批量导入EXCEL成功！";
-            request.getSession().setAttribute("msg", Msg);
-        } else {
-            String Msg = "批量导入EXCEL失败！";
-            request.getSession().setAttribute("msg", Msg);
+
+            //解析Excel，导入MySQL
+            result = saleExcelport.addExcel(filePath+"/"+uploadFileName);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return "saleList";
+        if(result){
+            map.put("message", "成功");
+        }else{
+            map.put("message", "失败");
+        }
+        return map;
     }
 
     /**

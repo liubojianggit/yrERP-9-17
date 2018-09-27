@@ -5,9 +5,13 @@ import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseOrderDao;
 import com.yr.order.service.PurchaseOrderService;
+import com.yr.util.JsonDateValueProcessor;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,7 +20,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     private PurchaseOrderDao purchaseOrderDaoImpl;
 
-    @Override
+   /* @Override
     public Page<PurchaseOrder> query(Page<purchaseOrderBO> page) {
         Page<PurchaseOrder> page1 = new Page<PurchaseOrder>();
 
@@ -31,6 +35,25 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         page1.setPageData(purchaseOrderDaoImpl.query(page));
 
         return page1;
+    }*/
+
+    @Override
+    public String query(Page<purchaseOrderBO> page) {
+        Page<PurchaseOrder> page1 = new Page<PurchaseOrder>();
+
+        //设置总条数
+        page1.setTotalRecord(purchaseOrderDaoImpl.getCount(page.getT()));
+        //每页数
+        page1.setPageSize(page.getPageSize());
+        //当前页
+        page1.setCurrentPage(page.getCurrentPage());
+        //页数据
+        List<PurchaseOrder> list = purchaseOrderDaoImpl.query(page);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     @Override
