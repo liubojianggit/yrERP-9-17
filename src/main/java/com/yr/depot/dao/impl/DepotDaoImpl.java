@@ -134,7 +134,6 @@ public class DepotDaoImpl implements DepotDao {
 
     /**
      * 查询仓库 提供给销售调
-     * @param name
      * @return
      */
     public List<Depot> getname(){

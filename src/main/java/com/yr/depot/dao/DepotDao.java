@@ -53,5 +53,10 @@ public interface DepotDao {
      */
     List<Depot> getname();
 
+    /**
+     *根据编号 返回仓库对象
+     * @param code
+     * @return
+     */
     Depot getcode(String code);
 }
