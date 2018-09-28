@@ -1,14 +1,20 @@
 package com.yr.order.service.impl;
 
-import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.department.service.DepartmentService;
+import com.yr.depot.service.DepotService;
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseOrderDao;
 import com.yr.order.service.PurchaseOrderService;
+import com.yr.supplier.service.SupplierService;
+import com.yr.supplier.service.SupplierWareService;
+import com.yr.user.service.UserService;
 import com.yr.util.JsonDateValueProcessor;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,35 +26,57 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     private PurchaseOrderDao purchaseOrderDaoImpl;
 
-   /* @Override
-    public Page<PurchaseOrder> query(Page<purchaseOrderBO> page) {
-        Page<PurchaseOrder> page1 = new Page<PurchaseOrder>();
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userServices;//人员
 
+    @Qualifier("departmentServiceImpl")
+    @Autowired
+    private DepartmentService departmentServices;//部门
+
+    @Autowired
+    @Qualifier("supplierWareServiceImpl")
+    private SupplierWareService supplierWareServices;//供应商品
+
+    @Autowired
+    @Qualifier("depotServiceImpl")
+    private DepotService depotServices;//仓库
+
+    @Autowired
+    @Qualifier("supplierServiceImpl")
+    private SupplierService supplierServices;//供应商
+    private Page<PurchaseOrderBo> page;
+
+
+        @Override
+        public String query(Page<PurchaseOrderBo> page) {
+        this.page = page;
         //设置总条数
-        Long count = purchaseOrderDaoImpl.getCount(page.getT());
-        page1.setTotalRecord(count);
-        //每页数
-        page1.setPageSize(page.getPageSize());
-        //当前页
-        page1.setCurrentPage(page.getCurrentPage());
+        page.setTotalRecord(purchaseOrderDaoImpl.getCount(page.getT()));
         //页数据
-        page1.setPageData(purchaseOrderDaoImpl.query(page));
+        List<PurchaseOrderBo> list = purchaseOrderDaoImpl.query(page);
+        /*for ( PurchaseOrderBo purchaseOrderBo : list) {
 
-        return page1;
-    }*/
+            //根据供应商编号获取供应商对象
+            Supplier supplier = supplierServices.getByCode(purchaseOrderBo.getPurchaseOrder().getSupplierCode());
+            purchaseOrderBo.setSupplier(supplier);
 
-    @Override
-    public String query(Page<purchaseOrderBO> page) {
-        Page<PurchaseOrder> page1 = new Page<PurchaseOrder>();
+            //根据申请人工号获取user对象
+            String jobNum = purchaseOrderBo.getPurchaseOrder().getJobNumber();
+            User user = userServices.getByJobNum(jobNum);
+            purchaseOrderBo.setUser(user);
 
-        //设置总条数
-        page1.setTotalRecord(purchaseOrderDaoImpl.getCount(page.getT()));
-        //每页数
-        page1.setPageSize(page.getPageSize());
-        //当前页
-        page1.setCurrentPage(page.getCurrentPage());
-        //页数据
-        List<PurchaseOrder> list = purchaseOrderDaoImpl.query(page);
+            //根据部门编号获取部门对象
+            Department department = departmentServices.getByCode(purchaseOrderBo.getPurchaseOrder().getDepartmentCode());
+            purchaseOrderBo.setDepartment(department);
+
+            //根据供应商品code 获取供应商品对象；
+            SupplierWares supplierWares = supplierWareServices.getSuppLierWareByCode(purchaseOrderBo.getPurchaseOrder().getPurchaseWareCode());
+            purchaseOrderBo.setSupplierWares(supplierWares);
+            //根据仓库code 获取仓库对象
+            Depot depot = depotServices.getcode(purchaseOrderBo.getPurchaseOrder().getDepotCode());
+            purchaseOrderBo.setDepot(depot);
+        }*/
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
