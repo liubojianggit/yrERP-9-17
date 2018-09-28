@@ -7,14 +7,17 @@ import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.department.Department;
 import com.yr.entitys.page.Page;
 import com.yr.util.DateUtils;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -68,16 +71,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<Departmentbo> list = departmentDao.queryDepartmentbo(page);
         //page.setPageData(list);
         // pageJson = JsonUtils.beanToJson(page);
-        String deStr = JsonUtils.listToJson(list);
-        String strJson = "{" +
-                "\"msg\": \"\"," +
-                "\"code\": 0," +
-                "\"data\":"+deStr+"," +
-                "\"count\": "+count+"," +
-                "\"is\": true," +
-                "\"tip\": \"操作成功！\"" +
-                "}";
-        return strJson;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     @Override
@@ -129,7 +127,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      * 删除部门
      */
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer[] id) {
 
         departmentDao.delete(id);
 
