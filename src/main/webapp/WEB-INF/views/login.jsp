@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 </head>
-<body class="loginBody" style="background: url(<%=request.getContextPath()%>/images/001.jpg)">
+<body class="loginBody" style="background: url(<%=request.getContextPath()%>/images/002.jpg)">
 	<form id="form1" class="layui-form">
 		<div class="login_face"><img src="<%=request.getContextPath() %>/face.jpg" class="userAvatar"></div>
 		<div class="layui-form-item input-item">
