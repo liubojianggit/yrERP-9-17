@@ -126,6 +126,21 @@ layui.use(['form','layer','table','laytpl'],function(){
             //addUser(data);
             window.location.href = path+"u_role/roleTable/"+data.id;
 
+        }else if(layEvent === 'auth'){
+            layer.open({
+                id: 'LAY_indepAuth', //设定一个id，防止重复弹出
+                type: 2,
+                title:'角色权限',
+                area: ['800px','500px'],//宽、高
+                content: path+'u_role/roleTable/'+data.id,//跳到用户独立权限页面
+                end : function(index, layero){
+                    tableIns.reload("userList",{
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    })
+                }
+            });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
