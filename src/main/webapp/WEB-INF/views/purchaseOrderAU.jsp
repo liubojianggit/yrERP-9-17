@@ -82,13 +82,13 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">采购数量</label>
         <div class="layui-input-block">
-            <form:input path="purchaseNumber" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="purchaseNumber" class="layui-input"  lay-verify="required" placeholder="请输入商品数量"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">单价</label>
         <div class="layui-input-block">
-            <form:input path="unitPrice" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="unitPrice" class="layui-input"  lay-verify="required" placeholder="请输入商品单价"/>
         </div>
     </div>
     <%--后台计算 --%>
@@ -103,7 +103,7 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">收货人</label>
         <div class="layui-input-block">
-            <form:input path="consignee" class="layui-input"  lay-verify="required" placeholder="请输入商品条码"/>
+            <form:input path="consignee" class="layui-input"  lay-verify="required" placeholder="请输入收货人"/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
