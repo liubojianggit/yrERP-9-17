@@ -28,12 +28,12 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
     @Override
     public boolean add(SuppWareType swt) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("insert into suppWareType(name,code,sup_code,createTime,createEmp) values(?,?,?,?,?)");
-        Query query = entityManager.createQuery(jpql.toString());
+        jpql.append("insert into suppwaretype(name,code,sup_code,createTime,createEmp) values(?,?,?,?,?)");
+        Query query = entityManager.createNativeQuery(jpql.toString());
         query.setParameter(1, swt.getName());
         query.setParameter(2, swt.getCode());
         query.setParameter(3, swt.getSupCode());
-        query.setParameter(4, new Date());
+        query.setParameter(4, swt.getCreateTime());
         query.setParameter(5, swt.getCreateEmp());
         try {
             query.executeUpdate();
@@ -51,7 +51,7 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
     @Override
     public boolean delete(Integer id) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("delete s from SuppWareType s where s.id = ?");
+        jpql.append("delete from SuppWareType s where s.id = ?");
         Query query = entityManager.createQuery(jpql.toString());
         query.setParameter(1, id);
         try {
@@ -69,7 +69,7 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
      */
     @Override
     public boolean update(SuppWareType sw) {
-        StringBuffer jpql = new StringBuffer();
+       /* StringBuffer jpql = new StringBuffer();
         jpql.append("update SuppWareType set name = ?,code = ?,sup_code=?," +
                 "updateEmp = ?,updateTime = ?");
         Query query = entityManager.createQuery(jpql.toString());
@@ -77,9 +77,9 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
         query.setParameter(2, sw.getCode());
         query.setParameter(3, sw.getSupCode());
         query.setParameter(4, new Date());
-        query.setParameter(5, sw.getUpdateEmp());
+        query.setParameter(5, sw.getUpdateEmp());*/
         try {
-            query.executeUpdate();
+            entityManager.merge(sw);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,21 +98,20 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
         String code = page.getT().getCode();
         String name = page.getT().getName();
         String suppCode = page.getT().getSupCode();
-        if (code != null && code.equals("")) {
-            jpql.append("and code like '%" + code + "%'");
+        if (code != null && !code.equals("")) {
+            jpql.append("and s.code like '%" + code + "%'");
         }
-        if (suppCode != null && suppCode.equals("")) {
-            jpql.append("and supp_code like '%" + suppCode + "%'");
+        if (suppCode != null && !suppCode.equals("")) {
+            jpql.append("and s.supp_code like '%" + suppCode + "%'");
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if (name != null && !name.equals("")) {
+            jpql.append("and s.name like '%" + name + "%'");
         }
         jpql.append("order by id desc");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setFirstResult(page.getCurrentPage());
+        query.setFirstResult(page.getStart());
         query.setMaxResults(page.getPageSize());
         List<SuppWareTypeBo> SuppWareType = query.getResultList();
-        System.out.println(SuppWareType);
         return SuppWareType;
     }
     /**
@@ -148,12 +147,21 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
             jpql.append("and sup_code like '%" + supCode + "%'");
         }
         if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+            jpql.append("and name like '%" + name + "%'");
         }
         Query query = entityManager.createQuery(jpql.toString());
 
         Long count = (Long) query.getSingleResult();
         return count;
+    }
+
+    @Override
+    public List<SuppWareType> query() {
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select s from SuppWareType s where 1=1");
+        Query query = entityManager.createQuery(jpql.toString());
+        List<SuppWareType> SuppWareType = query.getResultList();
+        return SuppWareType;
     }
 
 }

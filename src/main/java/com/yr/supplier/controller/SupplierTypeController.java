@@ -29,19 +29,27 @@ public class SupplierTypeController {
 
     /**
      * 用于跳转数据查询页面
-     * @return
+     * @return suppWareType/suppWareTypeTable
      */
-    @RequestMapping(value = "suppWareTypeTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.GET)
     public String getListPage(){
-        return "";
+        return "supp_ware_typeList";
     }
     /**
      * 用于跳转到添加页面和修改页面
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable/addAndUpdate",method = RequestMethod.GET)
-    public String getAddPage(){
-        return "";
+    @RequestMapping(value = "suppWareTypeTable/add",method = RequestMethod.GET)
+    public String getAddPage(Map<String ,Object>map){
+        map.put("suppWareType",new SuppWareType());
+        map.put("suppWareTypes",swts.getSuppWareType());
+        return "supp_ware_typeAU";
+    }
+    @RequestMapping(value = "suppWareTypeTable/{id}",method = RequestMethod.GET)
+    public String getUpdatePage(@PathVariable Integer id,Map<String ,Object>map){
+        map.put("suppWareType",swts.getSuppWareType(id));
+        map.put("suppWareTypes",swts.getSuppWareType());
+        return "supp_ware_typeAU";
     }
 
     /**
@@ -49,10 +57,16 @@ public class SupplierTypeController {
      * @param suppWareType
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable",method =RequestMethod.POST)
+    @RequestMapping(value = "suppWareTypeTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String addWare(@ModelAttribute("suppWareType")SuppWareType suppWareType){
-        swts.add(suppWareType);
-        return "";
+        suppWareType.setCreateEmp("wangyong");
+        boolean bool = swts.add(suppWareType);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"添加成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"添加失败\"}";
+        }
     }
 
     /**
@@ -60,10 +74,15 @@ public class SupplierTypeController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.DELETE)
+    @RequestMapping(value = "suppWareTypeTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String deleteWare(@PathVariable Integer id){
-        swts.delete(id);
-        return "";
+        boolean bool = swts.delete(id);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"删除成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"删除失败\"}";
+        }
     }
 
     /**
@@ -72,10 +91,16 @@ public class SupplierTypeController {
      * @param map
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.PUT)
+    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
     public String updateWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, Map<String,Object>map){
-        swts.update(suppWareType);
-        return"";
+        suppWareType.setUpdateEmp("wangyong9");
+        boolean bool =  swts.update(suppWareType);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"修改成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"修改失败\"}";
+        }
     }
     /**
      * 供应商品类型查询方法，前台可以通过这个方法进行数据的查询
@@ -83,12 +108,13 @@ public class SupplierTypeController {
      * @param map
      * @return 查询数据
      */
-    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.GET)
+    @RequestMapping(value = "suppWareTypeTable/list",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<SuppWareTypeBo> queryWare(Page<SuppWareTypeBo> suppWareType, Map<String,Object>map){
-        suppWareType = swts.query(suppWareType);
-        map.put("suppWareType",suppWareType);
-        return suppWareType;
+    public String  queryWare(Page<SuppWareTypeBo> suppWareType,SuppWareTypeBo suppWareTypeBo, Map<String,Object>map){
+        suppWareType.setT(suppWareTypeBo);
+        String  json = swts.query(suppWareType);
+        map.put("suppWareType",json);
+        return json;
     }
 
 }
