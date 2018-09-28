@@ -1,8 +1,11 @@
 package com.yr.supplier.service;
 
 import com.yr.entitys.bo.supplierBO.SuppWareTypeBo;
+import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
+
+import java.util.List;
 
 /**
  * 供应商品类型的业务逻辑层的接口
@@ -38,7 +41,7 @@ public interface SuppWareTypeService {
      * @param page
      * @return
      */
-    public Page<SuppWareTypeBo> query(Page<SuppWareTypeBo> page);
+    public String query(Page<SuppWareTypeBo> page);
 
     /**
      * 根据id到供应商品类别表中获取对应的数据
@@ -46,4 +49,8 @@ public interface SuppWareTypeService {
      * @return
      */
     public SuppWareType getSuppWareType(Integer id);
+    /**
+     * 获取商品的list集合
+     * */
+    public List<SuppWareType> getSuppWareType();
 }
