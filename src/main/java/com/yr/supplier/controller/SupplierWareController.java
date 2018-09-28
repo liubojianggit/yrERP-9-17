@@ -97,7 +97,7 @@ public class SupplierWareController {
      */
     @ResponseBody
     @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
-    public String deleteWare(@PathVariable Integer id){
+    public String deleteWare(@PathVariable("id") Integer id){
         sws.delete(id);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }

@@ -19,16 +19,16 @@ layui.use(['form','layer','table','laytpl'],function(){
     var tableIns = table.render({
         elem: '#suppWaresList',
         url :path+ 'supp_wares/supplierTable/list',
-      /* request: {//request下面是请求后台的参数的别名,response是响应的别名
+        request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
-        where:{//需要传入的值
-            ".supplierWare.name": $("#wareName").val(),  //搜索的关键字
-            "supplierWare.type": $("#wareType").val(),  //搜索的关键字
-            "minUnitPrice": $("#minUnitPrice").val(),  //搜索的关键字
-            "maxUnitPrice": $("#maxUnitPrice").val() //搜索的关键字
-        },*/
+        where : {//需要传入的值
+            "name": $("#wareName").val(),  //搜索的关键字
+            "type": $("#wareType").val(),  //搜索的关键字
+           /* "minUnitPrice": $("#minUnitPrice").val(),  //搜索的关键字
+            "maxUnitPrice": $("#maxUnitPrice").val()  //搜索的关键字*/
+        },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -42,10 +42,10 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '商品名', align:"center",unresize: true},
             /*{field: 'supplierWare.supp_code', title: '供应商编号', align:"center",unresize: true},*/
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
-           /* {field: 'supplierWare.suppPhoto', title: '图片',  align:'center',templet:function(d){
+           /*{field: 'supplierWare.suppPhoto', title: '图片',  align:'center',templet:function(d){
                     return '<img style="width: 28px;height: 28px;"  src="'+path+"/supp_wares/supplierTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
-                }},
-*/
+                }},*/
+
             {field: 'code', title: '商品编号', align:"center", unresize: true},
             {field: 'type', title: '商品类型', align:"center", unresize: true},
             {field: 'brand', title: '品牌', align:"center", unresize: true},
@@ -58,21 +58,17 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
-            table.reload("suppWaresListTable",{
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    "supplierWares.wareName": $("#wareName").val(),  //搜索的关键字
-                    "supplierWares.wareType": $("#wareType").val(),  //搜索的关键字
-                    "minUnitPrice": $("#minUnitPrice").val(),  //搜索的关键字
-                    "maxUnitPrice": $("#maxUnitPrice").val() //搜索的关键字
-                }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+        table.reload("suppWaresListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                "name": $("#wareName").val(),  //搜索的关键字
+               /* "type": $("#wareType").val(),  //搜索的关键字
+                "minUnitPrice": $("#minUnitPrice").val(),  //搜索的关键字
+                "maxUnitPrice": $("#maxUnitPrice").val() //搜索的关键字*/
+            }
+        })
     });
 
     //添加用户
@@ -122,7 +118,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(suppWaresList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
@@ -135,7 +131,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'supp_wares/supplierTable'+data.id,//删除请求后台的接口
+                    url: path+'/supp_wares/supplierTable/'+data.id,//删除请求后台的接口
                     dataType : 'json',
                     data: {_method:'delete'},
                     success: function(data){
@@ -148,7 +144,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                         }else{
                             layer.msg(data.msg,{icon:2});
                             setTimeout(function(){
-                                window.location.href = path+"supp_wares/supplierTable";
+                                window.location.href = path+"/supp_wares/supplierTable";
                             },1200);
                         }
                     }

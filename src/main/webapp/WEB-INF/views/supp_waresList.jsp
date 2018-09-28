@@ -21,9 +21,9 @@
             <div class="layui-inline">
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input searchVal" id="wareName" placeholder="请输入商品名：" />
-                    <input type="text" class="layui-input searchVal" id="wareType" placeholder="请输入商品类型：" />
-                    <input type="text" class="layui-input searchVal" id="minUnitPrice" placeholder="请输入最低单价：" />
-                    <input type="text" class="layui-input searchVal" id="maxUnitPrice" placeholder="请输入最高单价" />
+                   <input type="text" class="layui-input searchVal" id="wareType" placeholder="请输入商品类型：" />
+                   <%-- <input type="text" class="layui-input searchVal" id="minUnitPrice" placeholder="请输入最低单价：" />
+                    <input type="text" class="layui-input searchVal" id="maxUnitPrice" placeholder="请输入最高单价" />--%>
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>

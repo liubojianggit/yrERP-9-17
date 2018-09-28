@@ -12,6 +12,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  *供应商业务逻辑层的实现类
  */
 @Service
+@Transactional
 public class SupplierWareServiceImpl implements SupplierWareService {
     @Autowired
     private SupplierWareDao swd;
