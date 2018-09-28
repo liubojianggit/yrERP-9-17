@@ -30,13 +30,13 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">订单编号</label>
         <div class="layui-input-block">
-            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入订单编号："/>
+            <form:input path="saleOrder.code" class="layui-input"  lay-verify="required" placeholder="请输入订单编号："/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">购买客户</label>
         <div class="layui-input-block">
-            <form:input path="customerBuy" class="layui-input"  lay-verify="required" placeholder="请输入购买客户："/>
+            <form:input path="saleOrder.customerBuy" class="layui-input"  lay-verify="required" placeholder="请输入购买客户："/>
         </div>
     </div><div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">销售员姓名</label>
