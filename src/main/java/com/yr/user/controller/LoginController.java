@@ -7,7 +7,6 @@ import com.yr.user.service.LoginService;
 import com.yr.user.service.UserService;
 import com.yr.util.SerializeUtil;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,20 +76,26 @@ public class LoginController {
     @RequestMapping(value = "/userTable/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request) {
-        String str = "";//用来接异常
+        String str = "";
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");// 获取正确的验证码
 
-        if (!loginVerifyCode.isEmpty()) {//判断验证码 是非为空
+
+        // if(loginVerifyCode != null && !"".equals(loginVerifyCode)){
+        if (!loginVerifyCode.isEmpty()) {//判断验证码不等于空
             if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {//先去掉验证码前后空格 在比较验证码是否正确
                 List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);//判断用户 账号是否存在
                 if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {//判断用户不能等于空 长度要大于1
-                    Subject subject = SecurityUtils.getSubject();//获得subject对象
-                    UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getName(), loginUser.getPassword());//根据账号密码获得token令牌
-                    try {
-                        subject.login(token);//进入权限的认证
-                    } catch (Exception ae) {
-                        System.out.println("登陆失败: " + ae.getMessage());
-                        return "{\"code\":4,\"msg\":\"账号或密码错误\"}";
+                    User user = loginService.queryLoginUser(loginUser);//判断用户名 密码是否正确
+                    if (!StringUtils.isEmpty(user)){
+                        if (user.getStates() == 1) {
+                            // 登录验证通过，把对象存进session
+                            request.getSession().setAttribute("user", user);// 获取session对象并赋值
+                            str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
+                        } else if (user.getStates() == 0) {
+                            str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
+                        }
+                    }else {
+                        str = "{\"code\":3,\"msg\":\"账号/密码错误\"}";
                     }
                 }else{
                     str = "{\"code\":4,\"msg\":\"账号无法登录\"}";//账号不存在
