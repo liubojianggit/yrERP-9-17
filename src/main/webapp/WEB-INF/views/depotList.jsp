@@ -20,13 +20,13 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="name" placeholder="请输入仓库名称：" />
+                    <input type="text" class="layui-input searchVal" id="name" value="" placeholder="请输入仓库名称：" />
                 </div>
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input searchVal" id="code" value="" placeholder="请输入仓库编号：" />
                 </div>
-                    <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="addr" value="" placeholder="请输入仓库地址：" />
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input searchVal" id="addr" value="" placeholder="请输入地址：" />
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
