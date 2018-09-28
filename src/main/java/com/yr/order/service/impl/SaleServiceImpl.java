@@ -3,15 +3,20 @@ package com.yr.order.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.yr.depot.dao.WareDao;
+import com.yr.depot.dao.impl.WareDaoImpl;
+import com.yr.depot.service.WareService;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.util.JsonDateValueProcessor;
+import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
@@ -29,13 +34,11 @@ public class SaleServiceImpl implements SaleService {
      * @param page
      */
     @Override
-    public String query(Page<SaleBO> page) {
+    public String query(Page<SaleOrderBO> page) {
         page.setTotalRecord(saleDao.getCount(page));//查询总条数加入page中
-        List<SaleBO>list = saleDao.query(page);//分页查询的数据
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        List<SaleOrderBO>list = saleDao.query(page);//分页查询的数据
+        String jsonStr = JsonUtils.listToJson(list);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonStr+"}";
         return  json;
     }
 
@@ -64,8 +67,11 @@ public class SaleServiceImpl implements SaleService {
      * @return
      */
     @Override
-    public SaleOrder getById(Integer id) {
-        return saleDao.getById(id);
+    public SaleOrderBO getById(Integer id) {
+        SaleOrder saleOrder = saleDao.getById(id);
+        SaleOrderBO saleOrderBO = new SaleOrderBO();
+        saleOrderBO.setSaleOrder(saleOrder);
+        return saleOrderBO;
     }
 
 }
