@@ -32,7 +32,7 @@
 			<img src="<%=request.getContextPath() %>/u_user/userTable/getVerifyCode" id="vimg" title="点击更换" onclick="changeCode();">
 		</div>
         <div class="layui-form-item">
-            <input type="checkbox" name="" lay-skin="switch" lay-text="开启|关闭">
+            7天免登录： <input type="checkbox" name="" lay-skin="switch" lay-text="开启|关闭">
         </div>
 		<div class="layui-form-item">
 			<button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
