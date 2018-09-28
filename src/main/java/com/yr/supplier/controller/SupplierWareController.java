@@ -1,6 +1,7 @@
 package com.yr.supplier.controller;
 
 import com.yr.core.redis.JedisManager;
+import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SupplierWares;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,41 +29,65 @@ public class SupplierWareController {
     private SupplierWareService sws;
     @Autowired
     private JedisManager jedisManager;
-    public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
+    public static String path = "C:/Users/Administrator/Desktop";//图片路径
 
     @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
-        if (id!=null){
-            map.put("supplierWare",sws.getSupplierWare(id));
+        if (id != null&&id !=0) {
+            SupplierWareBo supplierWareBo=sws.getById(id);
+            map.put("supplierWareBo",supplierWareBo);
         }
     }
-
     /**
-     * 用于跳转数据查询页面
+     * 跳转到拥有供应商的查询列表，没有数据操作
      * @return
      */
-    @RequestMapping(value = "supplierTable/list",method = RequestMethod.GET)
-    public String getListPage(){
-        return "";
+    @RequestMapping(value = "/supp_waresTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String list(){
+        return "supp_waresList";
     }
+    /**
+     * 供应商品查询方法，前台可以通过这个方法进行数据的查询
+     * @param page
+     * @param supplierWareBo
+     * @return 查询数据
+     */
+    @RequestMapping(value = "/supplierTable/list",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String queryWare(Page<SupplierWareBo> page,SupplierWareBo supplierWareBo){
+        page.setT(supplierWareBo);
+        String json = sws.query(page);
+        return json;
+    }
+
     /**
      * 用于跳转到添加页面和修改页面
      * @return
      */
-    @RequestMapping(value = "supplierTable/addAndUpdate",method = RequestMethod.GET)
-    public String getAddPage(){
-        return "";
+    @RequestMapping(value = "/supplierTable/add",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String getAddPage(Map<String , Object>map){
+        map.put("supplierWareBo",new SupplierWareBo());
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("类型1","类型1");
+        map1.put("类型2","类型2");
+        map1.put("类型3","类型3");
+        map.put("typeList",map1);
+        return "supp_waresAU";
     }
+
 
     /**
      * 供应商品添加方法，用于前台添加数据
-     * @param supplierWare
+     * @param supplierWareBo
      * @return
      */
-    @RequestMapping(value = "supplierTable",method =RequestMethod.POST)
-    public String addWare(@ModelAttribute("supplierWare")SupplierWares supplierWare){
-        sws.add(supplierWare);
-        return "";
+    @ResponseBody
+    @RequestMapping(value = "/supplierTable",method =RequestMethod.POST,produces="application/json;charset=UTF-8")
+    public String addWare(SupplierWareBo supplierWareBo){
+        supplierWareBo.getSupplierWare().setCreateTime(new Date());
+        supplierWareBo.getSupplierWare().setCreateEmp("萍");
+        sws.add(supplierWareBo);
+        return "{\"code\":1,\"msg\":\"添加成功\"}";
     }
 
     /**
@@ -68,46 +95,53 @@ public class SupplierWareController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "supplierTable",method = RequestMethod.DELETE)
+    @ResponseBody
+    @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.DELETE,produces="application/json;charset=UTF-8")
     public String deleteWare(@PathVariable Integer id){
         sws.delete(id);
-        return "";
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
+
+    /**
+     * 根据id回显修改供应商商品数据
+     * @param id
+     * @param map 放入map中存放request，方便页面拿取
+     * @return
+     */
+    @RequestMapping(value = "/supplierTable/{id}",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    public String upEcho(@PathVariable Integer id,Map<String, Object> map) {
+        Map<String, Object> map1 = new HashMap<>();
+        map1.put("类型1","类型1");
+        map1.put("类型2","类型2");
+        map1.put("类型3","类型3");
+        map.put("typeList",map1);
+        map.put("supplierWareBo",sws.getById(id));
+        return "supp_waresAU";
+    }
     /**
      * 根据id来修改供应商品的信息
-     * @param supplierWare
+     * @param supplierWareBo
      * @param map
      * @return
      */
-    @RequestMapping(value = "supplierTable",method = RequestMethod.PUT)
-    public String updateWare(@ModelAttribute("supplierWare") SupplierWares supplierWare, Map<String,Object>map){
-        sws.update(supplierWare);
-        return"";
-    }
-    /**
-     * 供应商品查询方法，前台可以通过这个方法进行数据的查询
-     * @param supplierWare
-     * @param map
-     * @return 查询数据
-     */
-    @RequestMapping(value = "supplierTable",method = RequestMethod.GET)
+    @RequestMapping(value = "/supplierTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<SupplierWareBo> queryWare(Page<SupplierWareBo> supplierWare,SupplierWareBo supplierWareBo, Map<String,Object>map){
-        System.out.println(supplierWareBo+"33333");
-        supplierWare.setT(supplierWareBo);
-        supplierWare = sws.query(supplierWare);
-        map.put("ware",supplierWare);
-        System.out.println(supplierWare+"4");
-        return supplierWare;
+    public String updateWare(SupplierWareBo supplierWareBo, Map<String,Object>map){
+        supplierWareBo.getSupplierWare().setUpdateTime(new Date());
+        supplierWareBo.getSupplierWare().setUpdateEmp("萍");
+        //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
+        sws.update(supplierWareBo);
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
+
     /**
      * 通过用户的id请求返回图像的字节流
      */
     @RequestMapping("supplierTable/icons/{id}")
     public void getIcons(@PathVariable(value="id") Integer id , HttpServletRequest request, HttpServletResponse response) throws IOException {
-        SupplierWares supplierWare  = sws.getSupplierWare(id);//根据id获得user对象
-        byte[] data = FileUtils.getFileFlow(supplierWare.getSuppPhoto());//调用方法将流传出
+        SupplierWareBo supplierWareBo  = sws.getById(id);//根据id获得user对象
+        byte[] data = FileUtils.getFileFlow(supplierWareBo.getSupplierWare().getSuppPhoto());//调用方法将流传出
         response.setContentType("image/png");
         OutputStream stream = response.getOutputStream();
         stream.write(data);//将图片以流的形式返回出去

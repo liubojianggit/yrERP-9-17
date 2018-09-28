@@ -66,11 +66,11 @@ public class SupplierDaoImpl implements SupplierDao {
 
         Query query =entityManager.createQuery(jpql);
         if(code !=null && code !=""){
-            query.setParameter("code","%"+code+"%");
+            query.setParameter("code","%"+code.trim()+"%");
         }if(name != null && name !=""){
-            query.setParameter("name","%"+name+"%");
+            query.setParameter("name","%"+name.trim()+"%");
         }if(addr !=null && addr !=""){
-            query.setParameter("addr","%"+addr+"%");
+            query.setParameter("addr","%"+addr.trim()+"%");
         }
         Long count =(Long)query.getSingleResult();
         return count;
@@ -107,11 +107,11 @@ public class SupplierDaoImpl implements SupplierDao {
 
         Query query =entityManager.createQuery(jpql);
         if(code !=null && code !=""){
-            query.setParameter("code","%"+code+"%");
+            query.setParameter("code","%"+code.trim()+"%");
         }if(name != null && name !=""){
-            query.setParameter("name","%"+name+"%");
+            query.setParameter("name","%"+name.trim()+"%");
         }if(addr !=null && addr !=""){
-            query.setParameter("addr","%"+addr+"%");
+            query.setParameter("addr","%"+addr.trim()+"%");
         }
         System.out.println(jpql);
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页

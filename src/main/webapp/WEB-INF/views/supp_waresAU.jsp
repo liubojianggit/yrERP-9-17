@@ -64,7 +64,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWare.type" items="${typeList }" itemLabel="name" itemValue="id"></form:select>
+            <form:select path="supplierWare.type" items="${typeList}" itemLabel="name" itemValue="id"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -88,7 +88,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">产地</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWare.addr" items="${addrList }" itemLabel="name" itemValue="id"></form:select>
+            <form:input path="supplierWare.addr" class="layui-input" lay-verify="required" placeholder="请输入地址"/>
         </div>
     </div>
 
@@ -105,6 +105,6 @@
     </div>
 </form:form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/wareAU.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/supp_waresAU.js"></script>
 </body>
 </html>
