@@ -7,7 +7,7 @@ import com.yr.entitys.order.PurchaseOrder;
  * @author
  * @since
  */
-public class purchaseOrderBO {
+public class PurchaseOrderBO {
     private PurchaseOrder purchaseOrder;
 	
     //采购商品名称(用于页面查询)
