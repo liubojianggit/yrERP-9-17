@@ -19,24 +19,23 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     @Override
     public List<PurchaseOrderBo> query(Page<PurchaseOrderBo> page) {
         String jpql="select r from PurchaseOrder r where 1=1 ";
-        if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
+        if (page.getT().getPurchaseCode() != null && !page.getT().getPurchaseCode().equals(""))
         {
-            jpql+="and r.purc_ware_name like :name ";
+            jpql+= "and r.code like :purchaseCode ";
         }
-        if(page.getT().getPurchaseType()!=null && !page.getT().getPurchaseType().equals(""))
+        if (page.getT().getPurchaseWareCode() != null && !page.getT().getPurchaseWareCode().equals(""))
         {
-            jpql+="and r.purc_ware_type like :type ";
+            jpql+= "and r.purchaseWareCode like :purchaseWareCode";
         }
         Query query =  entityManager.createQuery(jpql);
-        if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
+        if(page.getT().getPurchaseCode() != null && !page.getT().getPurchaseCode().equals(""))
         {
-            query.setParameter("name","%"+page.getT().getPurchaseName()+"%");
+            query.setParameter("purchaseCode","%"+page.getT().getPurchaseCode()+"%");
         }
-        if(page.getT().getPurchaseType()!=null && !page.getT().getPurchaseType().equals(""))
+        if(page.getT().getPurchaseWareCode() != null && !page.getT().getPurchaseWareCode().equals(""))
         {
-            query.setParameter("type","%"+page.getT().getPurchaseType()+"%");
+            query.setParameter("purchaseWareCode","%"+page.getT().getPurchaseWareCode()+"%");
         }
-
         //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<PurchaseOrderBo> list = query.getResultList();
@@ -52,34 +51,29 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     @Override
     public Long getCount(PurchaseOrderBo purchaseOrderBO) {
         String jpql= "select count(*) from PurchaseOrder r where 1=1 ";
-        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
+        if (purchaseOrderBO.getPurchaseCode() != null && !purchaseOrderBO.getPurchaseCode().equals(""))
         {
-            jpql+="and r.purc_ware_name like :name ";
+            jpql+= "and r.code like :purchaseCode ";
         }
-        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
+        if (purchaseOrderBO.getPurchaseWareCode() != null && !purchaseOrderBO.getPurchaseWareCode().equals(""))
         {
-            jpql+="and r.purc_ware_type like :type ";
+            jpql+= "and r.purchaseWareCode like :purchaseWareCode";
         }
         Query query =  entityManager.createQuery(jpql);
-        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
+        if(purchaseOrderBO.getPurchaseCode() != null && !purchaseOrderBO.getPurchaseCode().equals(""))
         {
-            query.setParameter("name","%"+purchaseOrderBO.getPurchaseName()+"%");
+            query.setParameter("purchaseCode","%"+purchaseOrderBO.getPurchaseCode()+"%");
         }
-        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
+        if(purchaseOrderBO.getPurchaseWareCode() != null && !purchaseOrderBO.getPurchaseWareCode().equals(""))
         {
-            query.setParameter("type","%"+purchaseOrderBO.getPurchaseType()+"%");
+            query.setParameter("purchaseWareCode","%"+purchaseOrderBO.getPurchaseWareCode()+"%");
         }
         Long value = (Long) query.getSingleResult();
-
         return value;
     }
 
     @Override
     public PurchaseOrder getRequisitionById(Integer id) {
-       /* String jpql="select r from PurchaseOrder r where r.id=:id";
-        Query query =  entityManager.createQuery(jpql).setParameter("id",id);
-        Requisition requisition = (Requisition) query.getSingleResult();*/
-
         PurchaseOrder purchaseOrder = entityManager.find(PurchaseOrder.class,id);
         return purchaseOrder;
     }

@@ -20,8 +20,8 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="rCode" value="" placeholder="请输入订单名称/编号：" />
-                    <input type="text" class="layui-input searchVal" id="rName" placeholder="请输入商品名称：" />
+                    <input type="text" class="layui-input searchVal" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
+                    <input type="text" class="layui-input searchVal" id="purchaseWareCode" placeholder="请输入商品名称：" />
                     <select name="city" id="rStates" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>

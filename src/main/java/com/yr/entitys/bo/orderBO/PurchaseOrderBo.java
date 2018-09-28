@@ -17,8 +17,10 @@ public class PurchaseOrderBo {
     private Depot depot;
 
 
-    private String  purchaseName;
-    private String purchaseType;
+    /*private String  purchaseName;
+    private String purchaseType;*/
+    private String purchaseCode;
+    private  String purchaseWareCode;
 
     public User getUser() {
         return user;
@@ -62,24 +64,25 @@ public class PurchaseOrderBo {
     public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
         this.purchaseOrder = purchaseOrder;
     }
-
-    public void setPurchaseName(String purchaseName) {
-        this.purchaseName = purchaseName;
-    }
-
-    public void setPurchaseType(String purchaseType) {
-        this.purchaseType = purchaseType;
-    }
-
     public PurchaseOrder getPurchaseOrder() {
         return purchaseOrder;
     }
 
-    public String getPurchaseName() {
-        return purchaseName;
+
+    /*分页条件数据查询*/
+    public String getPurchaseCode() {
+        return purchaseCode;
     }
 
-    public String getPurchaseType() {
-        return purchaseType;
+    public void setPurchaseCode(String purchaseCode) {
+        this.purchaseCode = purchaseCode;
+    }
+
+    public String getPurchaseWareCode() {
+        return purchaseWareCode;
+    }
+
+    public void setPurchaseWareCode(String purchaseWareCode) {
+        this.purchaseWareCode = purchaseWareCode;
     }
 }
