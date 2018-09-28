@@ -35,7 +35,7 @@ public class LogController {
     @RequestMapping(value = "/logTable")
     public  String jumpList()
     {
-        return  null;
+        return "logs";
     }
 
     /**

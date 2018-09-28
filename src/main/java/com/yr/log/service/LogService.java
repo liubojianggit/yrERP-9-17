@@ -14,7 +14,7 @@ public interface LogService {
     void addLog(Log log);
 
     /**
-     * 分页的形式查询log表的数据
+     * 分页的形式查询log表的数据，并以字符串的形式返回回去
      * @param logBoPage
      * @return
      */
