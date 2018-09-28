@@ -22,6 +22,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },where:{//需要传入的值
+            "name": $("#supplierName").val(),  //搜索的关键字
         },
 
         cellMinWidth : 95,
@@ -51,11 +53,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "supplier.name": $("#name").val(),  //搜索的关键字
+                    "name": $("#supplierName").val(),  //搜索的关键字
                 }
             })
-        }else{
-            layer.msg("请输入搜索的内容");
         }
     });
 

@@ -1,14 +1,19 @@
 package com.yr.supplier.service.impl;
 
+import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SupplierWares;
 import com.yr.supplier.dao.SupplierWareDao;
 import com.yr.supplier.service.SupplierWareService;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.StringUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,13 +30,8 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return true表示添加成功，false表示添加失败
      */
     @Override
-    public boolean add(SupplierWares sw) {
-        if (isParamNull(sw)) {
-            return false;
-        }else{
-            swd.add(sw);
-            return true;
-        }
+    public void add(SupplierWareBo sw) {
+        swd.add(sw);
     }
 
     /**
@@ -40,8 +40,8 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public boolean delete(Integer id) {
-        return swd.delete(id);
+    public void delete(Integer id) {
+        swd.delete(id);
     }
 
     /**
@@ -50,13 +50,8 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public boolean update(SupplierWares sw) {
-        if (isUpdateParamNull(sw)) {
-            return false;
-        }else{
-            swd.update(sw)  ;
-            return true;
-        }
+    public void update(SupplierWareBo sw) {
+        swd.update(sw);
     }
 
     /**
@@ -65,13 +60,15 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public Page<SupplierWareBo> query(Page<SupplierWareBo> page) {
-        System.out.println(swd.getCount(page)+"eee");
+    public String query(Page<SupplierWareBo> page) {
         page.setTotalRecord(swd.getCount(page));
-        List<SupplierWareBo> wareList = swd.query(page);
+        List<SupplierWareBo> list=swd.query(page);
 
-        page.setPageData(wareList);
-        return page;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     /**
@@ -80,8 +77,11 @@ public class SupplierWareServiceImpl implements SupplierWareService {
      * @return
      */
     @Override
-    public SupplierWares getSupplierWare(Integer id) {
-        return swd.getSupplierWare(id);
+    public SupplierWareBo getById(Integer id) {
+        SupplierWares supplierWares=swd.getById(id);
+        SupplierWareBo supplierWareBo=new SupplierWareBo();
+        supplierWareBo.setSupplierWare(supplierWares);
+         return supplierWareBo;
     }
 
     /**
