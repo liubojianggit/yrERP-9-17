@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.yr.entitys.order.PurchaseOrder;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
@@ -31,7 +29,7 @@ public class PurchaseOrderReadExcel {
     /**
      * 读EXCEL文件，获取集合
      *
-     * @param fielName
+     * @param
      * @return
      */
     public List<PurchaseOrder> getExcelInfo(String filePath) {
@@ -117,12 +115,12 @@ public class PurchaseOrderReadExcel {
                     if (c == 5) {
                         purchaseOrder.setApprover(cell.getStringCellValue());
                     }
-                    if (c == 6) {
+                    /*if (c == 6) {
                         purchaseOrder.setPurchasName(cell.getStringCellValue());
                     }
                     if (c == 7) {
                         purchaseOrder.setPurchaseType(cell.getStringCellValue());
-                    }
+                    }*/
                     if (c == 8) {
 
                         cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
