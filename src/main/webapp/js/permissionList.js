@@ -83,7 +83,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //批量删除
     $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('permissionListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {

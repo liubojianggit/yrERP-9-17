@@ -53,10 +53,13 @@ public class RoleController {
      */
     @RequestMapping(value="/roleTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<RoleBo> query(RoleBo roleBo, Page<RoleBo> page){
+    public String query(RoleBo roleBo, Page<RoleBo> page){
+        //去空格
+        roleBo.getRole().setName(roleBo.getRole().getName().trim());//搜索的值去空格
+
         page.setT(roleBo);
-        roleService.query(page);
-        return page;
+        String json = roleService.query(page);
+        return json;
     }
 
     /**
@@ -65,7 +68,7 @@ public class RoleController {
      */
     @RequestMapping(value="/roleTable/add", method = RequestMethod.GET)
     public String jumpAdd(Map<String, Object> map){
-        map.put("role", new Role());//传入一个空的role对象
+        map.put("roleBo", new RoleBo());//传入一个空的role对象
         return "roleAU";
     }
 
@@ -76,9 +79,9 @@ public class RoleController {
     @RequestMapping(value="/roleTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(RoleBo roleBo, HttpServletRequest request){
-        Role role = new Role();
+        Role role = roleBo.getRole();
         role.setCreateTime(new Date());//获取当前时间
-        role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        //role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         roleService.add(role);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
@@ -88,10 +91,12 @@ public class RoleController {
      * @return String
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map,RoleBo roleBo, Page<RoleBo> page){
-        page.setT(roleBo);
-        map.put("page", page);
-        map.put("role", roleService.getById(id));//根据id获取对象放入request中
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<RoleBo> page){
+        //map.put("page", page);
+        RoleBo roleBo = new RoleBo();
+        Role role = roleService.getById(id);
+        roleBo.setRole(role);
+        map.put("roleBo", roleBo);//根据id获取对象放入request中
         return "roleAU";
     }
 
@@ -103,8 +108,8 @@ public class RoleController {
     @ResponseBody
     public String saveUpdate(RoleBo roleBo, Page<RoleBo> page, Map<String, Object> map, HttpServletRequest request){
         roleBo.getRole().setUpdateTime(new Date());//获取修改当前时间
-        roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
-        map.put("page", page);
+        //roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        //map.put("page", page);
         roleService.update(roleBo.getRole());
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }

@@ -19,7 +19,7 @@
 <body class="childrenBody">
 <div class="layui-container">
 	<div class="layui-row">
-		<div class="layui-col-md11 layui-col-md-offset1">
+		<%--<div class="layui-col-md11 layui-col-md-offset1">
 			<fieldset class="layui-elem-field layui-field-title"><legend>权限操作演示</legend></fieldset>
 			<div class="layui-form">
 				<div class="layui-form-item">
@@ -34,14 +34,15 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="layui-col-md6 layui-col-md-offset1">
-			<fieldset class="layui-elem-field layui-field-title"><legend>权限树</legend></fieldset>
+		</div>--%>
+		<%--<div class="layui-col-md6 layui-col-md-offset1">
+			<fieldset class="layui-elem-field layui-field-title"><legend>权限树</legend></fieldset>--%>
 			<!-- 此扩展能递归渲染一个权限树，点击深层次节点，父级节点中没有被选中的节点会被自动选中，单独点击父节点，子节点会全部 选中/去选中 -->
-		<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="roleBO">
-			<c:if test="${roleBO.role.id != null }">
+			<br/>
+			<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="roleBo">
+			<c:if test="${roleBo.role.id != null }">
 				<input type="hidden" name="_method" value="PUT"/>
-				<input type="hidden" name="id" value="${roleBO.role.getId() }">
+				<input type="hidden" name="role.id" value="${roleBo.role.id }">
 			</c:if>
 			<div class="layui-form-item layui-row layui-col-xs12">
 				<label class="layui-form-label">角色名称</label>
@@ -55,25 +56,32 @@
 					<form:input path="role.code" class="layui-input"  lay-verify="required" placeholder="请输入角色编号："/>
 				</div>
 			</div>
-			<div class="layui-form-item">
+			<%--<div class="layui-form-item">
 				<label class="layui-form-label">选择权限</label>
 				<div class="layui-input-block">
 					<div id="LAY-auth-tree-index"></div>
 				</div>
-			</div>
+			</div>--%>
 			<div class="layui-form-item">
 				<div class="layui-input-block">
-					<button class="layui-btn" type="submit" lay-submit lay-filter="LAY-auth-tree-submit">提交</button>
+					<c:if test="${roleBo.role.id == null }">
+						<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="addRole">立即添加</button>
+					</c:if>
+					<c:if test="${roleBo.role.id != null }">
+						<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="updateRole">确认修改</button>
+					</c:if>
 					<button class="layui-btn layui-btn-primary" type="reset">重置</button>
+					<button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
 				</div>
 			</div>
 		</form:form>
-
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/roleAU.js"></script>
 </body>
-<script type="text/javascript">
+<%--<script type="text/javascript">
     layui.config({
         base: '<%=request.getContextPath()%>/js/',
     }).extend({
@@ -142,8 +150,8 @@
             return false;
         });
     });
-</script>
-<script type="text/javascript">
+</script>--%>
+<%--<script type="text/javascript">
     // 获取最大深度样例
     function getMaxDept(dst){
         layui.use(['jquery', 'layer', 'authtree'], function(){
@@ -236,9 +244,9 @@
             });
         });
     }
-</script>
+</script>--%>
 <!-- 状态模板 -->
-<script type="text/html" id="LAY-auth-tree-nodes">
+<%--<script type="text/html" id="LAY-auth-tree-nodes">
 	<table class="layui-table">
 		<thead>
 		<th>方法名</th>
@@ -255,5 +263,5 @@
 		{{# });}}
 		</tbody>
 	</table>
-</script>
+</script>--%>
 </html>

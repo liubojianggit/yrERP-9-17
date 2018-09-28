@@ -20,8 +20,8 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="wCode" value="" placeholder="请输入订单编号：" />
-                    <input type="text" class="layui-input searchVal" id="wName" placeholder="请输入商品名称：" />
+                    <input type="text" class="layui-input searchVal" id="code" value="" placeholder="请输入订单编号：" />
+                    <input type="text" class="layui-input searchVal" id="customerBuy" placeholder="请输入购买客户：" />
                     <select name="city" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>
@@ -38,9 +38,9 @@
             <div class="layui-inline">
                 <a class="layui-btn layui-btn-normal addNews_btn">添加申请退货单</a>
             </div>
-            <div class="layui-inline">
+          <%--  <div class="layui-inline">
                 <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-            </div>
+            </div>--%>
         </form>
     </blockquote>
     <table id="userList" lay-filter="userList"></table>

@@ -7,6 +7,7 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SupplierDao {
     /**
@@ -51,6 +52,12 @@ public interface SupplierDao {
      * @return
      */
     List<SupplierBo> query(Page<SupplierBo> page);
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return
+     */
+    Map<String,Object> querySuppliers();
 
 
 }

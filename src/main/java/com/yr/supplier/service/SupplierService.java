@@ -4,6 +4,8 @@ import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.Supplier;
 
+import java.util.Map;
+
 /**
  *供应商模块
  */
@@ -66,5 +68,11 @@ public interface SupplierService {
      * @return
      */
     boolean isTell(String tell);
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return
+     */
+    Map<String,Object> querySuppliers();
 
 }

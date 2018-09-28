@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -144,5 +145,14 @@ public class SupplierServiceImpl implements SupplierService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return
+     */
+    @Override
+    public Map<String, Object> querySuppliers() {
+        return dao.querySuppliers();
     }
 }

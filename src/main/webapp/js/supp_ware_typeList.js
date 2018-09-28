@@ -19,17 +19,31 @@ layui.use(['form','layer','table','laytpl'],function(){
     var tableIns = table.render({
         elem: '#supplierList',
         url :path+ 'supplier/supplierTable/list',
-        request: {
-            pageName: 'currentPage' //页码的参数名称，默认：page
-            ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-        },
-
+        /* parseData: function(res){ //res 即为原始返回的数据
+             return {
+                 //"code": res.status, //解析接口状态
+                 //"msg": res.message, //解析提示文本
+                 "count": res.totalRecord, //解析数据长度
+                 "data": res.pageDataList //解析数据列表
+             };
+         },*/
+        /* request: {
+             pageName: 'currentPage' //页码的参数名称，默认：page
+             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+         },
+         response: {
+             // statusName: 'status' //规定数据状态的字段名称，默认：code
+             //,statusCode: 200 //规定成功的状态码，默认：0
+             //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+             countName: 'totalRecord' //规定数据总数的字段名称，默认：count
+             ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
+         },*/
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,25,50,100],
         limit : 10,
-        id : "supplierListTable",
+        id : "depotListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
@@ -39,7 +53,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'phoneNumber', title: '联系电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             {field: 'rank', title: '级别', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#supplierListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -51,7 +65,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "supplier.name": $("#name").val(),  //搜索的关键字
+                    "depot.name": $("#depotName").val(),  //搜索的关键字
                 }
             })
         }else{
@@ -66,7 +80,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             type : 2,
             content : path+"/supplier/supplierTable/add",//发送请求
             end: function(){
-                window.location.href= path+"/supplier/supplierTable";
+                window.location.href='<%=request.getContextPath() %>/supplier/supplierTable';
             }
         })
         layui.layer.full(index);
@@ -103,7 +117,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(supplierList)', function(obj){
+    table.on('tool(depotList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
@@ -131,9 +145,11 @@ layui.use(['form','layer','table','laytpl'],function(){
                     success: function(data){
                         if("1" == data.code){
                             layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"supplier/supplierTable";
+                            window.location.href = path+"/supplier/supplierTable";
+
                         }else{
-                            layer.msg("未知错误，请联系管理员",{icon:2});
+                            layer.msg("删除用户失败",{icon:2});
+                            window.location.href = path+"/supplier/supplierTable";
                         }
                     }
                 });
