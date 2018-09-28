@@ -47,7 +47,7 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
+        //if($(".searchVal").val() != ''){
             table.reload("supplierListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
@@ -56,7 +56,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     "name": $("#supplierName").val(),  //搜索的关键字
                 }
             })
-        }
+        //}
     });
 
     //添加用户

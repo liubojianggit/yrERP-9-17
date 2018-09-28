@@ -53,7 +53,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">级别</label>
         <div class="layui-input-inline">
-            <form:select path="supplier.rank" items="${rankList}"></form:select>
+            <form:select path="supplier.rank" id="rankId" items="${rankList}"></form:select>
         </div>
     </div>
 
@@ -74,8 +74,9 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/supplierAU.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 <script type="text/javascript">
-
-
+if(${supplierBo.supplier.id == null }){
+    $("#rankId").val("");
+}
 </script>
 </body>
 </html>
