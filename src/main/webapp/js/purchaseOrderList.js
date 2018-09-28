@@ -35,8 +35,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'name', title: '申请人姓名', align:"center",unresize: true},
-            {field: 'tel', title: '申请人电话', align:"center",unresize: true},
+            {field: 'name', title: '申请人姓名', minWidth:100, align:"center",unresize: true},
+            {field: 'tel', title: '申请人电话', minWidth:100, align:"center",unresize: true},
             {field: 'code', title: '订单编号', align:"center", unresize: true},
             {field: 'departmentCode', title: '采购部门', align:"center", unresize: true},
             {field: 'supplierCode', title: '供应商', align:"center", unresize: true},
@@ -61,7 +61,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'consignee', title: '收货人', align:"center", unresize: true},
             {field: 'depotCode', title: '收货仓库', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:300, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 
