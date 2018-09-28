@@ -46,7 +46,7 @@ public class LoginController {
 
     @RequestMapping(value = "/userTables", method = RequestMethod.GET)//跳转登录页面
     public String logins() {
-        return "redirect:/login";
+        return "index";
     }
 
     /*
@@ -158,7 +158,7 @@ public class LoginController {
             if(cookie2.equals("user")){
                 if(session.getAttribute("user")!=null){
                     try {
-                        request.getRequestDispatcher("直接进入主页面的url").forward(request, response);
+                        request.getRequestDispatcher("u_user/userTables").forward(request, response);
                     } catch (ServletException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
