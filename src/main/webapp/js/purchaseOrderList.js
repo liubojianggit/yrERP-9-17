@@ -22,8 +22,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "purchaseOrder.code": $("#rCode").val(),  //搜索的关键字
-            "purchaseName": $("#rName").val(),  //搜索的关键字
+            "purchaseCode": $("#purchaseCode").val(),
+            "purchaseWareCode": $("#purchaseWareCode").val(),
         },
         cellMinWidth : 95,
         page : true,
@@ -67,15 +67,13 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        table.reload("purchaseTable",{
+        table.reload("purchaseList",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },
             where: {
-                /*"user.name": $("#userName").val(),  //搜索的关键字
-                "user.depaCode": $("#depaCode").val(),  //搜索的关键字
-                "minAge": $("#minAge").val(),  //搜索的关键字
-                "maxAge": $("#maxAge").val() //搜索的关键字*/
+                "purchaseCode": $("#purchaseCode").val(),
+                "purchaseWareCode": $("#purchaseWareCode").val(),
             }
         })
     });
@@ -83,8 +81,6 @@ layui.use(['form','layer','table','laytpl'],function(){
     //添加用户
     function addUser(){
         //window.location.href = "user/add";
-
-
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,

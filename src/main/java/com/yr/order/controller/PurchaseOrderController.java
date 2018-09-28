@@ -24,6 +24,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "requisition")
+@SessionAttributes(value = {"username"}, types = {Integer.class})//这里指定一下 Session 才能获得指定的数据
 public class PurchaseOrderController {
     @Autowired
     private PurchaseOrderService purchaseOrderServiceImpl;
@@ -117,9 +118,9 @@ public class PurchaseOrderController {
         purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
         //获取session 当中当前登录用户，session属性名从login登录的传过来，
-        purchaseOrder.setCreateEmp((String) request.getSession().getAttribute(""));
+        purchaseOrder.setCreateEmp((String) request.getSession().getAttribute("username"));
         //这个初始的修改人，后期会改
-        purchaseOrder.setUpdateEmp((String) request.getSession().getAttribute(""));
+        purchaseOrder.setUpdateEmp((String) request.getSession().getAttribute("username"));
 
         //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
         double total = purchaseOrder.getUnitPrice()*purchaseOrder.getPurchaseNumber();
@@ -128,7 +129,14 @@ public class PurchaseOrderController {
         //随机数生成订单编号；
         String code = RandomUtil.generateUpperString(13);
         purchaseOrder.setCode(code);
+
+        //所有订单申请表单初始化都是-->>待审核状态2
+        // (0驳回，1交易成功，2待审核，3申请退货，4退货成功)
+        purchaseOrder.setStatus(2);
+        //修改人即使修改人；
+        purchaseOrder.setApprover((String) request.getSession().getAttribute("username"));
         purchaseOrderServiceImpl.add(purchaseOrder);
+
 
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
@@ -150,7 +158,7 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.PUT)
     public String update(@ModelAttribute("requisition") PurchaseOrder purchaseOrder,HttpServletRequest request) {
         //获取当前登录用户并把它设为修改人
-        purchaseOrder.setUpdateEmp((String)request.getSession().getAttribute(""));
+        purchaseOrder.setUpdateEmp((String)request.getSession().getAttribute("username"));
         //获取当前时间为数据修改时间；
         purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
