@@ -52,8 +52,8 @@ public class PurchaseExcelController {
                 objects[3] = pur.getJobNumber();
                 objects[4] = pur.getDepartmentCode();
                 objects[5] = pur.getApprover();
-                objects[6] = pur.getPurchasName();
-                objects[7] = pur.getPurchaseType();
+                /*objects[6] = pur.getPurchasName();
+                objects[7] = pur.getPurchaseType();*/
                 objects[8] = pur.getPurchaseNumber();
                 objects[9] = pur.getSupplierCode();
                 objects[10] = pur.getUnitPrice();

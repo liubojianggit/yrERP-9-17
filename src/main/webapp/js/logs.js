@@ -1,10 +1,19 @@
 layui.use(['table'],function(){
 	var table = layui.table;
 
+	/*lin  添加*/
+    //获得项目名字path，在js中可以直接用path调用
+	strFullPath = window.document.location.href,
+    strPath = window.document.location.pathname,
+        pos = strFullPath.indexOf(strPath),
+        prePath = strFullPath.substring(0,pos),
+        path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
+	;
+
 	//系统日志
     table.render({
         elem: '#logs',
-        url : '../../json/logs.json',
+        url : path+'/log/logTable/list',
         cellMinWidth : 95,
         page : true,
         height : "full-20",
@@ -13,7 +22,7 @@ layui.use(['table'],function(){
         id : "systemLog",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
-            {field: 'logId', title: '序号', width:60, align:"center"},
+            {field: 'id', title: '序号', width:60, align:"center"},
             {field: 'url', title: '请求地址', width:350},
             {field: 'method', title: '操作方式', align:'center',templet:function(d){
                 if(d.method.toUpperCase() == "GET"){
@@ -33,8 +42,8 @@ layui.use(['table'],function(){
                     return '<span class="layui-btn layui-btn-danger layui-btn-xs">'+d.isAbnormal+'</span>'
                 }
             }},
-            {field: 'operator',title: '操作人', minWidth:100, templet:'#newsListBar',align:"center"},
-            {field: 'operatingTime', title: '操作时间', align:'center', width:170}
+            {field: 'createEmp',title: '操作人', minWidth:100, templet:'#newsListBar',align:"center"},
+            {field: 'createTime', title: '操作时间', align:'center', width:170}
         ]]
     });
  	

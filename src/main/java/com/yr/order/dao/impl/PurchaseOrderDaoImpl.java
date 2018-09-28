@@ -1,6 +1,6 @@
 package com.yr.order.dao.impl;
 
-import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseOrderDao;
@@ -17,7 +17,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     private EntityManager entityManager;
 
     @Override
-    public List<PurchaseOrder> query(Page<purchaseOrderBO> page) {
+    public List<PurchaseOrderBo> query(Page<PurchaseOrderBo> page) {
         String jpql="select r from PurchaseOrder r where 1=1 ";
         if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
         {
@@ -39,7 +39,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
 
         //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
-        List<PurchaseOrder> list = query.getResultList();
+        List<PurchaseOrderBo> list = query.getResultList();
         return list;
     }
 
@@ -50,7 +50,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         return list;
     }
     @Override
-    public Long getCount(purchaseOrderBO purchaseOrderBO) {
+    public Long getCount(PurchaseOrderBo purchaseOrderBO) {
         String jpql= "select count(*) from PurchaseOrder r where 1=1 ";
         if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
         {

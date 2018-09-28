@@ -42,7 +42,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'wareCode', title: '商品编号', align:"center", unresize: true},
             {field: 'number', title: '销售商品数量', align:"center", unresize: true},
             {field: 'salePrice', title: '销售总价', align:"center", unresize: true},
-            {field: 'money', title: '销售金额', align:"center", unresize: true},
+           /* {field: 'money', title: '销售金额', align:"center", unresize: true},*/
             {field: 'sPhoneNumber', title: '销售员联系电话', align:"center", unresize: true},
             {field: 'requName', title: '申请退货人姓名', align:"center", unresize: true},
             {field: 'rPhoneNumber', title: '申请退货人联系电话', align:"center", unresize: true},
