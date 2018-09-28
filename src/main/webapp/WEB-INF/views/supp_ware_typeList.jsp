@@ -20,12 +20,12 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="supplierName" placeholder="供应商名称/编号：" />
+                    <input type="text" class="layui-input searchVal" id="type" placeholder="供应商品类型：" />
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">添加供应商</a>
+                <a class="layui-btn layui-btn-normal addNews_btn">添加供应商品类型</a>
             </div>
             <div class="layui-inline">
                 <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
@@ -42,6 +42,6 @@
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/supp_ware_tyoeList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/supp_ware_typeList.js"></script>
 </body>
 </html>
