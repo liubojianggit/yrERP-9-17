@@ -10,7 +10,7 @@ import com.yr.entitys.order.SaleOrder;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import com.yr.entitys.bo.orderBO.SaleBO;
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.SaleDao;
 @Repository
@@ -26,7 +26,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public Long getCount(Page<SaleBO> page) {
+    public Long getCount(Page<SaleOrderBO> page) {
         String jpql="select count(*) from SaleOrder s where 1=1";
         if(!StringUtils.isEmpty(page.getT().getSaleOrder().getCode())){//判断是否为空
             jpql +="and s.code like :code";//模糊查询编号
@@ -51,7 +51,7 @@ public class SaleDaoImpl implements SaleDao {
      * @return
      */
     @Override
-    public List<SaleBO> query(Page<SaleBO> page) {
+    public List<SaleOrderBO> query(Page<SaleOrderBO> page) {
         String jpql = "select s from SaleOrder s where 1=1";
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCode())){//判断是否为null
             jpql +="and s.code like :code";
@@ -73,7 +73,7 @@ public class SaleDaoImpl implements SaleDao {
             query.setParameter("customer_buy","%"+page.getT().getSaleOrder().getCustomerBuy()+"%");
         }
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
-        List<SaleBO> list = query.getResultList();
+        List<SaleOrderBO> list = query.getResultList();
         return list;
     }
 

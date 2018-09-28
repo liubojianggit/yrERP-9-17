@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.0.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 </head>
 <script type="text/javascript">
 	$(function(){
@@ -29,38 +30,68 @@
                 $("#submits").attr("disabled",false);
 			}
         });
+
+        $("#userFace").click(function(){//点击头像
+            $("#files").click();//触发文件上传事件
+        });
+
+        $("#fileUpload").change(function(){//实现图片上传参数配置
+            changes();//调用ajax
+        });
+
+        function changes(){//用ajax实现图片上传预览
+            $.ajaxFileUpload({
+                type: "POST",
+                url:"${pageContext.request.contextPath}/u_user/userTable/upload",
+                dataType: "json",
+                fileElementId:"files",  // 文件的id
+                success: function(d){
+                    $("#userFace").attr("src",d.url);
+                    $("#filesCopy").val(d.url);//将路径显示到隐藏框中上传到后台
+                    $("#file1").empty();
+                    $("#file1").append("<input type='file' id='files' name='files' accept='image/*'>");
+                    $("#files").change(function(){//必须重新绑定事件，否则原来绑定的事件会失效，因为是由ajaxFileUpload插件造成的，每次提交后都会被file新元素覆盖file旧元素，而绑定的change事件则就失效了，需要重新绑定
+                        changes();
+                    });
+                },
+                error: function () {
+                    alert("上传失败");
+                },
+            });
+        }
 	});
 </script>
 <body class="childrenBody">
 <form:form style="width:80%;" id="form2" method="POST" modelAttribute="user">
-<form:errors path="*"></form:errors>
 	<c:if test="${user.id != null }">
 		<input type="hidden" name="_method" value="PUT"/>
 		<input type="hidden" id="id" name="id" value="${user.getId() }">
 	</c:if>	
- <!-- 上传头像 -->               <!-- div居中 -->
-<div class="layui-upload" align="center">
-	<c:if test="${user.id != null }">
-		<div class="layui-upload-list">
-		<!-- 头像回显的样式，这里是圆形 -->
-	    <img src="<%=request.getContextPath() %>/userTable/icons/"+${user.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
-	    <p id="demoText"></p>
-	  	</div>
-	  	<input type="hidden" name="headUrl" id="headUrl2" value=""/>
-	  	<button type="button" class="layui-btn" id="test2">修改头像</button>
-	</c:if>
-	<c:if test="${user.id == null }">
-		<div class="layui-upload-list">
-		<!-- 头像回显的样式，这里是圆形 -->
-	    	<img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">
-	    	<p id="demoText"></p>
-	  	</div>
-	  		<button type="button" class="layui-btn" id="test1">上传头像</button>
-	  		<!-- 上传头像成功后保存的隐藏框 -->
-  			<input type="hidden" name="photo" id="headUrl" value="">
-  	</c:if>
-  
-</div> 
+ 	<!-- 上传头像 -->
+	<div class="layui-upload" align="center">
+		<c:if test="${user.id != null }">
+			<div class="layui-upload-list">
+				<!-- 头像回显的样式，这里是圆形 -->
+				<img src="${pageContext.request.contextPath}/u_user/userTable/icons/${user.id }" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="userFace">
+				<p id="demoText"></p>
+			</div>
+			<input type="hidden" id="filesCopy" name="filesCopy" value="${user.photo }"><!-- 隐藏框是存图片路径 -->
+			<button type="button" class="layui-btn" id="test2">修改头像</button>
+		</c:if>
+		<c:if test="${user.id == null }">
+			<div class="layui-upload-list">
+				<img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="userFace">
+				<p id="demoText"></p>
+			</div>
+			<input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images">
+			<!-- 上传头像成功后保存的隐藏框 -->
+			<button type="button" class="layui-btn" id="test1">上传头像</button>
+		</c:if>
+		<div id="fileUpload" style="display: none;">
+			<input type="file" id="files" name="files" accept="image/*">
+		</div>
+	</div>
+	<br/>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">姓名</label>
 		<div class="layui-input-block">
@@ -91,10 +122,10 @@
 			<form:select path="depaCode" items="${depaList }" cssStyle="width:80px;height: 40px;"></form:select>
 		</div>
 	</div>
-	<div class="layui-form-item layui-row layui-col-xs12">
+	<div class="layui-inline">
 		<label class="layui-form-label">生日</label>
-		<div class="layui-input-block">
-			<form:input path="birthday" class="layui-input" type="Date" lay-verify="required" placeholder="请输入生日"/>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" id="birthday" placeholder="请输入生日：yyyy-MM-dd">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -130,7 +161,16 @@
 		</div>
 	</div>
 </form:form>
+
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/userAU.js"></script>
+<script>
+	layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#birthday'
+        });
+    })
+</script>
 </body>
 </html>

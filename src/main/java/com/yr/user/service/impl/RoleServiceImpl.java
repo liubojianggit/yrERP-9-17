@@ -8,13 +8,17 @@ import com.yr.entitys.user.Role;
 import com.yr.user.dao.RoleDao;
 import com.yr.user.service.RoleService;
 import com.yr.user.service.UserService;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.SerializeUtil;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
+import java.util.Date;
 import java.util.List;
 
 @Service("roleServiceImpl")
@@ -28,14 +32,20 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     @Qualifier("userServiceImpl")
     private UserService userService;
+
     /**
      * 分页的形式查询role表的数据
      * @param page
      */
-    public void query(Page<RoleBo> page){
+    public String query(Page<RoleBo> page){
         page.setTotalRecord(roleDao.getCount(page));//查询总条数加入page中
         List<RoleBo> list = roleDao.query(page);//分页查询的数据
-        page.setPageData(list);//将集合放入page中
+        //将对象转为json
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     /**

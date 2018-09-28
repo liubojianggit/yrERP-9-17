@@ -75,7 +75,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.DELETE,produces="application/json;charset=UTF-8")
-    public String delete(@PathVariable("id") Integer id){
+    public String delete(@PathVariable("id") Integer[] id){
         departmentService.delete(id);//调用删除方法
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }

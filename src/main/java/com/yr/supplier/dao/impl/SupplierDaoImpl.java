@@ -11,7 +11,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 /**
  *供应商模块数据层实现增删改查
  */
@@ -114,5 +117,20 @@ public class SupplierDaoImpl implements SupplierDao {
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<SupplierBo> list = query.getResultList();
         return list;
+    }
+
+    /**
+     * 将供应商数据list集合封装到map集合中去
+     * @return map
+     */
+    @Override
+    public Map<String, Object> querySuppliers() {
+        String jpql = "select d from Supplier d where 1=1 ";
+        List<Supplier> supplierList = entityManager.createQuery(jpql).getResultList();
+        Map<String,Object> map = new HashMap<>();
+        for (Supplier sup: supplierList) {
+            map.put(sup.getCode(),sup.getName());//key是供应商的编号
+        }
+        return map;
     }
 }

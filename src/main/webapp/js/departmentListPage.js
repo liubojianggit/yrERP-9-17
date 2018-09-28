@@ -36,7 +36,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type:'numbers',title:'编号',width:50},
             {field: 'name', title: '部门名称', align:"center",unresize: true},
             {field: 'code', title: '部门编号', align:"center", unresize: true},
-            {field: 'center', title: 'supCode', align:"center", unresize: true},
+            {field: 'supCode', title: 'supCode', align:"center", unresize: true},
             {field: 'createTime', title: '创建时间', align:"center", unresize: true},
             {field: 'createEmp', title: '创建人', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#departmentListBar',fixed:"right",align:"center"}
@@ -79,7 +79,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //批量删除
     $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('departmentListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
@@ -119,7 +119,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(departmentList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
