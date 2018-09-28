@@ -116,14 +116,14 @@ public class WareTypeDaoImpl implements WareTypeDao {
         String supCode = wareType.getT().getSupCode();
         String code = wareType.getT().getCode();
         String name = wareType.getT().getName();
-        if (supCode != null && supCode.equals("")) {
-            jpql.append("and sup_code like '%" + supCode + "%'");
+        if (supCode != null && !supCode.equals("")) {
+            jpql.append("and w.sup_code like '%" + supCode + "%'");
         }
-        if (code != null && code.equals("")) {
-            jpql.append("and code like '%" + code + "%'");
+        if (code != null && !code.equals("")) {
+            jpql.append("and w.code like '%" + code + "%'");
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if (name != null && !name.equals("")) {
+            jpql.append("and w.name like '%" + name + "%'");
         }
         jpql.append("order by id desc");
         Query query = entityManager.createQuery(jpql.toString());

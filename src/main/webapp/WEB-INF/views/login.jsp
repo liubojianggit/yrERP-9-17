@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html class="loginHtml">
+<html class="loginHtml" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>登录--layui后台管理模板 2.0</title>
@@ -15,7 +15,7 @@
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 </head>
-<body class="loginBody">
+<body class="loginBody" style="background: url(<%=request.getContextPath()%>/images/002.jpg)">
 	<form id="form1" class="layui-form">
 		<div class="login_face"><img src="<%=request.getContextPath() %>/face.jpg" class="userAvatar"></div>
 		<div class="layui-form-item input-item">
@@ -30,6 +30,12 @@
 			<label for="code">验证码</label>
 			<input type="text" placeholder="请输入验证码" autocomplete="off" id="code" name="loginVerifyCode" class="layui-input">
 			<img src="<%=request.getContextPath() %>/u_user/userTable/getVerifyCode" id="vimg" title="点击更换" onclick="changeCode();">
+		</div>
+		<div class="layui-form-item" pane="">
+			<label>7天免登录</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="" lay-skin="switch" lay-text="开启|关闭">
+			</div>
 		</div>
 		<div class="layui-form-item">
 			<button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>

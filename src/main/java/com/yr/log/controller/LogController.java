@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class LogController {
     @RequestMapping(value = "/logTable")
     public  String jumpList()
     {
-        return  null;
+        return "logs";
     }
 
     /**
@@ -43,6 +44,7 @@ public class LogController {
      * @return
      */
     @RequestMapping(value = "/logTable/list",method = RequestMethod.GET)
+    @ResponseBody
     public String query(LogBo logBo, Page<LogBo> page)
     {
         page.setT(logBo);

@@ -30,10 +30,10 @@ public class SaleController {//销售订单Controller
     @Autowired
     private SaleService saleService;
     @Autowired
-    private WareService ws;
+    private WareService ws;//注入商品service的接口
 
     @Autowired
-    private DepotService service;
+    private DepotService service;//注入仓库service的接口
 
 
     /**
@@ -66,8 +66,7 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String query(SaleOrderBO saleOrderBO, Page<SaleOrderBO>page){
-
+    public String query(Map<String,Object>map,SaleOrderBO saleOrderBO, Page<SaleOrderBO>page){
         page.setT(saleOrderBO);//将bo类置入对象
         String json = saleService.query(page);//将list返回一个json字符串
         return json;
@@ -99,13 +98,11 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/add1",method = RequestMethod.GET)
-    public String requAdd(Map<String,Object>map){
-      /*  map.put("sale",new SaleOrder());//传入一个空的sale对象
-        Map<String,Object> map1=new HashMap<>();
-        map1.put("2","申请退货");
-        map.put("states",map1);
-        map.put("saleOrderBO", new SaleOrderBO());
-        map.put("deportList",service);//销售商品的仓库*/
+    public String requAdd(@PathVariable Integer id,Map<String,Object>map){
+        SaleOrderBO saleOrderBO = saleService.getById(id);
+        if (saleOrderBO.getSaleOrder().getStates()==2){
+            saleOrderBO.setOrderType("1");
+        }
         return "saleOrderAU";
     }
 
@@ -154,7 +151,7 @@ public class SaleController {//销售订单Controller
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     public String SaveOrUpdate(SaleOrder sale, HttpServletRequest request){
         sale.setUpdateTime(new Date());//获取修改当前时间
-        sale.setUpdateEmp(((SaleOrder)request.getSession().getAttribute("sale")).getApprover());//获取修改人（审核人）
+        //sale.setUpdateEmp(((SaleOrder)request.getSession().getAttribute("sale")).getApprover());//获取修改人（审核人）
         saleService.update(sale);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }

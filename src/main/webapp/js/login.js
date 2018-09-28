@@ -40,6 +40,7 @@ layui.use(['form','layer','jquery'],function(){
                     },1500)
                 }else {
                     layer.msg(data.msg, {icon: 2});
+                    changeCode();
 				}
 			}
 		});

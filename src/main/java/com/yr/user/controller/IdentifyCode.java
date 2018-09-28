@@ -9,9 +9,9 @@ import java.util.Random;
 
 public class IdentifyCode {
     // 图片的宽度。
-    private int width = 160;
+    private int width = 180;
     // 图片的高度。
-    private int height = 40;
+    private int height = 80;
     // 验证码字符个数
     private int codeCount = 6;
     // 验证码干扰线数

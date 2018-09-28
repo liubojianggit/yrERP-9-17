@@ -19,6 +19,9 @@
 	<table id="logs" lay-filter="logs"></table>
 
 	<script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath() %>/page/systemSetting/logs.js"></script>
+	<%--刘--%>
+	<%--<script type="text/javascript" src="<%=request.getContextPath() %>/page/systemSetting/logs.js"></script>--%>
+
+	<script type="text/javascript" src="<%=request.getContextPath() %>/js/logs.js"></script>
 </body>
 </html>
