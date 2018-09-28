@@ -18,38 +18,38 @@
 </head>
 <body class="childrenBody">
 
-<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareTypeBO">
+<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareType">
     <form:errors path="*"></form:errors>
-    <c:if test="${wareTypeBO.wareType.id != null }">
+    <c:if test="${wareType.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="id" value="${wareTypeBO.wareType.getId() }">
+        <input type="hidden" name="id" value="${wareType.getId() }">
     </c:if>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品类型名称</label>
         <div class="layui-input-block">
-            <form:input path="wareType.name" class="layui-input"  lay-verify="required" placeholder="请输入商品类型名："/>
+            <form:input path="name" class="layui-input"  lay-verify="required" placeholder="请输入商品类型名："/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品类型编号</label>
         <div class="layui-input-block">
-            <form:input path="wareType.code" class="layui-input"  lay-verify="required" placeholder="请输入商品类型编号："/>
+            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入商品类型编号："/>
         </div>
     </div>
 
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">上级类型</label>
         <div class="layui-input-inline">
-            <form:select path="wareType.pid" id="pidSelect" items="${supWareType }" itemLabel="name" itemValue="id"></form:select>
+            <form:select path="supCode" id="pidSelect" items="${supCode}" itemLabel="name" itemValue="id"></form:select>
         </div>
     </div>
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
-            <c:if test="${wareTypeBO.wareType.id == null }">
+            <c:if test="${wareType.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addMenu">立即添加</button>
             </c:if>
-            <c:if test="${wareTypeBO.wareType.id != null }">
+            <c:if test="${wareType.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateMenu">确认修改</button>
             </c:if>
             <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
