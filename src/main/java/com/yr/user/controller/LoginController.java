@@ -102,6 +102,7 @@ public class LoginController {
                 }
             }else {
                 str = "{\"code\":5,\"msg\":\"验证码错误\"}";// 验证码错误
+
             }
         } else {
             str = "{\"code\":6,\"msg\":\"请输入验证码\"}";// 验证码是空的
