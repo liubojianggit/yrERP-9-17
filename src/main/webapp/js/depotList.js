@@ -51,18 +51,16 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
-                page: {
-                    curr: 1 //重新从第 1 页开始
-                },
-                where: {
-                    "name": $("#depotName").val(),  //搜索的关键字
-                }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+        table.reload("depotListTable",{
+            page: {
+                curr: 1 //重新从第 1 页开始
+            },
+            where: {
+                "name": $("#name").val(),  //搜索的关键字
+                "code": $("#code").val(),  //搜索的关键字
+                "addr": $("#addr").val(),  //搜索的关键字
+            }
+        })
     });
 
     //添加用户
