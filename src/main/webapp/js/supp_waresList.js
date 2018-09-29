@@ -127,7 +127,6 @@ layui.use(['form','layer','table','laytpl'],function(){
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
-                tableIns.reload();
                 layer.close(index);
                 $.ajax({
                     type: 'post',
@@ -137,15 +136,10 @@ layui.use(['form','layer','table','laytpl'],function(){
                     success: function(data){
                         if("1" == data.code){
                             layer.msg(data.msg,{icon:1});
-                            setTimeout(function(){
-                                window.location.href = path+"supp_wares/supplierTable";
-                            },1200);
-
+                            tableIns.reload();
                         }else{
                             layer.msg(data.msg,{icon:2});
-                            setTimeout(function(){
-                                window.location.href = path+"/supp_wares/supplierTable";
-                            },1200);
+                            tableIns.reload();
                         }
                     }
                 });
