@@ -42,9 +42,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '商品名', align:"center",unresize: true},
             /*{field: 'supplierWare.supp_code', title: '供应商编号', align:"center",unresize: true},*/
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
-           /*{field: 'supplierWare.suppPhoto', title: '图片',  align:'center',templet:function(d){
+           {field: 'supplierWare.suppPhoto', title: '图片',  align:'center',templet:function(d){
                     return '<img style="width: 28px;height: 28px;"  src="'+path+"/supp_wares/supplierTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
-                }},*/
+                }},
 
             {field: 'code', title: '商品编号', align:"center", unresize: true},
             {field: 'type', title: '商品类型', align:"center", unresize: true},
