@@ -146,7 +146,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                             layer.msg("删除失败",{icon:2});
                             window.location.href = path+"/wares/waresTable";
                         }else if("1" == data.code){
-                            layer.msg("删除成功",{icon:2});
+                            layer.msg("删除成功",{icon:1});
                             window.location.href = path+"/wares/waresTable";
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});

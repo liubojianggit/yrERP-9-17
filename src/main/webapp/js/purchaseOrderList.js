@@ -139,7 +139,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 newsId.push(data[i].purchaseOrder.id);
             }
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
-                $.ajax({//删除用户
+                $.ajax({
                     type : "post",
                     url : path+"requisition/requisitionTable/"+newsId,
                     async : false,
@@ -184,7 +184,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'requisition/requisitionTable/'+data.id,//请求登录验证接口
+                    url: path+'requisition/requisitionTable/'+data.purchaseOrder.id,//请求登录验证接口
                     dataType : 'json',
                     data: {
                         _method:'delete'

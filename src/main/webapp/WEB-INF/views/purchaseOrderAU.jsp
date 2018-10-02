@@ -94,6 +94,14 @@
              <form:select path="purchaseOrder.depotCode" items="${depotList }" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
+    <c:if test="${purchaseOrderBO.purchaseOrder.id != null }">
+        <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
+            <label class="layui-form-label">收货仓库</label>
+            <div class="layui-input-inline">
+                <form:select path="purchaseOrder.status" items="${status }" cssStyle="width:80px;height: 40px;"></form:select>
+            </div>
+        </div>
+    </c:if>
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
             <c:if test="${purchaseOrderBO.purchaseOrder.id == null }">
@@ -102,7 +110,9 @@
             <c:if test="${purchaseOrderBO.purchaseOrder.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateOrder">确认修改</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+           <%-- <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>--%>
+            <button type="reset" id="resets" class="layui-btn layui-btn-primary">重置</button>
+            <button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
         </div>
     </div>
  </form:form>

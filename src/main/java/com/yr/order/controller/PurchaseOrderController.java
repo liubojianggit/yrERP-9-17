@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -178,7 +179,14 @@ public class PurchaseOrderController {
         Map<String,Object> depotList =  depotServices.queryDepots();
         //获取供应商对象集合
         Map<String,Object> supplierList = supplierServices.querySuppliers();
-
+        // (0驳回，1交易成功，2待审核，3申请退货，4退货成功)
+        Map<Integer,String> statusMap = new HashMap<>();
+        statusMap.put(0,"驳回");
+        statusMap.put(1,"交易成功");
+        statusMap.put(2,"待审核");
+        statusMap.put(3,"申请退货");
+        statusMap.put(4,"退货成功");
+        map.put("status",statusMap);
         map.put("departmentList",departmentList);
         map.put("userList",userServices.queryUser());
         map.put("depotList",depotList);
@@ -216,7 +224,7 @@ public class PurchaseOrderController {
      * @param id
      * @return
      */
-    /*@RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
+   /* @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         purchaseOrderServiceImpl.delete(id);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
