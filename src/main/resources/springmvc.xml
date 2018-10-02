@@ -44,6 +44,7 @@
 	<mvc:view-controller path="/menu1" view-name="menu1"/>
 	<mvc:view-controller path="/menuAdd" view-name="menuAU"/>
 	<mvc:view-controller path="/a" view-name="authTree"/>
+	<mvc:view-controller path="/b" view-name="roleChoice"/>
 
 	<!-- 配置 SessionLocalResolver -->
 	<bean id="localeResolver"

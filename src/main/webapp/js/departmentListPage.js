@@ -60,6 +60,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加部门",
             type : 2,
+            area: ['390px', '275px'],
             content : path+"department/departmentTable/add",//发送请求
             end: function(){
                 window.location.href=path+'department/departmentTable';

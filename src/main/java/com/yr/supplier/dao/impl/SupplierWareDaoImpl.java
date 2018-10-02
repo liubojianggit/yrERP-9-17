@@ -33,7 +33,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public void add(SupplierWareBo sw) {
-        entityManager.persist(sw);
+        entityManager.persist(sw.getSupplierWare());
     }
 
     /**
@@ -66,7 +66,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public List<SupplierWareBo> query(Page<SupplierWareBo> page) {
-        String jpql=("select s from SupplierWares s where 1=1 ");
+        String jpql="select s from SupplierWares s where 1=1 ";
         String name = page.getT().getName();
         String type = page.getT().getType();
         Double minAge=page.getT().getMinUnitPrice();
@@ -168,5 +168,13 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
         query.setParameter(1, code);
         SupplierWares supplierWare = (SupplierWares) query.getSingleResult();
         return supplierWare;
+    }
+
+    @Override
+    public List<SupplierWares> queryList() {
+        String jpql="select s from SupplierWares s";
+        Query query =entityManager.createQuery(jpql);
+        List<SupplierWares> list = query.getResultList();
+        return list;
     }
 }

@@ -66,7 +66,7 @@
             <c:if test="${depot.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateDepot">确认修改</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+            <button type="reset" id="cancel" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
         </div>
     </div>
 </form:form>

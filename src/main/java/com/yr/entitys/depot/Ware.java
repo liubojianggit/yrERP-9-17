@@ -19,7 +19,7 @@ public class Ware implements Serializable {
     private String type;//商品类型、不能为null
     @Column(nullable = false,unique = true)
     private String code;//商品编号，不能为null
-    @Column(name = "ware_photo",nullable = false)
+    @Column(name = "ware_photo")
     private String warePhoto;//商品头像，不能为null
     @Column(nullable = false)
     private String name;//名称，不能为null

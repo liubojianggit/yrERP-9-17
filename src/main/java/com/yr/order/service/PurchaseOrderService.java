@@ -57,5 +57,5 @@ public interface PurchaseOrderService {
      * 根据id批量删除
      * @param ids
      */
-    void deleteBatch(List<Integer> ids);
+    void deleteBatch(Integer[] ids);
 }

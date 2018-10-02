@@ -5,6 +5,7 @@ import com.yr.entitys.bo.depotBo.Depotbo;
 import com.yr.entitys.depot.Depot;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
+import com.yr.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,10 @@ public class DepotController {
     @Autowired
     private DepotService service;
 
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserService userService;
+
     /**
      * 调用这个类的所有方法前都要执行有@ModelAttribute的方法
       @param id
@@ -27,7 +32,7 @@ public class DepotController {
      * @throws SQLException
      */
     @ModelAttribute
-    public void query(@RequestParam(value ="id",required=false) Integer id,Map<String, Object> map) throws SQLException{// 绑定站位符
+    public void query(@RequestParam(value ="id",required=false) Integer id,Map<String, Object> map) throws SQLException{
         if (id != null && id != 0) {
             Depot depot=service.getById(id);
             map.put("depot", depot);
@@ -43,6 +48,7 @@ public class DepotController {
     public String query(Depotbo depotbo ,Page<Depotbo>page){
         page.setT(depotbo);//将bo类置入对象
         String json = service.query(page);//将list返回一个json字符串
+
         return json;
     }
 
