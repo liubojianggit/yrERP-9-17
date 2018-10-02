@@ -1,27 +1,33 @@
 package com.yr.depot.service.impl;
 
 import com.yr.depot.service.WareService;
+import com.yr.depot.service.WareTypeService;
 import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
+import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.StringUtils;
 import com.yr.depot.dao.WareDao;
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * 业务逻辑实现类
  */
 @Service
+@Transactional
 public class WareServiceImpl implements WareService {
-
-
     @Autowired
 private WareDao wd;
-
     /**
      * 根据id来查询商品数据
      * @param id
@@ -38,11 +44,14 @@ private WareDao wd;
      * @return 返回wareSearchBo
      */
     @Override
-    public Page<WareBo> query(Page<WareBo> ware) {
+    public String query(Page<WareBo> ware) {
         ware.setTotalRecord(wd.getCount(ware));
-        List<WareBo> wareList = wd.query(ware);
-        ware.setPageData(wareList);
-        return ware;
+        List<Ware> wareList = wd.query(ware);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(wareList,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+ware.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
     /**
      * 判断添加商品时是否为空
@@ -56,6 +65,7 @@ private WareDao wd;
         if (isParamNull(ware)) {
             return false;
         }else{
+
             wd.add(ware);
             return true;
         }
@@ -81,6 +91,12 @@ private WareDao wd;
         if (isUpdateParamNull(ware)) {
             return false;
         }else{
+            Date date = new Date();
+            //设置要获取到什么样的时间SimpleDateFormat sdf = newSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //获取String类型的时间String createdate = sdf.format(date);
+            String udpateDate = sdf.format(date);
+            ware.setUpdateTime(udpateDate);
             wd.update(ware)  ;
             return true;
         }
@@ -156,6 +172,14 @@ private WareDao wd;
     }
     @Override
     public List<Ware> getWare() {
-        return wd.getWare();
+        List<Ware> list = wd.getWare();
+        List<Ware> lists = new ArrayList<>();
+        for (Ware ware:list) {
+            lists.add(ware);
+        }
+        Ware wares = new Ware();
+        wares.setType("无");
+        lists.add(wares);
+        return lists;
     }
 }

@@ -23,7 +23,7 @@ public interface WareService {
      * @param ware
      * @return List<Ware>数组
      */
-    public Page<WareBo> query(Page<WareBo> ware);
+    public String query(Page<WareBo> ware);
 
     /**
      * 添加数据
