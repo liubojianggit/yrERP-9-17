@@ -233,4 +233,13 @@ public class UserDaoImpl implements UserDao {
         String jpql = "select u from User u where u.jobNum = ?1";
         return (User)entityManager.createQuery(jpql).setParameter(1,jobNum).getSingleResult();
     }
+
+    /**
+     * 查询user表所用的数据，并以list集合的形式返回
+     * @return
+     */
+    @Override
+    public List<User> queryUser() {
+        return entityManager.createQuery("select u from User u where 1 = 1 ").getResultList();
+    }
 }
