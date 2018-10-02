@@ -17,7 +17,7 @@ public interface PurchaseOrderDao {
      * @param page
      * @return
      */
-    List<PurchaseOrderBo> query(Page<PurchaseOrderBo> page);
+    List<PurchaseOrder> query(Page<PurchaseOrderBo> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
@@ -61,6 +61,5 @@ public interface PurchaseOrderDao {
      * 根据选中的id,批量删除
      * @param ids
      */
-    void deleteBatch(List<Integer> ids);
-    //void deleteBatch(int [] ids);
+    void deleteBatch(Integer[] ids);
 }

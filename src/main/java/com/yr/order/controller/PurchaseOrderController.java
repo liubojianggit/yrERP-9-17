@@ -6,10 +6,12 @@ import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.bo.orderBO.RandomUtil;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import com.yr.order.service.PurchaseOrderService;
 import com.yr.supplier.service.SupplierService;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.user.service.UserService;
+import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "requisition")
-@SessionAttributes(value = {"username"}, types = {Integer.class})//这里指定一下 Session 才能获得指定的数据
+@SessionAttributes(value = {"user"}, types = {Integer.class})//这里指定一下 Session 才能获得指定的数据
 public class PurchaseOrderController {
     @Autowired
     private PurchaseOrderService purchaseOrderServiceImpl;
@@ -118,9 +120,10 @@ public class PurchaseOrderController {
         purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
         //获取session 当中当前登录用户，session属性名从login登录的传过来，
-        purchaseOrder.setCreateEmp((String) request.getSession().getAttribute("username"));
+        User user = (User) request.getSession().getAttribute("user");
+        purchaseOrder.setCreateEmp(user.getName());
         //这个初始的修改人，后期会改
-        purchaseOrder.setUpdateEmp((String) request.getSession().getAttribute("username"));
+        purchaseOrder.setUpdateEmp(user.getName());
 
         //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
         double total = purchaseOrder.getUnitPrice()*purchaseOrder.getPurchaseNumber();
@@ -134,7 +137,7 @@ public class PurchaseOrderController {
         // (0驳回，1交易成功，2待审核，3申请退货，4退货成功)
         purchaseOrder.setStatus(2);
         //修改人即使修改人；
-        purchaseOrder.setApprover((String) request.getSession().getAttribute("username"));
+        purchaseOrder.setApprover(user.getName());
         purchaseOrderServiceImpl.add(purchaseOrder);
 
 
@@ -158,7 +161,8 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.PUT)
     public String update(@ModelAttribute("requisition") PurchaseOrder purchaseOrder,HttpServletRequest request) {
         //获取当前登录用户并把它设为修改人
-        purchaseOrder.setUpdateEmp((String)request.getSession().getAttribute("username"));
+        User user = (User) request.getSession().getAttribute("user");
+        purchaseOrder.setUpdateEmp(user.getName());
         //获取当前时间为数据修改时间；
         purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
@@ -176,9 +180,16 @@ public class PurchaseOrderController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
+    /*@RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer id) {
         purchaseOrderServiceImpl.delete(id);
+        return "{\"code\":1,\"msg\":\"删除成功\"}";
+    }*/
+
+    @RequestMapping(value="/requisitionTable/{id}",method=RequestMethod.DELETE)
+    @ResponseBody
+    public String delete(@PathVariable Integer[] id){
+        purchaseOrderServiceImpl.deleteBatch(id);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 }
