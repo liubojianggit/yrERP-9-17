@@ -66,12 +66,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                 window.location.href=path+'department/departmentTable';
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addDepartment();
@@ -126,10 +126,10 @@ layui.use(['form','layer','table','laytpl'],function(){
         if(layEvent === 'edit'){ //编辑
             layer.open({
                 type: 2,
-                title: '修改仓库',
+                title: '修改部门',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['800px' , '520px'],
+                area: ['390px', '275px'],
                 content: path+'/department/departmentTable/'+data.id,
                 end: function(){
                     window.location.href = path+"/department/departmentTable";
