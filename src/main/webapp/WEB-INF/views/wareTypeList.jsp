@@ -42,6 +42,6 @@
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/wareTypeList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/wareTypeList.js?"+new Date().getTime()></script>
 </body>
 </html>

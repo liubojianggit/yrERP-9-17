@@ -118,7 +118,9 @@
             <c:if test="${wareBo.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateUser">确认修改</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+            <c:if test="${wareBo.id == null }">
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+            </c:if>
         </div>
     </div>
 </form:form>
