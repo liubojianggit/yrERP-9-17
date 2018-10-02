@@ -79,12 +79,10 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    /*$("#updatePic").click(function(){
-        layer.open({
-      title: '修改图标'
-      ,content: '可以填写任意的layer代码'
-    });
-    });  */
+    $("#cancel").click(function () {
+        $(".layui-input").val("");
+    })
+
     //格式化时间
     function filterTime(val){
         if(val < 10){
