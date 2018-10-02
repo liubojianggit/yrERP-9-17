@@ -88,7 +88,9 @@ public class SupplierDaoImpl implements SupplierDao {
     }
     @Override
     public Supplier getByCode(String code){
-        Supplier supplier=entityManager.find(Supplier.class,code);
+        String jpql = "SELECT a FROM Supplier a WHERE  a.code = ?1";
+        Supplier supplier = (Supplier)entityManager.createQuery(jpql).setParameter(1,code).getSingleResult();
+
         return supplier;
     }
     @Override
