@@ -10,9 +10,11 @@ import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
@@ -29,8 +31,7 @@ public class SupplierWareController {
     private SupplierWareService sws;
     @Autowired
     private JedisManager jedisManager;
-    public static String path = "C:/Users/Administrator/Desktop";//图片路径
-
+    public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径//上传到的地方
     @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
         if (id != null&&id !=0) {
@@ -75,7 +76,6 @@ public class SupplierWareController {
         return "supp_waresAU";
     }
 
-
     /**
      * 供应商品添加方法，用于前台添加数据
      * @param supplierWareBo
@@ -83,9 +83,30 @@ public class SupplierWareController {
      */
     @ResponseBody
     @RequestMapping(value = "/supplierTable",method =RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String addWare(SupplierWareBo supplierWareBo){
+    public String addWare(SupplierWareBo supplierWareBo, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
+       /* String phone = String.valueOf(FileUtils.getTimeStamp());
+        File file = new File(path, phone + ".jpg");//第一个是父级文件路径，第二个是文件名
+        if(!file.getParentFile().exists()){//判断父级路径是否存在
+            file.mkdir();//创建文件夹
+        }
+        if(!file.exists()){//如果文件不存在满足条件
+            try {
+                file.createNewFile();//创建该文件
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        String phoneStr = path + File.separator + phone + ".jpg";//组成一个图片的路径字符串
+        //截取指定路径组成一个本地路径
+        if(!filesCopy.equals("E:\\ideaWork\\yrERP-9-17\\src\\main\\webapp\\images")){//这是默认显示的图片路径
+            filesCopy = request.getServletContext().getRealPath("/") + "photos" + filesCopy.substring(filesCopy.lastIndexOf("\\"),filesCopy.length());
+        }
+        FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
+        supplierWareBo.getSupplierWare().setSuppPhoto(phoneStr);//替换掉原本的路径*/
+
         supplierWareBo.getSupplierWare().setCreateTime(new Date());
         supplierWareBo.getSupplierWare().setCreateEmp("萍");
+        supplierWareBo.getSupplierWare().setSuppPhoto("C:\\Users\\Administrator\\Desktop\\aaa.jpg");
         sws.add(supplierWareBo);
         return "{\"code\":1,\"msg\":\"添加成功\"}";
     }
