@@ -172,7 +172,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
 
     @Override
     public List<SupplierWares> queryList() {
-        String jpql=("select s from SupplierWares s");
+        String jpql="select s from SupplierWares s";
         Query query =entityManager.createQuery(jpql);
         List<SupplierWares> list = query.getResultList();
         return list;
