@@ -86,4 +86,10 @@ public interface UserService {
      * @return User
      */
     User getByJobNum(String jobNum);
+
+    /**
+     * 查询user表所用的数据，并以list集合的形式返回
+     * @return
+     */
+    List<User> queryUser();
 }

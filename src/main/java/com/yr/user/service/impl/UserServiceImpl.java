@@ -149,4 +149,9 @@ public class UserServiceImpl implements UserService {
     public User getByJobNum(String jobNum){
         return  userDao.getByJobNum(jobNum);
     }
+
+    @Override
+    public List<User> queryUser() {
+        return userDao.queryUser();
+    }
 }
