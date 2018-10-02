@@ -20,8 +20,13 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
-                    <input type="text" class="layui-input searchVal" id="purchaseWareCode" placeholder="请输入商品名称：" />
+                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                        <input type="text" class="layui-input searchVal" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
+                    </div>
+                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                        <input type="text" class="layui-input searchVal" id="purchaseWareCode" placeholder="请输入商品名称：" />
+                    </div>
+                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
                     <select name="city" id="rStates" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>
@@ -30,6 +35,7 @@
                         <option value="3">申请退货</option>
                         <option value="4">退货成功</option>
                     </select>
+                    </div>
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
@@ -41,10 +47,9 @@
             </div>
         </form>
     </blockquote>
-    <!-- <table id="userList" lay-filter="userList"></table> -->
     <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
-    <script type="text/html" id="userListBar">
+    <script type="text/html" id="purchaseBar">
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>

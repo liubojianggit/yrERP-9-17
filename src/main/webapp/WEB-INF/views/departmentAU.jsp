@@ -48,11 +48,12 @@
         <div class="layui-input-block">
             <c:if test="${departmentbo.department.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addDepartment">立即添加</button>
+                <button type="button" id="cancel" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${departmentbo.department.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateDepartment">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
         </div>
     </div>
 </form:form>
@@ -60,6 +61,11 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/departmentAU.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
+        if (${departmentbo.department.id == null }){
+            $("#pidSelect").val("");
+        }
+    })
 </script>
 </body>
 </html>

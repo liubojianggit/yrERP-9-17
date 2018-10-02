@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +80,7 @@ public class LoginController {
 
     @RequestMapping(value = "/userTable/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request,HttpServletResponse response) {
+    public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException {
         String str = "";
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");// 获取正确的验证码
 
@@ -93,12 +96,16 @@ public class LoginController {
                             // 登录验证通过，把对象存进session
                             request.getSession().setAttribute("user", user);// 获取session对象并赋值
                             str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
-                            Cookie cookie=new Cookie("name",user.getName());
-                            Cookie cookie1=new Cookie("password",user.getPassword());
-                            cookie.setMaxAge(60);
-                            cookie1.setMaxAge(60);
+                            Cookie cookie = new Cookie("name", URLEncoder.encode( user.getName(),"UTF-8"));//转码
+                            Cookie cookie1 = new Cookie("password",URLEncoder.encode(user.getPassword(),"UTF-8"));
+                            cookie.setMaxAge(60*60);
+                            cookie1.setMaxAge(60*60);
+                            cookie.setPath("/");
+                            cookie1.setPath("/");
                             response.addCookie(cookie);
                             response.addCookie(cookie1);
+                            URLDecoder.decode(user.getName(),"UTF-8");//取码
+                            URLDecoder.decode(user.getPassword(),"UTF-8");
                         } else if (user.getStates() == 0) {
                             str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
                         }

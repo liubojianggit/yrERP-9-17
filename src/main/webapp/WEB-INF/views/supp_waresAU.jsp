@@ -22,14 +22,14 @@
     <form:errors path="*"></form:errors>
     <c:if test="${supplierWareBo.supplierWare.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="id" value="${wareBO.ware.getId() }">
+        <input type="hidden" name="id" value="${supplierWareBo.supplierWare.getId() }">
     </c:if>
     <!-- 上传头像 -->               <!-- div居中 -->
     <div class="layui-upload" align="center">
         <c:if test="${supplierWareBo.supplierWare.id != null }">
             <div class="layui-upload-list">
                 <!-- 头像回显的样式，这里是圆形 -->
-                <img src="<%=request.getContextPath() %>supplierTable/icons/"+${supplierWareBo.supplierWare.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
+                <img src="<%=request.getContextPath() %>/supp_wares/supplierTable/icons/${supplierWareBo.supplierWare.id}" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
                 <p id="demoText"></p>
             </div>
             <input type="hidden" name="supplierWare.suppPhoto" id="headUrl2" value=""/>
@@ -61,10 +61,16 @@
             <form:input path="supplierWare.code" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/>
         </div>
     </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">供应商编号</label>
+        <div class="layui-input-block">
+            <form:input path="supplierWare.suppCode" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/>
+        </div>
+    </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWare.type" items="${typeList}" itemLabel="name" itemValue="id"></form:select>
+            <form:select path="supplierWare.type" items="${typeList}" itemLabel="name" itemValue="name"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
