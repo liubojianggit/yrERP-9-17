@@ -3,24 +3,33 @@ package com.yr.order.service.impl;
 import com.yr.department.service.DepartmentService;
 import com.yr.depot.service.DepotService;
 import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
+import com.yr.entitys.department.Department;
+import com.yr.entitys.depot.Depot;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.supplier.Supplier;
+import com.yr.entitys.supplier.SupplierWares;
+import com.yr.entitys.user.User;
 import com.yr.order.dao.PurchaseOrderDao;
 import com.yr.order.service.PurchaseOrderService;
 import com.yr.supplier.service.SupplierService;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.user.service.UserService;
 import com.yr.util.JsonDateValueProcessor;
+import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Autowired
@@ -45,42 +54,50 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     @Qualifier("supplierServiceImpl")
     private SupplierService supplierServices;//供应商
-    private Page<PurchaseOrderBo> page;
 
 
-        @Override
-        public String query(Page<PurchaseOrderBo> page) {
-        this.page = page;
+    @Override
+    public String query(Page<PurchaseOrderBo> page) {
+        Long count = purchaseOrderDaoImpl.getCount(page.getT());
+
         //设置总条数
-        page.setTotalRecord(purchaseOrderDaoImpl.getCount(page.getT()));
+        page.setTotalRecord(count);
+
+        //定义一个空的list<PurchaseOrderBo>集合,用来存放转换好的数据
+        List<PurchaseOrderBo> boList = new ArrayList<>();
+
         //页数据
-        List<PurchaseOrderBo> list = purchaseOrderDaoImpl.query(page);
-        /*for ( PurchaseOrderBo purchaseOrderBo : list) {
+        List<PurchaseOrder> list = purchaseOrderDaoImpl.query(page);
+        for ( PurchaseOrder purchaseOrder : list) {
+            PurchaseOrderBo purchaseOrderBo = new PurchaseOrderBo();
+            purchaseOrderBo.setPurchaseOrder(purchaseOrder);
 
             //根据供应商编号获取供应商对象
-            Supplier supplier = supplierServices.getByCode(purchaseOrderBo.getPurchaseOrder().getSupplierCode());
+            Supplier supplier = supplierServices.getByCode(purchaseOrder.getSupplierCode());
             purchaseOrderBo.setSupplier(supplier);
 
             //根据申请人工号获取user对象
-            String jobNum = purchaseOrderBo.getPurchaseOrder().getJobNumber();
+            String jobNum = purchaseOrder.getJobNumber();
             User user = userServices.getByJobNum(jobNum);
             purchaseOrderBo.setUser(user);
 
             //根据部门编号获取部门对象
-            Department department = departmentServices.getByCode(purchaseOrderBo.getPurchaseOrder().getDepartmentCode());
+            Department department = departmentServices.getByCode(purchaseOrder.getDepartmentCode());
             purchaseOrderBo.setDepartment(department);
 
             //根据供应商品code 获取供应商品对象；
-            SupplierWares supplierWares = supplierWareServices.getSuppLierWareByCode(purchaseOrderBo.getPurchaseOrder().getPurchaseWareCode());
+            SupplierWares supplierWares = supplierWareServices.getSuppLierWareByCode(purchaseOrder.getPurchaseWareCode());
             purchaseOrderBo.setSupplierWares(supplierWares);
+
             //根据仓库code 获取仓库对象
-            Depot depot = depotServices.getcode(purchaseOrderBo.getPurchaseOrder().getDepotCode());
+            Depot depot = depotServices.getcode(purchaseOrder.getDepotCode());
             purchaseOrderBo.setDepot(depot);
-        }*/
-        JsonConfig jsonConfig = new JsonConfig();
-        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+
+            boList.add(purchaseOrderBo);
+        }
+
+        String jsonList = JsonUtils.beanListToJson(boList);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+count+",\"data\":"+jsonList+"}";
         return json;
     }
 
@@ -96,7 +113,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         return purchaseOrderDaoImpl.getRequisitionById(id);
     }
 
-   /* @Override
+    /* @Override
     public Integer getCount(RequisitionDao requisitionDao) {
         return requisitionDaoImpl.getCount();
     }*/
@@ -117,7 +134,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public void deleteBatch(List<Integer> ids) {
+    public void deleteBatch(Integer[] ids) {
         purchaseOrderDaoImpl.deleteBatch(ids);
     }
 }

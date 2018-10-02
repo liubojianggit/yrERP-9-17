@@ -62,32 +62,28 @@ layui.use(['form','layer','upload','table'],function(){
     });
 
     form.on("submit(addUser)",function(data){
-        //弹出loading
-        var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
-            url: path+'u_user/userTable',
+            url: path+'wares/waresTable',
             dataType : 'json',
             data: $('#form2').serialize(),
+            error: function() {
+                layer.msg("操作失败",{icon:2});
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            },
             success: function(data){
                 if(data.code==1){
-                    setTimeout(function(){
-                        top.layer.close(index);
-                        top.layer.msg(data.msg);
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    },2000);
+                    layer.msg(data.msg,{icon:1});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }else if(data.code==0){
+                    layer.msg(data.msg,{icon:2});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
                 }else if(data.code==2){
-                    setTimeout(function(){
-                        top.layer.close(index);
-                        top.layer.msg(data.msg);
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    },2000);
-                }else {
+                    layer.msg(data.msg,{icon:2});
+                }else{
                     layer.msg("操作失败",{icon:2});
                 }
             }
@@ -97,24 +93,26 @@ layui.use(['form','layer','upload','table'],function(){
 
         return false;
     })
-
-
     form.on("submit(updateUser)",function(data){
-        //弹出loading
-        /*var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});*/
 
         $.ajax({
             type: 'post',
-            url: path+'u_user/userTable',
+            url: path+'wares/waresTable',
             dataType : 'json',
             data: $('#form2').serialize(),
             success: function(data){
                 if(data.code==1){
-                    top.layer.msg(data.msg);
-                    window.location.href = path+"userList";
-
-                }else {
-                    layer.msg("修改操作失败",{icon:2});
+                    layer.msg(data.msg,{icon:1});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }else if(data.code==0){
+                    layer.msg(data.msg,{icon:2});
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                }else if(data.code==2){
+                    layer.msg(data.msg,{icon:2});
+                }else{
+                    layer.msg("操作失败",{icon:2});
                 }
             }
         });

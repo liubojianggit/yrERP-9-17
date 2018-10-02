@@ -2,6 +2,7 @@ package com.yr.entitys.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yr.common.entity.BaseEntity;
+import com.yr.entitys.supplier.SupplierWares;
 import com.yr.entitys.user.User;
 
 import javax.persistence.*;
@@ -58,6 +59,15 @@ public class PurchaseOrder extends BaseEntity implements Serializable{
     @Column(name = "depot_code")
     private String  depotCode;
 
+   /* private SupplierWares supplierWares;
+
+    public SupplierWares getSupplierWares() {
+        return supplierWares;
+    }
+
+    public void setSupplierWares(SupplierWares supplierWares) {
+        this.supplierWares = supplierWares;
+    }*/
 
     public String getPurchaseWareCode() {
         return purchaseWareCode;
@@ -190,6 +200,7 @@ public class PurchaseOrder extends BaseEntity implements Serializable{
                 ", jobNumber='" + jobNumber + '\'' +
                 ", departmentCode='" + departmentCode + '\'' +
                 ", approver='" + approver + '\'' +
+                ", purchaseWareCode='" + purchaseWareCode + '\'' +
                 ", purchaseNumber=" + purchaseNumber +
                 ", supplierCode='" + supplierCode + '\'' +
                 ", unitPrice=" + unitPrice +
