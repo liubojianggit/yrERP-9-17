@@ -6,7 +6,6 @@ import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
 import com.yr.entitys.supplier.SupplierWares;
-import com.yr.entitys.user.User;
 import com.yr.supplier.service.SuppWareTypeService;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.util.FileUtils;
@@ -133,7 +132,7 @@ public class SupplierWareController {
     public String updateWare(SupplierWareBo supplierWareBo, Map<String,Object>map){
         supplierWareBo.getSupplierWare().setUpdateTime(new Date());
         supplierWareBo.getSupplierWare().setUpdateEmp("萍");
-       // supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
+        //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
         sws.update(supplierWareBo);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
