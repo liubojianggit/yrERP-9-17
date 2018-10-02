@@ -44,7 +44,7 @@ public class WareDaoImpl implements WareDao {
      * @return List ware 商品
      */
     @Override
-    public List<WareBo> query(Page<WareBo> ware) {
+    public List<Ware> query(Page<WareBo> ware) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("select w from Ware w where 1=1");
         String addr = ware.getT().getAddr();
@@ -53,50 +53,51 @@ public class WareDaoImpl implements WareDao {
         String type = ware.getT().getType();
         Double minprice = ware.getT().getMinOutUnitPrice();
         Double maxprice = ware.getT().getMaxOutUnitPrice();
-        if (addr != null && addr.equals("")) {
-            jpql.append("and addr like '%" + addr + "%'");
+        if (addr != null && !addr.equals("")) {
+            jpql.append("and w.addr like '%" + addr + "%'");
         }
-        if (code != null && code.equals("")) {
-            jpql.append("and code like '%" + code + "%'");
+        if (code != null && !code.equals("")) {
+            jpql.append("and w.code like '%" + code + "%'");
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if (name != null && !name.equals("")) {
+            jpql.append("and w.name like '%" + name + "%'");
         }
-        if (type != null && type.equals("")) {
-            jpql.append("and type like '%" + type + "%'");
+        if (type != null && !type.equals("")) {
+            jpql.append("and w.type like '%" + type + "%'");
         }
-        if (minprice != null && minprice.equals("")) {
-            jpql.append("and '" + minprice + "' >= In_unit_price");
+        if (minprice != null && !minprice.equals("")) {
+            jpql.append("and '" + minprice + "' >= w.In_unit_price");
         }
-        if (maxprice != null && maxprice.equals("")) {
-            jpql.append("and In_unit_price >='" + maxprice + "'");
+        if (maxprice != null && !maxprice.equals("")) {
+            jpql.append("and w.In_unit_price >='" + maxprice + "'");
         }
         jpql.append("order by id desc");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setFirstResult(ware.getCurrentPage());
+        query.setFirstResult(ware.getStart());
         query.setMaxResults(ware.getPageSize());
-        List<WareBo> wares = query.getResultList();
+        List<Ware> wares = query.getResultList();
         return wares;
     }
 
     @Override
     public boolean add(Ware ware) {
         StringBuffer jpql = new StringBuffer();
-        jpql.append("insert into wares(type,code,ware_photo,name,addr,brand,out_unit_price,bar_code," +
-                "total_inventory,createTime,createEmp,remark)");
-        Query query = entityManager.createQuery(jpql.toString());
+        jpql.append("insert into wares(type,code,name,addr,brand,out_unit_price,bar_code," +
+                "total_inventory,createTime,createEmp,remark,In_unit_price) values(?,?,?,?,?,?,?,?,?,?,?,?)");
+        Query query = entityManager.createNativeQuery(jpql.toString());
         query.setParameter(1,ware.getType());
         query.setParameter(2,ware.getCode());
-        query.setParameter(3,ware.getWarePhoto());
-        query.setParameter(4,ware.getName());
-        query.setParameter(5,ware.getAddr());
-        query.setParameter(6,ware.getBrand());
-        query.setParameter(7,ware.getOutUnitPrice());
-        query.setParameter(8,ware.getBarCode());
-        query.setParameter(9,ware.getTotalInventory());
-        query.setParameter(10,new Date());
-        query.setParameter(11,ware.getCreateEmp());
-        query.setParameter(12,ware.getRemark());
+        //query.setParameter(3,ware.getWarePhoto());
+        query.setParameter(3,ware.getName());
+        query.setParameter(4,ware.getAddr());
+        query.setParameter(5,ware.getBrand());
+        query.setParameter(6,ware.getOutUnitPrice());
+        query.setParameter(7,ware.getBarCode());
+        query.setParameter(8,ware.getTotalInventory());
+        query.setParameter(9,new Date());
+        query.setParameter(10,ware.getCreateEmp());
+        query.setParameter(11,ware.getRemark());
+        query.setParameter(12,ware.getInUnitPrice());
         try {
             query.executeUpdate();
             return true;
@@ -107,10 +108,10 @@ public class WareDaoImpl implements WareDao {
     }
     @Override
     public boolean delete(Integer id) {
-       StringBuffer jpql = new StringBuffer();
-       jpql.append("delete from Ware where id = ?");
-       Query query = entityManager.createQuery(jpql.toString());
-       query.setParameter(1,id);
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("delete from Ware where id = ?");
+        Query query = entityManager.createQuery(jpql.toString());
+        query.setParameter(1,id);
         try {
             query.executeUpdate();
             return true;
@@ -122,7 +123,7 @@ public class WareDaoImpl implements WareDao {
 
     @Override
     public boolean update(Ware ware) {
-        StringBuffer jpql = new StringBuffer();
+   /*     StringBuffer jpql = new StringBuffer();
         jpql.append("update Ware set type = ?,code=?,ware_photo=?,name=?,addr=?,brand=?," +
                 "out_unit_price=?,bar_code=?,total_inventory=?,updateTime=?,updateEmp=?," +
                 "remark=? where id = ?");
@@ -139,9 +140,9 @@ public class WareDaoImpl implements WareDao {
         query.setParameter(10,new Date());
         query.setParameter(11,ware.getUpdateEmp());
         query.setParameter(12,ware.getRemark());
-        query.setParameter(13,ware.getId());
+        query.setParameter(13,ware.getId());*/
         try {
-            query.executeUpdate();
+            entityManager.merge(ware) ;
             return  true;
         } catch (Exception e) {
             return false;
@@ -158,22 +159,22 @@ public class WareDaoImpl implements WareDao {
         String type = ware.getT().getType();
         Double minprice = ware.getT().getMinOutUnitPrice();
         Double maxprice = ware.getT().getMaxOutUnitPrice();
-        if (addr != null && addr.equals("")) {
+        if (addr != null && !addr.equals("")) {
             jpql.append("and addr like '%" + addr + "%'");
         }
-        if (code != null && code.equals("")) {
+        if (code != null && !code.equals("")) {
             jpql.append("and code like '%" + code + "%'");
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if (name != null && !name.equals("")) {
+            jpql.append("and name like '%" + name + "%'");
         }
-        if (type != null && type.equals("")) {
+        if (type != null && !type.equals("")) {
             jpql.append("and type like '%" + type + "%'");
         }
-        if (minprice != null && minprice.equals("")) {
+        if (minprice != null && !minprice.equals("")) {
             jpql.append("and '" + minprice + "' >= In_unit_price");
         }
-        if (maxprice != null && maxprice.equals("")) {
+        if (maxprice != null && !maxprice.equals("")) {
             jpql.append("and In_unit_price >='" + maxprice + "'");
         }
         Query query = entityManager.createQuery(jpql.toString());
