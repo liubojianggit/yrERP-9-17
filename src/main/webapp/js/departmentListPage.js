@@ -123,8 +123,17 @@ layui.use(['form','layer','table','laytpl'],function(){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"department/departmentTable/"+data.id;
+            layer.open({
+                type: 2,
+                title: '修改仓库',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['800px' , '520px'],
+                content: path+'/department/departmentTable/'+data.id,
+                end: function(){
+                    window.location.href = path+"/department/departmentTable";
+                }
+            });
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){

@@ -50,7 +50,6 @@ layui.use(['form','layer','upload','table'],function(){
     form.on("submit(updateDepartment)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
             url: path+'department/departmentTable',
@@ -77,12 +76,6 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    /*$("#updatePic").click(function(){
-        layer.open({
-      title: '修改图标'
-      ,content: '可以填写任意的layer代码'
-    });
-    });  */
     //格式化时间
     function filterTime(val){
         if(val < 10){
