@@ -25,7 +25,7 @@ public class WareTypeController {
             map.put("wareType", wts.getWareType(id));
         }
     }
-    /**
+    /**ware_type/ware_typeTable
      * 用于跳转数据查询页面
      * @return
      */

@@ -108,10 +108,10 @@ public class WareDaoImpl implements WareDao {
     }
     @Override
     public boolean delete(Integer id) {
-       StringBuffer jpql = new StringBuffer();
-       jpql.append("delete from Ware where id = ?");
-       Query query = entityManager.createQuery(jpql.toString());
-       query.setParameter(1,id);
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("delete from Ware where id = ?");
+        Query query = entityManager.createQuery(jpql.toString());
+        query.setParameter(1,id);
         try {
             query.executeUpdate();
             return true;

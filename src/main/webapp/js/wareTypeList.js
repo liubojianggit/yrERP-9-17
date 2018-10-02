@@ -19,14 +19,6 @@ layui.use(['form','layer','table','laytpl'],function(){
     var tableIns = table.render({
         elem: '#supplierList',
         url :path+ 'ware_type/ware_typeTable/list',
-        /* parseData: function(res){ //res 即为原始返回的数据
-             return {
-                 //"code": res.status, //解析接口状态
-                 //"msg": res.message, //解析提示文本
-                 "count": res.totalRecord, //解析数据长度
-                 "data": res.pageDataList //解析数据列表
-             };
-         },*/
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -34,13 +26,6 @@ layui.use(['form','layer','table','laytpl'],function(){
         where:{//需要传入的值
             "name": $("#type").val() //搜索的关键字
         },
-        /* response: {
-             // statusName: 'status' //规定数据状态的字段名称，默认：code
-             //,statusCode: 200 //规定成功的状态码，默认：0
-             //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-             countName: 'totalRecord' //规定数据总数的字段名称，默认：count
-             ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
-         },*/
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -125,7 +110,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         if(layEvent === 'edit'){ //编辑
             layer.open({
                 type: 2,
-                title: '修改菜单',
+                title: '修改商品',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['800px' , '520px'],
@@ -155,15 +140,6 @@ layui.use(['form','layer','table','laytpl'],function(){
                         }
                     }
                 });
-
-
-
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                //    tableIns.reload();
-                //   layer.close(index);
-                // })
                 return false;
             });
         }

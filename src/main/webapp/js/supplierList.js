@@ -131,7 +131,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     success: function(data){
                         if("1" == data.code){
                             layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"++supplier/supplierTable";
+                            window.location.href = path+"supplier/supplierTable";
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }

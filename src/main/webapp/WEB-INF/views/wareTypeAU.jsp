@@ -52,7 +52,12 @@
             <c:if test="${wareType.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateMenu">确认修改</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+            <c:if test="${wareType.id == null }">
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+            </c:if>
+          <%--  <c:if test="${wareType.id != null }">
+                <a class="layui-btn layui-btn-sm layui-btn-primary" src="<%=request.getContextPath() %>/ware_type/ware_typeTable;">取消3</a>
+            </c:if>--%>
         </div>
     </div>
 </form:form>
@@ -65,7 +70,6 @@
             $("#pidSelect").val(0);
         }
     })
-
 </script>
 </body>
 </html>

@@ -50,7 +50,6 @@ layui.use(['form','layer','upload','table'],function(){
     form.on("submit(updateDepartment)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
             url: path+'department/departmentTable',
@@ -75,11 +74,6 @@ layui.use(['form','layer','upload','table'],function(){
         });
 
         return false;
-    })
-
-    $("#cancel").click(function () {
-        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-        parent.layer.close(index); //再执行关闭
     })
 
     //格式化时间
