@@ -33,7 +33,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public void add(SupplierWareBo sw) {
-        entityManager.persist(sw);
+        entityManager.persist(sw.getSupplierWare());
     }
 
     /**
@@ -43,9 +43,10 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public void delete(Integer id) {
-        String jpq= "delete from SupplierWares s where s.id = ?1";
-        Query query = entityManager.createQuery(jpq).setParameter(1, id);
-        query.executeUpdate();
+
+       SupplierWares supplierWares=entityManager.find(SupplierWares.class,id);
+       entityManager.remove(supplierWares);
+
     }
 
     /**
@@ -66,27 +67,34 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
     @Override
     public List<SupplierWareBo> query(Page<SupplierWareBo> page) {
         String jpql=("select s from SupplierWares s where 1=1 ");
-        String brand = page.getT().getBrand();
         String name = page.getT().getName();
         String type = page.getT().getType();
-        if (brand != null && brand.equals("")) {
-            jpql+="and s.brand like '%" + brand + "%'";
+        Double minAge=page.getT().getMinUnitPrice();
+        Double maxAge = page.getT().getMaxUnitPrice();
+        if (name != null && !name.equals("")) {
+            jpql+="and s.name like :name";
         }
-        if (type != null && type.equals("")) {
-            jpql+="and s.type like '%" + type + "%'";
+        if (type != null && !type.equals("")) {
+            jpql+="and s.type like :type";
         }
-        if (name != null && name.equals("")) {
-            jpql+="and s.name like '&" + name + "&'";
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            jpql +=" and s.unitPrice >= :minAge ";
         }
+        if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            jpql +=" and s.unitPrice <= :maxAge " ;
+        }
+
         Query query =entityManager.createQuery(jpql);
-        if (brand != null && brand.equals("")) {
-            query.setParameter("brand","%"+brand.trim()+"%");
+        if (name != null && !name.equals("")) {
+            query.setParameter("name","%"+name.trim()+"%");
         }
-        if (type != null && type.equals("")) {
+        if (type != null && !type.equals("")) {
             query.setParameter("type","%"+type.trim()+"%");
         }
-        if (name != null && name.equals("")) {
-            query.setParameter("name","%"+name.trim()+"%");
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            query.setParameter("minAge",minAge);
+        }if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            query.setParameter("maxAge",maxAge);
         }
         System.out.println(jpql);
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
@@ -113,28 +121,36 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
     @Override
     public Long getCount(Page<SupplierWareBo> page) {
         String jpql="select count(*) from SupplierWares s  where 1=1";
-        String brand = page.getT().getBrand();
         String name = page.getT().getName();
         String type = page.getT().getType();
-        if (brand != null && brand.equals("")) {
-            jpql+="and s.brand like '%" + brand + "%'";
+        Double minAge=page.getT().getMinUnitPrice();
+        Double maxAge = page.getT().getMaxUnitPrice();
+        if (name != null && !name.equals("")) {
+            jpql+="and s.name like :name ";
         }
-        if (type != null && type.equals("")) {
-            jpql+="and s.type like '%" + type + "%'";
+        if (type != null && !type.equals("")) {
+            jpql+="and s.type like :type ";
         }
-        if (name != null && name.equals("")) {
-            jpql+="and s.name like '&" + name + "&'";
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            jpql +=" and s.unitPrice >= :minAge ";
         }
+        if(maxAge != null &&!maxAge.equals("") && maxAge > 0){
+            jpql +=" and s.unitPrice <= :maxAge " ;
+        }
+
         Query query =entityManager.createQuery(jpql);
-        if (brand != null && brand.equals("")) {
-            query.setParameter("brand","%"+brand.trim()+"%");
-        }
-        if (type != null && type.equals("")) {
-            query.setParameter("type","%"+type.trim()+"%");
-        }
-        if (name != null && name.equals("")) {
+        if (name != null && !name.equals("")) {
             query.setParameter("name","%"+name.trim()+"%");
         }
+        if (type != null && !type.equals("")) {
+            query.setParameter("type","%"+type.trim()+"%");
+        }
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            query.setParameter("minAge",minAge);
+        }if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            query.setParameter("maxAge",maxAge);
+        }
+
         Long count =(Long)query.getSingleResult();
         return count;
     }

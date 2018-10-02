@@ -30,7 +30,7 @@ import java.util.Map;
 
 
 //SessionAttributes里的参数 names 这是一个字符串数组 里面应写需要存储到session中数据的名称
-@SessionAttributes(value = {"username"}, types = {Integer.class})//这里指定一下 Session 才能获得指定的数据
+@SessionAttributes(value = {"user"}, types = {Integer.class})//这里指定一下 Session 才能获得指定的数据
 @RequestMapping(value = "/u_user")
 @Controller
 public class LoginController {
@@ -135,7 +135,7 @@ public class LoginController {
             user.setPassword(pwd);
         }
         Cookie cookie = new Cookie("user",userInfo);
-        cookie.setMaxAge(24*24*60);//设置一年有效期
+        cookie.setMaxAge(60*60*24*7);//设置7天效期
         cookie.setPath("/");//可在同一应用服务器内共享方法
         response.addCookie(cookie);//放松到客户段
         //凭这个Cookie就自动登录并不安全可以在服务端使用一个Session来管理用户。

@@ -24,9 +24,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "depot.name": $("#name").val(),  //搜索的关键字
-            "depot.code": $("#code").val(),  //搜索的关键字
-            "depot.addr": $("#addr").val(),  //搜索的关键字
+            "name": $("#name").val(),  //搜索的关键字
+            "code": $("#code").val(),  //搜索的关键字
+            "addr": $("#addr").val()   //搜索的关键字
 
         },
         cellMinWidth : 95,
@@ -58,7 +58,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             where: {
                 "name": $("#name").val(),  //搜索的关键字
                 "code": $("#code").val(),  //搜索的关键字
-                "addr": $("#addr").val(),  //搜索的关键字
+                "addr": $("#addr").val()   //搜索的关键字
             }
         })
     });

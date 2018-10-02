@@ -60,17 +60,18 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加部门",
             type : 2,
+            area: ['390px', '275px'],
             content : path+"department/departmentTable/add",//发送请求
             end: function(){
                 window.location.href=path+'department/departmentTable';
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addDepartment();
@@ -123,8 +124,16 @@ layui.use(['form','layer','table','laytpl'],function(){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"department/departmentTable/"+data.id;
+            var index = layui.layer.open({
+                title : "添加部门",
+                type : 2,
+                area: ['390px', '275px'],
+                content : path+"department/departmentTable/"+data.id,//发送请求
+                end: function(){
+                    window.location.href=path+'department/departmentTable';
+                }
+            })
+            //window.location.href = path+"department/departmentTable/"+data.id;
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
