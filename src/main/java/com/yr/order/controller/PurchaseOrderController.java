@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,9 +59,10 @@ public class PurchaseOrderController {
         if (id != null && id != 0) {
             PurchaseOrder purchaseOrder = purchaseOrderServiceImpl.getRequisitionById(id);
             //返回采购实体
-            map.put("purchaseOrder", purchaseOrder);
-            /*//页面返回实体BO类
-            map.put("purchaseOrderBO",new PurchaseOrderBo(purchaseOrder));*/
+            // map.put("purchaseOrder", purchaseOrder);
+
+            //页面返回实体BO类
+            map.put("purchaseOrderBO",new PurchaseOrderBo(purchaseOrder,userServices.getByJobNum(purchaseOrder.getJobNumber()),departmentServices.getByCode(purchaseOrder.getDepartmentCode()),supplierServices.getByCode(purchaseOrder.getSupplierCode()),supplierWareServices.getSuppLierWareByCode(purchaseOrder.getPurchaseWareCode()),depotServices.getcode(purchaseOrder.getDepotCode())));
         }
     }
 
@@ -89,6 +91,7 @@ public class PurchaseOrderController {
         String json  = purchaseOrderServiceImpl.query(page);
         return json;
     }
+
     /**
      * 添加数据接口；
      * 跳转添加页面
@@ -100,47 +103,60 @@ public class PurchaseOrderController {
         //获取部门对象集合
         Map<String,Object> departmentList =  departmentServices.querys();
         //获取仓库对象集合0 = {HashMap$Node@7834} "1002" -> "大浪仓库"
-        Map<String,Object> depotList =  depotServices.queryDepots();
+        Map<String,Object> depotList =  depotServices.queryDepots();Map<String,Object> supplierList = supplierServices.querySuppliers();
         //获取供应商对象集合
-        Map<String,Object> supplierList = supplierServices.querySuppliers();
 
         map.put("departmentList",departmentList);
+        map.put("userList",userServices.queryUser());
         map.put("depotList",depotList);
         map.put("supplierList",supplierList);
-        map.put("purchaseOrder", new PurchaseOrder());
+        map.put("supplierWareList",supplierWareServices.queryList());
+        map.put("purchaseOrderBO",new PurchaseOrderBo());
 
         return "purchaseOrderAU";
     }
 
+    /**
+     * 新增数据
+     * @param purchaseOrderBo
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.POST)
-    public String add(PurchaseOrder purchaseOrder ,HttpServletRequest request) {
+    public String add(PurchaseOrderBo purchaseOrderBo ,HttpServletRequest request) {
         //将时间戳设置进入创建时间
-        purchaseOrder.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        purchaseOrderBo.getPurchaseOrder().setCreateTime(new Timestamp(System.currentTimeMillis()));
+
         //将修改时间设进修改时间，初始修改时间，后期会改
-        purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        purchaseOrderBo.getPurchaseOrder().setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
         //获取session 当中当前登录用户，session属性名从login登录的传过来，
         User user = (User) request.getSession().getAttribute("user");
-        purchaseOrder.setCreateEmp(user.getName());
+        purchaseOrderBo.getPurchaseOrder().setCreateEmp(user.getName());
         //这个初始的修改人，后期会改
-        purchaseOrder.setUpdateEmp(user.getName());
+        purchaseOrderBo.getPurchaseOrder().setUpdateEmp(user.getName());
 
         //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
-        double total = purchaseOrder.getUnitPrice()*purchaseOrder.getPurchaseNumber();
-        purchaseOrder.setTotalPrice(total);
+
+        double total = purchaseOrderBo.getPurchaseOrder().getUnitPrice()*purchaseOrderBo.getPurchaseOrder().getPurchaseNumber();
+        purchaseOrderBo.getPurchaseOrder().setTotalPrice(total);
 
         //随机数生成订单编号；
         String code = RandomUtil.generateUpperString(13);
-        purchaseOrder.setCode(code);
+        purchaseOrderBo.getPurchaseOrder().setCode(code);
 
         //所有订单申请表单初始化都是-->>待审核状态2
         // (0驳回，1交易成功，2待审核，3申请退货，4退货成功)
-        purchaseOrder.setStatus(2);
-        //修改人即使修改人；
-        purchaseOrder.setApprover(user.getName());
-        purchaseOrderServiceImpl.add(purchaseOrder);
+        purchaseOrderBo.getPurchaseOrder().setStatus(2);
+        //修改人即使订单审批人；
+        purchaseOrderBo.getPurchaseOrder().setApprover(user.getName());
 
+        //因为暂时不会级联查询并显示，所以就根据界面上的申请人名称来决定申请人工号了
+        purchaseOrderBo.getPurchaseOrder().setJobNumber(purchaseOrderBo.getUser().getJobNum());
 
+        //因为暂时不会级联查询并显示，所以就根据界面上的采购商品名称俩决定采购商品编号了
+        purchaseOrderBo.getPurchaseOrder().setPurchaseWareCode(purchaseOrderBo.getSupplierWares().getName());
+        purchaseOrderServiceImpl.add(purchaseOrderBo.getPurchaseOrder());
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
     /**
@@ -152,25 +168,45 @@ public class PurchaseOrderController {
      */
     @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.GET)
     public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map) {
+
+        //根据id查询数据库数据；
         PurchaseOrder purchaseOrder = purchaseOrderServiceImpl.getRequisitionById(id);
-        //将修改后的采购订单对象设进map
-        map.put("purchaseOrder", purchaseOrder);
+
+        //获取部门对象集合
+        Map<String,Object> departmentList =  departmentServices.querys();
+        //获取仓库对象集合0 = {HashMap$Node@7834} "1002" -> "大浪仓库"
+        Map<String,Object> depotList =  depotServices.queryDepots();
+        //获取供应商对象集合
+        Map<String,Object> supplierList = supplierServices.querySuppliers();
+
+        map.put("departmentList",departmentList);
+        map.put("userList",userServices.queryUser());
+        map.put("depotList",depotList);
+        map.put("supplierList",supplierList);
+        map.put("supplierWareList",supplierWareServices.queryList());
+        map.put("purchaseOrderBO",new PurchaseOrderBo(purchaseOrder,userServices.getByJobNum(purchaseOrder.getJobNumber()),departmentServices.getByCode(purchaseOrder.getDepartmentCode()),supplierServices.getByCode(purchaseOrder.getSupplierCode()),supplierWareServices.getSuppLierWareByCode(purchaseOrder.getPurchaseWareCode()),depotServices.getcode(purchaseOrder.getDepotCode())));
         return "purchaseOrderAU";
     }
 
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.PUT)
-    public String update(@ModelAttribute("requisition") PurchaseOrder purchaseOrder,HttpServletRequest request) {
+    public String update(@ModelAttribute("purchaseOrderBO") PurchaseOrderBo purchaseOrderBo ,HttpServletRequest request) {
         //获取当前登录用户并把它设为修改人
         User user = (User) request.getSession().getAttribute("user");
-        purchaseOrder.setUpdateEmp(user.getName());
+        purchaseOrderBo.getPurchaseOrder().setUpdateEmp(user.getName());
         //获取当前时间为数据修改时间；
-        purchaseOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        purchaseOrderBo.getPurchaseOrder().setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
         //获取采购单价和采购数量，计算采购商品总价格，并把它设入setTotalPrice();
-        double total = purchaseOrder.getUnitPrice()*purchaseOrder.getPurchaseNumber();
-        purchaseOrder.setTotalPrice(total);
+        double total =  purchaseOrderBo.getPurchaseOrder().getUnitPrice()* purchaseOrderBo.getPurchaseOrder().getPurchaseNumber();
+        purchaseOrderBo.getPurchaseOrder().setTotalPrice(total);
 
-        purchaseOrderServiceImpl.update(purchaseOrder);
+        //因为暂时不会级联查询并显示，所以就根据界面上的申请人名称来决定申请人工号了
+        purchaseOrderBo.getPurchaseOrder().setJobNumber(purchaseOrderBo.getUser().getJobNum());
+
+        //因为暂时不会级联查询并显示，所以就根据界面上的采购商品名称俩决定采购商品编号了
+        purchaseOrderBo.getPurchaseOrder().setPurchaseWareCode(purchaseOrderBo.getSupplierWares().getName());
+
+        purchaseOrderServiceImpl.update( purchaseOrderBo.getPurchaseOrder());
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -185,11 +221,10 @@ public class PurchaseOrderController {
         purchaseOrderServiceImpl.delete(id);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }*/
-
     @RequestMapping(value="/requisitionTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public String delete(@PathVariable Integer[] id){
-        purchaseOrderServiceImpl.deleteBatch(id);
+    public String delete(@PathVariable Integer[] ids){
+        purchaseOrderServiceImpl.deleteBatch(ids);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 }

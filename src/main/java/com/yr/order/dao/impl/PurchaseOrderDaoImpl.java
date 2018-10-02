@@ -28,6 +28,10 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         {
             jpql+= "and r.purchaseWareCode like :purchaseWareCode";
         }
+        if(page.getT().getPurchaseOrder().getStatus() != null && !page.getT().getPurchaseOrder().getStatus().equals(""))
+        {
+            jpql+= "and r.status = :status";
+        }
         Query query =  entityManager.createQuery(jpql);
         if(page.getT().getPurchaseCode() != null && !page.getT().getPurchaseCode().equals(""))
         {
@@ -36,6 +40,10 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         if(page.getT().getPurchaseWareCode() != null && !page.getT().getPurchaseWareCode().equals(""))
         {
             query.setParameter("purchaseWareCode","%"+page.getT().getPurchaseWareCode()+"%");
+        }
+        if (page.getT().getPurchaseOrder().getStatus() != null && !page.getT().getPurchaseOrder().getStatus().equals(""))
+        {
+            query.setParameter("status",page.getT().getPurchaseOrder().getStatus());
         }
         //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
@@ -60,6 +68,10 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         {
             jpql+= "and r.purchaseWareCode like :purchaseWareCode";
         }
+        if (purchaseOrderBO.getPurchaseOrder().getStatus() !=null && !purchaseOrderBO.getPurchaseOrder().getStatus().equals(""))
+        {
+            jpql+= "and r.status = :status ";
+        }
         Query query =  entityManager.createQuery(jpql);
         if(purchaseOrderBO.getPurchaseCode() != null && !purchaseOrderBO.getPurchaseCode().equals(""))
         {
@@ -68,6 +80,10 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         if(purchaseOrderBO.getPurchaseWareCode() != null && !purchaseOrderBO.getPurchaseWareCode().equals(""))
         {
             query.setParameter("purchaseWareCode","%"+purchaseOrderBO.getPurchaseWareCode()+"%");
+        }
+        if (purchaseOrderBO.getPurchaseOrder().getStatus() !=null && !purchaseOrderBO.getPurchaseOrder().getStatus().equals(""))
+        {
+            query.setParameter("status",purchaseOrderBO.getPurchaseOrder().getStatus());
         }
         Long value = (Long) query.getSingleResult();
         return value;
@@ -99,7 +115,6 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         entityManager.remove(purchaseOrder);
 
     }
-
     /**
      * 根据选中的id,批量删除
      * @param ids
