@@ -25,7 +25,9 @@
         <input type="hidden" name="_method" value="PUT"/>
         <input type="hidden" name="id" value="${purchaseOrderBO.purchaseOrder.id }">
     </c:if>
-    <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
+
+    <%--编号，总价you由后台复值--%>
+ <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">申请人姓名</label>
         <div class="layui-input-inline">
             <form:select path="user.jobNum" items="${userList}" itemLabel="name" itemValue="jobNum" />
