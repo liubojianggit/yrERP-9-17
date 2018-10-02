@@ -97,7 +97,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String updates(@ModelAttribute("departmentbo")Departmentbo departmentbo){
+    public String updates(Departmentbo departmentbo){
         departmentService.update(departmentbo);
         return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }

@@ -120,6 +120,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public void update(Department department) {
+        department.setCreateEmp("宋春元");
+        department.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        department.setUpdateEmp("宋春元");
+        department.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         entityManager.merge(department);
     }
 

@@ -178,4 +178,19 @@ public class LoginController {
         //则认为是同一个Cookie，最后一个出现的Cookie将覆盖前面相同的Cookie
     }
 
+    @RequestMapping(value = "/userTable/cookies")
+    public void Cookie(HttpServletRequest request ,HttpServletResponse response, String name){
+        Cookie myCok = new Cookie("users",name);
+        myCok.setMaxAge(60*60*24*7); //设置cookie时长
+        response.addCookie(myCok); //cookie保存到客户端
+       // 从客户端把cookie读取到服务端去
+        request.getCookies();
+        Cookie c[] = request.getCookies();
+        if (null != c) {
+            for(Cookie temp:c){
+                System.out.print("取Cookie:" + temp.getName()+" "+temp.getValue()+"<br/>");
+            }
+        }
+    }
+
 }

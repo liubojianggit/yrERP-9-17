@@ -74,12 +74,14 @@ layui.use(['form','layer','table','laytpl'],function(){
     //添加用户
     function addUser(){
         //window.location.href = "user/add";
+
+
         var index = layui.layer.open({
             title : "添加商品",
             type : 2,
             content : path+"supp_wares/supplierTable/add",//发送请求
             end: function(){
-                window.location.href= path+"/supp_wares/supp_waresTable";
+                window.location.href='<%=request.getContextPath() %>/supp_wares/supplierTable';
             }
         })
         layui.layer.full(index);

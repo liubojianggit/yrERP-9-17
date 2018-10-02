@@ -35,60 +35,33 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {title: '申请人姓名', minWidth:100, align:"center",unresize: true, templet: function(d){
-                    return d.user.name;
+            {field: 'name', title: '申请人姓名', minWidth:100, align:"center",unresize: true},
+            {field: 'tel', title: '申请人电话', minWidth:100, align:"center",unresize: true},
+            {field: 'code', title: '订单编号', align:"center", unresize: true},
+            {field: 'departmentCode', title: '采购部门', align:"center", unresize: true},
+            {field: 'supplierCode', title: '供应商', align:"center", unresize: true},
+            {field: 'purchaseType', title: '商品类型', align:"center", unresize: true},
+            {field: 'brand', title: '商品品牌', align:"center", unresize: true},
+            {field: 'purchasName', title: '商品名称', align:"center", unresize: true},
+            {field: 'purchaseNumber', title: '采购数量', align:"center", unresize: true},
+            {field: 'unitPrice', title: '单价', align:"center", unresize: true},
+            {field: 'totalPrice', title: '总价', align:"center", unresize: true},
+            {field: 'status', title: '订单状态', align:"center", unresize: true,templet:function(d){
+                if(d == 0){
+                    return "驳回";
+                }else if(d == 1){
+                    return "交易成功";
+                }else if(d == 2){
+                    return "待审核";
+                }else if(d == 3){
+                    return "申请退货";
+                }else if(d == 4){
+                    return "退货成功";
+                }
                 }},
-            {title: '申请人电话', minWidth:130, align:"center",unresize: true , templet: function(d){
-                    return d.user.phoneNumber;
-                }},
-           {title: '订单编号', align:"center",  minWidth:150 , unresize:true , templet: function(d){
-                    return d.purchaseOrder.code;
-                }},
-            {title: '采购部门', align:"center", unresize: true ,templet: function(d){
-                    return d.department.name;
-                }},
-            {title: '供应商', align:"center", unresize: true, templet: function(d){
-                    return d.supplier.name;
-                }},
-            {title: '商品名称', align:"center", unresize: true, templet: function(d){
-                    return d.supplierWares.name;
-                }},
-            {title: '商品类型', align:"center", unresize: true, templet: function(d){
-                    return d.supplierWares.type;
-                }},
-            {title: '商品品牌', align:"center", unresize: true, templet: function(d){
-                    return d.supplierWares.brand;
-                }},
-            {title: '采购数量', align:"center", unresize: true, templet: function(d){
-                    return d.purchaseOrder.purchaseNumber;
-                }},
-            {title: '单价', align:"center", unresize: true, templet: function(d){
-                    return d.purchaseOrder.unitPrice;
-                }},
-            {title: '总价', align:"center", unresize: true, templet: function(d){
-                    return d.purchaseOrder.totalPrice;
-                }},
-
-            {title: '收货人', align:"center", unresize: true, templet: function(d){
-                    return d.purchaseOrder.consignee;
-               }},
-            {title: '收货仓库', align:"center", unresize: true, templet: function(d){
-                    return d.depot.name;
-                }},
-            {title: '订单状态', align:"center", unresize: true,templet:function(d){
-                    if(d.purchaseOrder.status == 0){
-                        return "驳回";
-                    }else if(d.purchaseOrder.status == 1){
-                        return "交易成功";
-                    }else if(d.purchaseOrder.status == 2){
-                        return "待审核";
-                    }else if(d.purchaseOrder.status == 3){
-                        return "申请退货";
-                    }else if(d.purchaseOrder.status == 4){
-                        return "退货成功";
-                    }
-                }},
-            {title: '操作', minWidth:200, templet:'#userListBar',fixed:"right",align:"center"}
+            {field: 'consignee', title: '收货人', align:"center", unresize: true},
+            {field: 'depotCode', title: '收货仓库', align:"center", unresize: true},
+            {title: '操作', minWidth:300, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 

@@ -22,7 +22,7 @@ public interface WareDao {
      * @param ware
      * @return List<Ware>数组
      */
-    public List<Ware> query(Page<WareBo> ware);
+    public List<WareBo> query(Page<WareBo> ware);
 
     /**
      * 添加数据

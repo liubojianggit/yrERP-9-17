@@ -18,15 +18,15 @@
 </head>
 <body class="childrenBody">
 
-<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareBo">
+<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareBO">
     <form:errors path="*"></form:errors>
-    <c:if test="${wareBo.id != null }">
+    <c:if test="${wareBO.ware.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="id" value="${wareBo.getId() }">
+        <input type="hidden" name="id" value="${wareBO.ware.getId() }">
     </c:if>
     <!-- 上传头像 -->               <!-- div居中 -->
-  <%--  <div class="layui-upload" align="center">
-        <c:if test="${wareBo.ware.id != null }">
+    <div class="layui-upload" align="center">
+        <c:if test="${wareBO.ware.id != null }">
             <div class="layui-upload-list">
                 <!-- 头像回显的样式，这里是圆形 -->
                 <img src="<%=request.getContextPath() %>/userTable/icons/"+${wareBO.ware.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
@@ -46,76 +46,76 @@
             <input type="hidden" name="headUrl" id="headUrl" value="">
         </c:if>
 
-    </div>--%>
+    </div>
 
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品名：</label>
         <div class="layui-input-block">
-            <form:input path="name" class="layui-input"  lay-verify="required" placeholder="请输入商品名"/>
+            <form:input path="ware.name" class="layui-input"  lay-verify="required" placeholder="请输入商品名"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品编号</label>
         <div class="layui-input-block">
-            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/>
+            <form:input path="ware.code" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="type" items="${wares}" itemLabel="name" itemValue="name"></form:select>
+            <form:select path="ware.type" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品品牌</label>
         <div class="layui-input-block">
-            <form:input path="brand" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
+            <form:input path="ware.brand" class="layui-input"  lay-verify="required" placeholder="请输入商品品牌"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品条码</label>
         <div class="layui-input-block">
-            <form:input path="barCode" class="layui-input"  lay-verify="required" placeholder="请输入商品条码"/>
+            <form:input path="ware.barCode" class="layui-input"  lay-verify="required" placeholder="请输入商品条码"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品库存</label>
         <div class="layui-input-block">
-            <form:input path="totalInventory" class="layui-input"  lay-verify="required" placeholder="请输入商品库存"/>
+            <form:input path="ware.totalInventory" class="layui-input"  lay-verify="required" placeholder="请输入商品库存"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">采购单价</label>
         <div class="layui-input-block">
-            <form:input path="inUnitPrice" class="layui-input"  lay-verify="required" placeholder="请输入采购单价"/>
+            <form:input path="ware.inUnitPrice" class="layui-input"  lay-verify="required" placeholder="请输入采购单价"/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">销售单价</label>
         <div class="layui-input-block">
-            <form:input path="outUnitPrice" class="layui-input"  lay-verify="required" placeholder="请输入销售单价"/>
+            <form:input path="ware.outUnitPrice" class="layui-input"  lay-verify="required" placeholder="请输入销售单价"/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">产地</label>
-        <div class="layui-input-block">
-            <form:input path="addr" class="layui-input"  lay-verify="required" placeholder="请输入商品产地"/>
+        <div class="layui-input-inline">
+            <form:select path="ware.addr" items="${addrProvinces }" itemLabel="name" itemValue="id"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品备注</label>
         <div class="layui-input-block">
-            <form:input path="remark" class="layui-input"  lay-verify="required" placeholder="请输入商品备注"/>
+            <form:input path="ware.remark" class="layui-input"  lay-verify="required" placeholder="请输入商品备注"/>
         </div>
     </div>
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
-            <c:if test="${wareBo.id == null }">
+            <c:if test="${user.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addUser">立即添加</button>
             </c:if>
-            <c:if test="${wareBo.id != null }">
+            <c:if test="${user.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateUser">确认修改</button>
             </c:if>
             <c:if test="${wareBo.id == null }">
