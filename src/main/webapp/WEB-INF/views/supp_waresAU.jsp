@@ -70,7 +70,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWare.type" items="${typeList}" itemLabel="name" itemValue="id"></form:select>
+            <form:select path="supplierWare.type" items="${typeList}" itemLabel="name" itemValue="name"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
