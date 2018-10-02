@@ -33,7 +33,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public void add(SupplierWareBo sw) {
-        entityManager.persist(sw);
+        entityManager.persist(sw.getSupplierWare());
     }
 
     /**
