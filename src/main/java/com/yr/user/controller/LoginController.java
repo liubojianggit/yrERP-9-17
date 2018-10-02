@@ -77,7 +77,7 @@ public class LoginController {
 
     @RequestMapping(value = "/userTable/login", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request) {
+    public String gotoIndex(User loginUser, String loginVerifyCode, HttpServletRequest request,HttpServletResponse response) {
         String str = "";
         String verifyCode = (String) request.getSession().getAttribute("verifyCode");// 获取正确的验证码
 
@@ -93,6 +93,12 @@ public class LoginController {
                             // 登录验证通过，把对象存进session
                             request.getSession().setAttribute("user", user);// 获取session对象并赋值
                             str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
+                            Cookie cookie=new Cookie("name",user.getName());
+                            Cookie cookie1=new Cookie("password",user.getPassword());
+                            cookie.setMaxAge(60);
+                            cookie1.setMaxAge(60);
+                            response.addCookie(cookie);
+                            response.addCookie(cookie1);
                         } else if (user.getStates() == 0) {
                             str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
                         }
@@ -113,84 +119,4 @@ public class LoginController {
         return str;
 
     }
-
-    /**
-     * 用Cookie实现七天免登陆
-     * @param response
-     * @param request
-     */
-    @RequestMapping(value ="/userTable/cookie",method = RequestMethod.GET)
-    public void Cookie(HttpServletResponse response, HttpServletRequest request){
-        /*
-         * 如果是第一次登录，将用户名和密码作为cookie写到本地
-         */
-        String name = request.getParameter("name");
-        String pwd = request.getParameter("password");
-        User user = new User();
-        String userInfo = user.toString();
-        if(null!=name && !"".equals(name)){
-            user.setName(name);
-        }
-        if(null!=pwd && !"".equals(pwd)){
-            user.setPassword(pwd);
-        }
-        Cookie cookie = new Cookie("user",userInfo);
-        cookie.setMaxAge(60*60*24*7);//设置7天效期
-        cookie.setPath("/");//可在同一应用服务器内共享方法
-        response.addCookie(cookie);//放松到客户段
-        //凭这个Cookie就自动登录并不安全可以在服务端使用一个Session来管理用户。
-        //当第一次登录成功后，就创建一个Session，并将用户的某些信息保存在Session
-        HttpSession session = request.getSession();
-        session.setAttribute("user", userInfo);
-        session.setMaxInactiveInterval(3600*2);//2小时
-        //但是当cookie关闭后，用于保存SessionID的JSESSIONID会消失(此时cookie并没有过期) ，所以得将JSESESSION持久化
-        Cookie sessionId = new Cookie("JSESESSIONID",session.getId());
-        sessionId.setMaxAge(2*60);//设置两小时
-        sessionId.setPath("/");
-        response.addCookie(sessionId);
-
-
-
-        //当用户第二次登陆时，检测这个cookie是否存在
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie2 : cookies) {
-            //如果存在这个cookie进行页面跳转
-            if(cookie2.equals("user")){
-                if(session.getAttribute("user")!=null){
-                    try {
-                        request.getRequestDispatcher("u_user/userTables").forward(request, response);
-                    } catch (ServletException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }else{
-                    //跳转到登录页面
-                }
-
-            }
-        }
-        //如果使用上面的代码，即使浏览器关闭，在两小时之内，Web程序仍然可以自动登录。
-        //如果我们自已加一个JSESSIONID Cookie，在第一次访问Web程序时，
-        //HTTP响应头有两个JSESSIONID，但由于这两个JSESSIONID的值完全一样，没有任何影响
-        //如果在响应头的Set-Cookie字段中有多个相同的Cookie，则按着path和name进行比较，如果这两个值相同，
-        //则认为是同一个Cookie，最后一个出现的Cookie将覆盖前面相同的Cookie
-    }
-
-    @RequestMapping(value = "/userTable/cookies")
-    public void Cookie(HttpServletRequest request ,HttpServletResponse response, String name){
-        Cookie myCok = new Cookie("users",name);
-        myCok.setMaxAge(60*60*24*7); //设置cookie时长
-        response.addCookie(myCok); //cookie保存到客户端
-       // 从客户端把cookie读取到服务端去
-        request.getCookies();
-        Cookie c[] = request.getCookies();
-        if (null != c) {
-            for(Cookie temp:c){
-                System.out.print("取Cookie:" + temp.getName()+" "+temp.getValue()+"<br/>");
-            }
-        }
-    }
-
 }
