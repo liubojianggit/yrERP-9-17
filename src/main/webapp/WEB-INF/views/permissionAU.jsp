@@ -58,12 +58,13 @@
         <div class="layui-input-block">
             <c:if test="${permissionBo.permission.id == null }">
                 <button type="button" class="layui-btn" lay-submit lay-filter="addMenu">立即添加</button>
+                <button id="reset" class="layui-btn layui-btn-primary">取消</button>
             </c:if>
             <c:if test="${permissionBo.permission.id != null }">
                 <button type="button" class="layui-btn" lay-submit lay-filter="updateMenu">确认修改</button>
+                <button id="reset1" class="layui-btn layui-btn-primary">取消</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-primary">取消</button>
-            <button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
+
         </div>
     </div>
 </form:form>

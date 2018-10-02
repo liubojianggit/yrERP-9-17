@@ -2,12 +2,15 @@ package com.yr.department.controller;
 
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.department.Department;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
