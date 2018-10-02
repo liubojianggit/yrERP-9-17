@@ -7,7 +7,9 @@ import com.yr.entitys.supplier.Supplier;
 import com.yr.entitys.supplier.SupplierWares;
 import com.yr.entitys.user.User;
 
-public class PurchaseOrderBo {
+import java.io.Serializable;
+
+public class PurchaseOrderBo implements Serializable{
     //申请采购
     private PurchaseOrder purchaseOrder;
     private  User user;
@@ -84,5 +86,16 @@ public class PurchaseOrderBo {
 
     public void setPurchaseWareCode(String purchaseWareCode) {
         this.purchaseWareCode = purchaseWareCode;
+    }
+
+    public PurchaseOrderBo() {
+    }
+    public PurchaseOrderBo(PurchaseOrder purchaseOrder, User user, Department department, Supplier supplier, SupplierWares supplierWares, Depot depot) {
+        this.purchaseOrder = purchaseOrder;
+        this.user = user;
+        this.department = department;
+        this.supplier = supplier;
+        this.supplierWares = supplierWares;
+        this.depot = depot;
     }
 }
