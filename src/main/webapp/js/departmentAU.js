@@ -77,12 +77,11 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    /*$("#updatePic").click(function(){
-        layer.open({
-      title: '修改图标'
-      ,content: '可以填写任意的layer代码'
-    });
-    });  */
+    $("#cancel").click(function () {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    })
+
     //格式化时间
     function filterTime(val){
         if(val < 10){
