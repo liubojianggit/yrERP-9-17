@@ -145,4 +145,9 @@ public class SupplierWareServiceImpl implements SupplierWareService {
     public SupplierWares getSuppLierWareByCode(String code){
        return swd.getSuppLierWareByCode(code);
     };
+
+    @Override
+    public List<SupplierWares> queryList() {
+        return swd.queryList();
+    }
 }

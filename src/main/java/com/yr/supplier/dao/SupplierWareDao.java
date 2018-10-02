@@ -63,4 +63,8 @@ public interface SupplierWareDao {
      * @return
      */
     public SupplierWares getSuppLierWareByCode(String code);
+    /**
+     * 供应商查询所有数据存放list中
+     */
+    List<SupplierWares>queryList();
 }

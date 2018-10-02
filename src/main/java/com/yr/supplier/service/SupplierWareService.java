@@ -4,6 +4,8 @@ import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SupplierWares;
 
+import java.util.List;
+
 /**
  * 供应商品业务逻辑类
  */
@@ -52,4 +54,9 @@ public interface SupplierWareService {
      * @return
      */
     public SupplierWares getSuppLierWareByCode(String code);
+
+    /**
+     * 供应商查询所有数据存放list中
+     */
+    List<SupplierWares> queryList();
 }
