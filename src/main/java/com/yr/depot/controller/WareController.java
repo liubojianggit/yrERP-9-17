@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,7 +94,7 @@ public class WareController {
      * @return Map<String,Object>
      * @throws IOException
      */
-    @RequestMapping(value="/waresTable/upload",method=RequestMethod.POST)
+    @RequestMapping(value="waresTable/upload",method=RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
@@ -172,4 +173,19 @@ public class WareController {
             return "false";
         }
    }
+    /**
+     * 通过用户的id请求返回图像的字节流
+     *
+     * 不需要
+     */
+    @RequestMapping("/waresTable/icons/{id}")
+    public void getIcons(@PathVariable(value="id") Integer id ,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Ware ware = ws.getWare(id);//根据id获得user对象
+        byte[] data = FileUtils.getFileFlow(ware.getWarePhoto());//调用方法将流传出
+        response.setContentType("image/png");
+        OutputStream stream = response.getOutputStream();
+        stream.write(data);//将图片以流的形式返回出去
+        stream.flush();
+        stream.close();
+    }
 }
