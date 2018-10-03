@@ -15,7 +15,7 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     ;
 
-    //仓库列表
+    //菜单列表
     var tableIns = table.render({
         elem: '#menuList',
         url :path+ 'menu/menuTable/list',
@@ -24,7 +24,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "name": $("#menuName").val(),  //搜索的关键字
+            "menu.name": $("#menuName").val(),  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
@@ -36,24 +36,26 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'code', title: '仓库编号', align:"center",unresize: true},
-            {field: 'name', title: '仓库名称', align:"center",unresize: true},
-            {field: 'addr', title: '仓库地址', align:"center", unresize: true},
-            {field: 'jobnum', title: '负责人', align:"center", unresize: true},
+            {field: 'name', title: '菜单名称', align:"center",unresize: true},
+            {field: 'pic', title: '菜单图标', align:"center",unresize: true,templet: function(d){
+                    return "<i class='layui-icon'>"+d.pic+"</i>";
+                }},
+            {field: 'url', title: 'url', align:"center", unresize: true},
+            {field: 'method', title: '请求方式', align:"center", unresize: true},
             {field: 'createTime', title: '创建时间', align:"center", unresize: true},
             {field: 'createEmp', title: '创建人', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#menuListBar',fixed:"right",align:"center"}
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        table.reload("depotListTable",{
+        table.reload("menuListTable",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },
             where: {
-                "name": $("#menuName").val(),  //搜索的关键字
+                "menu.name": $("#menuName").val(),  //搜索的关键字
             }
         })
     });
@@ -63,7 +65,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加菜单",
             type : 2,
-            area: ['390px', '320px'],
+            area: ['390px', '360px'],
             content : path+"/menu/menuTable/add",//发送请求
             end: function(){
                 window.location.href=path+"/menu/menuTable";
@@ -149,7 +151,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 title: '修改菜单',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area : ['390px' , '340px'],
+                area : ['390px' , '360px'],
                 content: path+'menu/menuTable/'+data.id,
                 end: function(){
                     window.location.href = path+"menu/menuTable";
