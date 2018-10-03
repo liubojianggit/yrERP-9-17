@@ -40,7 +40,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'name', title: '用户名', align:"center",unresize: true},
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
             {field: 'photo', title: '头像',  align:'center',templet:function(d){
-                return '<img style="width: 28px;height: 28px;"  src="'+path + '/u_user/userTable/icons/'+ d.id + '"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
+                return '<img style="width: 28px;height: 28px;"  src='+d.photo+'  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
             }},
             {field: 'jobNum', title: '工号', align:"center", unresize: true},
             {field: 'depaCode', title: '部门', align:"center", unresize: true},
