@@ -97,7 +97,7 @@
             <form:input path="supplierWare.addr" class="layui-input" lay-verify="required" placeholder="请输入地址"/>
         </div>
     </div>
-    <%--<input type="hidden" name="supplierWare.createEmp" value="${sessionScope.user.getName()}">--%>
+    <input type="hidden" name="supplierWare.createEmp" value="${sessionScope.user.getName()}">
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">

@@ -36,7 +36,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type:'numbers',title:'编号',width:50},
             {field: 'code', title: '角色编号', align:"center",unresize: true},
             {field: 'name', title: '角色名', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#roleListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:220,width:220, templet:'#roleListBar',fixed:"right",align:"center"}
         ]]
     });
 

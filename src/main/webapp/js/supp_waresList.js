@@ -52,7 +52,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'unitPrice', title: '商品单价', align:"center", unresize: true},
             {field: 'totalInventory', title: '供应商库存', align:"center", unresize: true},
             {field: 'addr', title: '产地', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#suppWaresListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#suppWaresListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -77,7 +77,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加商品",
             type : 2,
-            area : ['390px' , '340px'],
+            area : ['800px' , '520px'],
             content : path+"supp_wares/supplierTable/add",//发送请求
             end: function(){
                 window.location.href= path+"/supp_wares/supp_waresTable";
@@ -126,7 +126,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 title: '修改用户',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area: ['500px', '550px'],
+                area: ['800px', '520px'],
                 content: path+"supp_wares/supplierTable/"+data.id,
                 end: function(){
                     window.location.href =  path+"supp_wares/supp_waresTable";

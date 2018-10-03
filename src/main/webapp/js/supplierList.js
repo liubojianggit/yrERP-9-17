@@ -41,7 +41,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'phoneNumber', title: '联系电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             {field: 'rank', title: '级别', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#supplierListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#supplierListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -64,7 +64,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            area : ['390px' , '340px'],
+            area : ['800px' , '520px'],
             content : path+"/supplier/supplierTable/add",//发送请求
             end: function(){
                 window.location.href= path+"/supplier/supplierTable";
