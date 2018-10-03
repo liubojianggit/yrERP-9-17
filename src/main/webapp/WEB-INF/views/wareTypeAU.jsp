@@ -40,7 +40,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">上级类型</label>
         <div class="layui-input-inline">
-            <form:select path="supCode" id="pidSelect" items="${supCode}" itemLabel="name" itemValue="id"></form:select>
+            <form:select path="supCode" id="pidSelect" items="${supCode}" itemLabel="name" itemValue="code"></form:select>
         </div>
     </div>
 
