@@ -62,7 +62,7 @@ public class PermissionFilter extends AccessControlFilter {
                 String permissionMethod = permission.getMethod();
                 String tfMethod = httpRequest.getParameter("_method");
                 if (tfMethod != null) {//如果不等于null则表示这个是个put或者delete请求
-                    method = tfMethod;
+                    method = tfMethod.toUpperCase();//转成大写
                 }
                 if (!permissionUrl.contains("*")) {//表示不包含正则
                     if (permissionUrl.equals(uri) && method.equals(permissionMethod)) {
