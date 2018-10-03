@@ -13,12 +13,14 @@ import com.yr.entitys.user.User;
 import com.yr.order.service.SaleService;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.Name;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/sale_order")
 public class SaleController {//销售订单Controller
+    @Qualifier("saleServiceImpl")
     @Autowired
     private SaleService saleService;
     @Autowired
@@ -45,7 +48,7 @@ public class SaleController {//销售订单Controller
     public void ModelAttribute(@RequestParam(value = "id",required = false)Integer id, Map<String,Object>map){
         if (id != null && id != 0){
             SaleOrderBO saleOrderBO = saleService.getById(id);
-            map.put("saleOrder",saleOrderBO);
+            map.put("saleOrderBO",saleOrderBO);
         }
     }
 
@@ -111,9 +114,8 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
-    public String saveAdd(SaleOrder sale, HttpServletRequest request){
-        sale.setCreateTime(new Date());//获取当前时间
-        sale.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+    @ResponseBody
+    public String saveAdd(SaleOrder sale){
         saleService.add(sale);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
@@ -123,15 +125,13 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map,HttpServletRequest request){
+    public String jumpUpdate(@PathVariable("id") Integer id, Map<String, Object> map){
        // Map<String,Object>map1 = new HashMap<>();
        /* map1.put("0","驳回");
         map1.put("1","销售成功");
         map1.put("2","申请退货");
         map1.put("3","退货成功");
         map.put("states",map1);*/
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("user");
         SaleOrderBO saleOrderBO = saleService.getById(id);
         List<Ware> listW = ws.getWare();
         map.put("wareList",listW);
@@ -149,9 +149,8 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
-    public String SaveOrUpdate(SaleOrder sale, HttpServletRequest request){
-        sale.setUpdateTime(new Date());//获取修改当前时间
-        //sale.setUpdateEmp(((SaleOrder)request.getSession().getAttribute("sale")).getApprover());//获取修改人（审核人）
+    @ResponseBody
+    public String SaveOrUpdate(SaleOrder sale){
         saleService.update(sale);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
@@ -160,7 +159,7 @@ public class SaleController {//销售订单Controller
      * 根据id删除销售订单表
      * @param id
      */
-    @RequestMapping(value = "/sale_orderTable/delete/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String delete(@PathVariable Integer id){
         saleService.delete(id);

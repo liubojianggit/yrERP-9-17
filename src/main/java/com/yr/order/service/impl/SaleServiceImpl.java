@@ -14,6 +14,7 @@ import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,10 @@ import com.yr.entitys.page.Page;
 import com.yr.order.dao.SaleDao;
 import com.yr.order.service.SaleService;
 
-@Service
+@Service("saleServiceImpl")
 @Transactional
 public class SaleServiceImpl implements SaleService {
+    @Qualifier("saleDaoImpl")
     @Autowired
     private SaleDao saleDao;
 

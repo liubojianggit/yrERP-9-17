@@ -1,5 +1,6 @@
 package com.yr.order.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.SaleDao;
-@Repository
+@Repository("saleDaoImpl")
 public class SaleDaoImpl implements SaleDao {
 
     //获取到和当前事务关联的 EntityManager对象,通过 @PersistenceContext 注解来标记成员变量
@@ -83,6 +84,10 @@ public class SaleDaoImpl implements SaleDao {
      */
     @Override
     public void add(SaleOrder saleOrder) {
+        saleOrder.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        saleOrder.setCreateEmp("l");
+        saleOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        saleOrder.setUpdateEmp("1");
         entityManager.persist(saleOrder);
     }
 
@@ -116,9 +121,4 @@ public class SaleDaoImpl implements SaleDao {
         SaleOrder saleOrder = entityManager.find(SaleOrder.class,id);
         return saleOrder;
     }
-
-
-
-
-
 }
