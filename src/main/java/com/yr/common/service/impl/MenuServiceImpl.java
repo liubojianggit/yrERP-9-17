@@ -4,16 +4,21 @@ import com.yr.common.dao.MenuDao;
 import com.yr.common.service.MenuService;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
+import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
 import com.yr.util.DateUtils;
+import com.yr.util.JsonDateValueProcessor;
+import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Transactional
 @Service
@@ -66,29 +71,18 @@ public class MenuServiceImpl implements MenuService {
      * 把Menu转成MenuBO，再转成json字符串返回，用于页面菜单主页生成菜单树形表
      */
     @Override
-    public String queryMenus() {
-        List<MenuBO> menuTurnMenuBOList = new ArrayList<MenuBO>();
-        for (Menu menu : menuDaoImp.query()) {
-            //这里new对象，要使用自动注入吗？？
-            MenuBO menuBO = new MenuBO();
-            menuBO.setId(menu.getId());
-            menuBO.setTitle(menu.getName());
-            menuBO.setIcon(menu.getPic());
-            menuBO.setPid(menu.getPid());
-            menuBO.setHref(menu.getUrl());
-            menuBO.setMethod(menu.getMethod());
-            menuBO.setCreateEmp(menu.getCreateEmp());
-            menuBO.setCreateTime(DateUtils.dateToStr(menu.getCreateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
-            menuBO.setUpdateEmp(menu.getUpdateEmp());
-            menuBO.setUpdateTime(DateUtils.dateToStr(menu.getUpdateTime(),"dd-MMM-yyyy HH:mm:ss:SSS"));
-            menuTurnMenuBOList.add(menuBO);
-        }
-        String menuJsonStr = JSONArray.fromObject(menuTurnMenuBOList).toString();
+    public String queryMenus(Page<MenuBO> page) {
+        Long count = menuDaoImp.queryCount(page);
+        page.setTotalRecord(count);
+        List<MenuBO> list = menuDaoImp.queryList(page);
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
         String strJson = "{" +
                 "\"msg\": \"\"," +
                 "\"code\": 0," +
-                "\"data\":"+menuJsonStr+"," +
-                "\"count\": 924," +
+                "\"data\":"+jsonArray+"," +
+                "\"count\":"+count+"," +
                 "\"is\": true," +
                 "\"tip\": \"操作成功！\"" +
                 "}";
@@ -104,22 +98,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<MenuBO> querySupMenuBO() {
-        List<Menu> list = menuDaoImp.query();
-        List<MenuBO> listBO = new ArrayList<>();
-        for (Menu menu:list) {
-            MenuBO menuBO = new MenuBO();
-            menuBO.setMenu(menu);
-            listBO.add(menuBO);
-        }
+    public List<Menu> querySupMenu(Integer pid) {
+        List<Menu> list = menuDaoImp.querySupMenu(pid);
         Menu menu1 = new Menu();
         menu1.setName("无");
         menu1.setPid(0);
         menu1.setId(0);
-        MenuBO menuBO1 = new MenuBO();
-        menuBO1.setMenu(menu1);
-        listBO.add(menuBO1);
-        return listBO;
+        list.add(menu1);
+        return list;
     }
 
     @Override
