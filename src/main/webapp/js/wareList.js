@@ -56,7 +56,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     d.status == "0" ? $("#abc").text("禁用") : $("#abc").text("启用");
                     return d.status == "0" ? "限制使用" : "正常使用";
                 }},*/
-            {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作',  minWidth:150,width:150, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 

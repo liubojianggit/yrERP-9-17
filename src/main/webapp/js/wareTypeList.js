@@ -40,7 +40,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field:'supCode',width:'20%', title: 'supCode'},
             {field:'createTime',width:'20%', title: '创建时间'},
             {field:'createEmp',width:'15%', title: '创建人'},
-            {title: '操作', minWidth:386, templet:'#supplierListBar',fixed:"right",align:"center"}
+            {title: '操作',  minWidth:150,width:150, templet:'#supplierListBar',fixed:"right",align:"center"}
         ]]
     });
 
