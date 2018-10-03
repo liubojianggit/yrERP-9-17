@@ -48,16 +48,16 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'rPhoneNumber', title: '申请退货人联系电话', align:"center", unresize: true},
             {field: 'depotCode', title: '销售商品的仓库编号', align:"center", unresize: true},
             {field: 'states', title: '订单状态', align:"center", unresize: true,templet:function(d){
-                   if(d == 0){
+                   if(d.states == 0){
                         return "驳回";
                     }
-                    else if(d == 1){
+                    else if(d.states == 1){
                         return "销售成功";
                     }
-                    else if(d == 2){
+                    else if(d.states == 2){
                         return "申请退货";
                     }
-                    else if(d == 3){
+                    else if(d.states == 3){
                         return "退货成功";
                     }
                 }},
