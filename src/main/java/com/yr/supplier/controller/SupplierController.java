@@ -91,7 +91,7 @@ public class SupplierController {
             return "{\"code\":2,\"msg\":\"电话格式错误\"}";
         }*/
        supplierBo.getSupplier().setCreateTime(new Date());
-       supplierBo.getSupplier().setCreateEmp("吕");
+      // supplierBo.getSupplier().setCreateEmp("吕");
        //supplierBo.getSupplier().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
         service.add(supplierBo);
             return "{\"code\":1,\"msg\":\"保存成功\"}";
@@ -135,7 +135,7 @@ public class SupplierController {
     public String update(Map<String, Object> map,SupplierBo supplierBo){
         /* 获取String类型的时间 */
         supplierBo.getSupplier().setUpdateTime(new Date());
-        supplierBo.getSupplier().setUpdateEmp("吕");
+       // supplierBo.getSupplier().setUpdateEmp("吕");
         //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
             service.update(supplierBo);
             return "{\"code\":1,\"msg\":\"修改成功\"}";
