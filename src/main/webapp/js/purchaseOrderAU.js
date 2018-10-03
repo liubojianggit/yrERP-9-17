@@ -33,6 +33,7 @@ layui.use(['form','layer','upload','table'],function(){
             },
             success: function(data){
                 if(data.code==1){
+                    alert("=========="+data.code);
                     layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
