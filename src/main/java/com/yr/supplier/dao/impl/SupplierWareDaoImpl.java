@@ -177,4 +177,15 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
         List<SupplierWares> list = query.getResultList();
         return list;
     }
+    /**
+     * 根据供应商商品名称返回供应商商品编号
+     * @param name
+     * @return String
+     */
+    @Override
+    public String getSupplierWareCode(String name) {
+        String jpql = "select s.code from SupplierWares s where s.name = ?";
+        String wareName = (String) entityManager.createQuery(jpql).getSingleResult();
+        return wareName;
+    }
 }
