@@ -89,7 +89,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                         return "退货成功";
                     }
                 }},
-            {title: '操作', minWidth:200, templet:'#purchaseBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#purchaseBar',fixed:"right",align:"center"}
         ]]
     });
 
