@@ -56,6 +56,7 @@
             <form:select path="supplier.rank" id="rankId" items="${rankList}"></form:select>
         </div>
     </div>
+    <input type="hidden" name="supplier.createEmp" value="${sessionScope.user.getName()}">
 
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">

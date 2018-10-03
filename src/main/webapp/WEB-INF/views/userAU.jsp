@@ -62,6 +62,7 @@
                 },
             });
         }
+        $("#oldPassword").val($("#password").val());//旧密码等于新密码，实现回显
 	});
 
 
@@ -88,7 +89,7 @@
 				<img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
 				<p id="demoText"></p>
 			</div>
-			<input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images">
+			<input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images\587c589d26802.jpg">
 			<!-- 上传头像成功后保存的隐藏框 -->
 			<button type="button" class="layui-btn" id="test1">上传头像</button>
 		</c:if>
@@ -130,7 +131,7 @@
 	<div class="layui-inline">
 		<label class="layui-form-label">生日</label>
 		<div class="layui-input-inline">
-			<input type="text" class="layui-input" id="birthday" placeholder="请输入生日：yyyy-MM-dd">
+			<form:input class="layui-input" path="birthday" placeholder="请选择生日" />
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -142,7 +143,7 @@
 	<div class="magb15 layui-col-md4 layui-col-xs12">
 		<label class="layui-form-label">性别</label>
 		<div class="layui-input-block">
-			<form:radiobuttons type="radio" path="sex" items="${sexs }"/>
+			<form:radiobuttons path="sex" items="${sexs }"/>
 		</div>
 	</div>
 	</div>

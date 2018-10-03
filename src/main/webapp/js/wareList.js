@@ -39,9 +39,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'type', title: '商品类别', align:"center",unresize: true},
             {field: 'name', title: '商品名', align:"center",unresize: true},
             /*这里获取的只是头像的路径，但是在前台是需要显示图片的，所以对headUrl进行处理，如果返回的数据需要处理都是用templet:function(d){ return '处理的数据' } */
-            /* {field: 'warePhoto', title: '头像',  align:'center',templet:function(d){
-                     return '<img style="width: 28px;height: 28px;"  src="'+path+"/userTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
-                 }},*/
+            {field: 'warePhoto', title: '头像',  align:'center',templet:function(d){
+                     return '<img style="width: 28px;height: 28px;"  src="'+path+"/wares/waresTable/icons/"+d.id+'"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
+                 }},
 
             {field: 'brand', title: '品牌', align:"center", unresize: true},
             {field: 'inUnitPrice', title: '采购单价', align:"center", unresize: true},

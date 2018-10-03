@@ -144,7 +144,8 @@ public class RoleDaoImpl implements RoleDao {
     public void deletePermissions(Integer id){
         Role role = entityManager.find(Role.class, id);//获得User对象
         Set<Permission> permission = role.getPermission();//获得user对象关联的role对象
-        role.getPermission().remove(permission);//将所有的用户关联的role删除,这时会将关联表一起删除，如果设置了remove，角色也会被删除
+        role.getPermission().removeAll(permission);//将关联集合删除掉
+        entityManager.merge(role);
     }
 
     /**
@@ -161,5 +162,26 @@ public class RoleDaoImpl implements RoleDao {
         }
         role.setPermission(permissions);
         entityManager.merge(role);
+    }
+
+    /**
+     * 返回所有角色列表
+     * @return List<Role>
+     */
+    public List<Role> getRoleList(){
+        String jpql = "select r from Role r where 1 = 1";
+        List<Role> list = entityManager.createQuery(jpql).getResultList();
+        return list;
+    }
+
+    /**
+     * 根据角色获取所有的权限
+     * @param id
+     * @return List<Permission>
+     */
+    public List<Permission> getRole(Integer id){
+        String jpql = "select p from Role r inner join r.permission p where r.id = ?1";
+        List<Permission> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
+        return list;
     }
 }

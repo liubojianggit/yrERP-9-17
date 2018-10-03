@@ -33,7 +33,7 @@ public class JedisManager {
     public Jedis getJedis() {
         Jedis jedis = null;
         try {
-            jedis = getJedisPool().getResource();
+             jedis = getJedisPool().getResource();
         } catch (JedisConnectionException e) {
         	String message = StringUtils.trim(e.getMessage());
         	if("Could not get a resource from the pool".equalsIgnoreCase(message)){
@@ -64,8 +64,7 @@ public class JedisManager {
             getJedisPool().returnBrokenResource(jedis);
         }else{
             getJedisPool().returnResource(jedis);
-        }
-        */
+        }*/
         jedis.close();
     }
 

@@ -27,12 +27,16 @@
 				</div>
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addNews_btn">添加角色</a>
-			</div>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-			</div>
+			<shiro:hasPermission name="/u_role/roleTable/add/GET">
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-normal addNews_btn">添加角色</a>
+				</div>
+			</shiro:hasPermission>
+			<shiro:hasPermission name="/u_role/roleTable/*/DELETE">
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+				</div>
+			</shiro:hasPermission>
 		</form>
 	</blockquote>
 	<table id="roleList" lay-filter="roleList"></table>
@@ -40,9 +44,15 @@
 	<!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
 	<!--操作-->
 	<script type="text/html" id="roleListBar">
-		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="auth"><i class="layui-icon"></i>角色权限</a>
-		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+		<shiro:hasPermission name="/u_role/roleTable/getPermission/GET">
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="auth"><i class="layui-icon"></i>角色权限</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="/u_role/roleTable/*/GET">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="/u_role/roleTable/*/DELETE">
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+		</shiro:hasPermission>
 	</script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>

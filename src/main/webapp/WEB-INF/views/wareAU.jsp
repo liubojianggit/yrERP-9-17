@@ -64,17 +64,17 @@
         <input type="hidden" name="id" value="${wareBo.getId() }">
     </c:if>
     <!-- 上传头像 -->               <!-- div居中 -->
-    <%--  <div class="layui-upload" align="center">
-          <c:if test="${wareBo.ware.id != null }">
+      <div class="layui-upload" align="center">
+          <c:if test="${wareBo.id != null }">
               <div class="layui-upload-list">
                   <!-- 头像回显的样式，这里是圆形 -->
-                  <img src="<%=request.getContextPath() %>/userTable/icons/"+${wareBO.ware.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
+                  <img src="<%=request.getContextPath() %>/wareTable/icons/"+${wareBo.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
                   <p id="demoText"></p>
               </div>
               <input type="hidden" name="headUrl" id="headUrl2" value=""/>
               <button type="button" class="layui-btn" id="test2">修改图片</button>
           </c:if>
-          <c:if test="${userBO.user.id == null }">
+          <c:if test="${wareBo.id == null }">
               <div class="layui-upload-list">
                   <!-- 头像回显的样式，这里是圆形 -->
                   <img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">
@@ -85,7 +85,7 @@
               <input type="hidden" name="headUrl" id="headUrl" value="">
           </c:if>
 
-      </div>--%>
+      </div>
 
 
     <div class="layui-form-item layui-row layui-col-xs12">

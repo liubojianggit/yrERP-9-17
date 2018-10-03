@@ -24,7 +24,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         where:{//需要传入的值
             "permission.name": $("#pName").val(),  //搜索的关键字
             "permission.url": $("#pUrl").val(),  //搜索的关键字
-            "permission.method": $("#pMethod").val(),  //搜索的关键字
+            "permission.method": $("#pMethod").val()  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
@@ -53,7 +53,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             where:{//需要传入的值
                 "permission.name": $("#pName").val(),  //搜索的关键字
                 "permission.url": $("#pUrl").val(),  //搜索的关键字
-                "permission.method": $("#pMethod").val(),  //搜索的关键字
+                "permission.method": $("#pMethod").val()  //搜索的关键字
             }
         })
     });

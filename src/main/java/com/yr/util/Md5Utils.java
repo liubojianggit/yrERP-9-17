@@ -19,4 +19,5 @@ public class Md5Utils {
         Object result = new SimpleHash(hashAlgorithmName, password, salt, hashIterations);
         return result.toString();
     }
+
 }

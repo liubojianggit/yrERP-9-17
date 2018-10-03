@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.yr.entitys.user.User;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -135,10 +136,11 @@ public class JsonUtils {
 	}
 
 	/**
-	 * 
-	 * @param beans
-	 * @param _no_changes
-	 * @return
+	 * 屏蔽list里面的属性
+	 * @param beans 集合
+	 * @param _nory_changes 字段名
+	 * @param nory 为true只显示_nory_changes的名字，为false将_nory_changes字段排除
+	 * @return String
 	 */
 	public static String beanListToJson(List<?> beans, String[] _nory_changes, boolean nory) {
 

@@ -3,6 +3,7 @@ package com.yr.user.dao.impl;
 import com.yr.entitys.bo.user.PermissionBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.user.dao.PermissionDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -173,5 +174,15 @@ public class PermissionDaoImpl implements PermissionDao {
         }
         map.put(0,"无");
         return map;
+    }
+
+    /**
+     * 返回所有角色列表
+     * @return List<Permission>
+     */
+    public List<Permission> getRoleList(){
+        String jpql = "select p from Permission p";
+        List<Permission> list = entityManager.createQuery(jpql).getResultList();
+        return list;
     }
 }
