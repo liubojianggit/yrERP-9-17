@@ -20,11 +20,11 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                   <input type="text" class="layui-input searchVal" id="wareType" placeholder="请输入商品类型：" />
-                    <input type="text" class="layui-input searchVal" id="minInUnitPrice" placeholder="请输入采购最低价：" />
-                    <input type="text" class="layui-input searchVal" id="maxInUnitPrice" value="" placeholder="请输入采购最高价" />
-                    <input type="text" class="layui-input searchVal" id="minOutUnitPrice" placeholder="请输入销售最低价：" />
-                    <input type="text" class="layui-input searchVal" id="maxOutUnitPrice" value="" placeholder="请输入销售最高价" />
+                    <input type="text" class="layui-input searchVal" id="type" placeholder="请输入商品类型：" />
+                    <%--          <input type="text" class="layui-input searchVal" id="minInUnitPrice" placeholder="请输入采购最低价：" />
+                              <input type="text" class="layui-input searchVal" id="maxInUnitPrice" value="" placeholder="请输入采购最高价" />
+                              <input type="text" class="layui-input searchVal" id="minOutUnitPrice" placeholder="请输入销售最低价：" />
+                              <input type="text" class="layui-input searchVal" id="maxOutUnitPrice" value="" placeholder="请输入销售最高价" />--%>
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
@@ -46,6 +46,6 @@
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/userList.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/wareList.js?"+new Date().getTime()></script>
 </body>
 </html>

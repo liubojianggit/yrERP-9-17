@@ -1,6 +1,6 @@
 package com.yr.order.service;
 
-import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 
@@ -13,7 +13,7 @@ public interface PurchaseOrderService {
      * @return
      */
     //Page<PurchaseOrder> query(Page<purchaseOrderBO> page);
-     String  query(Page<purchaseOrderBO> page);
+     String query(Page<PurchaseOrderBo> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
@@ -57,5 +57,5 @@ public interface PurchaseOrderService {
      * 根据id批量删除
      * @param ids
      */
-    void deleteBatch(List<Integer> ids);
+    void deleteBatch(Integer[] ids);
 }

@@ -98,5 +98,5 @@ public interface UserService {
      * 返回user数据集合
      * @return
      */
-    List<User> getUser();
+    List<User> queryUser();
 }

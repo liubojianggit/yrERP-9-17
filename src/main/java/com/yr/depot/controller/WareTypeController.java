@@ -25,7 +25,7 @@ public class WareTypeController {
             map.put("wareType", wts.getWareType(id));
         }
     }
-    /**
+    /**ware_type/ware_typeTable
      * 用于跳转数据查询页面
      * @return
      */
@@ -62,7 +62,7 @@ public class WareTypeController {
     @ResponseBody
     public String addWare(@ModelAttribute("wareType") WareType waretype) {
         waretype.setCreateEmp("wangyong");
-       boolean bool = wts.add(waretype);
+        boolean bool = wts.add(waretype);
         if(bool){
             return "{\"code\":1,\"msg\":\"添加成功\"}";
         }else{

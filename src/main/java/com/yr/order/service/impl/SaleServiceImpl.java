@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.yr.depot.dao.WareDao;
 import com.yr.depot.dao.impl.WareDaoImpl;
 import com.yr.depot.service.WareService;
+import com.yr.entitys.depot.Ware;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.JsonUtils;
@@ -27,7 +28,8 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     private SaleDao saleDao;
 
-
+    @Autowired
+    private WareService ws;//注入商品service的接口
 
     /**
      * 以分页的形式查询sale表的数据
@@ -35,11 +37,18 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public String query(Page<SaleOrderBO> page) {
+       /* Double wareCount = 0D;// Double类型，后面加D辨认类型
+        List<Ware> listWare = ws.getWare();//获取商品单价
+        for (Ware ware : listWare) {
+            wareCount = ware.getOutUnitPrice();
+        } // 单个商品单价*/
         page.setTotalRecord(saleDao.getCount(page));//查询总条数加入page中
         List<SaleOrderBO>list = saleDao.query(page);//分页查询的数据
-        String jsonStr = JsonUtils.listToJson(list);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonStr+"}";
-        return  json;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     @Override

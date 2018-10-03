@@ -22,7 +22,7 @@ public interface WareDao {
      * @param ware
      * @return List<Ware>数组
      */
-    public List<WareBo> query(Page<WareBo> ware);
+    public List<Ware> query(Page<WareBo> ware);
 
     /**
      * 添加数据
@@ -56,4 +56,8 @@ public interface WareDao {
      * 获取商品的list集合
      * */
     public List<Ware> getWare();
+    /**
+     * 用于判断是否存在相同的code的商品
+     */
+    public Long getWareByCode(Ware ware);
 }

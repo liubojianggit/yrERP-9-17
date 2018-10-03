@@ -1,7 +1,10 @@
 package com.yr.entitys.supplier;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 供应商品实体类
@@ -28,12 +31,12 @@ public class SupplierWares implements Serializable {
     private String brand;//供应商品的品牌，不能为null
     @Column(nullable = false)
     private String addr;//供应商品的地址，不能为null
-    @Column(nullable = false,columnDefinition = "DATE")
-    private String createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date createTime;
     @Column(nullable = false)
     private String createEmp;
-    @Column(columnDefinition = "DATE")
-    private String updateTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date updateTime;
     private  String updateEmp;
 
     public Integer getId() {
@@ -52,9 +55,12 @@ public class SupplierWares implements Serializable {
         this.code = code;
     }
 
-
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSuppPhoto() {
@@ -63,10 +69,6 @@ public class SupplierWares implements Serializable {
 
     public void setSuppPhoto(String suppPhoto) {
         this.suppPhoto = suppPhoto;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
@@ -109,11 +111,11 @@ public class SupplierWares implements Serializable {
         this.addr = addr;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -125,11 +127,11 @@ public class SupplierWares implements Serializable {
         this.createEmp = createEmp;
     }
 
-    public String getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(String updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -153,9 +155,9 @@ public class SupplierWares implements Serializable {
                 ", unitPrice=" + unitPrice +
                 ", brand='" + brand + '\'' +
                 ", addr='" + addr + '\'' +
-                ", createTime='" + createTime + '\'' +
+                ", createTime=" + createTime +
                 ", createEmp='" + createEmp + '\'' +
-                ", updateTime='" + updateTime + '\'' +
+                ", updateTime=" + updateTime +
                 ", updateEmp='" + updateEmp + '\'' +
                 '}';
     }

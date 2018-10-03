@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,12 +105,14 @@ public class DepartmentDaoImpl implements DepartmentDao {
     }
 
     /**
-     * 删除部门
+     * 删除 和批量删除
+     * @param id
      */
-    @Override
-    public void delete(Integer id) {
-        Department department=entityManager.find(Department.class, id);
-        entityManager.remove(department);
+    public void delete(Integer [] id){
+        List<Integer> list = Arrays.asList(id);//将数组转成list
+        String jpql = "delete from Department u where u.id in(:ids)";
+        Query query = entityManager.createQuery(jpql).setParameter("ids",list);
+        query.executeUpdate();
     }
 
     /**
@@ -117,6 +120,10 @@ public class DepartmentDaoImpl implements DepartmentDao {
      */
     @Override
     public void update(Department department) {
+        department.setCreateEmp("宋春元");
+        department.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        department.setUpdateEmp("宋春元");
+        department.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         entityManager.merge(department);
     }
 

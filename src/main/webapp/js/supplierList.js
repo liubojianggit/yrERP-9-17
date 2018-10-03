@@ -22,6 +22,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },where:{//需要传入的值
+            "name": $("#supplierName").val(),  //搜索的关键字
         },
 
         cellMinWidth : 95,
@@ -45,18 +47,16 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
+        //if($(".searchVal").val() != ''){
             table.reload("supplierListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "supplier.name": $("#name").val(),  //搜索的关键字
+                    "name": $("#supplierName").val(),  //搜索的关键字
                 }
             })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
+        //}
     });
 
     //添加用户
@@ -64,17 +64,18 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
+            area : ['390px' , '340px'],
             content : path+"/supplier/supplierTable/add",//发送请求
             end: function(){
                 window.location.href= path+"/supplier/supplierTable";
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addDepot();
@@ -128,24 +129,26 @@ layui.use(['form','layer','table','laytpl'],function(){
                     url: path+'/supplier/supplierTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {_method:'delete'},
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        setTimeout(function(){
+                            window.location.href = path+"supplier/supplierTable";
+                        },1200);
+                    },
                     success: function(data){
                         if("1" == data.code){
-                            layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"supplier/supplierTable";
+                            layer.msg(data.msg,{icon:1});
+                            setTimeout(function(){
+                                window.location.href = path+"supplier/supplierTable";
+                            },1200);
                         }else{
-                            layer.msg("未知错误，请联系管理员",{icon:2});
+                            layer.msg(data.msg,{icon:2});
+                            setTimeout(function(){
+                                window.location.href = path+"supplier/supplierTable";
+                            },1200);
                         }
                     }
                 });
-
-
-
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                //    tableIns.reload();
-                //   layer.close(index);
-                // })
                 return false;
             });
         }

@@ -2,12 +2,15 @@ package com.yr.department.controller;
 
 import com.yr.department.service.DepartmentService;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
+import com.yr.entitys.department.Department;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,7 +78,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable/{id}",method=RequestMethod.DELETE,produces="application/json;charset=UTF-8")
-    public String delete(@PathVariable("id") Integer id){
+    public String delete(@PathVariable("id") Integer[] id){
         departmentService.delete(id);//调用删除方法
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
@@ -94,7 +97,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String updates(@ModelAttribute("departmentbo")Departmentbo departmentbo){
+    public String updates(Departmentbo departmentbo){
         departmentService.update(departmentbo);
         return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }

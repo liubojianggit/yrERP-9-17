@@ -15,11 +15,10 @@ layui.use(['form','layer','upload','table'],function(){
         path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
     ;
 
-
+    //页面数据添加
     form.on("submit(addOrder)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
             url: path+'requisition/requisitionTable',
@@ -34,6 +33,7 @@ layui.use(['form','layer','upload','table'],function(){
             },
             success: function(data){
                 if(data.code==1){
+                    alert("=========="+data.code);
                     layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
@@ -51,11 +51,10 @@ layui.use(['form','layer','upload','table'],function(){
         });
         return false;
     })
-
+    //页面修改
     form.on("submit(updateOrder)",function(data){
         //弹出loading
         //var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
-
         $.ajax({
             type: 'post',
             url: path+'requisition/requisitionTable',

@@ -2,6 +2,7 @@ package com.yr.common.controller;
 
 import com.yr.common.service.MenuService;
 import com.yr.entitys.bo.menuBO.MenuBO;
+import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,8 +39,9 @@ public class MenuController {
      */
     @RequestMapping(value="/menuTable/list", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String queryMenus(){
-        return menuService.queryMenus();
+    public String queryMenus(MenuBO menuBO, Page<MenuBO> page){
+        page.setT(menuBO);
+        return menuService.queryMenus(page);
     }
 
     /**
@@ -80,7 +82,7 @@ public class MenuController {
     @RequestMapping(value="/menuTable/add", method = RequestMethod.GET)
     public String jumpAdd(Map<String, Object> map){
         map.put("menuBO", new MenuBO());//传入一个空的user对象
-        map.put("supMenu",menuService.querySupMenuBO());//查询获取父菜单list集合（父菜单的pid为0）
+        map.put("supMenu",menuService.querySupMenu(0));//查询获取父菜单list集合（父菜单的pid为0）
         return "menuAU";
     }
 
@@ -104,7 +106,7 @@ public class MenuController {
     @RequestMapping(value="/menuTable/{id}",method=RequestMethod.GET)
     public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
         map.put("menuBO", menuService.getOneMenu(id));//根据id获取对象放入request中
-        map.put("supMenu",menuService.querySupMenuBO());//查询获取父菜单list集合（父菜单的pid为0）
+        map.put("supMenu",menuService.querySupMenu(0));//查询获取父菜单list集合（父菜单的pid为0）
         return "menuAU";
     }
 

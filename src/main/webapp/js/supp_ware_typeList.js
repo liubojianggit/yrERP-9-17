@@ -18,7 +18,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#supplierList',
-        url :path+ 'supplier/supplierTable/list',
+        url :path+ 'suppWareType/suppWareTypeTable/list',
         /* parseData: function(res){ //res 即为原始返回的数据
              return {
                  //"code": res.status, //解析接口状态
@@ -27,33 +27,35 @@ layui.use(['form','layer','table','laytpl'],function(){
                  "data": res.pageDataList //解析数据列表
              };
          },*/
-        /* request: {
-             pageName: 'currentPage' //页码的参数名称，默认：page
-             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
-         },
-         response: {
-             // statusName: 'status' //规定数据状态的字段名称，默认：code
-             //,statusCode: 200 //规定成功的状态码，默认：0
-             //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-             countName: 'totalRecord' //规定数据总数的字段名称，默认：count
-             ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
-         },*/
+        request: {
+            pageName: 'currentPage' //页码的参数名称，默认：page
+            ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },
+        where:{//需要传入的值
+            "name": $("#type").val() //搜索的关键字
+        },
+        /*response: {
+            // statusName: 'status' //规定数据状态的字段名称，默认：code
+            //,statusCode: 200 //规定成功的状态码，默认：0
+            //,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+            countName: 'totalRecord' //规定数据总数的字段名称，默认：count
+            ,dataName: 'pageData' //规定数据列表的字段名称，默认：data
+        },*/
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,25,50,100],
         limit : 10,
-        id : "depotListTable",
+        id : "supplierListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
-            {type:'numbers',title:'编号',width:50},
-            {field: 'name', title: '供应商名称', align:"center",unresize: true},
-            {field: 'code', title: '编号', align:"center",unresize: true},
-            {field: 'phoneNumber', title: '联系电话', align:"center", unresize: true},
-            {field: 'addr', title: '地址', align:"center", unresize: true},
-            {field: 'rank', title: '级别', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
+            {field:'name', edit:'name',width:'15%', title: '类型'},
+            {field:'code',width:'15%', title: '类型编号'},
+            {field:'supCode',width:'20%', title: '上级商品类别编号'},
+            {field:'createTime',width:'20%', title: '创建时间'},
+            {field:'createEmp',width:'15%', title: '创建人'},
+            {title: '操作', minWidth:386, templet:'#supplierListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -65,30 +67,31 @@ layui.use(['form','layer','table','laytpl'],function(){
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    "depot.name": $("#depotName").val(),  //搜索的关键字
+                    "name": $("#type").val(),  //搜索的关键字
                 }
             })
         }else{
-            layer.msg("请输入搜索的内容");
+            window.location.href = path+"/ware_type/ware_typeTable";
         }
     });
 
     //添加用户
     function addDepot(){
         var index = layui.layer.open({
-            title : "添加用户",
+            title : "添加供应商品类型",
             type : 2,
-            content : path+"/supplier/supplierTable/add",//发送请求
+            area : ['390px' , '340px'],
+            content : path+"suppWareType/suppWareTypeTable/add",//发送请求
             end: function(){
-                window.location.href='<%=request.getContextPath() %>/supplier/supplierTable';
+                window.location.href=path+'suppWareType/suppWareTypeTable';
             }
         })
-        layui.layer.full(index);
+       /* layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addDepot();
@@ -103,7 +106,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             for (var i in data) {
                 newsId.push(data[i].newsId);
             }
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的商品类型？', {icon: 3, title: '提示信息'}, function (index) {
                 // $.get("删除文章接口",{
                 //     newsId : newsId  //将需要删除的newsId作为参数传入
                 // },function(data){
@@ -112,12 +115,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                 // })
             })
         }else{
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的商品类型");
         }
     })
 
     //列表操作
-    table.on('tool(depotList)', function(obj){
+    table.on('tool(supplierList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
@@ -127,41 +130,41 @@ layui.use(['form','layer','table','laytpl'],function(){
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['800px' , '520px'],
-                content: path+'/supplier/supplierTable/'+data.id,
+                content: path+'suppWareType/suppWareTypeTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/supplier/supplierTable";
+                    window.location.href = path+"suppWareType/suppWareTypeTable";
                 }
             });
 
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
+            layer.confirm('确定删除此商品类型？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'/supplier/supplierTable/'+data.id,//请求登录验证接口
+                    url: path+'suppWareType/suppWareTypeTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {_method:'delete'},
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        setTimeout(function(){
+                            window.location.href = path+"/suppWareType/suppWareTypeTable";
+                        },1200);
+                    },
                     success: function(data){
                         if("1" == data.code){
-                            layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"/supplier/supplierTable";
-
+                            layer.msg(data.msg,{icon:1});
+                            setTimeout(function(){
+                                window.location.href = path+"/suppWareType/suppWareTypeTable";
+                            },1200);
                         }else{
-                            layer.msg("删除用户失败",{icon:2});
-                            window.location.href = path+"/supplier/supplierTable";
+                            layer.msg(data.msg,{icon:2});
+                            setTimeout(function(){
+                                window.location.href = path+"/suppWareType/suppWareTypeTable";
+                            },1200);
                         }
                     }
                 });
-
-
-
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                //    tableIns.reload();
-                //   layer.close(index);
-                // })
                 return false;
             });
         }

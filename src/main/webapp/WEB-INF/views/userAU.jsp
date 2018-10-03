@@ -20,6 +20,9 @@
 </head>
 <script type="text/javascript">
 	$(function(){
+        if (${user.id == null }){
+            $("#depaCode").val("");
+        }
 	    $("#password").change(function(){
             var oldPassword = $("#oldPassword").val();//获得第一次输入的密码
             var newPassword = $(this).val();//获得
@@ -61,9 +64,11 @@
         }
         $("#oldPassword").val($("#password").val());//旧密码等于新密码，实现回显
 	});
+
+
 </script>
 <body class="childrenBody">
-<form:form style="width:80%;" id="form2" method="POST" modelAttribute="user">
+<form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="user">
 	<c:if test="${user.id != null }">
 		<input type="hidden" name="_method" value="PUT"/>
 		<input type="hidden" id="id" name="id" value="${user.getId() }">
@@ -73,7 +78,7 @@
 		<c:if test="${user.id != null }">
 			<div class="layui-upload-list">
 				<!-- 头像回显的样式，这里是圆形 -->
-				<img src="${pageContext.request.contextPath}/u_user/userTable/icons/${user.id }" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="userFace">
+				<img src="${pageContext.request.contextPath}/u_user/userTable/icons/${user.id }" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
 				<p id="demoText"></p>
 			</div>
 			<input type="hidden" id="filesCopy" name="filesCopy" value="${user.photo }"><!-- 隐藏框是存图片路径 -->
@@ -81,7 +86,7 @@
 		</c:if>
 		<c:if test="${user.id == null }">
 			<div class="layui-upload-list">
-				<img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="userFace">
+				<img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
 				<p id="demoText"></p>
 			</div>
 			<input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images\587c589d26802.jpg">
@@ -120,7 +125,7 @@
 	<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">所属部门</label>
 		<div class="layui-input-inline">
-			<form:select path="depaCode" items="${depaList }" cssStyle="width:80px;height: 40px;"></form:select>
+			<form:select path="depaCode" id="depaCode" items="${depaList }"></form:select>
 		</div>
 	</div>
 	<div class="layui-inline">
@@ -138,7 +143,7 @@
 	<div class="magb15 layui-col-md4 layui-col-xs12">
 		<label class="layui-form-label">性别</label>
 		<div class="layui-input-block">
-			<form:radiobuttons path="sex" items="${sexs }"/>
+			<form:radiobuttons type="radio" path="sex" items="${sexs }"/>
 		</div>
 	</div>
 	</div>
@@ -153,12 +158,12 @@
 		<div class="layui-input-block">
 			<c:if test="${user.id == null }">
 				<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="addUser">立即添加</button>
+				<button type="button" id="resets" class="layui-btn layui-btn-primary">重置</button>
 			</c:if>
 			<c:if test="${user.id != null }">
 				<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="updateUser">确认修改</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 			</c:if>
-			<button type="reset" id="resets" class="layui-btn layui-btn-primary">重置</button>
-			<button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
 		</div>
 	</div>
 </form:form>

@@ -40,7 +40,7 @@ public class DepotDaoImpl implements DepotDao {
         }if(name != null && name !="" ){
             jpql +=" and d.name like :name ";
         }if (addr != null && addr !=""){
-
+            jpql +=" and d.addr like :addr ";
         }
 
         Query query =entityManager.createQuery(jpql);
@@ -73,7 +73,7 @@ public class DepotDaoImpl implements DepotDao {
         }if(name != null && name !="" ){
             jpql +=" and d.name like :name ";
         }if (addr != null && addr !=""){
-
+            jpql +=" and d.addr like :addr ";
         }
 
         Query query =entityManager.createQuery(jpql);

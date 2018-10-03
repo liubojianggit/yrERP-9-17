@@ -36,7 +36,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type:'numbers',title:'编号',width:50},
             {field: 'name', title: '部门名称', align:"center",unresize: true},
             {field: 'code', title: '部门编号', align:"center", unresize: true},
-            {field: 'center', title: 'supCode', align:"center", unresize: true},
+            {field: 'supCode', title: 'supCode', align:"center", unresize: true},
             {field: 'createTime', title: '创建时间', align:"center", unresize: true},
             {field: 'createEmp', title: '创建人', align:"center", unresize: true},
             {title: '操作', minWidth:386, templet:'#departmentListBar',fixed:"right",align:"center"}
@@ -60,17 +60,18 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加部门",
             type : 2,
+            area: ['390px', '275px'],
             content : path+"department/departmentTable/add",//发送请求
             end: function(){
                 window.location.href=path+'department/departmentTable';
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addDepartment();
@@ -79,7 +80,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //批量删除
     $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('departmentListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
@@ -119,12 +120,21 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(departmentList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"department/departmentTable/"+data.id;
+            layer.open({
+                type: 2,
+                title: '修改部门',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['390px', '275px'],
+                content: path+'/department/departmentTable/'+data.id,
+                end: function(){
+                    window.location.href = path+"/department/departmentTable";
+                }
+            });
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){

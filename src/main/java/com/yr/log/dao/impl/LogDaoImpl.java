@@ -2,16 +2,12 @@ package com.yr.log.dao.impl;
 
 import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.LogBO.LogBo;
-import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
 import com.yr.log.dao.LogDao;
-import org.apache.xmlbeans.impl.values.JavaQNameHolder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -19,9 +15,6 @@ public class LogDaoImpl implements LogDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-
-
     /**
      * 以分页的形式查出log表的数据
      * @param page
@@ -29,7 +22,7 @@ public class LogDaoImpl implements LogDao {
      */
     @Override
     public List<LogBo> query(Page<LogBo> page) {
-        String jpql = "select o from Log o where 1 = 1 ";
+        String jpql = "select g from Log g where 1 = 1 ";
         //查询分页
         List<LogBo> logBoList = entityManager.createQuery(jpql).setFirstResult(page.getStart()).setMaxResults(page.getPageSize()).getResultList();
         return logBoList;
@@ -42,7 +35,7 @@ public class LogDaoImpl implements LogDao {
      */
     @Override
     public Long getCount(Page<LogBo> page) {
-        String jpql = "select count(*) from Log o where 1 = 1 ";
+        String jpql = "select  count(*) from Log g where 1 = 1 ";
         Long result = (Long) entityManager.createQuery(jpql).getSingleResult();
         return result;
     }

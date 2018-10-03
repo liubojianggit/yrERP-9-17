@@ -23,7 +23,7 @@ public interface WareService {
      * @param ware
      * @return List<Ware>数组
      */
-    public Page<WareBo> query(Page<WareBo> ware);
+    public String query(Page<WareBo> ware);
 
     /**
      * 添加数据
@@ -49,4 +49,8 @@ public interface WareService {
      * 获取商品的list集合
      * */
     public List<Ware> getWare();
+    /**
+     * 用于判断是否存在相同的code的商品
+     */
+    public boolean getWareByCode(Ware ware);
 }

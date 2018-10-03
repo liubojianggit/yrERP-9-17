@@ -1,10 +1,12 @@
 package com.yr.depot.controller;
 
 import com.yr.core.redis.JedisManager;
+import com.yr.depot.service.WareTypeService;
 import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.depot.service.WareService;
+import com.yr.entitys.user.User;
 import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,47 +26,66 @@ import java.util.Map;
  * 仓库商品的controller层
  */
 @Controller
-@Repository(value = "wares")
+@RequestMapping(value = "wares")
 public class WareController {
     @Autowired
     private WareService ws;
     @Autowired
     private JedisManager jedisManager;
     public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
-
+    @Autowired
+    private WareTypeService wts;
     @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
-if (id!=null){
-    map.put("ware",ws.getWare(id));
-}
-}
+        if (id!=null){
+            map.put("wareBo",ws.getWare(id));
+        }
+    }
     /**
      * 用于跳转数据查询页面
      * @return
      */
-    @RequestMapping(value = "waresTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "waresTable",method = RequestMethod.GET)
     public String getListPage(){
-        return "";
+        return "wareList";
     }
     /**
      * 用于跳转到添加页面和修改页面
      * @return
      */
-    @RequestMapping(value = "waresTable/addAndUpdate",method = RequestMethod.GET)
-    public String getAddPage(){
-        return "";
+    @RequestMapping(value = "waresTable/add",method = RequestMethod.GET)
+    public String getAddPage(Map<String,Object>map){
+        map.put("wareBo",new Ware());
+        map.put("wares",wts.getWareType());
+        return "wareAU";
     }
-
+    /**
+     * 用于跳转到添加页面和修改页面
+     * @return
+     */
+    @RequestMapping(value = "waresTable/{id}",method = RequestMethod.GET)
+    public String getUpdatePage(@PathVariable Integer id,Map<String,Object>map){
+        map.put("wareBo",ws.getWare(id));
+        map.put("wares",wts.getWareType());
+        return "wareAU";
+    }
     /**
      * 商品添加方法，用于前台添加数据
      * @param ware
      * @return
      */
-    @RequestMapping(value = "waresTable",method =RequestMethod.POST)
-public String addWare(@ModelAttribute("ware")Ware ware){
-   ws.add(ware);
-    return "";
-}
+    @RequestMapping(value = "waresTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String addWare(@ModelAttribute("wareBo")Ware ware,HttpServletRequest request){
+        System.out.println("============="+((User)request.getSession().getAttribute("user")).getName());
+       ware.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
+       boolean bool = ws.add(ware);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"添加成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"添加失败\"}";
+        }
+    }
     /**
      * 实现静态头像上传，这里先将图片上传到服务器上
      * @param file
@@ -72,7 +94,7 @@ public String addWare(@ModelAttribute("ware")Ware ware){
      * @return Map<String,Object>
      * @throws IOException
      */
-    @RequestMapping(value="/waresTable/upload",method=RequestMethod.POST)
+    @RequestMapping(value="waresTable/upload",method=RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
@@ -97,11 +119,16 @@ public String addWare(@ModelAttribute("ware")Ware ware){
      * @param id
      * @return
      */
-    @RequestMapping(value = "waresTable",method = RequestMethod.DELETE)
-public String deleteWare(@PathVariable Integer id){
-        ws.delete(id);
-        return "";
-}
+    @RequestMapping(value = "waresTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String deleteWare(@PathVariable Integer id){
+        boolean bool = ws.delete(id);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"删除成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"删除失败\"}";
+        }
+    }
 
     /**
      * 根据id来修改商品的信息
@@ -109,10 +136,17 @@ public String deleteWare(@PathVariable Integer id){
      * @param map
      * @return
      */
-    @RequestMapping(value = "waresTable",method = RequestMethod.PUT)
-public String updateWare(@ModelAttribute("ware") Ware ware,Map<String,Object>map){
-ws.update(ware);
-        return"";
+    @RequestMapping(value = "waresTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String updateWare(@ModelAttribute("wareBo") Ware ware,Map<String,Object>map,HttpServletRequest request){
+        ware.setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
+        System.out.println(ware);
+        boolean bool = ws.update(ware);
+        if(bool){
+            return "{\"code\":1,\"msg\":\"修改成功\"}";
+        }else{
+            return "{\"code\":2,\"msg\":\"修改失败\"}";
+        }
     }
     /**
      * 商品查询方法，前台可以通过这个方法进行数据的查询
@@ -120,13 +154,38 @@ ws.update(ware);
      * @param map
      * @return 查询数据
      */
-    @RequestMapping(value = "waresTable",method = RequestMethod.GET)
+    @RequestMapping(value = "waresTable/list",method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public Page<WareBo> queryWare(Page<WareBo> ware, Map<String,Object>map){
-        ware = ws.query(ware);
-        map.put("ware",ware);
-        return ware;
+    public String queryWare(Page<WareBo> ware,WareBo wares, Map<String,Object>map){
+        ware.setT(wares);
+        String json = ws.query(ware);
+        map.put("wareBo",json);
+        return json;
     }
 
-
+   @RequestMapping(value = "waresTable/checkTypeCode",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+   @ResponseBody
+    public String checkTypeCode(Ware ware){
+        boolean bool = ws.getWareByCode(ware);
+        if(bool){
+            return "true";
+        }else{
+            return "false";
+        }
+   }
+    /**
+     * 通过用户的id请求返回图像的字节流
+     *
+     * 不需要
+     */
+    @RequestMapping("/waresTable/icons/{id}")
+    public void getIcons(@PathVariable(value="id") Integer id ,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Ware ware = ws.getWare(id);//根据id获得user对象
+        byte[] data = FileUtils.getFileFlow(ware.getWarePhoto());//调用方法将流传出
+        response.setContentType("image/png");
+        OutputStream stream = response.getOutputStream();
+        stream.write(data);//将图片以流的形式返回出去
+        stream.flush();
+        stream.close();
+    }
 }

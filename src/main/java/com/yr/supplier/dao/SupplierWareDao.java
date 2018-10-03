@@ -16,7 +16,7 @@ public interface SupplierWareDao {
      * @param sw
      * @return
      */
-    public boolean add(SupplierWares sw);
+     public void add(SupplierWareBo sw);
 
     /**
      * 根据id来给供应商品表删除数据
@@ -24,7 +24,7 @@ public interface SupplierWareDao {
      * @param id
      * @return
      */
-    public boolean delete(Integer id);
+    public void delete(Integer id);
 
     /**
      * 根据sw来给供应商品表修改数据
@@ -32,7 +32,7 @@ public interface SupplierWareDao {
      * @param sw
      * @return
      */
-    public boolean update(SupplierWares sw);
+   public void update(SupplierWareBo sw);
 
     /**
      * 根据page中的信息去供应商品表中查询数据
@@ -47,7 +47,7 @@ public interface SupplierWareDao {
      * @param id
      * @return
      */
-    public SupplierWares getSupplierWare(Integer id);
+    public SupplierWares getById(Integer id);
 
     /**
      * 根据page中的信息去供应商品表中查询数目
@@ -63,4 +63,15 @@ public interface SupplierWareDao {
      * @return
      */
     public SupplierWares getSuppLierWareByCode(String code);
+    /**
+     * 供应商查询所有数据存放list中
+     */
+    List<SupplierWares>  queryList();
+
+    /**
+     * 根据供应商商品名称返回供应商商品编号
+     * @param name
+     * @return String
+     */
+    String getSupplierWareCode(String name);
 }

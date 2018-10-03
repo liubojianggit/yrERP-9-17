@@ -44,13 +44,6 @@
         </div>
     </div>
 
-    <%--<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
-        <label class="layui-form-label">地址</label>
-        <div class="layui-input-inline">
-            <form:select path="addr" items="${addrProvinces }" itemLabel="name" itemValue="name"></form:select>
-        </div>
-    </div>--%>
-
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">地址</label>
         <div class="layui-input-block">
@@ -62,11 +55,12 @@
         <div class="layui-input-block">
             <c:if test="${depot.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addDepot">立即添加</button>
+                <button type="button" id="cancel" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${depot.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateDepot">确认修改</button>
+                <button type="reset" id="cancel" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
         </div>
     </div>
 </form:form>
@@ -74,7 +68,9 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/depotAU.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 <script type="text/javascript">
+    $(document).ready(function () {
 
+    })
 </script>
 </body>
 </html>

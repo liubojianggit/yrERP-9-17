@@ -1,7 +1,9 @@
 package com.yr.supplier.dao.impl;
 
+import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.supplier.Supplier;
 import com.yr.entitys.supplier.SupplierWares;
 import com.yr.supplier.dao.SupplierWareDao;
 import org.springframework.stereotype.Repository;
@@ -30,26 +32,8 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public boolean add(SupplierWares sw) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("insert into supp_wares(name,code,type,total_inventory,unit_price,brand,addr,createTime,createEmp) values(?,?,?,?,?,?,?,?,?,?)");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1, sw.getName());
-        query.setParameter(2, sw.getCode());
-        query.setParameter(3, sw.getType());
-        query.setParameter(4, sw.getTotalInventory());
-        query.setParameter(5, sw.getUnitPrice());
-        query.setParameter(6, sw.getBrand());
-        query.setParameter(7, sw.getAddr());
-        query.setParameter(8, new Date());
-        query.setParameter(9, sw.getCreateEmp());
-        try {
-            query.executeUpdate();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void add(SupplierWareBo sw) {
+        entityManager.persist(sw.getSupplierWare());
     }
 
     /**
@@ -58,18 +42,11 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public boolean delete(Integer id) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("delete s from SupplierWares s where s.id = ?");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1, id);
-        try {
-            query.executeUpdate();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void delete(Integer id) {
+
+       SupplierWares supplierWares=entityManager.find(SupplierWares.class,id);
+       entityManager.remove(supplierWares);
+
     }
 
     /**
@@ -78,27 +55,8 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public boolean update(SupplierWares sw) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("update SupplierWares set name = ?,code = ?,type=?,total_inventory=?,unit_price=?," +
-                "brand = ?,addr = ?, updateEmp = ?,updateTime = ?");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1, sw.getName());
-        query.setParameter(2, sw.getCode());
-        query.setParameter(3, sw.getType());
-        query.setParameter(4, sw.getTotalInventory());
-        query.setParameter(5, sw.getUnitPrice());
-        query.setParameter(6, sw.getBrand());
-        query.setParameter(7, sw.getAddr());
-        query.setParameter(8, new Date());
-        query.setParameter(9, sw.getUpdateEmp());
-        try {
-            query.executeUpdate();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public void update(SupplierWareBo sw) {
+        entityManager.merge(sw.getSupplierWare());
     }
 
     /**
@@ -108,29 +66,40 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public List<SupplierWareBo> query(Page<SupplierWareBo> page) {
-
-
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("select s from SupplierWares s where 1=1");
-        String brand = page.getT().getBrand();
+        String jpql="select s from SupplierWares s where 1=1 ";
         String name = page.getT().getName();
         String type = page.getT().getType();
-        if (brand != null && brand.equals("")) {
-            jpql.append("and brand like '%" + brand + "%'");
+        Double minAge=page.getT().getMinUnitPrice();
+        Double maxAge = page.getT().getMaxUnitPrice();
+        if (name != null && !name.equals("")) {
+            jpql+="and s.name like :name";
         }
-        if (type != null && type.equals("")) {
-            jpql.append("and type like '%" + type + "%'");
+        if (type != null && !type.equals("")) {
+            jpql+="and s.type like :type";
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            jpql +=" and s.unitPrice >= :minAge ";
         }
-        jpql.append("order by id desc");
-        Query query = entityManager.createQuery(jpql.toString());
-       query.setFirstResult(page.getCurrentPage());
-        query.setMaxResults(page.getPageSize());
-        List<SupplierWareBo> supplierWare = query.getResultList();
-        System.out.println(supplierWare);
-        return supplierWare;
+        if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            jpql +=" and s.unitPrice <= :maxAge " ;
+        }
+
+        Query query =entityManager.createQuery(jpql);
+        if (name != null && !name.equals("")) {
+            query.setParameter("name","%"+name.trim()+"%");
+        }
+        if (type != null && !type.equals("")) {
+            query.setParameter("type","%"+type.trim()+"%");
+        }
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            query.setParameter("minAge",minAge);
+        }if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            query.setParameter("maxAge",maxAge);
+        }
+        System.out.println(jpql);
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
+        List<SupplierWareBo> list = query.getResultList();
+        return list;
     }
 
     /**
@@ -139,13 +108,9 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      * @return
      */
     @Override
-    public SupplierWares getSupplierWare(Integer id) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("select s from SupplierWares s where id =?");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1, id);
-        SupplierWares supplierWare = (SupplierWares) query.getSingleResult();
-        return supplierWare;
+    public SupplierWares getById(Integer id) {
+        SupplierWares supplierWares = entityManager.find(SupplierWares.class,id);
+        return supplierWares;
     }
 
     /**
@@ -155,25 +120,38 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
      */
     @Override
     public Long getCount(Page<SupplierWareBo> page) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("select count(*) from SupplierWares s where 1=1");
-       System.out.println("3");
-        System.out.println(page.getT().getBrand());
-        String brand = page.getT().getBrand();
+        String jpql="select count(*) from SupplierWares s  where 1=1";
         String name = page.getT().getName();
         String type = page.getT().getType();
-        if (brand != null && brand.equals("")) {
-            jpql.append("and brand like '%" + brand + "%'");
+        Double minAge=page.getT().getMinUnitPrice();
+        Double maxAge = page.getT().getMaxUnitPrice();
+        if (name != null && !name.equals("")) {
+            jpql+="and s.name like :name ";
         }
-        if (type != null && type.equals("")) {
-            jpql.append("and type like '%" + type + "%'");
+        if (type != null && !type.equals("")) {
+            jpql+="and s.type like :type ";
         }
-        if (name != null && name.equals("")) {
-            jpql.append("and name like '&" + name + "&'");
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            jpql +=" and s.unitPrice >= :minAge ";
         }
-        Query query = entityManager.createQuery(jpql.toString());
+        if(maxAge != null &&!maxAge.equals("") && maxAge > 0){
+            jpql +=" and s.unitPrice <= :maxAge " ;
+        }
 
-        Long count = (Long) query.getSingleResult();
+        Query query =entityManager.createQuery(jpql);
+        if (name != null && !name.equals("")) {
+            query.setParameter("name","%"+name.trim()+"%");
+        }
+        if (type != null && !type.equals("")) {
+            query.setParameter("type","%"+type.trim()+"%");
+        }
+        if(minAge != null && !minAge.equals("") && minAge > 0){
+            query.setParameter("minAge",minAge);
+        }if(maxAge != null && !maxAge.equals("") && maxAge > 0){
+            query.setParameter("maxAge",maxAge);
+        }
+
+        Long count =(Long)query.getSingleResult();
         return count;
     }
 
@@ -190,5 +168,24 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
         query.setParameter(1, code);
         SupplierWares supplierWare = (SupplierWares) query.getSingleResult();
         return supplierWare;
+    }
+
+    @Override
+    public List<SupplierWares> queryList() {
+        String jpql="select s from SupplierWares s";
+        Query query =entityManager.createQuery(jpql);
+        List<SupplierWares> list = query.getResultList();
+        return list;
+    }
+    /**
+     * 根据供应商商品名称返回供应商商品编号
+     * @param name
+     * @return String
+     */
+    @Override
+    public String getSupplierWareCode(String name) {
+        String jpql = "select s.code from SupplierWares s where s.name = ?";
+        String wareName = (String) entityManager.createQuery(jpql).setParameter(1,name).getSingleResult();
+        return wareName;
     }
 }

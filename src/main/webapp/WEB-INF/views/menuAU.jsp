@@ -27,7 +27,7 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">菜单名称</label>
 		<div class="layui-input-block">
-			<form:input path="menu.name" class="layui-input"  lay-verify="required" placeholder="请输入菜单名"/>
+			<form:input path="menu.name" id="nameId" class="layui-input"  lay-verify="required" placeholder="请输入菜单名"/>
 			<!-- <input type="text" name="name" class="layui-input"  lay-verify="required" placeholder="请输入登录名"> -->
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 	<div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
 		<label class="layui-form-label">父级菜单</label>
 		<div class="layui-input-inline">
-			<form:select path="menu.pid" id="pidSelect" items="${supMenu }" itemLabel="menu.name" itemValue="menu.id"></form:select>
+			<form:select path="menu.pid" id="pidSelect" items="${supMenu }" itemLabel="name" itemValue="id"></form:select>
 		</div>
 	</div>
 
@@ -58,11 +58,12 @@
 		<div class="layui-input-block">
 			<c:if test="${menuBO.menu.id == null }">
 				<button class="layui-btn layui-btn-sm" lay-submit lay-filter="addMenu">立即添加</button>
+				<button type="button" id="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
 			</c:if>
 			<c:if test="${menuBO.menu.id != null }">
 				<button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateMenu">确认修改</button>
+				<button type="reset" id="reset2" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
 			</c:if>
-			<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
 		</div>
 	</div>
 </form:form>
@@ -72,9 +73,20 @@
 <script type="text/javascript">
     $(document).ready(function () {
         if (${menuBO.menu.id == null }){
-            $("#pidSelect").val(0);
+            $("#pidSelect").val("");
         }
     })
+
+    //重置事件
+	$("#reset").click(function () {
+        $("#resetIcon").attr("class","layui-icon");
+		$("#resetIcon").html("");
+		$("#pic").val("");
+		$(".layui-input").val("");
+    })
+
+
+
     layui.config({
         base: '<%=request.getContextPath() %>/js/',
     })
@@ -101,6 +113,12 @@
          * @param iconName 图标名称，自动识别fontClass/unicode
          */
         iconPicker.checkIcon('iconPicker', '${menuBO.menu.pic }');
+
+        $("#reset2").click(function () {
+            $("#resetIcon").attr("class","layui-icon");
+            iconPicker.checkIcon('iconPicker', '${menuBO.menu.pic }');
+            $("#pic").val('${menuBO.menu.pic }');
+        })
 
     });
 

@@ -247,7 +247,7 @@ public class UserDaoImpl implements UserDao {
      * 返回user数据集合
      * @return
      */
-    public List<User> getUser(){
+    public List<User> queryUser(){
         String jpql = "select u from User u";
         List<User> list = entityManager.createQuery(jpql).getResultList();
         return list;

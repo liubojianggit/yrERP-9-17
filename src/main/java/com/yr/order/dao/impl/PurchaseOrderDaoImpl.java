@@ -1,6 +1,6 @@
 package com.yr.order.dao.impl;
 
-import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseOrderDao;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -17,26 +18,33 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
     private EntityManager entityManager;
 
     @Override
-    public List<PurchaseOrder> query(Page<purchaseOrderBO> page) {
+    public List<PurchaseOrder> query(Page<PurchaseOrderBo> page) {
         String jpql="select r from PurchaseOrder r where 1=1 ";
-        if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
+        if (page.getT().getPurchaseCode() != null && !page.getT().getPurchaseCode().equals(""))
         {
-            jpql+="and r.purc_ware_name like :name ";
+            jpql+= "and r.code like :purchaseCode ";
         }
-        if(page.getT().getPurchaseType()!=null && !page.getT().getPurchaseType().equals(""))
+        if (page.getT().getPurchaseWareCode() != null && !page.getT().getPurchaseWareCode().equals(""))
         {
-            jpql+="and r.purc_ware_type like :type ";
+            jpql+= "and r.purchaseWareCode like :purchaseWareCode";
+        }
+        if(page.getT().getPurchaseOrder().getStatus() != null && !page.getT().getPurchaseOrder().getStatus().equals(""))
+        {
+            jpql+= "and r.status = :status";
         }
         Query query =  entityManager.createQuery(jpql);
-        if(page.getT().getPurchaseName()!=null && !page.getT().getPurchaseName().equals(""))
+        if(page.getT().getPurchaseCode() != null && !page.getT().getPurchaseCode().equals(""))
         {
-            query.setParameter("name","%"+page.getT().getPurchaseName()+"%");
+            query.setParameter("purchaseCode","%"+page.getT().getPurchaseCode()+"%");
         }
-        if(page.getT().getPurchaseType()!=null && !page.getT().getPurchaseType().equals(""))
+        if(page.getT().getPurchaseWareCode() != null && !page.getT().getPurchaseWareCode().equals(""))
         {
-            query.setParameter("type","%"+page.getT().getPurchaseType()+"%");
+            query.setParameter("purchaseWareCode","%"+page.getT().getPurchaseWareCode()+"%");
         }
-
+        if (page.getT().getPurchaseOrder().getStatus() != null && !page.getT().getPurchaseOrder().getStatus().equals(""))
+        {
+            query.setParameter("status",page.getT().getPurchaseOrder().getStatus());
+        }
         //query.setFirstResult((page.getStart()-1) * page.getPageSize()).setMaxResults(page.getPageSize());//查询分页
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<PurchaseOrder> list = query.getResultList();
@@ -50,36 +58,39 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
         return list;
     }
     @Override
-    public Long getCount(purchaseOrderBO purchaseOrderBO) {
+    public Long getCount(PurchaseOrderBo purchaseOrderBO) {
         String jpql= "select count(*) from PurchaseOrder r where 1=1 ";
-        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
+        if (purchaseOrderBO.getPurchaseCode() != null && !purchaseOrderBO.getPurchaseCode().equals(""))
         {
-            jpql+="and r.purc_ware_name like :name ";
+            jpql+= "and r.code like :purchaseCode ";
         }
-        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
+        if (purchaseOrderBO.getPurchaseWareCode() != null && !purchaseOrderBO.getPurchaseWareCode().equals(""))
         {
-            jpql+="and r.purc_ware_type like :type ";
+            jpql+= "and r.purchaseWareCode like :purchaseWareCode";
+        }
+        if (purchaseOrderBO.getPurchaseOrder().getStatus() !=null && !purchaseOrderBO.getPurchaseOrder().getStatus().equals(""))
+        {
+            jpql+= "and r.status = :status ";
         }
         Query query =  entityManager.createQuery(jpql);
-        if(purchaseOrderBO.getPurchaseName()!=null && !purchaseOrderBO.getPurchaseName().equals(""))
+        if(purchaseOrderBO.getPurchaseCode() != null && !purchaseOrderBO.getPurchaseCode().equals(""))
         {
-            query.setParameter("name","%"+purchaseOrderBO.getPurchaseName()+"%");
+            query.setParameter("purchaseCode","%"+purchaseOrderBO.getPurchaseCode()+"%");
         }
-        if(purchaseOrderBO.getPurchaseType()!=null && !purchaseOrderBO.getPurchaseType().equals(""))
+        if(purchaseOrderBO.getPurchaseWareCode() != null && !purchaseOrderBO.getPurchaseWareCode().equals(""))
         {
-            query.setParameter("type","%"+purchaseOrderBO.getPurchaseType()+"%");
+            query.setParameter("purchaseWareCode","%"+purchaseOrderBO.getPurchaseWareCode()+"%");
+        }
+        if (purchaseOrderBO.getPurchaseOrder().getStatus() !=null && !purchaseOrderBO.getPurchaseOrder().getStatus().equals(""))
+        {
+            query.setParameter("status",purchaseOrderBO.getPurchaseOrder().getStatus());
         }
         Long value = (Long) query.getSingleResult();
-
         return value;
     }
 
     @Override
     public PurchaseOrder getRequisitionById(Integer id) {
-       /* String jpql="select r from PurchaseOrder r where r.id=:id";
-        Query query =  entityManager.createQuery(jpql).setParameter("id",id);
-        Requisition requisition = (Requisition) query.getSingleResult();*/
-
         PurchaseOrder purchaseOrder = entityManager.find(PurchaseOrder.class,id);
         return purchaseOrder;
     }
@@ -92,23 +103,7 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
 
     @Override
     public void update(PurchaseOrder purchaseOrder) {
-       /* String jpql="update Requisition r set r.job_num = :jobNumber,r.depa_copde = :deparCode,r.approver = :approver,r.purc_ware_name = :name,r.purc_ware_type = :purcType," +
-                "r.purc_ware_num = :number,r.supp_code = :supplireCode,r.unit_price = :unitPrice,r.total_price = :totalPrice,r.status =: status," +
-                "r.consignee =: consignee, r.depot_code =: depotCode";
 
-        entityManager.createQuery(jpql).setParameter("jobNumber",requisition.getJobNumber())
-                .setParameter("deparCode",requisition.getDepartmentCode())
-                .setParameter("approver",requisition.getApprover())
-                .setParameter("name",requisition.getPurchasName())
-                .setParameter("purcType",requisition.getPurchaseType())
-                .setParameter("number",requisition.getPurchaseNumber())
-                .setParameter("supplireCode",requisition.getSupplierCode())
-                .setParameter("unitPrice",requisition.getUnitPrice())
-                .setParameter("totalPrice",requisition.getTotalPrice())
-                .setParameter("status",requisition.getStatus())
-                .setParameter("consignee",requisition.getConsignee())
-                .setParameter("depotCode",requisition.getDepotCode())
-                .executeUpdate();*/
         //修改
         entityManager.merge(purchaseOrder);
 
@@ -116,22 +111,21 @@ public class PurchaseOrderDaoImpl implements PurchaseOrderDao {
 
     @Override
     public void delete(Integer id) {
-        /*String jpql = "delete from Requisition u where u.id = :id";
-        entityManager.createQuery(jpql).setParameter("id",id).executeUpdate();*/
-
         PurchaseOrder purchaseOrder =  entityManager.find(PurchaseOrder.class,id);
         entityManager.remove(purchaseOrder);
 
     }
-
+    /**
+     * 根据选中的id,批量删除
+     * @param ids
+     */
     @Override
-    public void deleteBatch(List<Integer> ids) {
-        /*String jpql ="delete from Requisition u where u.id in (?1)";
-        entityManager.createQuery(jpql).setParameter(1,ids).executeUpdate();*/
-        for (Integer id :ids) {
-            PurchaseOrder req =  entityManager.find(PurchaseOrder.class,id);
-            entityManager.remove(req);
-        }
-
+    public void deleteBatch(Integer[] ids) {
+        List<Integer> list = Arrays.asList(ids);//将数组转成list
+        String jpql = "delete from PurchaseOrder u where u.id in(:ids)";
+        Query query = entityManager.createQuery(jpql).setParameter("ids",list);
+        query.executeUpdate();
     }
+
+
 }

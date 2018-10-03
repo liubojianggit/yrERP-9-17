@@ -1,18 +1,23 @@
 package com.yr.order.dao;
 
-import com.yr.entitys.bo.orderBO.purchaseOrderBO;
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.page.Page;
 
 import java.util.List;
 
+/**
+ *
+ * @author
+ * @since
+ */
 public interface PurchaseOrderDao {
     /**
      * 分页查询
      * @param page
      * @return
      */
-    List<PurchaseOrder> query(Page<purchaseOrderBO> page);
+    List<PurchaseOrder> query(Page<PurchaseOrderBo> page);
 
     /**
      * 查询数据库，并以List集合的方式返回回来
@@ -32,7 +37,7 @@ public interface PurchaseOrderDao {
      * @param requisitionBO
      * @return
      */
-    Long getCount(purchaseOrderBO requisitionBO);
+    Long getCount(PurchaseOrderBo requisitionBO);
 
     /**
      * 添加
@@ -56,6 +61,5 @@ public interface PurchaseOrderDao {
      * 根据选中的id,批量删除
      * @param ids
      */
-    void deleteBatch(List<Integer> ids);
-    //void deleteBatch(int [] ids);
+    void deleteBatch(Integer[] ids);
 }

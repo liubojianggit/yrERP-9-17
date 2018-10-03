@@ -1,6 +1,7 @@
 package com.yr.supplier.dao;
 
 import com.yr.entitys.bo.supplierBO.SuppWareTypeBo;
+import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
 
@@ -53,4 +54,10 @@ public interface SuppWareTypeDao {
      * @return
      */
     public Long getCount(Page<SuppWareTypeBo> page);
+    /**
+     * 根据wareType来查询商品类型
+     * @param
+     * @return
+     */
+    public List<SuppWareType> query();
 }
