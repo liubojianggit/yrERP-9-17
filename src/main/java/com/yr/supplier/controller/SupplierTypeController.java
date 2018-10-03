@@ -1,13 +1,19 @@
 package com.yr.supplier.controller;
 
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.supplierBO.SuppWareTypeBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.supplier.SuppWareType;
+import com.yr.entitys.user.User;
+import com.yr.log.service.LogService;
 import com.yr.supplier.service.SuppWareTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -18,7 +24,9 @@ import java.util.Map;
 public class SupplierTypeController {
     @Autowired
     private SuppWareTypeService swts;
-
+    @Autowired
+    @Qualifier("logServiceImpl")
+    private LogService logServices;//日志
 
     @ModelAttribute
     public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
@@ -59,9 +67,39 @@ public class SupplierTypeController {
      */
     @RequestMapping(value = "suppWareTypeTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("suppWareType")SuppWareType suppWareType){
-        suppWareType.setCreateEmp("wangyong");
-        boolean bool = swts.add(suppWareType);
+    public String addWare(@ModelAttribute("suppWareType")SuppWareType suppWareType,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        suppWareType.setCreateEmp(user.getName());
+        boolean bool = false;
+        try {
+            bool = swts.add(suppWareType);
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"添加成功\"}";
         }else{
@@ -76,8 +114,38 @@ public class SupplierTypeController {
      */
     @RequestMapping(value = "suppWareTypeTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String deleteWare(@PathVariable Integer id){
-        boolean bool = swts.delete(id);
+    public String deleteWare(@PathVariable Integer id,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        boolean bool = false;
+        try {
+            bool = swts.delete(id);
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(2);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"删除成功\"}";
         }else{
@@ -93,9 +161,40 @@ public class SupplierTypeController {
      */
     @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, Map<String,Object>map){
-        suppWareType.setUpdateEmp("wangyong9");
-        boolean bool =  swts.update(suppWareType);
+    public String updateWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, Map<String,Object>map,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        suppWareType.setUpdateEmp(user.getName());
+        String oldSuppWareType = swts.getSuppWareType(suppWareType.getId()).toString();
+        boolean bool = false;
+        try {
+            bool = swts.update(suppWareType);
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            //修改前的值
+            log.setFieldOldValue(oldSuppWareType);  //新增数据忽略前置
+            //修改后的值
+             log.setFieldNewValue(suppWareType.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("供应商商品类型模块");
+            log.setTable("suppWareType");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"修改成功\"}";
         }else{

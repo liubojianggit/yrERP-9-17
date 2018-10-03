@@ -9,6 +9,7 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
+import com.yr.user.service.LoginService;
 import com.yr.user.service.RoleService;
 import com.yr.user.service.UserService;
 import com.yr.util.DateUtils;
@@ -56,7 +57,8 @@ public class UserController {
     private RoleService roleServiceImpl;
     @Autowired
     private UploadServer uploadServerImpl;
-    //public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
+    @Autowired
+    private LoginService loginServiceImpl;
 
     /**
      * 如果检测到form表单提交带有id,直接将值存入request中
@@ -123,6 +125,7 @@ public class UserController {
         departmentList.put("-1","请选择");
         map.put("depaList",departmentList);
         //部门编号为键，名字为值
+        //loginServiceImpl.
         return "userAU";
     }
 
@@ -136,32 +139,11 @@ public class UserController {
     @RequestMapping(value="/userTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(User user, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
-       /* String phone = String.valueOf(FileUtils.getTimeStamp());
-        File file = new File(path, phone + ".jpg");//第一个是父级文件路径，第二个是文件名
-        if(!file.getParentFile().exists()){//判断父级路径是否存在
-            file.mkdir();//创建文件夹
-        }
-        if(!file.exists()){//如果文件不存在满足条件
-            try {
-                file.createNewFile();//创建该文件
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        String phoneStr = path + File.separator + phone + ".jpg";//组成一个图片的路径字符串
-        //截取指定路径组成一个本地路径
-        if(!filesCopy.equals("E:\\idea\\yrERP\\yrERP-9-17\\src\\main\\webapp\\images")){//这是默认显示的图片路径
-            filesCopy = request.getServletContext().getRealPath("/") + "photos" + filesCopy.substring(filesCopy.lastIndexOf("\\"),filesCopy.length());
-        }
-        FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
-        user.setPhoto(phoneStr);//替换掉原本的路径*/
-        //String phoneStr = uploadServerImpl.uploadServer(filesCopy,request.getServletContext().getRealPath("/"));
-
         user.setPhoto(filesCopy);//替换掉原本的路径
         user.setAge(DateUtils.calculateTimeDifferenceByCalendar(user.getBirthday()));//计算当前时间-生日日期=现在年龄
         user.setStates(1);//默认是启用的
         user.setCreateTime(new Date());//获取当前时间
-        //user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
         userService.add(user);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
@@ -192,11 +174,9 @@ public class UserController {
     @RequestMapping(value="/userTable",method=RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy,User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
-        //String phoneStr = uploadServerImpl.uploadServer(filesCopy,request.getServletContext().getRealPath("/"));
         user.setPhoto(filesCopy);//替换掉原本的路径
-
         user.setUpdateTime(new Date());//获取修改当前时间
-        //user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         userService.update(user);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
@@ -241,22 +221,6 @@ public class UserController {
     @RequestMapping(value="/userTable/upload",method=RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        /*Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
-        String path = request.getServletContext().getRealPath("/") + "photos";//获取服务器路径         --这里要改成服务器的路径
-        String fileName = file.getOriginalFilename();//获得文件名
-        fileName = startTime + fileName.substring(fileName.lastIndexOf("."), fileName.length());//构建出一个唯一的文件名
-        File filepath=new File(path,fileName);//构建成一个file对象
-        //判断目标文件所在的目录是否存在
-        if(!filepath.getParentFile().exists()) {
-            //如果目标文件所在的目录不存在，则创建父目录
-            filepath.getParentFile().mkdirs();
-        }
-        //将内存中的数据写入磁盘
-        file.transferTo(filepath);
-        Map<String,Object> map = new HashMap<>();
-        map.put("url", request.getServletContext().getContextPath() + File.separator  + "photos" + File.separator + fileName);*/
-
-        //String url = uploadServerImpl.upload(file,request.getServletContext());
         String url = uploadServerImpl.upload(file);
 
         Map<String,Object> map = new HashMap<>();

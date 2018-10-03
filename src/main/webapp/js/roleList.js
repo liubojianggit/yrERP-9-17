@@ -36,7 +36,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {type:'numbers',title:'编号',width:50},
             {field: 'code', title: '角色编号', align:"center",unresize: true},
             {field: 'name', title: '角色名', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#roleListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:220,width:220, templet:'#roleListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -133,7 +133,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     window.location.href=path+'u_role/roleTable';
                 }
             })
-        }else if(layEvent === 'auth'){
+        }/*else if(layEvent === 'auth'){
             layer.open({
                 id: 'LAY_indepAuth', //设定一个id，防止重复弹出
                 type: 2,
@@ -148,7 +148,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     })
                 }
             });
-        }else if(layEvent === 'del'){ //删除
+        }*/else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
@@ -186,6 +186,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }else if(layEvent === 'auth'){//角色赋权限
             //Ajax请求，动态控制角色弹出层的回显
+            alert(11);
             $.get(path+'u_role/roleTable/getPermission', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
                 $.get(path+'u_role/roleTable/getPermissionById', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
                     var roleStrTd ="";//弹出层td
