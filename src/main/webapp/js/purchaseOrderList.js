@@ -107,23 +107,24 @@ layui.use(['form','layer','table','laytpl'],function(){
         })
     });
 
-    //添加用户
+    //添加采购订单
     function addUser(){
         //window.location.href = "user/add";
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
+            area: ['390px', '320px'],
             content : path+"requisition/requisitionTable/add",//发送请求
             end: function(){
-                window.location.href='<%=request.getContextPath() %>/requisition/requisitionTable';
+                window.location.href=path+'requisition/requisitionTable';
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addUser();
@@ -175,9 +176,15 @@ layui.use(['form','layer','table','laytpl'],function(){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"requisition/requisitionTable/"+data.purchaseOrder.id;
-
+            var index = layui.layer.open({
+                title : "添加用户",
+                type : 2,
+                area: ['390px', '320px'],
+                content : path+"requisition/requisitionTable/"+data.purchaseOrder.id,//发送请求
+                end: function(){
+                    window.location.href=path+'requisition/requisitionTable';
+                }
+            })
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
@@ -189,8 +196,13 @@ layui.use(['form','layer','table','laytpl'],function(){
                     data: {
                         _method:'delete'
                     },
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        setTimeout(function(){
+                            window.location.href = path+"requisition/requisitionTable";
+                        },1200);
+                    },
                     success: function(data){
-
                         if("1" == data.code){
                             layer.msg(data.msg,{icon:1});
                             setTimeout(function(){

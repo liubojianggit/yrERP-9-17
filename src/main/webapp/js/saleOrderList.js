@@ -82,23 +82,21 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //添加用户
     function addUser(){
-        //window.location.href = "user/add";
-
-
         var index = layui.layer.open({
             title : "添加销售订单",
             type : 2,
+            area : ['390px' , '340px'],
             content : path+"sale_orderTable/add",//发送请求
             end: function(){
-                window.location.href='<%=request.getContextPath() %>/sale_orderTable';
+                window.location.href=path+'sale_orderTable';
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addUser();
@@ -151,8 +149,16 @@ layui.use(['form','layer','table','laytpl'],function(){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"sale_orderTable/"+data.id;
+            var index = layui.layer.open({
+                title : "添加销售订单",
+                type : 2,
+                area : ['390px' , '340px'],
+                content : path+"sale_orderTable/"+data.id,//发送请求
+                end: function(){
+                    window.location.href=path+'sale_orderTable';
+                }
+            })
+            window.location.href = ;
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此销售订单？',{icon:3, title:'提示信息'},function(index){
@@ -164,6 +170,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                     dataType : 'json',
                     data: {
                         _method:'delete'
+                    },
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        setTimeout(function(){
+                            window.location.href = path+"sale_orderTable";
+                        },1200);
                     },
                     success: function(data){
 
