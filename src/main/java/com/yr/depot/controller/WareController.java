@@ -6,6 +6,7 @@ import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.depot.service.WareService;
+import com.yr.entitys.user.User;
 import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,8 +76,9 @@ public class WareController {
      */
     @RequestMapping(value = "waresTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("wareBo")Ware ware){
-       ware.setCreateEmp("wangyong");
+    public String addWare(@ModelAttribute("wareBo")Ware ware,HttpServletRequest request){
+        System.out.println("============="+((User)request.getSession().getAttribute("user")).getName());
+       ware.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
        boolean bool = ws.add(ware);
         if(bool){
             return "{\"code\":1,\"msg\":\"添加成功\"}";
@@ -91,7 +94,7 @@ public class WareController {
      * @return Map<String,Object>
      * @throws IOException
      */
-    @RequestMapping(value="/waresTable/upload",method=RequestMethod.POST)
+    @RequestMapping(value="waresTable/upload",method=RequestMethod.POST)
     @ResponseBody
     public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
@@ -135,8 +138,8 @@ public class WareController {
      */
     @RequestMapping(value = "waresTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(@ModelAttribute("wareBo") Ware ware,Map<String,Object>map){
-        ware.setUpdateEmp("wangyong1");
+    public String updateWare(@ModelAttribute("wareBo") Ware ware,Map<String,Object>map,HttpServletRequest request){
+        ware.setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
         System.out.println(ware);
         boolean bool = ws.update(ware);
         if(bool){
@@ -160,5 +163,29 @@ public class WareController {
         return json;
     }
 
-
+   @RequestMapping(value = "waresTable/checkTypeCode",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+   @ResponseBody
+    public String checkTypeCode(Ware ware){
+        boolean bool = ws.getWareByCode(ware);
+        if(bool){
+            return "true";
+        }else{
+            return "false";
+        }
+   }
+    /**
+     * 通过用户的id请求返回图像的字节流
+     *
+     * 不需要
+     */
+    @RequestMapping("/waresTable/icons/{id}")
+    public void getIcons(@PathVariable(value="id") Integer id ,HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Ware ware = ws.getWare(id);//根据id获得user对象
+        byte[] data = FileUtils.getFileFlow(ware.getWarePhoto());//调用方法将流传出
+        response.setContentType("image/png");
+        OutputStream stream = response.getOutputStream();
+        stream.write(data);//将图片以流的形式返回出去
+        stream.flush();
+        stream.close();
+    }
 }

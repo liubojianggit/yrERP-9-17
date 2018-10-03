@@ -2,6 +2,7 @@ package com.yr.user.dao;
 
 import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 
 import java.util.List;
@@ -58,4 +59,17 @@ public interface RoleDao {
      * @param permissionIds
      */
     void addPermissions(Integer id,Integer[] permissionIds);
+
+    /**
+     * 返回所有角色列表
+     * @return List<Role>
+     */
+    List<Role> getRoleList();
+
+    /**
+     * 根据角色获取所有的权限
+     * @param id
+     * @return List<Permission>
+     */
+    List<Permission> getRole(Integer id);
 }

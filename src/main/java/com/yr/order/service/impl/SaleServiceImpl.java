@@ -44,9 +44,11 @@ public class SaleServiceImpl implements SaleService {
         } // 单个商品单价*/
         page.setTotalRecord(saleDao.getCount(page));//查询总条数加入page中
         List<SaleOrderBO>list = saleDao.query(page);//分页查询的数据
-        String jsonStr = JsonUtils.listToJson(list);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonStr+"}";
-        return  json;
+        JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        return json;
     }
 
     @Override

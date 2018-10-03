@@ -19,7 +19,7 @@ layui.use(['form','layer','upload','table'],function(){
     //入口函数
     upload.render({
         elem: '#test1',//绑定标签ID
-        url: path+'upload/img',//文件上传的接口路径
+        url: path+'wares/waresTable/upload',//文件上传的接口路径
         method : 'post',//文件上传/form表单提交必须是post
         accept : 'images',
         exts : 'jpg|png|jpeg',//给定文件上传的格式
@@ -42,7 +42,7 @@ layui.use(['form','layer','upload','table'],function(){
     //入口函数
     upload.render({
         elem: '#test2',//绑定标签ID
-        url: path+'upload/img',//文件上传的接口路径
+        url: path+'wares/waresTable/upload',//文件上传的接口路径
         method : 'post',//文件上传/form表单提交必须是post
         accept : 'images',
         exts : 'jpg|png|jpeg',//给定文件上传的格式

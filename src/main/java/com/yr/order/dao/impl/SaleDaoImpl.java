@@ -42,7 +42,7 @@ public class SaleDaoImpl implements SaleDao {
             query.setParameter("customer_buy","%"+page.getT().getSaleOrder().getCustomerBuy()+"%");
         }
         Long count = (Long) query.getSingleResult();
-        return (long) count.intValue();//将long转为int
+        return count;//将long转为int
     }
 
     /**

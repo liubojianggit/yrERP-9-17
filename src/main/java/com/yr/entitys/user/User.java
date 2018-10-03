@@ -41,8 +41,12 @@ public class User extends BaseEntity implements Serializable{
     private Integer states;//状态
     @Column(nullable = false)
     private String password;//密码
+    //使用 JoinTable 创建中间表       中间表必须放在维护端
+    @JoinTable(name="u_user_role",//中间表的名字
+            joinColumns={@JoinColumn(name="uid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
+            inverseJoinColumns={@JoinColumn(name="rid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
     //这里必须要使用急加载，否则分页的role类出现无法构建
-    @ManyToMany(mappedBy = "user",cascade = CascadeType.REMOVE,fetch = FetchType.EAGER)//多对多，放弃本端的维护，使用user维护
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)//多对多，放弃本端的维护，使用user维护
     private Set<Role> role = null;
 
     public Integer getId() {
@@ -148,6 +152,7 @@ public class User extends BaseEntity implements Serializable{
     public void setAge(Integer age) {
         this.age = age;
     }
+
 
     @Override
     public String toString() {

@@ -4,6 +4,8 @@ import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Role;
 
+import java.util.List;
+
 public interface RoleService {
 
     /**
@@ -43,4 +45,19 @@ public interface RoleService {
      * @param permissionIds
      */
     void setPermissions(Integer id,Integer[] permissionIds);
+
+    /**
+     * 返回所有角色列表
+     * @return String
+     */
+    String getRoleList();
+
+    /**
+     * 根据角色获取所有的权限
+     * @param id
+     * @return String
+     */
+    String getRole(Integer id);
+
+
 }

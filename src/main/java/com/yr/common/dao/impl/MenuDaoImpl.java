@@ -3,7 +3,9 @@ package com.yr.common.dao.impl;
 import com.yr.common.dao.MenuDao;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.menu.Menu;
+import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,11 +19,51 @@ public class MenuDaoImpl implements MenuDao {
     //如何获取到和当前事务关联的 EntityManager 对象呢 ?通过 @PersistenceContext 注解来标记成员变量!
     @PersistenceContext
     private EntityManager entityManager;
+
+
+    @Override
+    public Long queryCount(Page<MenuBO> page) {
+        String jpql = "select count(*) from Menu m where 1 = 1 ";
+        if(!StringUtils.isEmpty(page.getT().getMenu().getName())){//判断是否为null和空
+            jpql += "and m.name like :name ";
+        }
+        Query query = entityManager.createQuery(jpql);
+        if(!StringUtils.isEmpty(page.getT().getMenu().getName())){
+            query.setParameter("name", "%"+page.getT().getMenu().getName()+"%");
+        }
+        Long count = (Long)query.getSingleResult();//获取到结果
+        return count;
+    }
+
+    @Override
+    public List<Menu> querySupMenu(Integer pid) {
+        String jpql = "select m from Menu m where m.pid =?";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter(1,pid);
+        List<Menu> list = query.getResultList();//获取到结果
+        return list;
+    }
+
     @Override
     public List<Menu> query() {
         String jpql = "select m from Menu m";
         Query query = entityManager.createQuery(jpql);
-        List<Menu> list = query.getResultList();
+        List<Menu> list = query.getResultList();//获取到结果
+        return list;
+    }
+
+    @Override
+    public List<MenuBO> queryList(Page<MenuBO> page) {
+        String jpql = "select m from Menu m where 1 = 1 ";
+        if(!StringUtils.isEmpty(page.getT().getMenu().getName())){//判断是否为null和空
+            jpql += "and m.name like :name ";
+        }
+        Query query = entityManager.createQuery(jpql);
+        if(!StringUtils.isEmpty(page.getT().getMenu().getName())){
+            query.setParameter("name", "%"+page.getT().getMenu().getName()+"%");
+        }
+        query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
+        List<MenuBO> list = query.getResultList();//获取到结果
         return list;
     }
 

@@ -15,7 +15,46 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 </head>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*  给输入名字的文本框绑定一个失去焦点事件，jquery中为focusout事件，同时在文本框后定义一个显示检查结果的span。
+		 2、当文本框失去焦点时，调用ajax异步向后台发送请求。
+		 3、将请求结果显示在文本框后面提示用户,避免所有信息填写完毕表单提交时才发现名字重复。
+		 示例：
+	    */
+        //给文本框绑定一个失去焦点事件
+        $("#code").focusout(function() {
+            var typeCode = $("#code").val();
+            if(typeCode != null && typeCode != ''){
+                checkTypeCode(typeCode);
+            }
+        });
+        //发ajax请求到后台判断email格式是否错误
+        function checkTypeCode(typeCode){
+            $.ajax({
+                url : "<%=request.getContextPath()%>/wares/waresTable/checkTypeCode",
+                type : "get",
+                dataType : 'json',
+                data : {"code":typeCode},
+                success : function(result) {
+                    //已经存在该名字提示用户
+                    if(result==true){
+                        $("#errorTypeCode").html("商品编号已存在");
+                    }else{
+                        $("#errorTypeCode").html("");
+                    }
+                },
+                error : function() {
+                    alert('检查用户是否存在发生错误');
+                }
+            });
+        }
+    });
+
+</script>
 <body class="childrenBody">
 
 <form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareBo">
@@ -25,17 +64,17 @@
         <input type="hidden" name="id" value="${wareBo.getId() }">
     </c:if>
     <!-- 上传头像 -->               <!-- div居中 -->
-    <%--  <div class="layui-upload" align="center">
-          <c:if test="${wareBo.ware.id != null }">
+      <div class="layui-upload" align="center">
+          <c:if test="${wareBo.id != null }">
               <div class="layui-upload-list">
                   <!-- 头像回显的样式，这里是圆形 -->
-                  <img src="<%=request.getContextPath() %>/userTable/icons/"+${wareBO.ware.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
+                  <img src="<%=request.getContextPath() %>/wareTable/icons/"+${wareBo.id } class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
                   <p id="demoText"></p>
               </div>
               <input type="hidden" name="headUrl" id="headUrl2" value=""/>
               <button type="button" class="layui-btn" id="test2">修改图片</button>
           </c:if>
-          <c:if test="${userBO.user.id == null }">
+          <c:if test="${wareBo.id == null }">
               <div class="layui-upload-list">
                   <!-- 头像回显的样式，这里是圆形 -->
                   <img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">
@@ -46,7 +85,7 @@
               <input type="hidden" name="headUrl" id="headUrl" value="">
           </c:if>
 
-      </div>--%>
+      </div>
 
 
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -58,7 +97,8 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">商品编号</label>
         <div class="layui-input-block">
-            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/>
+            <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入商品编号"/><span
+                id='errorTypeCode' style="color: #cc0000"></span>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">

@@ -193,5 +193,18 @@ public class WareDaoImpl implements WareDao {
         Query query = entityManager.createQuery(jpql.toString());
         List<Ware> wares = query.getResultList();
         return wares;
-    };
+    }
+
+    @Override
+    public Long getWareByCode(Ware ware) {
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("select count(*) from Ware w where w.code=?");
+        Query query = entityManager.createQuery(jpql.toString());
+        String code = ware.getCode();
+        query.setParameter(1,code);
+        Long num = (Long) query.getSingleResult();
+        return num.longValue();
+    }
+
+    ;
 }
