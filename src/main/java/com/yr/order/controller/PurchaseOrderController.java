@@ -13,6 +13,7 @@ import com.yr.order.service.PurchaseOrderService;
 import com.yr.supplier.service.SupplierService;
 import com.yr.supplier.service.SupplierWareService;
 import com.yr.user.service.UserService;
+import com.yr.util.ExceptionToStringUtils;
 import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -196,14 +197,13 @@ public class PurchaseOrderController {
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
             log.setType(0);
             log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());
-            log.setContent(e.getMessage());
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-            User user1 = (User) request.getSession().getAttribute("user");
-            log.setCreateEmp(user1.getName());
+            log.setContent(e.toString());
+            //User user1 = (User) request.getSession().getAttribute("user");
+            //log.setCreateEmp(user1.getName());
             logServices.addLog(log);
 
             e.printStackTrace();
-
         }
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
@@ -301,7 +301,7 @@ public class PurchaseOrderController {
     /**
      * 这个是ajax 请求不要跳转，删除接口
      * 删除接口
-     * @param id
+     * @param ids
      * @return
      */
    /* @RequestMapping(value = "/requisitionTable/{id}", method = RequestMethod.DELETE)

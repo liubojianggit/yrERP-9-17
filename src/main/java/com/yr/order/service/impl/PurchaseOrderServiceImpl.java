@@ -59,7 +59,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Override
     public String query(Page<PurchaseOrderBo> page) {
         Long count = purchaseOrderDaoImpl.getCount(page.getT());
-
         //设置总条数
         page.setTotalRecord(count);
 
@@ -95,7 +94,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
             boList.add(purchaseOrderBo);
         }
-
+        String wareCode = page.getT().getPurchaseWareCode();
         String jsonList = JsonUtils.beanListToJson(boList);
         String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+count+",\"data\":"+jsonList+"}";
         return json;
