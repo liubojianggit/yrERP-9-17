@@ -43,7 +43,7 @@
                 <a class="layui-btn layui-btn-normal addNews_btn">采购申请</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+                   <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
             </div>
         </form>
     </blockquote>

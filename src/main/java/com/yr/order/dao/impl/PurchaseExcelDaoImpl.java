@@ -9,6 +9,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ *采购表excel 导入导出service
+ *
+ * @author
+ * @since
+ */
 @Repository
 public class PurchaseExcelDaoImpl implements PurchaseExcelDao {
     @PersistenceContext
@@ -19,7 +25,7 @@ public class PurchaseExcelDaoImpl implements PurchaseExcelDao {
      */
     @Override
     public List<PurchaseOrder> queryForList() {
-        String jqpl = "select p from Purchase p where 1 = 1";
+        String jqpl = "select p from PurchaseOrder p where 1 = 1";
         List<PurchaseOrder> purchaseOrderList  = entityManager.createQuery(jqpl).getResultList();
         return purchaseOrderList;
     }

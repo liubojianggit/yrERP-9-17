@@ -113,7 +113,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加用户",
             type : 2,
-            area: ['390px', '320px'],
+           /* area: ['390px', '320px'],*/
+            area: ['700px', '750px'],
             content : path+"requisition/requisitionTable/add",//发送请求
             end: function(){
                 window.location.href=path+'requisition/requisitionTable';
@@ -159,17 +160,17 @@ layui.use(['form','layer','table','laytpl'],function(){
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }
                     },
-                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    /*error : function(XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status);
                         alert(XMLHttpRequest.readyState);
                         alert(textStatus);
-                    }
+                    }*/
                 });
             })
         }else{
             layer.msg("请选择需要删除的用户");
         }
-    })
+    });
 
     //列表操作
     table.on('tool(purchaseList)', function(obj){
@@ -179,7 +180,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             var index = layui.layer.open({
                 title : "添加用户",
                 type : 2,
-                area: ['390px', '320px'],
+                /*area: ['390px', '320px'],*/
+                area: ['700px', '750px'],
                 content : path+"requisition/requisitionTable/"+data.purchaseOrder.id,//发送请求
                 end: function(){
                     window.location.href=path+'requisition/requisitionTable';

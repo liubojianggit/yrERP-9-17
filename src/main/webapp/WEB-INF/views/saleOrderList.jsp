@@ -43,11 +43,11 @@
             </div>--%>
         </form>
     </blockquote>
-    <table id="userList" lay-filter="userList"></table>
+    <table id="saleOrderList" lay-filter="saleOrderList"></table>
 
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
     <!--操作-->
-    <script type="text/html" id="userListBar">
+    <script type="text/html" id="saleOrderListBar">
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>

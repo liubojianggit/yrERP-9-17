@@ -59,4 +59,11 @@ public interface SupplierWareService {
      * 供应商查询所有数据存放list中
      */
     List<SupplierWares> queryList();
+
+    /**
+     * 根据供应商商品名称返回供应商商品编号
+     * @param name
+     * @return String
+     */
+    String getSupplierWareCode(String name);
 }
