@@ -41,7 +41,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'phoneNumber', title: '联系电话', align:"center", unresize: true},
             {field: 'addr', title: '地址', align:"center", unresize: true},
             {field: 'rank', title: '级别', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#supplierListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#supplierListBar',fixed:"right",align:"center"}
         ]]
     });
 

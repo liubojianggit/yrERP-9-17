@@ -52,7 +52,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'unitPrice', title: '商品单价', align:"center", unresize: true},
             {field: 'totalInventory', title: '供应商库存', align:"center", unresize: true},
             {field: 'addr', title: '产地', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#suppWaresListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#suppWaresListBar',fixed:"right",align:"center"}
         ]]
     });
 

@@ -40,7 +40,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'url', title: '权限URL', align:"center", unresize: true},
             {field: 'method', title: '请求方式', align:"center", unresize: true},
             {field: 'supId', title: '父级权限', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });
 

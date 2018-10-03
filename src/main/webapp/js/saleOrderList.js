@@ -63,7 +63,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'consignee', title: '退货收货人', align:"center", unresize: true},
             {field: 'remark', title: '备注', align:"center", unresize: true},
-            {title: '操作', minWidth:250, templet:'#saleOrderListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#saleOrderListBar',fixed:"right",align:"center"}
         ]]
     });
 

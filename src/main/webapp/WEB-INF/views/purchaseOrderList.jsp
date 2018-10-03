@@ -14,19 +14,53 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
 </head>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        var start = {
+            min: laydate.now()
+            ,max: '2099-06-16 23:59:59'
+            ,istoday: false
+            ,choose: function(datas){
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+
+        var end = {
+            min: laydate.now()
+            ,max: '2099-06-16 23:59:59'
+            ,istoday: false
+            ,choose: function(datas){
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        };
+
+        document.getElementById('LAY_demorange_s').onclick = function(){
+            start.elem = this;
+            laydate(start);
+        }
+        document.getElementById('LAY_demorange_e').onclick = function(){
+            end.elem = this
+            laydate(end);
+        }
+
+    });
+</script>
 <body class="childrenBody">
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
-                <div class="layui-input-inline">
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                <div class="layui-input-inline" style="width: 900px;">
+                    <div class="layui-input-inline">
                         <input type="text" class="layui-input searchVal" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
                     </div>
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                    <div class="layui-input-inline">
                         <input type="text" class="layui-input searchVal" id="purchaseWareCode" placeholder="请输入商品名称：" />
                     </div>
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                    <div class="layui-input-inline">
                     <select name="city" id="rStates" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>
@@ -36,16 +70,21 @@
                         <option value="4">退货成功</option>
                     </select>
                     </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn search_btn" data-type="reload">搜索</a>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-normal addNews_btn">采购申请</a>
+                    </div>
+                    <div class="layui-inline">
+                        <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+                    </div>
                 </div>
-                <a class="layui-btn search_btn" data-type="reload">搜索</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">采购申请</a>
-            </div>
-            <div class="layui-inline">
-                   <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
             </div>
         </form>
+        <div class="layui-inline">
+            <input class="layui-input" placeholder="自定义日期格式" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+        </div>
     </blockquote>
     <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
