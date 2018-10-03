@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  *log service层即业务逻辑层
- * @author lin
+ * @author
  * @since
  */
 @Service
