@@ -1,4 +1,4 @@
-layui.use(['form', 'layer', 'table', 'laytpl'], function () {
+layui.use(['form','layer','table','laytpl'],function(){
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
@@ -117,7 +117,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     }
                 }
             },
-            {title: '操作', minWidth: 200, templet: '#purchaseBar', fixed: "right", align: "center"}
+            {title: '操作', minWidth:150,width:150, templet:'#purchaseBar',fixed:"right",align:"center"}
         ]]
     });
 

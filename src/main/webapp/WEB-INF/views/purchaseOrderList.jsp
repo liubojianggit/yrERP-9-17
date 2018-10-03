@@ -50,6 +50,9 @@
                 </div>
             </shiro:hasPermission>
         </form>
+        <div class="layui-inline">
+            <input class="layui-input" placeholder="自定义日期格式" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+        </div>
     </blockquote>
     <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
