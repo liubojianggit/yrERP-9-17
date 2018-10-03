@@ -206,10 +206,6 @@ public class UserServiceImpl implements UserService {
      * 返回user数据集合
      * @return List<User>
      */
-    public List<User> getUser(){
-        return userDao.getUser();
-    }
-
     @Override
     public List<User> queryUser() {
         return userDao.queryUser();
