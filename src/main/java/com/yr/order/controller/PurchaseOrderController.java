@@ -86,7 +86,7 @@ public class PurchaseOrderController {
 
     /**
      * 分页查询采购表数据，并且返回json 数据；
-     * @param requisitionBO
+     * @param purchaseOrderBo
      * @param page
      * @return json
      *
@@ -95,10 +95,16 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable/list", method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String query(PurchaseOrderBo purchaseOrderBo, Page<PurchaseOrderBo> page) {
-        /*商品/商品编号去空格*/
-        purchaseOrderBo.setPurchaseWareCode(purchaseOrderBo.getPurchaseWareCode().trim());
+
         /*订单名称/订单编号去空格*/
         purchaseOrderBo.setPurchaseCode(purchaseOrderBo.getPurchaseCode().trim());
+
+        String wareCode = purchaseOrderBo.getPurchaseWareCode().trim();
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
+        if (wareCode != null && !pattern.matcher(wareCode).matches())
+        {
+            purchaseOrderBo.setPurchaseWareCode(supplierWareServices.getSupplierWareCode(wareCode));
+        }
 
         page.setT(purchaseOrderBo);
         String json  = purchaseOrderServiceImpl.query(page);
