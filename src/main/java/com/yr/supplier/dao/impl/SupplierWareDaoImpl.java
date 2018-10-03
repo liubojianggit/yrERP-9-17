@@ -185,7 +185,7 @@ public class SupplierWareDaoImpl implements SupplierWareDao {
     @Override
     public String getSupplierWareCode(String name) {
         String jpql = "select s.code from SupplierWares s where s.name = ?";
-        String wareName = (String) entityManager.createQuery(jpql).getSingleResult();
+        String wareName = (String) entityManager.createQuery(jpql).setParameter(1,name).getSingleResult();
         return wareName;
     }
 }
