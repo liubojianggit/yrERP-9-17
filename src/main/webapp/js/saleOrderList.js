@@ -85,10 +85,10 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加销售订单",
             type : 2,
-            area : ['390px' , '340px'],
-            content : path+"sale_orderTable/add",//发送请求
+            area : ['500px' , '500px'],
+            content : path+"sale_order/sale_orderTable/add",//发送请求
             end: function(){
-                window.location.href=path+'sale_orderTable';
+                window.location.href=path+'sale_order/sale_orderTable';
             }
         })
         /*layui.layer.full(index);
@@ -144,51 +144,41 @@ layui.use(['form','layer','table','laytpl'],function(){
         }
     })*/
 
+
     //列表操作
     table.on('tool(saleOrderList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            var index = layui.layer.open({
-                title : "添加销售订单",
-                type : 2,
-                area : ['390px' , '340px'],
-                content : path+"sale_order/sale_orderTable/"+data.id,//发送请求
+            layer.open({
+                type: 2,
+                title: '修改销售',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area : ['500px' , '500px'],
+                content: path+'/sale_order/sale_orderTable/'+data.id,
                 end: function(){
-                    window.location.href=path+'sale_order/sale_orderTable';
+                    window.location.href = path+"/sale_order/sale_orderTable";
                 }
-            })
-            window.location.href = path+"sale_order/sale_orderTable";
+            });
 
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此销售订单？',{icon:3, title:'提示信息'},function(index){
+            layer.confirm('确定删除此条记录？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'sale_orderTable/delete/'+data.id,//请求登录验证接口
+                    url: path+'/sale_order/sale_orderTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
-                    data: {
-                        _method:'delete'
-                    },
-                    error: function() {
-                        layer.msg("操作失败",{icon:2});
-                        setTimeout(function(){
-                            window.location.href = path+"sale_order/sale_orderTable";
-                        },1200);
-                    },
+                    data: {_method:'delete'},
                     success: function(data){
-
                         if("1" == data.code){
-                            layer.msg(data.msg,{icon:1});
-                            setTimeout(function(){
-                                window.location.href = path+"sale_order/sale_orderTable";
-                            },1200);
+                            layer.msg("删除成功",{icon:1});
+                            window.location.href = path+"/sale_order/sale_orderTable";
+
                         }else{
-                            layer.msg(data.msg,{icon:2});
-                            setTimeout(function(){
-                                window.location.href = path+"sale_order/sale_orderTable";
-                            },1200);
+                            layer.msg("删除仓库失败",{icon:2});
+                            window.location.href = path+"/sale_order/sale_orderTable";
                         }
                     }
                 });
@@ -196,5 +186,4 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }
     });
-
 })

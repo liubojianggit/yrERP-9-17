@@ -22,15 +22,15 @@
 <%--@elvariable id="saleOrderBO" type=""--%>
 <form:form  style="width:80%;" id="form2" method="POST" modelAttribute="saleOrderBO">
     <form:errors path="*"></form:errors>
-    <c:if test="${saleOrder.id != null }">
+    <c:if test="${saleOrderBO.saleOrder.id != null }">
         <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" name="id" value="${saleOrder.id }">
+        <input type="hidden" name="id" value="${saleOrderBO.saleOrder.id }">
     </c:if>
 
     <div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">订单编号</label>
+        <label class="layui-form-label">销售编号</label>
         <div class="layui-input-block">
-            <form:input path="saleOrder.code" class="layui-input"  lay-verify="required" placeholder="请输入订单编号："/>
+            <form:input path="saleOrder.code" class="layui-input"  lay-verify="required" placeholder="请销售编号："/>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -41,7 +41,7 @@
     </div><div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">销售员姓名</label>
         <div class="layui-input-block">
-            <form:input path="loginName" class="layui-input"  lay-verify="required" placeholder="请输入销售员姓名："/>
+            <form:input path="saleOrder.salesperson" class="layui-input"  lay-verify="required" placeholder="请输入销售员姓名："/>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
@@ -53,7 +53,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">销售商品</label>
         <div class="layui-input-inline">
-          <form:select path="saleOrder.wareCode" items="${wareList }" itemLabel="name" itemValue="code"></form:select>
+          <form:select path="saleOrder.wareCode" items="${wareList }" itemLabel="name" itemValue="id"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -62,7 +62,7 @@
             <form:input path="saleOrder.number" class="layui-input"  lay-verify="required" placeholder="请输入销售数量"/>
         </div>
     </div>
-    <c:if test="${orderType != null }">
+    <c:if test="${saleOrderBo.orderType != null }">
         <div class="layui-form-item layui-row layui-col-xs12">
             <label class="layui-form-label">申请退货人姓名</label>
             <div class="layui-input-block">
