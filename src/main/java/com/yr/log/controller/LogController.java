@@ -43,7 +43,7 @@ public class LogController {
      * 以分页的形势查询出log表的数据信息l
      * @return
      */
-    @RequestMapping(value = "/logTable/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/logTable/list",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String query(LogBo logBo, Page<LogBo> page)
     {
