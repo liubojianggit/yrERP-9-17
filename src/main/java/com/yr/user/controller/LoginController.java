@@ -2,11 +2,13 @@ package com.yr.user.controller;
 
 import com.yr.core.redis.JedisManager;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 import com.yr.user.service.LoginService;
 import com.yr.user.service.UserService;
 import com.yr.util.SerializeUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +32,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 //SessionAttributes里的参数 names 这是一个字符串数组 里面应写需要存储到session中数据的名称
@@ -90,27 +93,37 @@ public class LoginController {
             if ((loginVerifyCode.trim()).equalsIgnoreCase(verifyCode.trim())) {//先去掉验证码前后空格 在比较验证码是否正确
                 List<User> loginUserNameList = loginService.queryLoginUserName(loginUser);//判断用户 账号是否存在
                 if (!loginUserNameList.isEmpty() && loginUserNameList.size() >= 1) {//判断用户不能等于空 长度要大于1
-                    User user = loginService.queryLoginUser(loginUser);//判断用户名 密码是否正确
-                    if (!StringUtils.isEmpty(user)){
-                        if (user.getStates() == 1) {
-                            // 登录验证通过，把对象存进session
-                            request.getSession().setAttribute("user", user);// 获取session对象并赋值
-                            str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
-                            Cookie cookie = new Cookie("name", URLEncoder.encode( user.getName(),"UTF-8"));//转码
-                            Cookie cookie1 = new Cookie("password",URLEncoder.encode(user.getPassword(),"UTF-8"));
-                            cookie.setMaxAge(60*60);
-                            cookie1.setMaxAge(60*60);
-                            cookie.setPath("/");
-                            cookie1.setPath("/");
-                            response.addCookie(cookie);
-                            response.addCookie(cookie1);
-                            URLDecoder.decode(user.getName(),"UTF-8");//取码
-                            URLDecoder.decode(user.getPassword(),"UTF-8");
-                        } else if (user.getStates() == 0) {
-                            str = "{\"code\":2,\"msg\":\"账号未启用\"}";// 账号未启用
-                        }
-                    }else {
-                        str = "{\"code\":3,\"msg\":\"账号/密码错误\"}";
+                    Subject subject = SecurityUtils.getSubject();//获得subject对象
+                    UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getName(), loginUser.getPassword());//根据账号密码获得token令牌
+                    try {
+                        subject.login(token);//进入权限的认证
+                        // 登录验证通过，把对象存进session
+                        User user = userService.getByName(loginUser.getName());
+                        request.getSession().setAttribute("user", user);// 获取session对象并赋值
+                        //将权限存入redis
+                        List<Permission> permissions = userService.getPermissions(user.getId());
+                            //将对象序列化后放入redis中
+                        Jedis jedis = jedisManager.getJedis();
+                        jedis.set("permissions".getBytes(), SerializeUtil.serialize(permissions));
+                        //将角色存入redis
+                        List<String> roles = userService.getRoles(user.getId());
+                        jedis.set("roles".getBytes(), SerializeUtil.serialize(roles));
+
+                        jedisManager.returnResource(jedis,true);//关闭redis连接
+                        str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
+                        Cookie cookie = new Cookie("name", URLEncoder.encode( user.getName(),"UTF-8"));//转码
+                        Cookie cookie1 = new Cookie("password",URLEncoder.encode(user.getPassword(),"UTF-8"));
+                        cookie.setMaxAge(60*60);
+                        cookie1.setMaxAge(60*60);
+                        cookie.setPath("/");
+                        cookie1.setPath("/");
+                        response.addCookie(cookie);
+                        response.addCookie(cookie1);
+                        URLDecoder.decode(user.getName(),"UTF-8");//取码
+                        URLDecoder.decode(user.getPassword(),"UTF-8");
+                    } catch (Exception ae) {
+                        System.out.println("登陆失败: " + ae.getMessage());
+                        str = "{\"code\":4,\"msg\":\"账号或密码错误\"}";
                     }
                 }else{
                     str = "{\"code\":4,\"msg\":\"账号无法登录\"}";//账号不存在
@@ -122,8 +135,25 @@ public class LoginController {
         } else {
             str = "{\"code\":6,\"msg\":\"请输入验证码\"}";// 验证码是空的
         }
-
         return str;
 
+    }
+
+    /**
+     * 跳转没有权限的页面
+     * @return String
+     */
+    @RequestMapping("/userTable/unauthorized")
+    public String unauthorized(){
+        return "unauthorized";
+    }
+
+    /**
+     * 跳转没有登陆的页面
+     * @return String
+     */
+    @RequestMapping("/unlogin")
+    public String unlongin(){
+        return "unlogin";
     }
 }

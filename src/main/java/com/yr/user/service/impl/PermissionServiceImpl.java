@@ -8,6 +8,7 @@ import com.yr.user.service.PermissionService;
 import com.yr.util.JsonDateValueProcessor;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,13 @@ public class PermissionServiceImpl implements PermissionService {
     public String query(Page<PermissionBo> page){
         page.setTotalRecord(permissionDao.getCount(page));//查询总条数加入page中
         List<PermissionBo> list = permissionDao.query(page);//分页查询的数据
+        //将对象转为json
         JsonConfig jsonConfig = new JsonConfig();
+        //设置忽略的属性
+        jsonConfig.setExcludes(new String[]{"user","permission"});  //此处是亮点，只要将所需忽略字段加到数组中即可
+        jsonConfig.setIgnoreDefaultExcludes(false);  //设置默认忽略
+        jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
+        //能够将时间类型转date
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
         JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
         String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+page.getTotalRecord()+",\"data\":"+jsonArray+"}";
@@ -128,5 +135,22 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public Map<Integer,Object> getPermission(){
         return permissionDao.getPermission();
+    }
+
+    /**
+     * 返回所有角色列表
+     * @return String
+     */
+    public String getRoleList(){
+        List<Permission> list = permissionDao.getRoleList();
+        //将对象转为json
+        JsonConfig jsonConfig = new JsonConfig();
+        //设置忽略的属性
+        jsonConfig.setExcludes(new String[]{"user","permission"});  //此处是亮点，只要将所需忽略字段加到数组中即可
+        jsonConfig.setIgnoreDefaultExcludes(false);  //设置默认忽略
+        jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
+        //能够将时间类型转date
+        JSONArray jsonArray = JSONArray.fromObject(list,jsonConfig);
+        return jsonArray.toString();
     }
 }

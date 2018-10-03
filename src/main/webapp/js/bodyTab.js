@@ -21,6 +21,9 @@ layui.define(["element","jquery"],function(exports){
 		function showall(data, ulHtml) {
 			var straa='';
 	        for(var i=0;i<data.length;i++){
+                if(data[i].title == "员工管理"){
+                    ulHtml += "<shiro:hasPermission name=\"sdg\">";
+                }
 	            if(data[i].spread || data[i].spread == undefined){
 	                ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
 	            }else{
@@ -53,16 +56,15 @@ layui.define(["element","jquery"],function(exports){
 	                            ulHtml += '<i class="layui-icon" data-icon="'+data[i].children[j].icon+'">'+data[i].children[j].icon+'</i>';
 	                        }
 	                    }
-	                    
+
 	                    ulHtml += '<cite>'+data[i].children[j].title+'</cite></a></dd>';
-	                
+
 	                   /* if(data[i].children[j].children != undefined && data[i].children[j].children.length > 0){
 	                    	ulHtml += showall(data[i].children[j].children, straa);
 	                    }*/
-	                    
 	                }
 	                ulHtml += "</dl>";
-	                
+
 	            }else{
 	                if(data[i].target == "_blank"){
 	                    ulHtml += '<a data-url="'+data[i].href+'" target="'+data[i].target+'">';
@@ -79,11 +81,12 @@ layui.define(["element","jquery"],function(exports){
 	                ulHtml += '<cite>'+data[i].title+'</cite></a>';
 	            }
 	            ulHtml += '</li>';
+                ulHtml += "</shiro:hasPermission>";
 	        }
 	        return ulHtml;
 	        }
-		
-		
+
+
     //生成左侧菜单
     Tab.prototype.navBar = function(strData){
         var data;

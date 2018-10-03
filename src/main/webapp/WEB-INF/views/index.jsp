@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 		 pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -15,7 +17,13 @@
 	<link rel="icon" href="<%=request.getContextPath() %>/erp.ico">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/index.css" media="all" />
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.0.js"></script>
 </head>
+<script type="text/javascript">
+    $(function(){
+
+    });
+</script>
 <body class="main_body">
 <div class="layui-layout layui-layout-admin">
 	<!-- 顶部 -->

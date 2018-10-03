@@ -9,7 +9,9 @@ public class UserBo implements Serializable{
     private static final long serialVersionUID = 1L;
     private Integer minAge;//最小年龄
     private Integer maxAge;//最大年龄
+    private String depaName;//部门名字
     private User user;
+
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -39,12 +41,21 @@ public class UserBo implements Serializable{
         this.user = user;
     }
 
+    public String getDepaName() {
+        return depaName;
+    }
+
+    public void setDepaName(String depaName) {
+        this.depaName = depaName;
+    }
+
     @Override
     public String toString() {
         return "UserBo{" +
                 "minAge=" + minAge +
                 ", maxAge=" + maxAge +
                 ", user=" + user +
+                ", depaName='" + depaName + '\'' +
                 '}';
     }
 }
