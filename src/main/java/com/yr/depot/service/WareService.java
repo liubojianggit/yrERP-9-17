@@ -49,4 +49,8 @@ public interface WareService {
      * 获取商品的list集合
      * */
     public List<Ware> getWare();
+    /**
+     * 用于判断是否存在相同的code的商品
+     */
+    public boolean getWareByCode(Ware ware);
 }

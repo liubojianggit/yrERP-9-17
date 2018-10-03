@@ -6,6 +6,7 @@ import com.yr.entitys.bo.depotBo.WareBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.Ware;
 import com.yr.depot.service.WareService;
+import com.yr.entitys.user.User;
 import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,8 +75,9 @@ public class WareController {
      */
     @RequestMapping(value = "waresTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("wareBo")Ware ware){
-       ware.setCreateEmp("wangyong");
+    public String addWare(@ModelAttribute("wareBo")Ware ware,HttpServletRequest request){
+        System.out.println("============="+((User)request.getSession().getAttribute("user")).getName());
+       ware.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());
        boolean bool = ws.add(ware);
         if(bool){
             return "{\"code\":1,\"msg\":\"添加成功\"}";
@@ -135,8 +137,8 @@ public class WareController {
      */
     @RequestMapping(value = "waresTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(@ModelAttribute("wareBo") Ware ware,Map<String,Object>map){
-        ware.setUpdateEmp("wangyong1");
+    public String updateWare(@ModelAttribute("wareBo") Ware ware,Map<String,Object>map,HttpServletRequest request){
+        ware.setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
         System.out.println(ware);
         boolean bool = ws.update(ware);
         if(bool){
@@ -160,5 +162,14 @@ public class WareController {
         return json;
     }
 
-
+   @RequestMapping(value = "waresTable/checkTypeCode",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+   @ResponseBody
+    public String checkTypeCode(Ware ware){
+        boolean bool = ws.getWareByCode(ware);
+        if(bool){
+            return "true";
+        }else{
+            return "false";
+        }
+   }
 }

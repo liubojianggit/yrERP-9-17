@@ -182,4 +182,14 @@ private WareDao wd;
         lists.add(wares);
         return lists;
     }
+
+    @Override
+    public boolean getWareByCode(Ware ware) {
+       Long num = wd.getWareByCode(ware);
+       if(num>0){
+           return true;
+       }else{
+           return false;
+       }
+    }
 }
