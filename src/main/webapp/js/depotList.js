@@ -45,7 +45,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'jobnum', title: '负责人', align:"center", unresize: true},
             {field: 'createTime', title: '创建时间', align:"center", unresize: true},
             {field: 'createEmp', title: '创建人', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:150,width:150, templet:'#depotListBar',fixed:"right",align:"center"}
         ]]
     });
 
