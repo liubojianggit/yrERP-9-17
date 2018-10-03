@@ -15,8 +15,8 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //销售订单列表
     var tableIns = table.render({
-        elem: '#userList',
-        url :path+ 'sale_orderTable/list',
+        elem: '#saleOrderList',
+        url :path+ 'sale_order/sale_orderTable/list',
         request: {//request下面是请求后台的参数的别名,response是响应的别名
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -41,7 +41,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'salesperson', title: '销售员', align:"center",unresize: true},
             {field: 'wareCode', title: '商品编号', align:"center", unresize: true},
             {field: 'number', title: '销售商品数量', align:"center", unresize: true},
-            {field: 'salePrice', title: '销售总价', align:"center", unresize: true},
+            {field: 'money', title: '销售总价', align:"center", unresize: true},
            /* {field: 'money', title: '销售金额', align:"center", unresize: true},*/
             {field: 'sPhoneNumber', title: '销售员联系电话', align:"center", unresize: true},
             {field: 'requName', title: '申请退货人姓名', align:"center", unresize: true},
@@ -63,7 +63,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'consignee', title: '退货收货人', align:"center", unresize: true},
             {field: 'remark', title: '备注', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#userListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:250, templet:'#saleOrderListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -145,7 +145,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     })*/
 
     //列表操作
-    table.on('tool(userList)', function(obj){
+    table.on('tool(saleOrderList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
@@ -153,12 +153,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                 title : "添加销售订单",
                 type : 2,
                 area : ['390px' , '340px'],
-                content : path+"sale_orderTable/"+data.id,//发送请求
+                content : path+"sale_order/sale_orderTable/"+data.id,//发送请求
                 end: function(){
-                    window.location.href=path+'sale_orderTable';
+                    window.location.href=path+'sale_order/sale_orderTable';
                 }
             })
-            window.location.href = ;
+            window.location.href = path+"sale_order/sale_orderTable";
 
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此销售订单？',{icon:3, title:'提示信息'},function(index){
@@ -174,7 +174,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                     error: function() {
                         layer.msg("操作失败",{icon:2});
                         setTimeout(function(){
-                            window.location.href = path+"sale_orderTable";
+                            window.location.href = path+"sale_order/sale_orderTable";
                         },1200);
                     },
                     success: function(data){
@@ -182,12 +182,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                         if("1" == data.code){
                             layer.msg(data.msg,{icon:1});
                             setTimeout(function(){
-                                window.location.href = path+"sale_orderTable";
+                                window.location.href = path+"sale_order/sale_orderTable";
                             },1200);
                         }else{
                             layer.msg(data.msg,{icon:2});
                             setTimeout(function(){
-                                window.location.href = path+"sale_orderTable";
+                                window.location.href = path+"sale_order/sale_orderTable";
                             },1200);
                         }
                     }
