@@ -54,6 +54,7 @@ public class PermissionFilter extends AccessControlFilter {
         //将redis的序列化后的值拿出来
         Jedis jedis = jedisManager.getJedis();
         byte[] bytes = jedis.get("permissions".getBytes());
+        jedisManager.returnResource(jedis,true);//关闭redis连接
         List<Permission> permissions = (List<Permission>) SerializeUtil.deserialize(bytes);
         if(permissions != null){
             for (Permission permission:permissions) {
@@ -69,7 +70,7 @@ public class PermissionFilter extends AccessControlFilter {
                     }
                 } else {//表示包含正则
                     //通过正则表达式验证
-                    permissionUrl = permissionUrl.replace("*", "\\d+\\");//\\d+至少出现一次任意数字
+                    permissionUrl = permissionUrl.replace("*", "\\d+");//\\d+至少出现一次任意数字
                     Pattern pattern = Pattern.compile(permissionUrl);
                     Matcher matcher = pattern.matcher(uri);
                     if (matcher.matches() && method.equals(permissionMethod)) {//为true结束
@@ -81,6 +82,12 @@ public class PermissionFilter extends AccessControlFilter {
             if(subject.isPermitted(uri)){
                 return Boolean.TRUE;
             }
+        }
+        if(ShiroFilterUtils.isAjax(request)){//如果是ajax则返回没有权限的信息
+            Map<String,String> resultMap = new HashMap<String, String>();
+            resultMap.put("login_status", "300");
+            resultMap.put("message", "\u5F53\u524D\u7528\u6237\u6CA1\u6709\u767B\u5F55\uFF01");//当前用户没有登录！
+            ShiroFilterUtils.out(response, resultMap);
         }
         return Boolean.FALSE;
     }

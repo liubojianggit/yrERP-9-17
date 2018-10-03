@@ -2,6 +2,7 @@ package com.yr.user.controller;
 
 import com.yr.core.redis.JedisManager;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 import com.yr.user.service.LoginService;
 import com.yr.user.service.UserService;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 //SessionAttributes里的参数 names 这是一个字符串数组 里面应写需要存储到session中数据的名称
@@ -88,9 +90,24 @@ public class LoginController {
                     UsernamePasswordToken token = new UsernamePasswordToken(loginUser.getName(), loginUser.getPassword());//根据账号密码获得token令牌
                     try {
                         subject.login(token);//进入权限的认证
+                        // 登录验证通过，把对象存进session
+                        User user = userService.getByName(loginUser.getName());
+                        request.getSession().setAttribute("user", user);// 获取session对象并赋值
+                        //将权限存入redis
+                        List<Permission> permissions = userService.getPermissions(user.getId());
+                            //将对象序列化后放入redis中
+                        Jedis jedis = jedisManager.getJedis();
+                        jedis.set("permissions".getBytes(), SerializeUtil.serialize(permissions));
+                        //将角色存入redis
+                        List<String> roles = userService.getRoles(user.getId());
+                        jedis.set("roles".getBytes(), SerializeUtil.serialize(roles));
+
+                        jedisManager.returnResource(jedis,true);//关闭redis连接
+
+                        str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
                     } catch (Exception ae) {
                         System.out.println("登陆失败: " + ae.getMessage());
-                        return "{\"code\":4,\"msg\":\"账号或密码错误\"}";
+                        str = "{\"code\":4,\"msg\":\"账号或密码错误\"}";
                     }
                 }else{
                     str = "{\"code\":4,\"msg\":\"账号无法登录\"}";//账号不存在
@@ -101,9 +118,7 @@ public class LoginController {
         } else {
             str = "{\"code\":6,\"msg\":\"请输入验证码\"}";// 验证码是空的
         }
-
         return str;
-
     }
 
     /**
@@ -133,5 +148,23 @@ public class LoginController {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 跳转没有权限的页面
+     * @return String
+     */
+    @RequestMapping("/userTable/unauthorized")
+    public String unauthorized(){
+        return "unauthorized";
+    }
+
+    /**
+     * 跳转没有登陆的页面
+     * @return String
+     */
+    @RequestMapping("/unlogin")
+    public String unlongin(){
+        return "unlogin";
     }
 }

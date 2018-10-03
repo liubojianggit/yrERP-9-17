@@ -3,6 +3,7 @@ package com.yr.user.service;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public interface UserService {
      * @param id
      * @param roleIds
      */
-    void setRoles(Integer id,Integer[] roleIds);
+    void setRoles(Integer id,Integer[] roleIds,User user);
 
     /**
      * 根据用户名获得User对象
@@ -86,4 +87,16 @@ public interface UserService {
      * @return User
      */
     User getByJobNum(String jobNum);
+
+    /**
+     * 返回所有角色列表
+     * @return String
+     */
+    String getRole(Integer id);
+
+    /**
+     * 返回user数据集合
+     * @return
+     */
+    List<User> getUser();
 }

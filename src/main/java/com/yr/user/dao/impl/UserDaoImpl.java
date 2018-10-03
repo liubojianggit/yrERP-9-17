@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
      * 分页的形式查询user表的数据
      * @return List<User>
      */
-    public List<UserBo> query(Page<UserBo> page){
+    public List<User> query(Page<UserBo> page){
         String jpql = "select u from User u where 1 = 1 ";
         if(!StringUtils.isEmpty(page.getT().getUser().getName())){//判断是否为null和空
             jpql += "and u.name like :name ";
@@ -100,7 +100,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("maxAge", page.getT().getMaxAge());
         }
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
-        List<UserBo> list = query.getResultList();//获得分页后的数据集合
+        List<User> list = query.getResultList();//获得分页后的数据集合
         return list;
     }
 
@@ -135,10 +135,10 @@ public class UserDaoImpl implements UserDao {
      * @param id
      * @return User
      */
-    public List<String>  getRoles(Integer id){
+    public List<String> getRoles(Integer id){
         String jpql = "select r.name from User u inner join u.role r where u.id = ?1";
         List<String> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
-        return null;
+        return list;
     }
 
     /**
@@ -147,7 +147,7 @@ public class UserDaoImpl implements UserDao {
      * @return List<Permission>
      */
     public List<Permission> getPermissions(Integer id){
-        String jpql = "select p.name,p.method from User u inner join u.role r inner join r.permission p where u.id = ?1";
+        String jpql = "select p from User u inner join u.role r inner join r.permission p where u.id = ?1";
         List<Permission> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
         return list;
     }
@@ -159,8 +159,8 @@ public class UserDaoImpl implements UserDao {
     public void deleteRoles(Integer id){
         User user = entityManager.find(User.class, id);//获得User对象
         Set<Role> role = user.getRole();//获得user对象关联的role对象
-        user.getRole().remove(role);//将所有的用户关联的role删除,这时会将关联表一起删除，如果设置了remove，角色也会被删除
-        //entityManager.merge(role);//所以这里又将角色添加进去
+        user.getRole().removeAll(role);//从集合里删除
+        entityManager.merge(user);//这里再将他修改user
     }
 
     /**
@@ -232,5 +232,24 @@ public class UserDaoImpl implements UserDao {
     public User getByJobNum(String jobNum){
         String jpql = "select u from User u where u.jobNum = ?1";
         return (User)entityManager.createQuery(jpql).setParameter(1,jobNum).getSingleResult();
+    }
+
+    /**
+     * 根据用户Id获取角色
+     */
+    public List<Role> getRole(Integer id){
+        String jpql = "select r from User u inner join u.role r where u.id = ?1";
+        List<Role> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
+        return list;
+    }
+
+    /**
+     * 返回user数据集合
+     * @return
+     */
+    public List<User> getUser(){
+        String jpql = "select u from User u";
+        List<User> list = entityManager.createQuery(jpql).getResultList();
+        return list;
     }
 }

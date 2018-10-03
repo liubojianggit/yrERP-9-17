@@ -20,13 +20,12 @@ public class Role extends BaseEntity implements Serializable{
     private String code;//角色编号
     @Column(unique = true, nullable = false)
     private String name;//角色名
-    //使用 JoinTable 创建中间表
-    @JoinTable(name="u_user_role",//中间表的名字
-            joinColumns={@JoinColumn(name="uid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
-            inverseJoinColumns={@JoinColumn(name="rid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "role",fetch = FetchType.EAGER)
     private Set<User> user;
-    @ManyToMany(mappedBy = "role",fetch = FetchType.EAGER)//放弃本端的维护，使用role维护
+    @JoinTable(name="u_role_permission",//中间表的名字
+            joinColumns={ @JoinColumn(name="rid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
+            inverseJoinColumns={@JoinColumn(name="pid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)//放弃本端的维护，使用role维护
     private Set<Permission> permission;
 
     public void setId(Integer id) {

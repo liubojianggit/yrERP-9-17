@@ -67,4 +67,10 @@ public interface PermissionService {
      * @return Map<String,Object>
      */
     Map<Integer,Object> getPermission();
+
+    /**
+     * 返回所有角色列表
+     * @return String
+     */
+    String getRoleList();
 }

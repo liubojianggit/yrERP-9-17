@@ -43,7 +43,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 return '<img style="width: 28px;height: 28px;"  src="'+path + '/u_user/userTable/icons/'+ d.id + '"  class="layui-upload-img layui-circle userFaceBtn userAvatar"/>';
             }},
             {field: 'jobNum', title: '工号', align:"center", unresize: true},
-            {field: 'depaCode', title: '部门编号', align:"center", unresize: true},
+            {field: 'depaCode', title: '部门', align:"center", unresize: true},
             {field: 'sex', title: '性别', align:"center", unresize: true,templet:function(d){
                 return d.sex == "0" ? "女" :"男";
             }},
@@ -165,8 +165,8 @@ layui.use(['form','layer','table','laytpl'],function(){
        		});
         }else if(layEvent === 'setRole'){//角色设置
         	//Ajax请求，动态控制角色弹出层的回显
-        	$.post(path+'role/queryRoleJson', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
-            	$.post(path+'user/queryUserRoleJson', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
+        	$.get(path+'u_user/userTable/getRole', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
+            	$.get(path+'u_user/userTable/getRoleById', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
         		var roleStrTd ="";//弹出层td
         		var roleStrTr = "";	//弹出层tr
         		var checkedStr = "";//控制复选框默认值的标识
@@ -198,18 +198,24 @@ layui.use(['form','layer','table','laytpl'],function(){
 	                   btn: ['确认', '取消']
 	           	  	   ,yes: function(index, layero){//layero就是弹出层的html对象
 		           	    //按钮【按钮一】的回调
-		           		var userRoleStr = data.id+"#";
+		           		var id = data.id/*+"#"*/;
+		           		var roleIds = [];
 		           		var obj = $(layero).find("table").find("tr").find(":checkbox");
 		           		 for(var k in obj){
 		           			if(obj[k].checked){
-		           				userRoleStr += obj[k].value+",";
+		           				//userRoleStr += obj[k].id/*+","*/;
+                                roleIds.push(obj[k].value);
 		           			}
 		           		  }
 		           		  $.ajax({
-		             			type: 'post',
-		             			url: path+'user/insertUserRole',//后台往user_role表中插入数据
+		             			type: 'get',
+		             			url: path+'u_user/userTable/setRoles',//后台往user_role表中插入数据
 		             			dataType : 'json',
-		             			data: {"str":userRoleStr},//userRoleStr是用户拥有的角色的id拼起来的字符串
+		             			data: {
+		             			    "id":id,
+                                    "roleIds":roleIds
+                                },//userRoleStr是用户拥有的角色的id拼起来的字符串
+                                traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
 		             			success: function(str){
 		             				
 		             				if("0" == str.code){
@@ -227,7 +233,7 @@ layui.use(['form','layer','table','laytpl'],function(){
 		             		                      curr: 1 //重新从第 1 页开始
 		             		                  }
 		             		              })
-		             					setTimeout(top.layer.msg(str.msg,{icon:1}),1000); 
+		             					setTimeout(top.layer.msg(str.msg,{icon:1}),1000);
 		             				}else{
 		             					top.layer.close(index);
 		             					tableIns.reload("roleList",{
@@ -331,33 +337,18 @@ layui.use(['form','layer','table','laytpl'],function(){
                         _method:'delete'
                     },
         			success: function(data){
-        				
-        				if("0" == data.code){
-        					layer.msg("删除用户失败",{icon:2});
-        				}else if("1" == data.code){
-        					layer.msg("删除成功",{icon:2});
-        					window.location.href = path+"u_user/userTable";
-                            
-        				}else{
-        					layer.msg("未知错误，请联系管理员",{icon:2});
-        				}
-        				/*layer.closeAll("iframe");
-						//刷新父页面
-						parent.location.reload();*/
+                        if("0" == data.code){
+                            layer.msg("删除用户失败",{icon:2});
+                        }else if("1" == data.code){
+                            layer.msg("删除成功",{icon:2});
+                            window.location.href = path+"u_user/userTable";
+                        }else{
+                            layer.msg("未知错误，请联系管理员",{icon:2});
+                        }
         			}
         		});
-            	
-            	
-            	
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                //    tableIns.reload();
-                 //   layer.close(index);
-                // })
-            	return false;
+            	//return false;
             });
         }
     });
-
 })

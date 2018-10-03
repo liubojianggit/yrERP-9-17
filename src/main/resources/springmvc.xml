@@ -13,8 +13,8 @@
 	<mvc:default-servlet-handler />
 	
 	<mvc:annotation-driven />
-	
-	
+
+	<aop:config proxy-target-class="true" />
 	
 	<!-- 扫描指定路径下的类上的注解，当造Controller层总有需要用到其它注解，在下面再配置一个<context:include-filter 								type="annotation" expression="注解类全名"/>就可以了 -->
 			<!-- use-default-filters="false"只有指定包含的时候才用，排除的时候用use-default-filters="ture"，可以不写，因为默认是					ture -->

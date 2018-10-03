@@ -1,12 +1,15 @@
 package com.yr.user.controller;
 
+import com.yr.common.service.UploadServer;
 import com.yr.core.redis.JedisManager;
 import com.yr.department.service.DepartmentService;
 import com.yr.department.service.impl.DepartmentServiceImpl;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
+import com.yr.user.service.RoleService;
 import com.yr.user.service.UserService;
 import com.yr.util.DateUtils;
 import com.yr.util.FileUtils;
@@ -48,7 +51,12 @@ public class UserController {
     @Autowired
     @Qualifier("departmentServiceImpl")
     private DepartmentService departmentService;
-    public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
+    @Autowired
+    @Qualifier("roleServiceImpl")
+    private RoleService roleServiceImpl;
+    @Autowired
+    private UploadServer uploadServerImpl;
+    //public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径
 
     /**
      * 如果检测到form表单提交带有id,直接将值存入request中
@@ -112,6 +120,7 @@ public class UserController {
         map1.put("0", "女");
         map.put("sexs", map1);
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
+        departmentList.put("-1","请选择");
         map.put("depaList",departmentList);
         //部门编号为键，名字为值
         return "userAU";
@@ -127,7 +136,7 @@ public class UserController {
     @RequestMapping(value="/userTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(User user, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
-        String phone = String.valueOf(FileUtils.getTimeStamp());
+       /* String phone = String.valueOf(FileUtils.getTimeStamp());
         File file = new File(path, phone + ".jpg");//第一个是父级文件路径，第二个是文件名
         if(!file.getParentFile().exists()){//判断父级路径是否存在
             file.mkdir();//创建文件夹
@@ -145,8 +154,10 @@ public class UserController {
             filesCopy = request.getServletContext().getRealPath("/") + "photos" + filesCopy.substring(filesCopy.lastIndexOf("\\"),filesCopy.length());
         }
         FileUtils.fileCover(phoneStr, filesCopy);//将读取的流覆盖创建的图片
-        user.setPhoto(phoneStr);//替换掉原本的路径
+        user.setPhoto(phoneStr);//替换掉原本的路径*/
+        //String phoneStr = uploadServerImpl.uploadServer(filesCopy,request.getServletContext().getRealPath("/"));
 
+        user.setPhoto(filesCopy);//替换掉原本的路径
         user.setAge(DateUtils.calculateTimeDifferenceByCalendar(user.getBirthday()));//计算当前时间-生日日期=现在年龄
         user.setStates(1);//默认是启用的
         user.setCreateTime(new Date());//获取当前时间
@@ -160,13 +171,14 @@ public class UserController {
      * @return String
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map,UserBo userBo, Page<UserBo> page){
+    public String jumpUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy ,@PathVariable Integer id, Map<String, Object> map,UserBo userBo, Page<UserBo> page){
         page.setT(userBo);
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
         map1.put("0", "女");
         map.put("sexs", map1);
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
+        departmentList.put("-1","请选择");
         map.put("depaList",departmentList);
         map.put("page", page);
         map.put("user", userService.getById(id));//根据id获取对象放入request中
@@ -179,8 +191,10 @@ public class UserController {
      */
     @RequestMapping(value="/userTable",method=RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String saveUpdate(User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
-        map.put("page", page);
+    public String saveUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy,User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
+        //String phoneStr = uploadServerImpl.uploadServer(filesCopy,request.getServletContext().getRealPath("/"));
+        user.setPhoto(filesCopy);//替换掉原本的路径
+
         user.setUpdateTime(new Date());//获取修改当前时间
         //user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
         userService.update(user);
@@ -204,35 +218,16 @@ public class UserController {
     }
 
     /**
-     * 根据用户id返回角色名集合
-     * @param id
-     * @return List<String>
-     */
-    @RequestMapping(value="/userTable/getRoles",method = RequestMethod.GET)
-    @ResponseBody
-    public List<String> getRoles(Integer id){
-        return userService.getRoles(id);
-    }
-
-    /**
-     * 根据用户id返回权限集合
-     * @param id
-     * @return List<Permission>
-     */
-    @RequestMapping(value="/userTable/getPermissions",method = RequestMethod.GET)
-    @ResponseBody
-        public List<Permission> getPermissions(Integer id){
-        return userService.getPermissions(id);
-    }
-
-    /**
      * 给用户赋角色
      * @param id
-     * @param roleIds
+     * @param roleIds`
      */
-    @RequestMapping(value="/userTable/setRoles",method = RequestMethod.GET)
-    public void setRoles(Integer id,Integer[] roleIds){
-        userService.setRoles(id,roleIds);
+    @RequestMapping(value="/userTable/setRoles", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String setRoles(Integer id,Integer[] roleIds,HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");//获取session里存的用户对象
+        userService.setRoles(id,roleIds,user);
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
     /**
@@ -245,8 +240,8 @@ public class UserController {
      */
     @RequestMapping(value="/userTable/upload",method=RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
+    public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        /*Long startTime = FileUtils.getTimeStamp();//获得当前时间的时间戳
         String path = request.getServletContext().getRealPath("/") + "photos";//获取服务器路径         --这里要改成服务器的路径
         String fileName = file.getOriginalFilename();//获得文件名
         fileName = startTime + fileName.substring(fileName.lastIndexOf("."), fileName.length());//构建出一个唯一的文件名
@@ -259,13 +254,21 @@ public class UserController {
         //将内存中的数据写入磁盘
         file.transferTo(filepath);
         Map<String,Object> map = new HashMap<>();
-        map.put("url", request.getServletContext().getContextPath() + File.separator  + "photos" + File.separator + fileName);
+        map.put("url", request.getServletContext().getContextPath() + File.separator  + "photos" + File.separator + fileName);*/
+
+        //String url = uploadServerImpl.upload(file,request.getServletContext());
+        String url = uploadServerImpl.upload(file);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("url",url);
         return map;
     }
 
     /**
      * 从redis缓存中拿到用户的id返回头像的字节流到jsp
      * 注意：session中一般用来存储用户的信息，因为能很好的监控到用户的行为
+     *
+     * 不需要
      */
     @RequestMapping(value="/userTable/icon")
     public void getIcon(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -281,6 +284,8 @@ public class UserController {
 
     /**
      * 通过用户的id请求返回图像的字节流
+     *
+     * 不需要
      */
     @RequestMapping("/userTable/icons/{id}")
     public void getIcons(@PathVariable(value="id") Integer id ,HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -303,4 +308,25 @@ public class UserController {
         userService.updateState(id, state);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
+
+    /**
+     * 返回所有角色列表
+     */
+    @RequestMapping(value="/userTable/getRole", produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getRole(){
+        return roleServiceImpl.getRoleList();
+    }
+
+    /**
+     * 根据id查看用户具有什么角色
+     * @param uid
+     * @return String
+     */
+    @RequestMapping(value="/userTable/getRoleById", produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getRole(Integer uid){
+        return userService.getRole(uid);
+    }
+
 }

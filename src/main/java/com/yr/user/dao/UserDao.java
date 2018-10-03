@@ -3,6 +3,7 @@ package com.yr.user.dao;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UserDao {
      * 分页的形式查询user表的数据
      * @return List<UserBo>
      */
-    List<UserBo> query(Page<UserBo> page);
+    List<User> query(Page<UserBo> page);
 
     /**
      * 添加用户信息
@@ -99,4 +100,16 @@ public interface UserDao {
      * @return User
      */
     User getByJobNum(String jobNum);
+
+    /**
+     * 根据用户Id获取角色
+     */
+    List<Role> getRole(Integer id);
+
+    /**
+     * 返回user数据集合
+     * @return
+     */
+    List<User> getUser();
+
 }
