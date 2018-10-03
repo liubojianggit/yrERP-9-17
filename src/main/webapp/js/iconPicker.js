@@ -66,7 +66,7 @@ layui.define(['laypage', 'form'], function (exports) {
                     '<div class="'+ TITLE +'" id="'+ TITLE_ID +'">' +
                         '<div class="layui-iconpicker-item">'+
                             '<span class="layui-iconpicker-icon layui-unselect">' +
-                                '<i class="layui-icon">&#xe617;</i>' +
+                                '<i id="resetIcon" class="layui-icon">&#xe617;</i>' +
                             '</span>'+
                             '<i class="layui-edge"></i>' +
                         '</div>'+
