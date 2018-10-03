@@ -13,39 +13,28 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderList.js"></script>
 </head>
 <script>
-    layui.use('laydate', function(){
-        var laydate = layui.laydate;
-
-        var start = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
+    layui.use('upload', function() {
+            var $ = layui.jquery
+                , upload = layui.upload;
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#test8'
+            ,url: '<%=request.getContextPath()%>/purchaseExcel/import'
+            ,auto: false
+            ,method: 'post'
+            ,accept: 'file'
+            ,exts: 'xls|xlsx'
+            //,multiple: true
+            ,bindAction: '#test9'
+            ,done: function(res){
+                alert("上传成功");
+                console.log(res)
             }
-        };
-
-        var end = {
-            min: laydate.now()
-            ,max: '2099-06-16 23:59:59'
-            ,istoday: false
-            ,choose: function(datas){
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-
-        document.getElementById('LAY_demorange_s').onclick = function(){
-            start.elem = this;
-            laydate(start);
-        }
-        document.getElementById('LAY_demorange_e').onclick = function(){
-            end.elem = this
-            laydate(end);
-        }
-
+        });
     });
 </script>
 <body class="childrenBody">
@@ -82,9 +71,24 @@
                 </div>
             </div>
         </form>
-        <div class="layui-inline">
-            <input class="layui-input" placeholder="自定义日期格式" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+            <button type="button" class="layui-btn" id="test9">开始上传</button>
         </div>
+
+        <div class="layui-inline">
+            <button type="button" class="layui-btn" id="export">导出数据</button>
+        </div>
+
+        <form action="<%=request.getContextPath()%>/purchaseExcel/export" method="POST">
+            <input type="submit" style="background-color: #d3a4ff; border: 1px solid #d3a4ff" value="导出采购表" />
+        </form>
+        <form action="<%=request.getContextPath()%>/purchaseExcel/import" method="POST" enctype="multipart/form-data" onsubmit="return check();">
+            <div style="margin: 30px;">
+                <input  type="file" name="excelFile" accept="xlsx" size="80" />
+                <input type="submit" value="导入Excel" />
+            </div>
+        </form>
     </blockquote>
     <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
@@ -93,7 +97,5 @@
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
     </script>
 </form>
-<script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderList.js"></script>
 </body>
 </html>
