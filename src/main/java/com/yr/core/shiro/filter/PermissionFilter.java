@@ -70,7 +70,7 @@ public class PermissionFilter extends AccessControlFilter {
                     }
                 } else {//表示包含正则
                     //通过正则表达式验证
-                    permissionUrl = permissionUrl.replace("*", "\\d+");//\\d+至少出现一次任意数字
+                    permissionUrl = permissionUrl.replace("*", "\\d.*(,\\d.*)*");//判断是否符合指定的数字
                     Pattern pattern = Pattern.compile(permissionUrl);
                     Matcher matcher = pattern.matcher(uri);
                     if (matcher.matches() && method.equals(permissionMethod)) {//为true结束
