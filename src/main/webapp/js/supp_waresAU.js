@@ -71,22 +71,22 @@ layui.use(['form','layer','upload','table'],function(){
             dataType : 'json',
             data: $('#form2').serialize(),
             success: function(data){
+                layer.close(index);
                 if(data.code==1){
                     layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
-                        window.location.href = path+"supp_wares/supp_waresTable";
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
                     },1200);
                 }else{
                     layer.msg(data.msg,{icon:2});
                     setTimeout(function(){
-                        window.location.href = path+"supp_wares/supp_waresTable";
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
                     },1200);
                 }
             }
         });
-
-
-
         return false;
     })
 
@@ -101,12 +101,14 @@ layui.use(['form','layer','upload','table'],function(){
                 if(data.code==1){
                     layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
-                        window.location.href = path+"supp_wares/supp_waresTable";
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
                     },1200);
                 }else {
                     layer.msg(data.msg,{icon:2});
                     setTimeout(function(){
-                        window.location.href = path+"supp_wares/supp_waresTable";
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
                     },1200);
                 }
             }

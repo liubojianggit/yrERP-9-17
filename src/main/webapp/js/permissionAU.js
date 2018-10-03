@@ -27,28 +27,28 @@ layui.use(['form','layer','upload','table'],function(){
             data: $('#form2').serialize(),
             error: function() {
                 layer.msg("操作失败",{icon:2});
-                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                parent.layer.close(index); //再执行关闭
+                setTimeout(function(){
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                },1200);
             },
             success: function(data){
                 if(data.code==1){
                     layer.msg(data.msg,{icon:1});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
-                    //刷新父页面
-                    parent.location.reload();
-                }else if(data.code==0){
+                    setTimeout(function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        //刷新父页面
+                        parent.location.reload();
+                    },1200);
+                }else {
                     layer.msg(data.msg,{icon:2});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
-                    //刷新父页面
-                    parent.location.reload();
-                }else if(data.code==2){
-                    layer.msg(data.msg,{icon:2});
-                    //刷新父页面
-                    parent.location.reload();
-                }else{
-                    layer.msg("操作失败",{icon:2});
+                    setTimeout(function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        //刷新父页面
+                        parent.location.reload();
+                    },1200);
                 }
             }
         });
@@ -67,20 +67,24 @@ layui.use(['form','layer','upload','table'],function(){
             data: $('#form2').serialize(),
             error: function() {
                 layer.msg("操作失败",{icon:2});
-                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                parent.layer.close(index); //再执行关闭
+                setTimeout(function(){
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                },1200);
             },
             success: function(data){
                 if(data.code==1){
-                    /*layer.msg(data.msg,{icon:1});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭*/
                     top.layer.msg(data.msg);
-                    window.location.href = path+"u_permission/permissionTable";
+                    setTimeout(function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    },1200);
                 }else {
                     layer.msg("修改操作失败",{icon:2});
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                    parent.layer.close(index); //再执行关闭
+                    setTimeout(function(){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    },1200);
                 }
             }
         });
@@ -88,12 +92,6 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    /*$("#updatePic").click(function(){
-        layer.open({
-      title: '修改图标'
-      ,content: '可以填写任意的layer代码'
-    });
-    });  */
     //格式化时间
     function filterTime(val){
         if(val < 10){

@@ -77,22 +77,23 @@ layui.use(['form','layer','table','laytpl'],function(){
         }
     });
 
-    //添加用户
+    //添加商品
     function addUser(){
         var index = layui.layer.open({
             title : "添加商品",
             type : 2,
+            area : ['390px' , '340px'],
             content : path+"wares/waresTable/add",//发送请求
             end: function(){
                 window.location.href=path+'wares/waresTable';
             }
         })
-        layui.layer.full(index);
+       /* layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addUser();
@@ -141,17 +142,23 @@ layui.use(['form','layer','table','laytpl'],function(){
                     url: path+'wares/waresTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {_method:'delete'},
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        setTimeout(function(){
+                            window.location.href = path+"/wares/waresTable";
+                        },1200);
+                    },
                     success: function(data){
-                        if("2" == data.code){
-                            layer.msg("删除失败",{icon:2});
-                            window.location.href = path+"/wares/waresTable";
-                        }else if("1" == data.code){
-                            layer.msg("删除成功",{icon:2});
-                            window.location.href = path+"/wares/waresTable";
+                        if("1" == data.code){
+                            layer.msg(data.msg,{icon:1});
+                            setTimeout(function(){
+                                window.location.href = path+"/wares/waresTable";
+                            },1200);
                         }else{
-                            layer.msg("未知错误，请联系管理员",{icon:2});
-                            window.location.href = path+"/wares/waresTable";
-
+                            layer.msg(data.msg,{icon:2});
+                            setTimeout(function(){
+                                window.location.href = path+"/wares/waresTable";
+                            },1200);
                         }
                     }
                 });

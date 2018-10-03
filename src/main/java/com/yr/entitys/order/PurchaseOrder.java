@@ -2,6 +2,9 @@ package com.yr.entitys.order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yr.common.entity.BaseEntity;
+import com.yr.entitys.department.Department;
+import com.yr.entitys.depot.Depot;
+import com.yr.entitys.supplier.Supplier;
 import com.yr.entitys.supplier.SupplierWares;
 import com.yr.entitys.user.User;
 
@@ -12,6 +15,7 @@ import java.util.Date;
 @Entity
 @Table(name = "purchaseOrder")
 public class PurchaseOrder extends BaseEntity implements Serializable{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -58,16 +62,6 @@ public class PurchaseOrder extends BaseEntity implements Serializable{
     //收货仓库id;
     @Column(name = "depot_code")
     private String  depotCode;
-
-   /* private SupplierWares supplierWares;
-
-    public SupplierWares getSupplierWares() {
-        return supplierWares;
-    }
-
-    public void setSupplierWares(SupplierWares supplierWares) {
-        this.supplierWares = supplierWares;
-    }*/
 
     public String getPurchaseWareCode() {
         return purchaseWareCode;
@@ -176,13 +170,12 @@ public class PurchaseOrder extends BaseEntity implements Serializable{
     public PurchaseOrder() {
 
     }
-
-    public PurchaseOrder(Integer id, String code, String jobNumber, String departmentCode, String approver, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode) {
-        this.id = id;
+    public PurchaseOrder(String code, String jobNumber, String departmentCode, String approver, String purchaseWareCode, Long purchaseNumber, String supplierCode, Double unitPrice, Double totalPrice, Integer status, String consignee, String depotCode) {
         this.code = code;
         this.jobNumber = jobNumber;
         this.departmentCode = departmentCode;
         this.approver = approver;
+        this.purchaseWareCode = purchaseWareCode;
         this.purchaseNumber = purchaseNumber;
         this.supplierCode = supplierCode;
         this.unitPrice = unitPrice;

@@ -11,76 +11,96 @@ layui.use(['form','layer','table','laytpl'],function(){
         pos = strFullPath.indexOf(strPath),
         prePath = strFullPath.substring(0, pos),
         path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
+
+
     ;
 
-    //用户列表
+    //仓库列表
     var tableIns = table.render({
-        elem: '#departmentList',
-        url :path+ 'department/departmentTable/list',
-        request: {//request下面是请求后台的参数的别名,response是响应的别名
+        elem: '#menuList',
+        url :path+ 'menu/menuTable/list',
+        request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
         },
         where:{//需要传入的值
-            "depaNameOrCode": $("#depaNameOrCode").val() //搜索的关键字
+            "name": $("#menuName").val(),  //搜索的关键字
         },
         cellMinWidth : 95,
         page : true,
         height : "full-125",
         limits : [10,25,50,100],
         limit : 10,
-        id : "departmentListTable",
+        id : "menuListTable",
         cols : [[
             {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
-            {field: 'name', title: '部门名称', align:"center",unresize: true},
-            {field: 'code', title: '部门编号', align:"center", unresize: true},
-            {field: 'supCode', title: 'supCode', align:"center", unresize: true},
+            {field: 'code', title: '仓库编号', align:"center",unresize: true},
+            {field: 'name', title: '仓库名称', align:"center",unresize: true},
+            {field: 'addr', title: '仓库地址', align:"center", unresize: true},
+            {field: 'jobnum', title: '负责人', align:"center", unresize: true},
             {field: 'createTime', title: '创建时间', align:"center", unresize: true},
             {field: 'createEmp', title: '创建人', align:"center", unresize: true},
-            {title: '操作', minWidth:386, templet:'#departmentListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:386, templet:'#depotListBar',fixed:"right",align:"center"}
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        table.reload("departmentListTable",{
+        table.reload("depotListTable",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },
             where: {
-                "depaNameOrCode": $("#depaNameOrCode").val(),  //搜索的关键字
+                "name": $("#menuName").val(),  //搜索的关键字
             }
         })
     });
 
-    //添加用户
-    function addDepartment(){
+    //添加菜单
+    function addDepot(){
         var index = layui.layer.open({
-            title : "添加部门",
+            title : "添加菜单",
             type : 2,
-            area: ['390px', '275px'],
-            content : path+"department/departmentTable/add",//发送请求
+            area: ['390px', '320px'],
+            content : path+"/menu/menuTable/add",//发送请求
             end: function(){
-                window.location.href=path+'department/departmentTable';
+                window.location.href=path+"/menu/menuTable";
             }
         })
-        /*layui.layer.full(index);
-        window.sessionStorage.setItem("index",index);
-        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        $(window).on("resize",function(){
-            layui.layer.full(window.sessionStorage.getItem("index"));
-        })*/
+        /* layui.layer.full(index);
+         window.sessionStorage.setItem("index",index);
+         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+         $(window).on("resize",function(){
+             layui.layer.full(window.sessionStorage.getItem("index"));
+         })*/
     }
     $(".addNews_btn").click(function(){
-        addDepartment();
+        addDepot();
     })
 
     //批量删除
+    /*    $(".delAll_btn").click(function(){
+            var checkStatus = table.checkStatus('depotListTable'),
+                data = checkStatus.data,
+                newsId = [];
+            if(data.length > 0) {
+                for (var i in data) {
+                    newsId.push(data[i].newsId);
+                }
+                layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+                    tableIns.reload();
+                    layer.close(index);
+                })
+            }else{
+                layer.msg("请选择需要删除的用户");
+            }
+        })*/
+    //批量删除
     $(".delAll_btn").click(function(){
 
-        var checkStatus = table.checkStatus('departmentListTable'),
+        var checkStatus = table.checkStatus('menuListTable'),
             data = checkStatus.data,
             newsId = [];
         if(data.length > 0) {
@@ -90,7 +110,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({//删除用户
                     type : "post",
-                    url : path+"department/departmentTable/"+newsId,
+                    url : path+"menu/menuTable/"+newsId,
                     async : false,
                     data : {
                         "_method" : "DELETE"
@@ -102,7 +122,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                             layer.msg("删除用户失败",{icon:2});
                         }else if("1" == data.code){
                             layer.msg("删除成功",{icon:2});
-                            window.location.href = path+"department/departmentTable";
+                            window.location.href = path+"menu/menuTable";
                         }else{
                             layer.msg("未知错误，请联系管理员",{icon:2});
                         }
@@ -120,51 +140,39 @@ layui.use(['form','layer','table','laytpl'],function(){
     })
 
     //列表操作
-    table.on('tool(departmentList)', function(obj){
+    table.on('tool(menuList)', function(obj){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
             layer.open({
                 type: 2,
-                title: '修改部门',
+                title: '修改菜单',
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
-                area: ['390px', '275px'],
-                content: path+'/department/departmentTable/'+data.id,
+                area : ['390px' , '340px'],
+                content: path+'menu/menuTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/department/departmentTable";
+                    window.location.href = path+"menu/menuTable";
                 }
             });
 
         }else if(layEvent === 'del'){ //删除
-            layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
+            layer.confirm('确定删除此菜单？',{icon:3, title:'提示信息'},function(index){
                 tableIns.reload();
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'department/departmentTable/'+data.id,//请求登录验证接口
+                    url: path+'menu/menuTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
-                    data: {
-                        _method:'delete'
-                    },
-                    error: function () {
-                        layer.msg("操作失败",{icon:2});
-                        setTimeout(function(){
-                            window.location.href=path+'department/departmentTable';
-                        },2000);
-                    },
+                    data: {_method:'delete'},
                     success: function(data){
+                        if("1" == data.code){
+                            layer.msg("删除成功",{icon:1});
+                            window.location.href = path+"menu/menuTable";
 
-                       if("1" == data.code){
-                           layer.msg(data.msg,{icon:1});
-                           setTimeout(function(){
-                               window.location.href=path+'department/departmentTable';
-                           },2000);
                         }else{
-                           layer.msg(data.msg,{icon:2});
-                           setTimeout(function(){
-                               window.location.href=path+'department/departmentTable';
-                           },2000);
+                            layer.msg("删除仓库失败",{icon:2});
+                            window.location.href = path+"menu/menuTable";
                         }
                     }
                 });

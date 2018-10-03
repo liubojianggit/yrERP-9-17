@@ -77,17 +77,18 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title : "添加商品",
             type : 2,
+            area : ['390px' , '340px'],
             content : path+"supp_wares/supplierTable/add",//发送请求
             end: function(){
                 window.location.href= path+"/supp_wares/supp_waresTable";
             }
         })
-        layui.layer.full(index);
+        /*layui.layer.full(index);
         window.sessionStorage.setItem("index",index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
         $(window).on("resize",function(){
             layui.layer.full(window.sessionStorage.getItem("index"));
-        })
+        })*/
     }
     $(".addNews_btn").click(function(){
         addUser();
@@ -120,17 +121,29 @@ layui.use(['form','layer','table','laytpl'],function(){
         var layEvent = obj.event,
             data = obj.data;
         if(layEvent === 'edit'){ //编辑
-            //addUser(data);
-            window.location.href = path+"supp_wares/supplierTable/"+data.id;
-
+            layer.open({
+                type: 2,
+                title: '修改用户',
+                maxmin: true,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['500px', '550px'],
+                content: path+"supp_wares/supplierTable/"+data.id,
+                end: function(){
+                    window.location.href =  path+"supp_wares/supp_waresTable";
+                }
+            });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'/supp_wares/supplierTable/'+data.id,//删除请求后台的接口
+                    url: path+'supp_wares/supplierTable/'+data.id,//删除请求后台的接口
                     dataType : 'json',
                     data: {_method:'delete'},
+                    error: function() {
+                        layer.msg("操作失败",{icon:2});
+                        tableIns.reload();
+                    },
                     success: function(data){
                         if("1" == data.code){
                             layer.msg(data.msg,{icon:1});

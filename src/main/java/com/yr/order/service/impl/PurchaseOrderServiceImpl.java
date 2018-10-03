@@ -136,5 +136,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Override
     public void deleteBatch(Integer[] ids) {
         purchaseOrderDaoImpl.deleteBatch(ids);
+       /* for (int i = 0; i < ids.length; i++) {
+            purchaseOrderDaoImpl.delete(ids[i]);
+        }*/
     }
 }
