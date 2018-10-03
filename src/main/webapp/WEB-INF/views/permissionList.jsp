@@ -35,12 +35,16 @@
             <div class="layui-inline">
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">添加权限</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-            </div>
+            <shiro:hasPermission name="/u_permission/permissionTable/add/GET">
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal addNews_btn">添加权限</a>
+                </div>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="/u_permission/permissionTable/*/DELETE">
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+                </div>
+            </shiro:hasPermission>
         </form>
     </blockquote>
     <table id="userList" lay-filter="userList"></table>
@@ -48,8 +52,12 @@
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
     <!--操作-->
     <script type="text/html" id="userListBar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        <shiro:hasPermission name="/u_permission/permissionTable/*/GET">
+            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="/u_permission/permissionTable/*/DELETE">
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        </shiro:hasPermission>
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>

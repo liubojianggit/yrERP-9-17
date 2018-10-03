@@ -1,10 +1,16 @@
 package com.yr.user.controller;
 
+import com.yr.core.shiro.filter.MyRealm;
 import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
+import com.yr.user.service.PermissionService;
 import com.yr.user.service.RoleService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -23,6 +29,9 @@ public class RoleController {
     @Autowired
     @Qualifier("roleServiceImpl")
     private RoleService roleService;
+    @Autowired
+    @Qualifier("permissionServiceImpl")
+    private PermissionService permissionService;
 
 
     /**
@@ -40,7 +49,7 @@ public class RoleController {
 
     /**
      * 跳转列表
-     * @return
+     * @return String
      */
     @RequestMapping(value = "/roleTable",method = RequestMethod.GET)
     public String jumpList(){
@@ -130,8 +139,30 @@ public class RoleController {
      * @param id
      * @param roleIds
      */
-    @RequestMapping(value="/roleTable/setPermissions",method = RequestMethod.GET)
-    public void setRoles(Integer id,Integer[] roleIds){
+    @RequestMapping(value="/roleTable/setPermissions",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String setRoles(Integer id,Integer[] roleIds){
         roleService.setPermissions(id,roleIds);
+        return "{\"code\":1,\"msg\":\"修改成功\"}";
+    }
+
+    /**
+     * 返回所有角色列表
+     */
+    @RequestMapping(value="/roleTable/getPermission", produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getRole(){
+        return permissionService.getRoleList();
+    }
+
+    /**
+     * 根据id获取当前角色的权限
+     * @param uid
+     * @return String
+     */
+    @RequestMapping(value="/roleTable/getPermissionById", produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String getRole(Integer uid){
+        return roleService.getRole(uid);
     }
 }

@@ -7,6 +7,7 @@ import com.yr.user.service.LoginService;
 import com.yr.user.service.UserService;
 import com.yr.util.Md5Utils;
 import com.yr.util.SerializeUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -40,7 +41,6 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
         Jedis jedis = jedisManager.getJedis();//获得redis对象
         byte[] rolesByte = jedis.get("roles".getBytes());//获得角色集合
         List<String> roles = (List<String>) SerializeUtil.deserialize(rolesByte);//将序列化后的byte数组转成对象
@@ -49,8 +49,9 @@ public class MyRealm extends AuthorizingRealm {
         byte[] permissionsByte = jedis.get("permissions".getBytes());//获得权限集合
         List<Permission> permissions = (List<Permission>) SerializeUtil.deserialize(permissionsByte);//将序列化后的byte数组转成对象
         for (Permission permission :permissions) {
-            info.addStringPermission(permission.getName() + "/" + permission.getMethod());//将名字与方法名重合
+            info.addStringPermission(permission.getUrl() + "/" + permission.getMethod());//将名字与方法名重合
         }
+        jedisManager.returnResource(jedis,true);//关闭redis连接
         return info;
     }
 
@@ -82,6 +83,13 @@ public class MyRealm extends AuthorizingRealm {
         credentialsMatcher.setHashAlgorithmName("MD5");//使用md5算法加密
         credentialsMatcher.setHashIterations(Md5Utils.hashIterations);//设置1024次迭代加密
         setCredentialsMatcher(credentialsMatcher);//应用
+    }
+
+    /**
+     * 清除用户缓存
+     */
+    public void clearAuthz(){
+        this.clearCachedAuthorizationInfo(SecurityUtils.getSubject().getPrincipals());
     }
 
 }

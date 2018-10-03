@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -44,12 +45,16 @@
 					</div>
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addNews_btn">添加用户</a>
-			</div>
-			<div class="layui-inline">
-				<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-			</div>
+			<shiro:hasPermission name="/u_user/userTable/add/GET">
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-normal addNews_btn">添加用户</a>
+				</div>
+			</shiro:hasPermission>
+			<shiro:hasPermission name="/u_user/userTable/*/DELETE">
+				<div class="layui-inline">
+					<a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+				</div>
+			</shiro:hasPermission>
 		</form>
 	</blockquote>
 	<table id="userList" lay-filter="userList"></table>
@@ -58,10 +63,18 @@
 	<!--操作		这里的d是固定，可以通过d对象点属性获取到值-->
 	<script type="text/html" id="userListBar">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="auth"><i class="layui-icon"></i>独立权限</a>
-		<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="setRole"><i class="layui-icon"></i>角色设置</a>
-		<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
-		<a {{d.states == "1" ? "class='layui-btn layui-btn-xs' lay-event='usable'>已启用" : "class='layui-btn layui-btn-xs layui-btn-danger' lay-event='usable'>已禁用"}}</a>
-		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		<shiro:hasPermission name="/u_user/userTable/getRole/GET">
+			<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="setRole"><i class="layui-icon"></i>角色设置</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="/u_user/userTable/*/GET">
+			<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="/u_user/userTable/updateState/GET">
+			<a {{d.states == "1" ? "class='layui-btn layui-btn-xs' lay-event='usable'>已启用" : "class='layui-btn layui-btn-xs layui-btn-danger' lay-event='usable'>已禁用"}}</a>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="/u_user/userTable/*/DELETE">
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+		</shiro:hasPermission>
 	</script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
