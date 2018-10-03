@@ -89,7 +89,7 @@ public class SupplierWareController {
     public String addWare(SupplierWareBo supplierWareBo, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
 
         supplierWareBo.getSupplierWare().setCreateTime(new Date());
-        supplierWareBo.getSupplierWare().setCreateEmp("萍");
+       // supplierWareBo.getSupplierWare().setCreateEmp("萍");
         supplierWareBo.getSupplierWare().setSuppPhoto("C:\\Users\\Administrator\\Desktop\\aaa.jpg");
         sws.add(supplierWareBo);
         return "{\"code\":1,\"msg\":\"添加成功\"}";
@@ -131,7 +131,7 @@ public class SupplierWareController {
     @ResponseBody
     public String updateWare(SupplierWareBo supplierWareBo, Map<String,Object>map){
         supplierWareBo.getSupplierWare().setUpdateTime(new Date());
-        supplierWareBo.getSupplierWare().setUpdateEmp("萍");
+        //supplierWareBo.getSupplierWare().setUpdateEmp("萍");
         //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
         sws.update(supplierWareBo);
         return "{\"code\":1,\"msg\":\"修改成功\"}";

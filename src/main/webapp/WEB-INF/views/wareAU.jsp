@@ -74,7 +74,7 @@
               <input type="hidden" name="headUrl" id="headUrl2" value=""/>
               <button type="button" class="layui-btn" id="test2">修改图片</button>
           </c:if>
-          <c:if test="${userBo.id == null }">
+          <c:if test="${wareBo.id == null }">
               <div class="layui-upload-list">
                   <!-- 头像回显的样式，这里是圆形 -->
                   <img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">

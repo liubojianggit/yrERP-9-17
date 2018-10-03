@@ -97,7 +97,7 @@ public class PurchaseOrderController {
         /*订单名称/订单编号去空格*/
         purchaseOrderBo.setPurchaseCode(purchaseOrderBo.getPurchaseCode().trim());
 
-        String wareCode = purchaseOrderBo.getPurchaseWareCode().trim();
+        String wareCode = purchaseOrderBo.getPurchaseWareCode().trim();//获取商品名称/编号
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         if (wareCode != null && !pattern.matcher(wareCode).matches())
         {
@@ -196,8 +196,8 @@ public class PurchaseOrderController {
             log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setContent(e.toString());
-            //User user1 = (User) request.getSession().getAttribute("user");
-            //log.setCreateEmp(user1.getName());
+            User user1 = (User) request.getSession().getAttribute("user");
+            log.setCreateEmp(user1.getName());
             logServices.addLog(log);
 
             e.printStackTrace();
@@ -243,7 +243,7 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable", method = RequestMethod.PUT)
     public String update(@ModelAttribute("purchaseOrderBO") PurchaseOrderBo purchaseOrderBo ,HttpServletRequest request) {
           //修改之前的值
-          String purchaseOrderlog = purchaseOrderBo.getPurchaseOrder().toString();
+          String purchaseOrderlog = purchaseOrderServiceImpl.getRequisitionById(purchaseOrderBo.getPurchaseOrder().getId()).toString();
         try {
             //获取当前登录用户并把它设为修改人
             User user = (User) request.getSession().getAttribute("user");
@@ -311,45 +311,49 @@ public class PurchaseOrderController {
     @RequestMapping(value = "/requisitionTable/{ids}",method = RequestMethod.DELETE)
     public String delete(@PathVariable Integer[] ids,HttpServletRequest request){
         try {
-
-            //采购订单删除操作记录日志
-            Log log = new Log();
-            log.setModular("采购订单模块");
-            log.setTable("purchaseOrder");
-            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-            log.setType(2);
             for (Integer id : ids) {
-                PurchaseOrder pur =  purchaseOrderServiceImpl.getRequisitionById(id);
-                log.setFieldOldValue(pur.toString());
+                if (ids.length != 0)
+                {
+                    //采购订单删除操作记录日志
+                    Log log = new Log();
+                    log.setModular("采购订单模块");
+                    log.setTable("purchaseOrder");
+                    //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+                    log.setType(2);
 
-                //log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());   //删除数据,日志忽略后置
-                log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                User user = (User) request.getSession().getAttribute("user");
-                log.setCreateEmp(user.getName());
-                logServices.addLog(log);
+                    PurchaseOrder pur =  purchaseOrderServiceImpl.getRequisitionById(id);
+                    log.setFieldOldValue(pur.toString());
+                    //log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());   //删除数据,日志忽略后置
+                    log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+                    User user = (User) request.getSession().getAttribute("user");
+                    log.setCreateEmp(user.getName());
+                    logServices.addLog(log);
+                }
             }
             //采购订单删除
             purchaseOrderServiceImpl.deleteBatch(ids);
         } catch (Exception e)
         {
-            e.printStackTrace();
-
-            Log log = new Log();
-            log.setModular("采购订单模块");
-            log.setTable("purchaseOrder");
-            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-            log.setType(0);
             for (Integer id : ids) {
-                PurchaseOrder pur =  purchaseOrderServiceImpl.getRequisitionById(id);
-                log.setFieldOldValue(pur.toString());
+                if (ids.length != 0)
+                {
+                    //采购订单删除操作记录日志
+                    Log log = new Log();
+                    log.setModular("采购订单模块");
+                    log.setTable("purchaseOrder");
+                    //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+                    log.setType(2);
 
-                //log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());   //删除数据,日志忽略后置
-                log.setContent(e.getMessage());
-                log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                User user1 = (User) request.getSession().getAttribute("user");
-                log.setCreateEmp(user1.getName());
-                logServices.addLog(log);
+                    PurchaseOrder pur =  purchaseOrderServiceImpl.getRequisitionById(id);
+                    log.setFieldOldValue(pur.toString());
+                    //log.setFieldNewValue(purchaseOrderBo.getPurchaseOrder().toString());   //删除数据,日志忽略后置
+                    log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+                    User user = (User) request.getSession().getAttribute("user");
+                    log.setCreateEmp(user.getName());
+                    logServices.addLog(log);
+                }
             }
+            e.printStackTrace();
         }
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
