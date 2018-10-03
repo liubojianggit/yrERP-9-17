@@ -143,7 +143,7 @@
 	<div class="magb15 layui-col-md4 layui-col-xs12">
 		<label class="layui-form-label">性别</label>
 		<div class="layui-input-block">
-			<form:radiobuttons type="radio" path="sex" items="${sexs }"/>
+			<form:radiobuttons path="sex" items="${sexs }"/>
 		</div>
 	</div>
 	</div>
