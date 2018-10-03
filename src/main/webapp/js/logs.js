@@ -3,21 +3,26 @@ layui.use(['table'],function(){
 
 	/*lin  添加*/
     //获得项目名字path，在js中可以直接用path调用
-	strFullPath = window.document.location.href,
-    strPath = window.document.location.pathname,
+    var strFullPath = window.document.location.href,
+        strPath = window.document.location.pathname,
         pos = strFullPath.indexOf(strPath),
-        prePath = strFullPath.substring(0,pos),
-        path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1)+"/";
+        prePath = strFullPath.substring(0, pos),
+        path = strPath.substring(0, strPath.substr(1).indexOf('/') + 1) + "/";
 	;
 
 	//系统日志
     table.render({
         elem: '#logs',
         url : path+'/log/logTable/list',
+        //request下面是请求后台的参数的别名,response是响应的别名
+        request: {
+            pageName: 'currentPage' //页码的参数名称，默认：page
+            , limitName: 'pageSize' //每页数据量的参数名，默认：limit
+        },
         cellMinWidth : 95,
         page : true,
         height : "full-20",
-        limit : 20,
+        limit :10,
         limits : [10,15,20,25],
         id : "systemLog",
         cols : [[
@@ -48,5 +53,5 @@ layui.use(['table'],function(){
             {field: 'createTime', title: '操作时间', align:'center', width:170}
         ]]
     });
- 	
 })
+
