@@ -1,13 +1,19 @@
 package com.yr.depot.controller;
 
 import com.yr.depot.service.WareTypeService;
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.depotBo.WareTypeBo;
 import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.User;
+import com.yr.log.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Map;
 
 /**
@@ -18,7 +24,9 @@ import java.util.Map;
 public class WareTypeController {
     @Autowired
     private WareTypeService wts;
-
+    @Autowired
+    @Qualifier("logServiceImpl")
+    private LogService logServices;//日志
     @ModelAttribute
     public void Pojo(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
         if (id != null) {
@@ -60,9 +68,39 @@ public class WareTypeController {
      */
     @RequestMapping(value = "ware_typeTable", method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("wareType") WareType waretype) {
-        waretype.setCreateEmp("wangyong");
-        boolean bool = wts.add(waretype);
+    public String addWare(@ModelAttribute("wareType") WareType waretype,HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        waretype.setCreateEmp(user.getName());
+        boolean bool = false;
+        try {
+            bool = wts.add(waretype);
+            Log log = new Log();
+            log.setModular("仓库商品类型模块");
+            log.setTable("ware_type");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+           // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("仓库商品类型模块");
+            log.setTable("ware_type");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"添加成功\"}";
         }else{
@@ -78,8 +116,38 @@ public class WareTypeController {
      */
     @RequestMapping(value = "ware_typeTable/{id}", method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String deleteWare(@PathVariable Integer id) {
-        boolean bool = wts.delete(id);
+    public String deleteWare(@PathVariable Integer id,HttpServletRequest request) {
+        boolean bool = false;
+        User user = (User)request.getSession().getAttribute("user");
+        try {
+            bool = wts.delete(id);
+            Log log = new Log();
+            log.setModular("仓库商品类型模块");
+            log.setTable("ware_type");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(2);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("仓库商品类型模块");
+            log.setTable("ware_type");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            //修改前的值
+            //log.setFieldOldValue(oldWare);  //新增数据忽略前置
+            //修改后的值
+            // log.setFieldNewValue(ware.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"删除成功\"}";
         }else{
@@ -96,9 +164,28 @@ public class WareTypeController {
      */
     @RequestMapping(value = "ware_typeTable", method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(@ModelAttribute("wareType") WareType wareType, Map<String, Object> map) {
-        wareType.setUpdateEmp("wangyong1");
-        boolean bool = wts.update(wareType);
+    public String updateWare(@ModelAttribute("wareType") WareType wareType, Map<String, Object> map,HttpServletRequest request) {
+        User user = (User)request.getSession().getAttribute("user");
+        String oldWareType = wts.getWareType(wareType.getId()).toString();
+        wareType.setUpdateEmp(user.getName());
+        boolean bool = false;
+        try {
+            bool = wts.update(wareType);
+            Log log = new Log();
+            log.setModular("仓库商品类型模块");
+            log.setTable("ware_type");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            //修改前的值
+            log.setFieldOldValue(oldWareType);  //新增数据忽略前置
+            //修改后的值
+             log.setFieldNewValue(wareType.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logServices.addLog(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(bool){
             return "{\"code\":1,\"msg\":\"修改成功\"}";
         }else{

@@ -59,17 +59,19 @@
                         <option value="4">退货成功</option>
                     </select>
                     </div>
-                    <div class="layui-inline">
-                        <a class="layui-btn search_btn" data-type="reload">搜索</a>
-                    </div>
-                    <div class="layui-inline">
-                        <a class="layui-btn layui-btn-normal addNews_btn">采购申请</a>
-                    </div>
-                    <div class="layui-inline">
-                        <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-                    </div>
                 </div>
+                <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
+            <shiro:hasPermission name="/requisition/requisitionTable/add/GET">
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal addNews_btn">采购申请</a>
+                </div>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="/requisition/requisitionTable/*/DELETE">
+                <div class="layui-inline">
+                       <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+                </div>
+            </shiro:hasPermission>
         </form>
         <div class="layui-upload">
             <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
@@ -93,8 +95,12 @@
     <table id="purchaseList" lay-filter="purchaseList"></table>
     <!--操作-->
     <script type="text/html" id="purchaseBar">
+        <shiro:hasPermission name="/requisition/requisitionTable/*/GET">
         <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="/requisition/requisitionTable/*/DELETE">
         <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        </shiro:hasPermission>
     </script>
 </form>
 </body>

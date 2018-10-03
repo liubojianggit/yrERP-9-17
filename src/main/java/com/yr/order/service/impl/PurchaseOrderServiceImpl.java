@@ -19,6 +19,7 @@ import com.yr.util.JsonDateValueProcessor;
 import com.yr.util.JsonUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -95,8 +96,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             boList.add(purchaseOrderBo);
         }
         String wareCode = page.getT().getPurchaseWareCode();
-        String jsonList = JsonUtils.beanListToJson(boList);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+count+",\"data\":"+jsonList+"}";
+
+        JsonConfig jsonConfig = new JsonConfig();
+        //设置忽略的属性
+        jsonConfig.setExcludes(new String[]{"role"});  //此处是亮点，只要将所需忽略字段加到数组中即可
+        jsonConfig.setIgnoreDefaultExcludes(false);  //设置默认忽略
+        jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
+        //能够将时间类型转date
+        jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
+        JSONArray jsonArray = JSONArray.fromObject(boList,jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": " + count+",\"data\":" + jsonArray + "}";
         return json;
     }
 
@@ -108,7 +117,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrder getRequisitionById(Integer id) {
-
         return purchaseOrderDaoImpl.getRequisitionById(id);
     }
 
