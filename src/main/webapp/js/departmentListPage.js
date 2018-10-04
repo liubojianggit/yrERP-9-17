@@ -130,7 +130,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area: ['390px', '275px'],
-                content: path+'/department/departmentTable/'+data.id,
+                content: path+'department/departmentTable/'+data.id,
                 end: function(){
                     window.location.href = path+"/department/departmentTable";
                 }

@@ -62,7 +62,7 @@ public class PermissionFilter extends AccessControlFilter {
                 String permissionMethod = permission.getMethod();
                 String tfMethod = httpRequest.getParameter("_method");
                 if (tfMethod != null) {//如果不等于null则表示这个是个put或者delete请求
-                    method = tfMethod;
+                    method = tfMethod.toUpperCase();//转成大写
                 }
                 if (!permissionUrl.contains("*")) {//表示不包含正则
                     if (permissionUrl.equals(uri) && method.equals(permissionMethod)) {
@@ -70,7 +70,7 @@ public class PermissionFilter extends AccessControlFilter {
                     }
                 } else {//表示包含正则
                     //通过正则表达式验证
-                    permissionUrl = permissionUrl.replace("*", "\\d+");//\\d+至少出现一次任意数字
+                    permissionUrl = permissionUrl.replace("*", "\\d.*(,\\d.*)*");//判断是否符合指定的数字
                     Pattern pattern = Pattern.compile(permissionUrl);
                     Matcher matcher = pattern.matcher(uri);
                     if (matcher.matches() && method.equals(permissionMethod)) {//为true结束
