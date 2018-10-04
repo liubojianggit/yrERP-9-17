@@ -55,8 +55,8 @@ public class PurchaseExcelController {
     @ResponseBody
     public String exportExcel(HttpServletRequest request, HttpServletResponse response, PurchaseOrderBo purchaseOrderBo, Page<PurchaseOrderBo> page) {
         try {
-            /*订单名称/订单编号去空格*/
-            purchaseOrderBo.setPurchaseCode(purchaseOrderBo.getPurchaseCode().trim());
+            String purCode = purchaseOrderBo.getPurchaseCode().trim();
+            purchaseOrderBo.setPurchaseCode(purCode);
 
             String wareCode = purchaseOrderBo.getPurchaseWareCode().trim();//获取商品名称/编号
             Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
@@ -136,46 +136,4 @@ public class PurchaseExcelController {
         }
         return map;
     }
-    /**
-     * 导出采购信息excel表；
-     * @param request
-     * @param response
-     */
-    /*@RequestMapping(value = "/export", method = RequestMethod.POST)
-    public void exportExcel(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            List<PurchaseOrder> purchaseOrderList = purchaseExcelServiceImpl.queryForList();
-            String tableName = "采购订单";
-           *//* String[] rowsName = new String[]{"序号","采购id","采购编号","采购人工号","采购部门编号","审批人",
-            "采购商品名称","采购商品类型","采购商品数量","供应商编号","商品单价","商品总价","采购单状态","收货人","收货仓库编号"};*//*
-            String[] rowsName = new String[]{"序号","采购id","采购编号","采购人工号","采购部门编号","审批人","采购商品编号","采购商品数量","供应商编号","商品单价","商品总价","采购单状态","收货人","收货仓库编号"};
-            List<Object[]> dataList = new ArrayList<Object[]>();
-            Object[] objects = null;
-            for (int i = 0; i < purchaseOrderList.size(); i++) {
-                PurchaseOrder pur = purchaseOrderList.get(i);
-                objects = new Object[rowsName.length];
-                objects[0] = i;
-                objects[1] = pur.getId();
-                objects[2] = pur.getCode();
-                objects[3] = pur.getJobNumber();
-                objects[4] = pur.getDepartmentCode();
-                objects[5] = pur.getApprover();
-                *//*objects[6] = pur.getPurchasName();
-                objects[7] = pur.getPurchaseType();*//*
-                objects[6] = pur.getPurchaseWareCode();
-                objects[7] = pur.getPurchaseNumber();
-                objects[8] = pur.getSupplierCode();
-                objects[9] = pur.getUnitPrice();
-                objects[10] = pur.getTotalPrice();
-                objects[11] = pur.getStatus();
-                objects[12] = pur.getConsignee();
-                objects[13] = pur.getDepotCode();
-                dataList.add(objects);
-            }
-            ExportExcelUtils ex = new ExportExcelUtils(tableName, rowsName, dataList, response);
-            ex.exportData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }

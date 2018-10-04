@@ -22,7 +22,7 @@ layui.use(['table'],function(){
         cellMinWidth : 95,
         page : true,
         height : "full-20",
-        limit :10,
+        limit :15,
         limits : [10,15,20,25],
         id : "systemLog",
         cols : [[
