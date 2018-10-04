@@ -2,7 +2,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
     <!--diskStore：缓存数据持久化的目录 地址     这里填服务器的地址-->
-    <diskStore path="C:\Users\Administrator\Desktop\cache" />
+    <diskStore path="/rediseach" />
     <defaultCache
             maxElementsInMemory="1000"
             maxElementsOnDisk="10000000"
