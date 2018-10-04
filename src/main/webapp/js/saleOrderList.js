@@ -47,6 +47,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'requName', title: '申请退货人姓名', align:"center", unresize: true},
             {field: 'rPhoneNumber', title:  '申请退货人联系电话', align:"center", unresize: true},
             {field: 'depotCode', title: '销售商品的仓库编号', align:"center", unresize: true},
+            {field: 'consignee', title: '收货人', align:"center", unresize: true},
+            {field: 'approver', title: '申请人', align:"center", unresize: true},
             {field: 'states', title: '订单状态', align:"center", unresize: true,templet:function(d){
                    if(d.states == 0){
                         return "驳回";
@@ -63,7 +65,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'consignee', title: '退货收货人', align:"center", unresize: true},
             {field: 'remark', title: '备注', align:"center", unresize: true},
-            {title: '操作', minWidth:180,width:180, templet:'#saleOrderListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:200,width:200, templet:'#saleOrderListBar',fixed:"right",align:"center"}
         ]]
     });
 

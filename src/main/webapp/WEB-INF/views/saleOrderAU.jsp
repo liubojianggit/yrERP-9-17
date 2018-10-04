@@ -85,6 +85,13 @@
     </div>
 
     <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">申请人</label>
+        <div class="layui-input-block">
+            <form:input path="approver" class="layui-input"  lay-verify="required" placeholder="请输入申请人"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
             <form:input path="remark" class="layui-input"  lay-verify="required" placeholder="请输入备注"/>
