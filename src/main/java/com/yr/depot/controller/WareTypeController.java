@@ -214,6 +214,7 @@ public class WareTypeController {
     public String queryWare(Page<WareType> page, WareType wareType, Map<String, Object> map) {
         page.setT(wareType);
         String json = wts.query(page);
+        System.out.println("==========================="+json);
         map.put("wareType", json);
         return json;
     }

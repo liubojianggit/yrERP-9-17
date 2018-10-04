@@ -34,7 +34,7 @@
                     <a class="layui-btn layui-btn-normal addNews_btn">添加商品</a>
                 </div>
             </shiro:hasPermission>
-            <shiro:hasPermission name="/wares/wareTable/*/DELETE">
+            <shiro:hasPermission name="/wares/waresTable/*/DELETE">
                 <div class="layui-inline">
                     <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
                 </div>
@@ -46,10 +46,10 @@
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
     <!--操作-->
     <script type="text/html" id="userListBar">
-        <shiro:hasPermission name="/wares/wareTable/*/GET">
+        <shiro:hasPermission name="/wares/waresTable/*/GET">
             <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
         </shiro:hasPermission>
-        <shiro:hasPermission name="/wares/wareTable/*/DELETE">
+        <shiro:hasPermission name="/wares/waresTable/*/DELETE">
             <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
         </shiro:hasPermission>
     </script>

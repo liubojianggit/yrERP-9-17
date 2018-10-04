@@ -25,12 +25,12 @@
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
-            <shiro:hasPermission name="suppWareType/suppWareTypeTable/add/GET">
+            <shiro:hasPermission name="/suppWareType/suppWareTypeTable/add/GET">
                 <div class="layui-inline">
                     <a class="layui-btn layui-btn-normal addNews_btn">添加供应商品类型</a>
                 </div>
             </shiro:hasPermission>
-            <shiro:hasPermission name="suppWareType/suppWareTypeTable/*/DELETE">
+            <shiro:hasPermission name="/suppWareType/suppWareTypeTable/*/DELETE">
                 <div class="layui-inline">
                     <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
                 </div>

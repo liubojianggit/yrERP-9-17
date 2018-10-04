@@ -75,7 +75,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             })
         } else {
-            window.location.href = path + "/wares/waresTable";
+            window.location.href = path + "wares/waresTable";
         }
     });
 
@@ -171,19 +171,19 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     error: function () {
                         layer.msg("操作失败", {icon: 2});
                         setTimeout(function () {
-                            window.location.href = path + "/wares/waresTable";
+                            window.location.href = path + "wares/waresTable";
                         }, 1200);
                     },
                     success: function (data) {
                         if ("1" == data.code) {
                             layer.msg(data.msg, {icon: 1});
                             setTimeout(function () {
-                                window.location.href = path + "/wares/waresTable";
+                                window.location.href = path + "wares/waresTable";
                             }, 1200);
                         } else {
                             layer.msg(data.msg, {icon: 2});
                             setTimeout(function () {
-                                window.location.href = path + "/wares/waresTable";
+                                window.location.href = path + "wares/waresTable";
                             }, 1200);
                         }
                     }
