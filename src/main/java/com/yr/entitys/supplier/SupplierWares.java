@@ -27,7 +27,7 @@ public class SupplierWares implements Serializable {
     @Column(nullable = false,name = "total_inventory")
     private Long totalInventory;//供应商品的总价格，不能为null
     @Column(nullable = false,name = "unit_price")
-    private double unitPrice;//供应商品的单价，不能为null
+    private Double unitPrice;//供应商品的单价，不能为null
     @Column(nullable = false)
     private String brand;//供应商品的品牌，不能为null
     @Column(nullable = false)
@@ -96,11 +96,11 @@ public class SupplierWares implements Serializable {
         this.totalInventory = totalInventory;
     }
 
-    public double getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
