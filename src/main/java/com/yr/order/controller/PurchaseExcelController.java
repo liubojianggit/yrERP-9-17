@@ -55,8 +55,8 @@ public class PurchaseExcelController {
     @ResponseBody
     public String exportExcel(HttpServletRequest request, HttpServletResponse response, PurchaseOrderBo purchaseOrderBo, Page<PurchaseOrderBo> page) {
         try {
-            /*订单名称/订单编号去空格*/
-            purchaseOrderBo.setPurchaseCode(purchaseOrderBo.getPurchaseCode().trim());
+            String purCode = purchaseOrderBo.getPurchaseCode().trim();
+            purchaseOrderBo.setPurchaseCode(purCode);
 
             String wareCode = purchaseOrderBo.getPurchaseWareCode().trim();//获取商品名称/编号
             Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
