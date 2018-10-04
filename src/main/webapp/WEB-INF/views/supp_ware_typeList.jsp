@@ -1,5 +1,6 @@
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
-         pageEncoding="utf-8"%>
+         pageEncoding="utf-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,8 +12,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all"/>
+    <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all"/>
 </head>
 <body class="childrenBody">
 <form class="layui-form">
@@ -20,16 +21,20 @@
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
                 <div class="layui-input-inline">
-                    <input type="text" class="layui-input searchVal" id="type" placeholder="供应商品类型：" />
+                    <input type="text" class="layui-input searchVal" id="type" placeholder="供应商品类型："/>
                 </div>
                 <a class="layui-btn search_btn" data-type="reload">搜索</a>
             </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal addNews_btn">添加供应商品类型</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
-            </div>
+            <shiro:hasPermission name="/suppWareType/suppWareTypeTable/add/GET">
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-normal addNews_btn">添加供应商品类型</a>
+                </div>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="/suppWareType/suppWareTypeTable/*/DELETE">
+                <div class="layui-inline">
+                    <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn">批量删除</a>
+                </div>
+            </shiro:hasPermission>
         </form>
     </blockquote>
     <table id="supplierList" lay-filter="supplierList"></table>
@@ -37,8 +42,12 @@
     <!-- <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="usable">已启用</a>-->
     <!--操作-->
     <script type="text/html" id="supplierListBar">
-        <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        <shiro:hasPermission name="/suppWareType/suppWareTypeTable/*/GET">
+            <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>编辑</a>
+        </shiro:hasPermission>
+        <shiro:hasPermission name="/suppWareType/suppWareTypeTable/*/DELETE">
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
+        </shiro:hasPermission>
     </script>
 </form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>

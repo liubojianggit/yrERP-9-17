@@ -78,11 +78,11 @@ public class SaleServiceImpl implements SaleService {
      * @return
      */
     @Override
-    public SaleOrderBO getById(Integer id) {
-        SaleOrder saleOrder = saleDao.getById(id);
+    public SaleOrder getById(Integer id) {
+        /*SaleOrder saleOrder = saleDao.getById(id);
         SaleOrderBO saleOrderBO = new SaleOrderBO();
-        saleOrderBO.setSaleOrder(saleOrder);
-        return saleOrderBO;
+        saleOrderBO.setSaleOrder(saleOrder);*/
+        return saleDao.getById(id);
     }
 
 }

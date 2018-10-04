@@ -80,7 +80,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             area : ['800px' , '520px'],
             content : path+"supp_wares/supplierTable/add",//发送请求
             end: function(){
-                window.location.href= path+"/supp_wares/supp_waresTable";
+                window.location.href= path+"supp_wares/supplierTable";
             }
         })
         /*layui.layer.full(index);
@@ -129,7 +129,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 area: ['800px', '520px'],
                 content: path+"supp_wares/supplierTable/"+data.id,
                 end: function(){
-                    window.location.href =  path+"supp_wares/supp_waresTable";
+                    window.location.href =  path+"supp_wares/supplierTable";
                 }
             });
         }else if(layEvent === 'del'){ //删除

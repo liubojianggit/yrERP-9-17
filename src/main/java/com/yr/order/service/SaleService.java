@@ -34,5 +34,5 @@ public interface SaleService {
      * @param id
      * @return Sale
      */
-    SaleOrderBO getById(Integer id);
+    SaleOrder getById(Integer id);
 }

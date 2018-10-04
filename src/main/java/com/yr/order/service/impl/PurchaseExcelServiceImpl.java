@@ -1,7 +1,9 @@
 package com.yr.order.service.impl;
 
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.bo.orderBO.PurchaseOrderReadExcel;
 import com.yr.entitys.order.PurchaseOrder;
+import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseExcelDao;
 import com.yr.order.service.PurchaseExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,8 @@ public class PurchaseExcelServiceImpl implements PurchaseExcelService {
      * @return list
      */
     @Override
-    public List<PurchaseOrder> queryForList() {
-        return purchaseExcelDaoImpl.queryForList();
+    public List<PurchaseOrder> queryForList(Page<PurchaseOrderBo> page) {
+        return purchaseExcelDaoImpl.queryForList(page);
     }
 
     /**

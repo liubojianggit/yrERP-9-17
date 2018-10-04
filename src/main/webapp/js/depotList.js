@@ -69,9 +69,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             title : "添加仓库",
             type : 2,
             area: ['390px', '320px'],
-            content : path+"/depot/depotTable/add",//发送请求
+            content : path+"depot/depotTable/add",//发送请求
             end: function(){
-                window.location.href=path+"/depot/depotTable";
+                window.location.href=path+"depot/depotTable";
             }
         })
        /* layui.layer.full(index);
@@ -155,9 +155,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['390px' , '340px'],
-                content: path+'/depot/depotTable/'+data.id,
+                content: path+'depot/depotTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/depot/depotTable";
+                    window.location.href = path+"depot/depotTable";
                 }
             });
 
@@ -167,17 +167,17 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'/depot/depotTable/'+data.id,//请求登录验证接口
+                    url: path+'depot/depotTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {_method:'delete'},
                     success: function(data){
                         if("1" == data.code){
                             layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"/depot/depotTable";
+                            window.location.href = path+"depot/depotTable";
 
                         }else{
                             layer.msg("删除仓库失败",{icon:2});
-                            window.location.href = path+"/depot/depotTable";
+                            window.location.href = path+"depot/depotTable";
                         }
                     }
                 });

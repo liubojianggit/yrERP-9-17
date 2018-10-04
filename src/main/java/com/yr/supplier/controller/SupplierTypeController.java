@@ -29,46 +29,51 @@ public class SupplierTypeController {
     private LogService logServices;//日志
 
     @ModelAttribute
-    public void Pojo (@RequestParam(value="id",required = false)Integer id, Map<String,Object> map){
-        if (id!=null){
-            map.put("suppWareType",swts.getSuppWareType(id));
+    public void Pojo(@RequestParam(value = "id", required = false) Integer id, Map<String, Object> map) {
+        if (id != null) {
+            map.put("suppWareType", swts.getSuppWareType(id));
         }
     }
 
     /**
      * 用于跳转数据查询页面
+     *
      * @return suppWareType/suppWareTypeTable
      */
-    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.GET)
-    public String getListPage(){
+    @RequestMapping(value = "suppWareTypeTable", method = RequestMethod.GET)
+    public String getListPage() {
         return "supp_ware_typeList";
     }
+
     /**
      * 用于跳转到添加页面和修改页面
+     *
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable/add",method = RequestMethod.GET)
-    public String getAddPage(Map<String ,Object>map){
-        map.put("suppWareType",new SuppWareType());
-        map.put("suppWareTypes",swts.getSuppWareType());
+    @RequestMapping(value = "suppWareTypeTable/add", method = RequestMethod.GET)
+    public String getAddPage(Map<String, Object> map) {
+        map.put("suppWareType", new SuppWareType());
+        map.put("suppWareTypes", swts.getSuppWareType());
         return "supp_ware_typeAU";
     }
-    @RequestMapping(value = "suppWareTypeTable/{id}",method = RequestMethod.GET)
-    public String getUpdatePage(@PathVariable Integer id,Map<String ,Object>map){
-        map.put("suppWareType",swts.getSuppWareType(id));
-        map.put("suppWareTypes",swts.getSuppWareType());
+
+    @RequestMapping(value = "suppWareTypeTable/{id}", method = RequestMethod.GET)
+    public String getUpdatePage(@PathVariable Integer id, Map<String, Object> map) {
+        map.put("suppWareType", swts.getSuppWareType(id));
+        map.put("suppWareTypes", swts.getSuppWareType());
         return "supp_ware_typeAU";
     }
 
     /**
      * 供应商品类型添加方法，用于前台添加数据
+     *
      * @param suppWareType
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable",method =RequestMethod.POST, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "suppWareTypeTable", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String addWare(@ModelAttribute("suppWareType")SuppWareType suppWareType,HttpServletRequest request){
-        User user = (User)request.getSession().getAttribute("user");
+    public String addWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
         suppWareType.setCreateEmp(user.getName());
         boolean bool = false;
         try {
@@ -100,22 +105,23 @@ public class SupplierTypeController {
             logServices.addLog(log);
             e.printStackTrace();
         }
-        if(bool){
+        if (bool) {
             return "{\"code\":1,\"msg\":\"添加成功\"}";
-        }else{
+        } else {
             return "{\"code\":2,\"msg\":\"添加失败\"}";
         }
     }
 
     /**
      * 根据id来删除供应商品类型
+     *
      * @param id
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "suppWareTypeTable/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String deleteWare(@PathVariable Integer id,HttpServletRequest request){
-        User user = (User)request.getSession().getAttribute("user");
+    public String deleteWare(@PathVariable Integer[] id, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
         boolean bool = false;
         try {
             bool = swts.delete(id);
@@ -146,23 +152,24 @@ public class SupplierTypeController {
             logServices.addLog(log);
             e.printStackTrace();
         }
-        if(bool){
+        if (bool) {
             return "{\"code\":1,\"msg\":\"删除成功\"}";
-        }else{
+        } else {
             return "{\"code\":2,\"msg\":\"删除失败\"}";
         }
     }
 
     /**
      * 根据id来修改供应商品类型的信息
+     *
      * @param suppWareType
      * @param map
      * @return
      */
-    @RequestMapping(value = "suppWareTypeTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "suppWareTypeTable", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, Map<String,Object>map,HttpServletRequest request){
-        User user = (User)request.getSession().getAttribute("user");
+    public String updateWare(@ModelAttribute("suppWareType") SuppWareType suppWareType, Map<String, Object> map, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
         suppWareType.setUpdateEmp(user.getName());
         String oldSuppWareType = swts.getSuppWareType(suppWareType.getId()).toString();
         boolean bool = false;
@@ -176,7 +183,7 @@ public class SupplierTypeController {
             //修改前的值
             log.setFieldOldValue(oldSuppWareType);  //新增数据忽略前置
             //修改后的值
-             log.setFieldNewValue(suppWareType.toString());
+            log.setFieldNewValue(suppWareType.toString());
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setCreateEmp(user.getName());
             logServices.addLog(log);
@@ -195,24 +202,26 @@ public class SupplierTypeController {
             logServices.addLog(log);
             e.printStackTrace();
         }
-        if(bool){
+        if (bool) {
             return "{\"code\":1,\"msg\":\"修改成功\"}";
-        }else{
+        } else {
             return "{\"code\":2,\"msg\":\"修改失败\"}";
         }
     }
+
     /**
      * 供应商品类型查询方法，前台可以通过这个方法进行数据的查询
+     *
      * @param suppWareType
      * @param map
      * @return 查询数据
      */
-    @RequestMapping(value = "suppWareTypeTable/list",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "suppWareTypeTable/list", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public String  queryWare(Page<SuppWareTypeBo> suppWareType,SuppWareTypeBo suppWareTypeBo, Map<String,Object>map){
+    public String queryWare(Page<SuppWareTypeBo> suppWareType, SuppWareTypeBo suppWareTypeBo, Map<String, Object> map) {
         suppWareType.setT(suppWareTypeBo);
-        String  json = swts.query(suppWareType);
-        map.put("suppWareType",json);
+        String json = swts.query(suppWareType);
+        map.put("suppWareType", json);
         return json;
     }
 
