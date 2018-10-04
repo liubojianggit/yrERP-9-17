@@ -71,7 +71,6 @@
 						<button id="submits" type="button" class="layui-btn" lay-submit lay-filter="updateRole">确认修改</button>
 					</c:if>
 					<button class="layui-btn layui-btn-primary" type="reset">重置</button>
-					<button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
 				</div>
 			</div>
 		</form:form>

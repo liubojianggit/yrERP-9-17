@@ -27,10 +27,10 @@
 <div class="layui-layout layui-layout-admin">
 	<!-- 顶部 -->
 	<div class="layui-header header">
-		<div class="layui-main mag0">
+		<div class="layui-main mag0 layui-icon">
 			<a href="#" class="logo">一容ERP</a>
 			<!-- 显示/隐藏菜单 -->
-			<a href="javascript:;" class="seraph hideMenu icon-caidan "></a>
+			<a href="javascript:;" class="seraph hideMenu icon-caidan layui-icon-shrink-right"></a>
 			<!-- 顶级菜单 -->
 			<ul class="layui-nav mobileTopLevelMenus" mobile>
 				<li class="layui-nav-item" data-menu="contentManagement">
