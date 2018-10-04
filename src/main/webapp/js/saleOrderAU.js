@@ -79,8 +79,10 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
-    $("#cancel").click(function () {
+    $("#resetAdd").click(function () {
         $(".layui-input").val("");
+        $("#depotCode").val("");
+        $("#wareCode").val("");
     })
 
     //格式化时间
