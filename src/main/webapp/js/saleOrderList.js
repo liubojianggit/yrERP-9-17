@@ -33,7 +33,6 @@ layui.use(['form','layer','table','laytpl'],function(){
         limit : 10,
         id : "saleOrderTable",
         cols : [[
-            {type: "checkbox", fixed:"left", width:50},
             /*		对应实体类的属性			表头x*/
             {type:'numbers',title:'编号',width:50},
             {field: 'code', title: '销售订单编号', align:"center",unresize: true},
@@ -45,7 +44,7 @@ layui.use(['form','layer','table','laytpl'],function(){
            /* {field: 'money', title: '销售金额', align:"center", unresize: true},*/
             {field: 'sPhoneNumber', title: '销售员联系电话', align:"center", unresize: true},
             {field: 'requName', title: '申请退货人姓名', align:"center", unresize: true},
-            {field: 'rPhoneNumber', title: '申请退货人联系电话', align:"center", unresize: true},
+            {field: 'rPhoneNumber', title:  '申请退货人联系电话', align:"center", unresize: true},
             {field: 'depotCode', title: '销售商品的仓库编号', align:"center", unresize: true},
             {field: 'states', title: '订单状态', align:"center", unresize: true,templet:function(d){
                    if(d.states == 0){
@@ -63,7 +62,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 }},
             {field: 'consignee', title: '退货收货人', align:"center", unresize: true},
             {field: 'remark', title: '备注', align:"center", unresize: true},
-            {title: '操作', minWidth:150,width:150, templet:'#saleOrderListBar',fixed:"right",align:"center"}
+            {title: '操作', minWidth:180,width:180, templet:'#saleOrderListBar',fixed:"right",align:"center"}
         ]]
     });
 
@@ -156,9 +155,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['500px' , '500px'],
-                content: path+'/sale_order/sale_orderTable/'+data.id,
+                content: path+'sale_order/sale_orderTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/sale_order/sale_orderTable";
+                    window.location.href = path+"sale_order/sale_orderTable";
                 }
             });
 
@@ -168,17 +167,17 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'/sale_order/sale_orderTable/'+data.id,//请求登录验证接口
+                    url: path+'sale_order/sale_orderTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
                     data: {_method:'delete'},
                     success: function(data){
                         if("1" == data.code){
                             layer.msg("删除成功",{icon:1});
-                            window.location.href = path+"/sale_order/sale_orderTable";
+                            window.location.href = path+"sale_order/sale_orderTable";
 
                         }else{
                             layer.msg("删除仓库失败",{icon:2});
-                            window.location.href = path+"/sale_order/sale_orderTable";
+                            window.location.href = path+"sale_order/sale_orderTable";
                         }
                     }
                 });
