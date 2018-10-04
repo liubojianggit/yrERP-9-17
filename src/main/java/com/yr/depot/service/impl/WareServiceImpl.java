@@ -27,9 +27,11 @@ import java.util.List;
 @Transactional
 public class WareServiceImpl implements WareService {
     @Autowired
-private WareDao wd;
+    private WareDao wd;
+
     /**
      * 根据id来查询商品数据
+     *
      * @param id
      * @return ware 商品
      */
@@ -40,6 +42,7 @@ private WareDao wd;
 
     /**
      * 根据前台传入WareSearchBo的数据来查询数据
+     *
      * @param ware
      * @return 返回wareSearchBo
      */
@@ -49,22 +52,22 @@ private WareDao wd;
         List<Ware> wareList = wd.query(ware);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONArray jsonArray = JSONArray.fromObject(wareList,jsonConfig);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+ware.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        JSONArray jsonArray = JSONArray.fromObject(wareList, jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": " + ware.getTotalRecord() + ",\"data\":" + jsonArray + "}";
         return json;
     }
+
     /**
      * 判断添加商品时是否为空
      *
-     * @param ware
-     *            商品
+     * @param ware 商品
      * @return true 成功，false 失败
      */
     @Override
     public boolean add(Ware ware) {
         if (isParamNull(ware)) {
             return false;
-        }else{
+        } else {
 
             wd.add(ware);
             return true;
@@ -73,16 +76,18 @@ private WareDao wd;
 
     /**
      * 根据id来删除数据
+     *
      * @param id
      * @return true表示删除成功，false表示修改失败
      */
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Integer[] id) {
         return wd.delete(id);
     }
 
     /**
      * 商品修改数据
+     *
      * @param ware
      * @return true表示修改成功，false表示修改失败
      */
@@ -90,20 +95,21 @@ private WareDao wd;
     public boolean update(Ware ware) {
         if (isUpdateParamNull(ware)) {
             return false;
-        }else{
+        } else {
             Date date = new Date();
             //设置要获取到什么样的时间SimpleDateFormat sdf = newSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             //获取String类型的时间String createdate = sdf.format(date);
             String udpateDate = sdf.format(date);
             ware.setUpdateTime(udpateDate);
-            wd.update(ware)  ;
+            wd.update(ware);
             return true;
         }
     }
 
     /**
      * 判断修改数据是否为null
+     *
      * @param ware
      * @return
      */
@@ -136,8 +142,10 @@ private WareDao wd;
         }
         return t;
     }
+
     /**
      * 判断添加时的字段是否为null
+     *
      * @param ware
      * @return
      */
@@ -170,11 +178,12 @@ private WareDao wd;
         }
         return t;
     }
+
     @Override
     public List<Ware> getWare() {
         List<Ware> list = wd.getWare();
         List<Ware> lists = new ArrayList<>();
-        for (Ware ware:list) {
+        for (Ware ware : list) {
             lists.add(ware);
         }
         Ware wares = new Ware();
@@ -185,11 +194,11 @@ private WareDao wd;
 
     @Override
     public boolean getWareByCode(Ware ware) {
-       Long num = wd.getWareByCode(ware);
-       if(num>0){
-           return true;
-       }else{
-           return false;
-       }
+        Long num = wd.getWareByCode(ware);
+        if (num > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
