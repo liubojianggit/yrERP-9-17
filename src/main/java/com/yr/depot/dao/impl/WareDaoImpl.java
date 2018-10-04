@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class WareDaoImpl implements WareDao {
 
     /**
      * 根据拓展类中的字段来查询数据
+     *
      * @param ware
      * @return List ware 商品
      */
@@ -79,39 +81,31 @@ public class WareDaoImpl implements WareDao {
         return wares;
     }
 
+    /**
+     * 商品添加
+     *
+     * @param ware
+     * @return
+     */
     @Override
     public boolean add(Ware ware) {
         StringBuffer jpql = new StringBuffer();
         jpql.append("insert into wares(type,code,name,addr,brand,out_unit_price,bar_code," +
                 "total_inventory,createTime,createEmp,remark,In_unit_price) values(?,?,?,?,?,?,?,?,?,?,?,?)");
         Query query = entityManager.createNativeQuery(jpql.toString());
-        query.setParameter(1,ware.getType());
-        query.setParameter(2,ware.getCode());
+        query.setParameter(1, ware.getType());
+        query.setParameter(2, ware.getCode());
         //query.setParameter(3,ware.getWarePhoto());
-        query.setParameter(3,ware.getName());
-        query.setParameter(4,ware.getAddr());
-        query.setParameter(5,ware.getBrand());
-        query.setParameter(6,ware.getOutUnitPrice());
-        query.setParameter(7,ware.getBarCode());
-        query.setParameter(8,ware.getTotalInventory());
-        query.setParameter(9,new Date());
-        query.setParameter(10,ware.getCreateEmp());
-        query.setParameter(11,ware.getRemark());
-        query.setParameter(12,ware.getInUnitPrice());
-        try {
-            query.executeUpdate();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    @Override
-    public boolean delete(Integer id) {
-        StringBuffer jpql = new StringBuffer();
-        jpql.append("delete from Ware where id = ?");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1,id);
+        query.setParameter(3, ware.getName());
+        query.setParameter(4, ware.getAddr());
+        query.setParameter(5, ware.getBrand());
+        query.setParameter(6, ware.getOutUnitPrice());
+        query.setParameter(7, ware.getBarCode());
+        query.setParameter(8, ware.getTotalInventory());
+        query.setParameter(9, new Date());
+        query.setParameter(10, ware.getCreateEmp());
+        query.setParameter(11, ware.getRemark());
+        query.setParameter(12, ware.getInUnitPrice());
         try {
             query.executeUpdate();
             return true;
@@ -121,29 +115,34 @@ public class WareDaoImpl implements WareDao {
         }
     }
 
+    /**
+     * 批量删除商品
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean delete(Integer[] id) {
+        List<Integer> list = Arrays.asList(id);//将数组转成list
+        StringBuffer jpql = new StringBuffer();
+        jpql.append("delete from Ware where id in(:ids)");
+        Query query = entityManager.createQuery(jpql.toString());
+        query.setParameter("ids", id);
+        try {
+            query.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     @Override
     public boolean update(Ware ware) {
-   /*     StringBuffer jpql = new StringBuffer();
-        jpql.append("update Ware set type = ?,code=?,ware_photo=?,name=?,addr=?,brand=?," +
-                "out_unit_price=?,bar_code=?,total_inventory=?,updateTime=?,updateEmp=?," +
-                "remark=? where id = ?");
-        Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1,ware.getType());
-        query.setParameter(2,ware.getCode());
-        query.setParameter(3,ware.getWarePhoto());
-        query.setParameter(4,ware.getName());
-        query.setParameter(5,ware.getAddr());
-        query.setParameter(6,ware.getBrand());
-        query.setParameter(7,ware.getOutUnitPrice());
-        query.setParameter(8,ware.getBarCode());
-        query.setParameter(9,ware.getTotalInventory());
-        query.setParameter(10,new Date());
-        query.setParameter(11,ware.getUpdateEmp());
-        query.setParameter(12,ware.getRemark());
-        query.setParameter(13,ware.getId());*/
         try {
-            entityManager.merge(ware) ;
-            return  true;
+            entityManager.merge(ware);
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -178,15 +177,16 @@ public class WareDaoImpl implements WareDao {
             jpql.append("and In_unit_price >='" + maxprice + "'");
         }
         Query query = entityManager.createQuery(jpql.toString());
-        Long count = (Long)query.getSingleResult();
+        Long count = (Long) query.getSingleResult();
         return count.longValue();
 
     }
+
     /**
      * 获取商品的list集合
-     * */
+     */
     @Override
-    public List<Ware> getWare(){
+    public List<Ware> getWare() {
         StringBuffer jpql = new StringBuffer();
         jpql.append("select w from Ware w where 1=1");
         jpql.append("order by id desc");
@@ -201,7 +201,7 @@ public class WareDaoImpl implements WareDao {
         jpql.append("select count(*) from Ware w where w.code=?");
         Query query = entityManager.createQuery(jpql.toString());
         String code = ware.getCode();
-        query.setParameter(1,code);
+        query.setParameter(1, code);
         Long num = (Long) query.getSingleResult();
         return num.longValue();
     }

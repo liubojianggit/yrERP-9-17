@@ -62,7 +62,7 @@ public class Log extends BaseEntity implements Serializable{
         this.fieldNewValue = fieldNewValue;
     }
 
-    public void setContent(String message) {
+    public void setContent(String content) {
         this.content = content;
     }
     public Integer getId() {
