@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
+import com.yr.entitys.order.PurchaseOrder;
 import com.yr.entitys.order.SaleOrder;
+import com.yr.entitys.page.Page;
 import com.yr.util.ImportExcelUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +47,7 @@ public class SaleExcelController {// 销售订单的导出导入
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @RequestMapping(value = "/import", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public Map<String,Object> analyzeXml(@RequestParam("excelFile") MultipartFile excelFile, HttpServletRequest request, HttpServletResponse response) {
         //上传xml文件
         InputStream inputs;
@@ -78,15 +82,26 @@ public class SaleExcelController {// 销售订单的导出导入
      * @param response
      * @return
      */
-    @RequestMapping(value = "/Import", method = RequestMethod.POST)
-    public ModelAndView exportExcel(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/export", method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String exportExcel(HttpServletRequest request, HttpServletResponse response, SaleOrderBO saleOrderBO, Page<SaleOrderBO> page) {
         try {
-            SaleOrder sale = new SaleOrder();
+            /*订单名称/订单编号去空格*/
+            saleOrderBO.setCode(saleOrderBO.getCode().trim());
+            saleOrderBO.setCustomerBuy(saleOrderBO.getCustomerBuy().trim());//购买客户
+            // SaleOrder sale = new SaleOrder();
             // 查出用户数据
-            List<SaleOrder> salelist = saleExcelport.queryForList();
+
+
+            //将bo实体set到page对象中
+            page.setT(saleOrderBO);
+            //查询需要导出到excel表的数据
+            List<SaleOrder> salelist = saleExcelport.queryForList(page);
+
+
             String title = "销售订单表";
-            String[] rowsName = new String[] { "序号","订单id", "订单编号", "购买客户", "销售员", "销售商品编号", "销售商品数量", "销售金额", "销售员联系电话",
-                    "备注", "销售单状态", "收货人", "审批人", "申请退货人姓名", "申请退货人联系电话", "销售商品的仓库编号", "创建人", "创建时间", "修改人", "修改时间" };
+            String[] rowsName = new String[] { "序号","订单编号", "购买客户", "销售员", "商品编号", "销售商品数量", "销售总价", "销售员联系电话",
+                    "申请退货人姓名","申请退货人联系电话",  "销售商品的仓库编号","收货人","申请人","订单状态", "退货收货人","备注"};
 
             List<Object[]> dataList = new ArrayList<Object[]>();
             Object[] objs = null;
@@ -94,25 +109,21 @@ public class SaleExcelController {// 销售订单的导出导入
                 SaleOrder po = salelist.get(i);
                 objs = new Object[rowsName.length];
                 objs[0] = i;// 序号
-                objs[1] = po.getId();// 销售订单id
-                objs[2] = po.getCode();// 销售订单编号
-                objs[3] = po.getCustomerBuy(); // 购买客户
-                objs[4] = po.getSalesperson();// 销售员
-                objs[5] = po.getWareCode();// 销售商品编号
-                objs[6] = po.getNumber(); // 销售商品数量
-                objs[7] = po.getMoney();// 销售金额
-                objs[8] = po.getsPhoneNumber();// 销售员联系电话
-                objs[9] = po.getRemark(); // 备注
-                objs[10] = po.getStates();// 销售单状态（0退货，1交易成功）
+                objs[1] = po.getCode();// 销售订单编号
+                objs[2] = po.getCustomerBuy(); // 购买客户
+                objs[3] = po.getSalesperson();// 销售员
+                objs[4] = po.getWareCode();// 销售商品编号
+                objs[5] = po.getNumber(); // 销售商品数量
+                objs[6] = po.getMoney();// 销售总价
+                objs[7] = po.getsPhoneNumber();// 销售员联系电话
+                objs[8] = po.getRequName();// 申请退货人姓名
+                objs[9] = po.getrPhoneNumber();// 申请退货人联系电话
+                objs[10] = po.getDepotCode(); // 销售商品的仓库编号
                 objs[11] = po.getConsignee();// 收货人
-                objs[12] = po.getApprover(); // 审批人
-                objs[13] = po.getRequName();// 申请退货人姓名
-                objs[14] = po.getrPhoneNumber();// 申请退货人联系电话
-                objs[15] = po.getDepotCode(); // 销售商品的仓库编号
-                objs[16] = po.getCreateEmp();// 创建人
-                objs[17] = po.getCreateTime();// 创建时间
-                objs[18] = po.getUpdateEmp();// 修改人
-                objs[19] = po.getUpdateTime();// 修改时间
+                objs[12] = po.getApprover();//申请人
+                objs[13] = po.getStates();// 销售单状态（0退货，1交易成功）
+                objs[14] = po.getConsignee();// 销售单状态（0退货，1交易成功）
+                objs[15] = po.getRemark(); // 备注
                 dataList.add(objs);
             }
             // 工具类样式
@@ -122,8 +133,7 @@ public class SaleExcelController {// 销售订单的导出导入
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return null;
+        return "{\"code\":1,\"msg\":\"导出成功\"}";
     }
 
 }
