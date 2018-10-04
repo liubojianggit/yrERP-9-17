@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Controller
@@ -79,7 +81,16 @@ public class DepotController {
      */
     @RequestMapping(value="/depotTable",method = RequestMethod.POST,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String add(Depot depot){
+    public String add(Depot depot, HttpServletRequest request){
+        //将时间戳设置进入创建时间
+        depot.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        //将修改时间设进修改时间，初始修改时间，后期会改
+        depot.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        //获取session 当中当前登录用户，session属性名从login登录的传过来，
+        User user = (User) request.getSession().getAttribute("user");
+        depot.setCreateEmp(user.getName());
+        //这个初始的修改人，后期会改
+        depot.setUpdateEmp(user.getName());
         service.add(depot);
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }

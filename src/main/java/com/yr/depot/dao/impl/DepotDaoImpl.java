@@ -95,10 +95,6 @@ public class DepotDaoImpl implements DepotDao {
      */
     @Override
     public void add(Depot depot) {
-        depot.setCreateEmp("元元");
-        depot.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        depot.setUpdateEmp("元元");
-        depot.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         entityManager.persist(depot);
     }
 
