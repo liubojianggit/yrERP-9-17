@@ -166,4 +166,14 @@ public class WareTypeServiceImpl implements WareTypeService {
         return lists;
     }
 
+    @Override
+    public boolean query(WareType wareType) {
+        Long num = wt.query(wareType);
+        if(num>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

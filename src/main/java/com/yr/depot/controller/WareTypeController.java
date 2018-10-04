@@ -3,6 +3,7 @@ package com.yr.depot.controller;
 import com.yr.depot.service.WareTypeService;
 import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.depotBo.WareTypeBo;
+import com.yr.entitys.depot.Ware;
 import com.yr.entitys.depot.WareType;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
@@ -207,5 +208,20 @@ public class WareTypeController {
         String json = wts.query(page);
         map.put("wareType", json);
         return json;
+    }
+    /**
+     * 用于判断编号是否存在
+     * @param wareType
+     * @return
+     */
+    @RequestMapping(value = "ware_typeTable/checkTypeCode",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @ResponseBody
+    public String checkTypeCode(WareType wareType){
+        boolean bool = wts.query(wareType);
+        if(bool){
+            return "true";
+        }else{
+            return "false";
+        }
     }
 }

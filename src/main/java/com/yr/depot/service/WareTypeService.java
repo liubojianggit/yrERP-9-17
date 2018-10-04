@@ -3,6 +3,7 @@ package com.yr.depot.service;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.depot.WareType;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 
 import java.util.List;
 
@@ -44,5 +45,8 @@ public interface WareTypeService {
      * 获取商品的list集合
      * */
     public List<WareType> getWareType();
-
+    /**
+     * 用于判断编号是否已存在
+     */
+    public boolean query(WareType wareType);
 }

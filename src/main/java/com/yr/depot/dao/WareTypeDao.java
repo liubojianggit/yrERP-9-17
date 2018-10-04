@@ -56,4 +56,8 @@ public interface WareTypeDao {
      * @return
      */
     Long getCount(Page<WareType> wareType);
+    /**
+     * 用来判断商品类型编号是否已存在
+     */
+    public Long query(WareType wareType);
 }
