@@ -15,7 +15,7 @@ public interface MenuService {
      * 查询
      * @return String
      */
-    String query();
+    String query(List<String> list);
 
 
     String queryMenus(Page<MenuBO> page);
@@ -37,5 +37,6 @@ public interface MenuService {
      * @param menuBO
      */
     String add(MenuBO menuBO,User loginUser);
+
 
 }
