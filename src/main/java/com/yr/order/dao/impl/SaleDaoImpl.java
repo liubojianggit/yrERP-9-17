@@ -84,10 +84,6 @@ public class SaleDaoImpl implements SaleDao {
      */
     @Override
     public void add(SaleOrder saleOrder) {
-        saleOrder.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        saleOrder.setCreateEmp("l");
-        saleOrder.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        saleOrder.setUpdateEmp("1");
         entityManager.persist(saleOrder);
     }
 
