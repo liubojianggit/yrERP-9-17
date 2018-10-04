@@ -251,6 +251,11 @@ public class WareController {
         return json;
     }
 
+    /**
+     * 用于判断编号是否存在
+     * @param ware
+     * @return
+     */
    @RequestMapping(value = "waresTable/checkTypeCode",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
    @ResponseBody
     public String checkTypeCode(Ware ware){

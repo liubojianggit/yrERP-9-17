@@ -15,7 +15,47 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
+
 </head>
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*  给输入名字的文本框绑定一个失去焦点事件，jquery中为focusout事件，同时在文本框后定义一个显示检查结果的span。
+		 2、当文本框失去焦点时，调用ajax异步向后台发送请求。
+		 3、将请求结果显示在文本框后面提示用户,避免所有信息填写完毕表单提交时才发现名字重复。
+		 示例：
+	    */
+        //给文本框绑定一个失去焦点事件
+        $("#code").focusout(function() {
+            var typeCode = $("#code").val();
+            if(typeCode != null && typeCode != ''){
+                checkTypeCode(typeCode);
+            }
+        });
+        //发ajax请求到后台判断email格式是否错误
+        function checkTypeCode(typeCode){
+            $.ajax({
+                url : "<%=request.getContextPath()%>/ware_type/ware_typeTable/checkTypeCode",
+                type : "get",
+                dataType : 'json',
+                data : {"code":typeCode},
+                success : function(result) {
+                    //已经存在该名字提示用户
+                    if(result==true){
+                        $("#errorCode").html("商品类型编号已存在");
+                    }else{
+                        $("#errorCode").html("");
+                    }
+                },
+                error : function() {
+                    alert('检查用户是否存在发生错误');
+                }
+            });
+        }
+    });
+
+</script>
+
 <body class="childrenBody">
 
 <form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="wareType">
@@ -34,6 +74,7 @@
         <label class="layui-form-label">商品类型编号</label>
         <div class="layui-input-block">
             <form:input path="code" class="layui-input"  lay-verify="required" placeholder="请输入商品类型编号："/>
+            <span id="errorCode" style="color: #cc0000"></span>
         </div>
     </div>
 
