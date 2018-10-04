@@ -24,6 +24,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         where:{//需要传入的值
             "saleOrder.code": $("#code").val(),  //搜索的关键字
             "saleOrder.customerBuy": $("#customerBuy").val(),  //搜索的关键字
+            "saleOrder.states": $("#rStates").val(),  //搜索的关键字
           /*  "minAge": $("#rStates").val(),  //搜索的关键字*/
         },
         cellMinWidth : 95,
@@ -75,6 +76,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             where: {
                 "saleOrder.code": $("#code").val(),  //搜索的关键字
                 "saleOrder.customerBuy": $("#customerBuy").val(),  //搜索的关键字
+                "saleOrder.states": $("#rStates").val(),  //搜索的关键字
             }
         })
     });

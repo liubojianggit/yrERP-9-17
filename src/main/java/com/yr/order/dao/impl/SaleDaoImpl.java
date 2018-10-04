@@ -35,12 +35,20 @@ public class SaleDaoImpl implements SaleDao {
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCustomerBuy())){
             jpql +="and s.customerBuy like :customer_buy";//模糊查询购买客户
         }
+        if(page.getT().getSaleOrder().getStates() != null && !page.getT().getSaleOrder().getStates().equals(""))
+        {
+            jpql+= "and s.states = :states";
+        }
         Query query =entityManager.createQuery(jpql);
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCode())){
             query.setParameter("code","%"+page.getT().getSaleOrder().getCode()+"%");
         }
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCustomerBuy())){
             query.setParameter("customer_buy","%"+page.getT().getSaleOrder().getCustomerBuy()+"%");
+        }
+        if (page.getT().getSaleOrder().getStates() != null && !page.getT().getSaleOrder().getStates().equals(""))
+        {
+            query.setParameter("states",page.getT().getSaleOrder().getStates());
         }
         Long count = (Long) query.getSingleResult();
         return count;//将long转为int
@@ -60,6 +68,11 @@ public class SaleDaoImpl implements SaleDao {
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCustomerBuy())){
             jpql +="and s.customerBuy like :customer_buy";
         }
+        if(page.getT().getSaleOrder().getStates() != null && !page.getT().getSaleOrder().getStates().equals(""))
+        {
+            jpql+= "and s.states = :states";
+        }
+
        /* if (page.getSort() == "ASC") {//升序
             jpql +="order by s.id asc";
         }
@@ -72,6 +85,10 @@ public class SaleDaoImpl implements SaleDao {
         }
         if (!StringUtils.isEmpty(page.getT().getSaleOrder().getCustomerBuy())){
             query.setParameter("customer_buy","%"+page.getT().getSaleOrder().getCustomerBuy()+"%");
+        }
+        if (page.getT().getSaleOrder().getStates() != null && !page.getT().getSaleOrder().getStates().equals(""))
+        {
+            query.setParameter("states",page.getT().getSaleOrder().getStates());
         }
         query.setFirstResult(page.getStart()).setMaxResults(page.getPageSize());//查询分页
         List<SaleOrderBO> list = query.getResultList();
