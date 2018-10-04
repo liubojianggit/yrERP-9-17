@@ -18,7 +18,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     //用户列表
     var tableIns = table.render({
         elem: '#supplierList',
-        url :path+ 'supplier/supplierTable/list',
+        url :path+'supplier/supplierTable/list',
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -65,9 +65,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             title : "添加用户",
             type : 2,
             area : ['800px' , '520px'],
-            content : path+"/supplier/supplierTable/add",//发送请求
+            content : path+"supplier/supplierTable/add",//发送请求
             end: function(){
-                window.location.href= path+"/supplier/supplierTable";
+                window.location.href= path+"supplier/supplierTable";
             }
         })
         /*layui.layer.full(index);
@@ -114,9 +114,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area : ['800px' , '520px'],
-                content: path+'/supplier/supplierTable/'+data.id,
+                content: path+'supplier/supplierTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/supplier/supplierTable";
+                    window.location.href = path+"supplier/supplierTable";
                 }
             });
 
@@ -126,9 +126,9 @@ layui.use(['form','layer','table','laytpl'],function(){
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path+'/supplier/supplierTable/'+data.id,//请求登录验证接口
+                    url: path+'supplier/supplierTable/'+data.id,//请求登录验证接口
                     dataType : 'json',
-                    data: {_method:'delete'},
+                    data: {_method:'DELETE'},
                     error: function() {
                         layer.msg("操作失败",{icon:2});
                         setTimeout(function(){

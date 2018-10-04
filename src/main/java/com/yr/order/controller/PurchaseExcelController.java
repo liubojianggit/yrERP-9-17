@@ -95,7 +95,7 @@ public class PurchaseExcelController {
             String uploadFileName = ImportExcelUtils.uploadFile(inputs, fileName, filePath);
 
             //解析Excel，导入MySQL
-            result = purchaseExcelServiceImpl.addExcel(filePath+"/"+uploadFileName);
+            result = purchaseExcelServiceImpl.addExcel(filePath+"\\"+uploadFileName);
 
         } catch (IOException e) {
             e.printStackTrace();

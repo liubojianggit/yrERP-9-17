@@ -27,8 +27,10 @@ import java.util.List;
 public class WareTypeServiceImpl implements WareTypeService {
     @Autowired
     private WareTypeDao wt;
+
     /**
      * 根据id来查询商品类型数据
+     *
      * @param id
      * @return wareType 商品类型
      */
@@ -39,6 +41,7 @@ public class WareTypeServiceImpl implements WareTypeService {
 
     /**
      * 根据wareType来给商品类型表添加数据
+     *
      * @param wareType
      * @return
      */
@@ -46,24 +49,26 @@ public class WareTypeServiceImpl implements WareTypeService {
     public boolean add(WareType wareType) {
         if (isParamNull(wareType)) {
             return false;
-        }else{
+        } else {
             wt.addWareType(wareType);
             return true;
         }
     }
 
     /**
-     *根据id来给商品类型表删除数据
+     * 根据id来给商品类型表删除数据(批量)
+     *
      * @param id
      * @return
      */
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Integer[] id) {
         return wt.deleteWareType(id);
     }
 
     /**
-     *根据wareType来给商品类型表修改数据
+     * 根据wareType来给商品类型表修改数据
+     *
      * @param wareType
      * @return
      */
@@ -71,20 +76,21 @@ public class WareTypeServiceImpl implements WareTypeService {
     public boolean update(WareType wareType) {
         if (isUpdateParamNull(wareType)) {
             return false;
-        }else{
+        } else {
             Date date = new Date();
             //设置要获取到什么样的时间SimpleDateFormat sdf = newSimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             //获取String类型的时间String createdate = sdf.format(date);
             String udpateDate = sdf.format(date);
             wareType.setUpdateTime(udpateDate);
-            wt.updateWareType(wareType)  ;
+            wt.updateWareType(wareType);
             return true;
         }
     }
 
     /**
-     *根据wareType来查询商品类型表的数据
+     * 根据wareType来查询商品类型表的数据
+     *
      * @param wareType
      * @return
      */
@@ -94,14 +100,15 @@ public class WareTypeServiceImpl implements WareTypeService {
         List<WareType> wareList = wt.query(wareType);
         JsonConfig jsonConfig = new JsonConfig();
         jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
-        JSONArray jsonArray = JSONArray.fromObject(wareList,jsonConfig);
-        String json = "{\"code\": 0,\"msg\": \"\",\"count\": "+wareType.getTotalRecord()+",\"data\":"+jsonArray+"}";
+        JSONArray jsonArray = JSONArray.fromObject(wareList, jsonConfig);
+        String json = "{\"code\": 0,\"msg\": \"\",\"count\": " + wareType.getTotalRecord() + ",\"data\":" + jsonArray + "}";
         return json;
     }
 
 
     /**
      * 判断修改数据是否为null
+     *
      * @param ware
      * @return
      */
@@ -123,8 +130,10 @@ public class WareTypeServiceImpl implements WareTypeService {
 
         return t;
     }
+
     /**
      * 判断添加时的字段是否为null
+     *
      * @param ware
      * @return
      */
@@ -149,16 +158,17 @@ public class WareTypeServiceImpl implements WareTypeService {
 
     /**
      * 获取商品的父级类型
+     *
      * @return
      */
     @Override
     public List<WareType> getWareType() {
         List<WareType> list = wt.query();
         List<WareType> lists = new ArrayList<>();
-        for (WareType wareType:list) {
+        for (WareType wareType : list) {
             lists.add(wareType);
         }
-        WareType wareTypes =new WareType();
+        WareType wareTypes = new WareType();
         wareTypes.setSupCode("0");
         wareTypes.setCode("0");
         wareTypes.setName("无");
@@ -169,11 +179,12 @@ public class WareTypeServiceImpl implements WareTypeService {
     @Override
     public boolean query(WareType wareType) {
         Long num = wt.query(wareType);
-        if(num>0){
+        if (num > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
 
 }

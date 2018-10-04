@@ -15,7 +15,45 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload.js"></script>
 </head>
+<script type="text/javascript">
+    $(function(){
+        $("#userFace").click(function(){//点击头像
+            $("#files").click();//触发文件上传事件
+        });
+
+        $("#fileUpload").change(function(){//实现图片上传参数配置
+            changes();//调用ajax
+        });
+
+        function changes(){//用ajax实现图片上传预览
+            $.ajaxFileUpload({
+                type: "POST",
+                url:"${pageContext.request.contextPath}/supp_wares/supplierTable/upload",
+                dataType: "json",
+                fileElementId:"files",  // 文件的id
+                success: function(d){//?????d是什么
+                    alert(1111);
+                    $("#userFace").attr("src",d.url);
+                    $("#filesCopy").val(d.url);//将路径显示到隐藏框中上传到后台
+                    $("#file1").empty();
+                    $("#file1").append("<input type='file' id='files' name='files' accept='image/*'>");
+                    $("#files").change(function(){//必须重新绑定事件，否则原来绑定的事件会失效，因为是由ajaxFileUpload插件造成的，每次提交后都会被file新元素覆盖file旧元素，而绑定的change事件则就失效了，需要重新绑定
+                        changes();
+                    });
+                },
+                error: function () {
+                    alert("上传失败");
+                },
+            });
+        }
+    });
+
+
+
+</script>
 <body class="childrenBody">
 
 <form:form class="layui-form" style="width:80%;" id="form2" method="POST" modelAttribute="supplierWareBo">
@@ -29,23 +67,24 @@
         <c:if test="${supplierWareBo.supplierWare.id != null }">
             <div class="layui-upload-list">
                 <!-- 头像回显的样式，这里是圆形 -->
-                <img src="<%=request.getContextPath() %>/supp_wares/supplierTable/icons/${supplierWareBo.supplierWare.id}" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo2">
+                <img src="${pageContext.request.contextPath}/supp_wares/supplierTable/icons/${supplierWareBo.supplierWare.id }" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
                 <p id="demoText"></p>
             </div>
-            <input type="hidden" name="supplierWare.suppPhoto" id="headUrl2" value=""/>
-            <button type="button" class="layui-btn" id="test2">修改图片</button>
+            <input type="text" id="filesCopy" name="filesCopy" value="${supplierWareBo.supplierWare.suppPhoto }"><!-- 隐藏框是存图片路径 -->
+            <button type="button" class="layui-btn" id="test2">修改头像</button>
         </c:if>
         <c:if test="${supplierWareBo.supplierWare.id == null }">
             <div class="layui-upload-list">
-                <!-- 头像回显的样式，这里是圆形 -->
-                <img class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:200px;height:200px;" id="demo1">
+                <img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
                 <p id="demoText"></p>
             </div>
-            <button type="button" class="layui-btn" id="test1">上传图片</button>
+            <input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images\587c589d26802.jpg">
             <!-- 上传头像成功后保存的隐藏框 -->
-            <input type="hidden" name="supplierWare.suppPhoto" id="headUrl" value="">
+            <button type="button" class="layui-btn" id="test1">上传头像</button>
         </c:if>
-
+        <div id="fileUpload" style="display: none;">
+            <input type="file" id="files" name="files" accept="image/*">
+        </div>
     </div>
 
 

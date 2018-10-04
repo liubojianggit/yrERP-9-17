@@ -9,8 +9,8 @@ public class SupplierWareBo {
     private SupplierWares supplierWare;
     private String name;//供应商品的名称
     private String type;//供应商品的类型
-    private double minUnitPrice;//供应商品的最低单价
-    private double maxUnitPrice;//供应商品的最高单价
+    private Double minUnitPrice;//供应商品的最低单价
+    private Double maxUnitPrice;//供应商品的最高单价
     private String brand;//品牌
 
     public SupplierWares getSupplierWare() {
@@ -37,19 +37,19 @@ public class SupplierWareBo {
         this.type = type;
     }
 
-    public double getMinUnitPrice() {
+    public Double getMinUnitPrice() {
         return minUnitPrice;
     }
 
-    public void setMinUnitPrice(double minUnitPrice) {
+    public void setMinUnitPrice(Double minUnitPrice) {
         this.minUnitPrice = minUnitPrice;
     }
 
-    public double getMaxUnitPrice() {
+    public Double getMaxUnitPrice() {
         return maxUnitPrice;
     }
 
-    public void setMaxUnitPrice(double maxUnitPrice) {
+    public void setMaxUnitPrice(Double maxUnitPrice) {
         this.maxUnitPrice = maxUnitPrice;
     }
 

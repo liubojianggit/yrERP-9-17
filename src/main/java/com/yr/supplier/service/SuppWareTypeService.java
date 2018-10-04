@@ -25,7 +25,7 @@ public interface SuppWareTypeService {
      * @param id
      * @return
      */
-    public boolean delete(Integer id);
+    public boolean delete(Integer[] id);
 
     /**
      * 根据sw来给供应商品类别表修改数据
@@ -45,12 +45,14 @@ public interface SuppWareTypeService {
 
     /**
      * 根据id到供应商品类别表中获取对应的数据
+     *
      * @param id
      * @return
      */
     public SuppWareType getSuppWareType(Integer id);
+
     /**
      * 获取商品的list集合
-     * */
+     */
     public List<SuppWareType> getSuppWareType();
 }

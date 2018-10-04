@@ -22,7 +22,7 @@ public interface SuppWareTypeDao {
      * @param id
      * @return
      */
-    public boolean delete(Integer id);
+    public boolean delete(Integer[] id);
 
     /**
      * 根据sw来给供应商品类型表修改数据
@@ -42,6 +42,7 @@ public interface SuppWareTypeDao {
 
     /**
      * 根据id到供应商品类型表中获取对应的数据
+     *
      * @param id
      * @return
      */
@@ -54,8 +55,10 @@ public interface SuppWareTypeDao {
      * @return
      */
     public Long getCount(Page<SuppWareTypeBo> page);
+
     /**
      * 根据wareType来查询商品类型
+     *
      * @param
      * @return
      */

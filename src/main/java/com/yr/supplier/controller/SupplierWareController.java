@@ -1,5 +1,6 @@
 package com.yr.supplier.controller;
 
+import com.yr.common.service.UploadServer;
 import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.supplierBO.SupplierBo;
 import com.yr.entitys.bo.supplierBO.SupplierWareBo;
@@ -35,6 +36,8 @@ public class SupplierWareController {
     @Autowired
     private SuppWareTypeService swsType;
     @Autowired
+    private UploadServer uploadServerImpl;
+    @Autowired
     private JedisManager jedisManager;
     public static String path = "C:/Users/Administrator/Desktop/photo";//图片路径//上传到的地方
     @ModelAttribute
@@ -48,7 +51,7 @@ public class SupplierWareController {
      * 跳转到拥有供应商的查询列表，没有数据操作
      * @return
      */
-    @RequestMapping(value = "/supp_waresTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
+    @RequestMapping(value = "/supplierTable",method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     public String list(){
         return "supp_waresList";
     }
@@ -89,12 +92,29 @@ public class SupplierWareController {
     public String addWare(SupplierWareBo supplierWareBo, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
 
         supplierWareBo.getSupplierWare().setCreateTime(new Date());
-       // supplierWareBo.getSupplierWare().setCreateEmp("萍");
-        supplierWareBo.getSupplierWare().setSuppPhoto("C:\\Users\\Administrator\\Desktop\\aaa.jpg");
+        supplierWareBo.getSupplierWare().setSuppPhoto(filesCopy);
+
         sws.add(supplierWareBo);
         return "{\"code\":1,\"msg\":\"添加成功\"}";
     }
 
+
+    /**
+     * 实现静态头像上传，这里先将图片上传到服务器上
+     * @param file
+     * @param request
+     * @param response
+     * @return Map<String,Object>
+     * @throws IOException
+     */
+    @RequestMapping(value="/supplierTable/upload",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> uploadFile(@RequestParam("files") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String url = uploadServerImpl.upload(file);
+        Map<String,Object> map = new HashMap<>();
+        map.put("url",url);
+        return map;
+    }
     /**
      * 根据id来删除供应商品
      * @param id
@@ -129,10 +149,9 @@ public class SupplierWareController {
      */
     @RequestMapping(value = "/supplierTable",method = RequestMethod.PUT,produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String updateWare(SupplierWareBo supplierWareBo, Map<String,Object>map){
+    public String updateWare(SupplierWareBo supplierWareBo,@RequestParam(value="filesCopy",required = false) String filesCopy, Map<String,Object>map){
         supplierWareBo.getSupplierWare().setUpdateTime(new Date());
-        //supplierWareBo.getSupplierWare().setUpdateEmp("萍");
-        //supplierBo.getSupplier().setUpdateEmp(((User)request.getSession().getAttribute("user")).getName());
+        supplierWareBo.getSupplierWare().setSuppPhoto(filesCopy);
         sws.update(supplierWareBo);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
