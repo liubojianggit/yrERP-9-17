@@ -21,9 +21,6 @@ layui.define(["element","jquery"],function(exports){
 		function showall(data, ulHtml) {
 			var straa='';
 	        for(var i=0;i<data.length;i++){
-                if(data[i].title == "员工管理"){
-                    ulHtml += "<shiro:hasPermission name=\"sdg\">";
-                }
 	            if(data[i].spread || data[i].spread == undefined){
 	                ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
 	            }else{
@@ -81,7 +78,6 @@ layui.define(["element","jquery"],function(exports){
 	                ulHtml += '<cite>'+data[i].title+'</cite></a>';
 	            }
 	            ulHtml += '</li>';
-                ulHtml += "</shiro:hasPermission>";
 	        }
 	        return ulHtml;
 	        }
