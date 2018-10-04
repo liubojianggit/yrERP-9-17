@@ -119,6 +119,129 @@ layui.use(['form','layer','table','laytpl'],function(){
         }
     })
 
+    function rolePerm(data) {
+        $.get(path+'u_role/roleTable/getPermission', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
+            $.get(path+'u_role/roleTable/getPermissionById', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
+                var roleStrTd ="";//弹出层td
+                var roleStrTr = "";	//弹出层tr
+                var checkedStr = "";//控制复选框默认值的标识
+                var temp = 0;
+                var strTr1 = "";
+                /*for (var i = 0; i < str.length; i++){
+                    temp++;
+                    for (var j = 0; j < uRoleStr.length; j++){
+                        if(str[i].id == uRoleStr[j].id){
+                            checkedStr = "checked='checked'";//因使用了弹出层样式1，拼接类的html标签都必须这样来给标签赋属性，并且靠多个变量/标识来控制需求
+                        }
+                    }
+                    roleStrTd += "<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
+                    //初始化checkedStr，目的是为了下一层的循环接着使用时不会出错
+                    checkedStr = "";
+                    if(temp%3 == 0){//取模控制弹出层表格的列数，这里是一行三个列
+                        roleStrTr += "<tr>"+roleStrTd+"</tr>";
+                    }
+                }*/
+                for (var i = 0; i < str.length; i++){
+                    temp++;
+                    for (var j = 0; j < uRoleStr.length; j++){
+                        if(str[i].id == uRoleStr[j].id){
+                            checkedStr = "checked='checked'";//因使用了弹出层样式1，拼接类的html标签都必须这样来给标签赋属性，并且靠多个变量/标识来控制需求
+                        }
+                    }
+                    roleStrTd += "<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
+                    //初始化checkedStr，目的是为了下一层的循环接着使用时不会出错
+                    if(temp%5 == 0){//取模控制弹出层表格的列数，这里是一行三个列
+                        roleStrTr += "<tr>"+roleStrTd+"</tr>";
+                        //因为执行到这里，已经把roleStrTd的内容追加给了roleStrTr,必须初始化roleStrTd，目的是为了实现弹出层表格列数的控制
+                        roleStrTd = "";
+                    }else{
+                        if((str.length - temp) <= (str.length)%5){//最后一行
+                            strTr1+="<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
+                            if((str.length - temp) == 0){
+                                roleStrTr += "<tr>"+strTr1+"</tr>";
+                            }
+                        }
+                    }
+                    checkedStr = "";
+                }
+                //角色的弹出层
+                layer.open({
+                    id: 'LAY_updateRole', //设定一个id，防止重复弹出
+                    type: 1,
+                    title:'角色设置',
+                    btnAlign: 'c',
+                    area: ['800px','250px'],//宽、高
+                    content: "<b>角色名称:</b><br><table align='center'>"+roleStrTr+"</table>",
+                    btn: ['确认', '重置']
+                    ,yes: function(index, layero){//layero就是弹出层的html对象
+                        //按钮【按钮一】的回调
+                        var id = data.id/*+"#"*/;
+                        var roleIds = [];
+                        var obj = $(layero).find("table").find("tr").find(":checkbox");
+                        for(var k in obj){
+                            if(obj[k].checked){
+                                //userRoleStr += obj[k].id/*+","*/;
+                                roleIds.push(obj[k].value);
+                            }
+                        }
+                        $.ajax({
+                            type: 'get',
+                            url: path+'u_role/roleTable/setPermissions',//后台往user_role表中插入数据
+                            dataType : 'json',
+                            data: {
+                                "id":id,
+                                "roleIds":roleIds
+                            },//userRoleStr是用户拥有的角色的id拼起来的字符串
+                            traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
+                            success: function(str){
+
+                                if("0" == str.code){
+                                    top.layer.close(index);
+                                    tableIns.reload("roleList",{
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        }
+                                    })
+                                    setTimeout(top.layer.msg(str.msg,{icon:1}),1000);
+                                }else if("1" == str.code){
+                                    top.layer.close(index);
+                                    tableIns.reload("roleList",{
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        }
+                                    })
+                                    setTimeout(top.layer.msg(str.msg,{icon:1}),1000);
+                                }else{
+                                    top.layer.close(index);
+                                    tableIns.reload("roleList",{
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        }
+                                    })
+                                    setTimeout(layer.msg("未知错误，请联系管理员",{icon:2}),1000);
+                                }
+                            }
+                        });
+
+                    }
+                    ,btn2: function(index, layero){
+                        //按钮【按钮二】的回调
+                        rolePerm(data);
+                    }
+                    ,cancel: function(){
+                        //右上角关闭回调
+                        tableIns.reload("roleList",{//刷新指定id的列表
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        })
+                        //return false 开启该代码可禁止点击该按钮关闭
+                    }
+                });
+            });
+        });
+    }
+
     //列表操作
     table.on('tool(roleList)', function(obj){
         var layEvent = obj.event,
@@ -186,131 +309,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }else if(layEvent === 'auth'){//角色赋权限
             //Ajax请求，动态控制角色弹出层的回显
-            $.get(path+'u_role/roleTable/getPermission', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
-                $.get(path+'u_role/roleTable/getPermissionById', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
-                    var roleStrTd ="";//弹出层td
-                    var roleStrTr = "";	//弹出层tr
-                    var checkedStr = "";//控制复选框默认值的标识
-                    var temp = 0;
-                    var strTr1 = "";
-                    /*for (var i = 0; i < str.length; i++){
-                        temp++;
-                        for (var j = 0; j < uRoleStr.length; j++){
-                            if(str[i].id == uRoleStr[j].id){
-                                checkedStr = "checked='checked'";//因使用了弹出层样式1，拼接类的html标签都必须这样来给标签赋属性，并且靠多个变量/标识来控制需求
-                            }
-                        }
-                        roleStrTd += "<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
-                        //初始化checkedStr，目的是为了下一层的循环接着使用时不会出错
-                        checkedStr = "";
-                        if(temp%3 == 0){//取模控制弹出层表格的列数，这里是一行三个列
-                            roleStrTr += "<tr>"+roleStrTd+"</tr>";
-                        }
-                    }*/
-                    for (var i = 0; i < str.length; i++){
-                        temp++;
-                        for (var j = 0; j < uRoleStr.length; j++){
-                            if(str[i].id == uRoleStr[j].id){
-                                checkedStr = "checked='checked'";//因使用了弹出层样式1，拼接类的html标签都必须这样来给标签赋属性，并且靠多个变量/标识来控制需求
-                            }
-                        }
-                        roleStrTd += "<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
-                        //初始化checkedStr，目的是为了下一层的循环接着使用时不会出错
-                        if(temp%5 == 0){//取模控制弹出层表格的列数，这里是一行三个列
-                            roleStrTr += "<tr>"+roleStrTd+"</tr>";
-                            //因为执行到这里，已经把roleStrTd的内容追加给了roleStrTr,必须初始化roleStrTd，目的是为了实现弹出层表格列数的控制
-                            roleStrTd = "";
-                        }else{
-                            if((str.length - temp) <= (str.length)%5){//最后一行
-                                strTr1+="<td style='width: 120px;'><input type='checkbox'"+checkedStr+"value='"+str[i].id+"'/>"+str[i].name+"</td>";
-                                if((str.length - temp) == 0){
-                                    roleStrTr += "<tr>"+strTr1+"</tr>";
-                                }
-                            }
-                        }
-                        checkedStr = "";
-                    }
-                    //角色的弹出层
-                    layer.open({
-                        id: 'LAY_updateRole', //设定一个id，防止重复弹出
-                        type: 1,
-                        title:'角色设置',
-                        btnAlign: 'c',
-                        area: ['800px','250px'],//宽、高
-                        content: "<b>角色名称:</b><br><table align='center'>"+roleStrTr+"</table>",
-                        btn: ['确认', '取消']
-                        ,yes: function(index, layero){//layero就是弹出层的html对象
-                            //按钮【按钮一】的回调
-                            var id = data.id/*+"#"*/;
-                            var roleIds = [];
-                            var obj = $(layero).find("table").find("tr").find(":checkbox");
-                            for(var k in obj){
-                                if(obj[k].checked){
-                                    //userRoleStr += obj[k].id/*+","*/;
-                                    roleIds.push(obj[k].value);
-                                }
-                            }
-                            $.ajax({
-                                type: 'get',
-                                url: path+'u_role/roleTable/setPermissions',//后台往user_role表中插入数据
-                                dataType : 'json',
-                                data: {
-                                    "id":id,
-                                    "roleIds":roleIds
-                                },//userRoleStr是用户拥有的角色的id拼起来的字符串
-                                traditional:true,//用传统的方式来序列化数据，那么就设置为 true	加上这个属性数组才能被识别,否则后台接受不到
-                                success: function(str){
-
-                                    if("0" == str.code){
-                                        top.layer.close(index);
-                                        tableIns.reload("roleList",{
-                                            page: {
-                                                curr: 1 //重新从第 1 页开始
-                                            }
-                                        })
-                                        setTimeout(top.layer.msg(str.msg,{icon:1}),1000);
-                                    }else if("1" == str.code){
-                                        top.layer.close(index);
-                                        tableIns.reload("roleList",{
-                                            page: {
-                                                curr: 1 //重新从第 1 页开始
-                                            }
-                                        })
-                                        setTimeout(top.layer.msg(str.msg,{icon:1}),1000);
-                                    }else{
-                                        top.layer.close(index);
-                                        tableIns.reload("roleList",{
-                                            page: {
-                                                curr: 1 //重新从第 1 页开始
-                                            }
-                                        })
-                                        setTimeout(layer.msg("未知错误，请联系管理员",{icon:2}),1000);
-                                    }
-                                }
-                            });
-
-                        }
-                        ,btn2: function(index, layero){
-                            //按钮【按钮二】的回调
-                            tableIns.reload("roleList",{//刷新指定id的列表
-                                page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            })
-
-                        }
-                        ,cancel: function(){
-                            //右上角关闭回调
-                            tableIns.reload("roleList",{//刷新指定id的列表
-                                page: {
-                                    curr: 1 //重新从第 1 页开始
-                                }
-                            })
-                            //return false 开启该代码可禁止点击该按钮关闭
-                        }
-                    });
-                });
-            });
+            rolePerm(data);
         }
     });
 

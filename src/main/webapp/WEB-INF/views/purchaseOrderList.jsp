@@ -56,31 +56,32 @@
 </script>
 <script type="text/javascript">
     function aa() {
-        $.ajax({
+        window.location.href="<%=request.getContextPath()%>/purchaseExcel/export?purchaseCode="+$('#purchaseCode').val()+"&purchaseWareCode="+$('#purchaseWareCode').val()+"&purchaseOrder.status="+$('#rStates').val();
+        /*$.ajax({
             type: 'post',
             url: '<%=request.getContextPath()%>/purchaseExcel/export',//请求导出文件接口
             dataType : 'json',
             data: {"purchaseCode":$('#purchaseCode').val(),"purchaseWareCode":$('#purchaseWareCode').val(),"purchaseOrder.status":$('#rStates').val()},
             error: function() {
                 layer.msg("操作失败",{icon:2});
-                /*setTimeout(function(){
+                /!*setTimeout(function(){
                     window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
-                },1200);*/
+                },1200);*!/
             },
             success: function(data){
                 if("1" == data.code){
                     layer.msg(data.msg,{icon:1});
-                    /*setTimeout(function(){
+                    /!*setTimeout(function(){
                         window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
-                    },1200);*/
+                    },1200);*!/
                 }else{
                     layer.msg(data.msg,{icon:2});
-                    /*setTimeout(function(){
+                    /!*setTimeout(function(){
                         window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
-                    },1200);*/
+                    },1200);*!/
                 }
             }
-        });
+        });*/
     }
 </script>
 <body class="childrenBody">
@@ -122,6 +123,10 @@
         <div class="layui-upload">
             <div class="layui-inline" style="width: 200px;">
                 <button type="button" class="layui-btn" onclick="aa()" id="export">导出数据</button>
+                    <%--<form action="<%=request.getContextPath()%>/purchaseExcel/export" method="POST">
+                        <input type="submit" style="background-color: #d3a4ff; border: 1px solid #d3a4ff" value="导出采购表" />
+                    </form>--%>
+
             </div>
             <div class="layui-inline">
             <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
