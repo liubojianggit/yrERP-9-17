@@ -118,9 +118,11 @@
  </form:form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderAU.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         if (${purchaseOrderBO.purchaseOrder.id == null }){
+            alert($("#userName").val());
             $("#userName").val("");
             $("#uPhoneNumber").val("");
             $("#depCode").val("");
