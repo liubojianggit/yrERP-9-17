@@ -12,7 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import static java.awt.SystemColor.menu;
 
 @Repository
 public class MenuDaoImpl implements MenuDao {
@@ -44,11 +48,27 @@ public class MenuDaoImpl implements MenuDao {
         return list;
     }
 
-    @Override
-    public List<Menu> query() {
+    /*@Override
+    public List<Menu> query(List<String> permissionList) {
         String jpql = "select m from Menu m";
         Query query = entityManager.createQuery(jpql);
         List<Menu> list = query.getResultList();//获取到结果
+        return list;
+    }
+*/
+    @Override
+    public List<Menu> query(List<String> permissionList) {
+        List<Menu> list = new ArrayList<>();
+        for (String string:permissionList) {
+            string = string.substring(1,string.length());
+            Integer count = getCount(string);
+            if(count != 0){
+                String jpql = "select m from Menu m where m.url = :url";
+                Query query = entityManager.createQuery(jpql).setParameter("url",string);
+                Menu menu = (Menu)query.getSingleResult();//获取到结果
+                list.add(menu);
+            }
+        }
         return list;
     }
 
@@ -126,4 +146,11 @@ public class MenuDaoImpl implements MenuDao {
     public void update(Menu menu) {
         entityManager.merge(menu);
     }
+
+    public Integer getCount(String url){
+        String jpql = "select count(*) from Menu m where m.url = ?1";
+        Number count = (Number)entityManager.createQuery(jpql).setParameter(1,url).getSingleResult();
+        return count.intValue();
+    }
+
 }
