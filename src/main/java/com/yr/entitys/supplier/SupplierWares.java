@@ -18,7 +18,7 @@ public class SupplierWares implements Serializable {
     @Column(nullable = false,unique = true)
     private String code;//供应商品的编号，不能为null，唯一约束
     @Column(nullable = false)
-    private String name;//供应商品的名称，不能为null
+    private String name;//供应商品的名称，不能为 null
     @Column(nullable = false,name="supp_code")
     private String suppCode;
     private String suppPhoto;
