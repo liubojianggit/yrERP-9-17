@@ -1,10 +1,13 @@
 package com.yr.user.controller;
 
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.user.PermissionBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
+import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 import com.yr.user.service.PermissionService;
+import org.apache.tools.ant.taskdefs.condition.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpRequest;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,9 +95,31 @@ public class PermissionController {
     @RequestMapping(value="/permissionTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(PermissionBo permissionBo, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
         permissionBo.getPermission().setCreateTime(new Date());//获取当前时间
-        //permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
-        permissionService.add(permissionBo);
+        permissionBo.getPermission().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        try {
+            permissionService.add(permissionBo);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("权限模块");
+            log.setTable("u_permission");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldNewValue(permissionBo.getPermission().toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setContent(e.getMessage());
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("权限模块");
+        log.setTable("u_permission");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(1);
+        log.setFieldNewValue(permissionBo.getPermission().toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"添加成功\"}";
     }
 
@@ -102,8 +128,7 @@ public class PermissionController {
      * @return String
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<PermissionBo> page){
-        map.put("page", page);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
         PermissionBo permissionBos = new PermissionBo();//实例化一个对象
         Permission permission = permissionService.getById(id);//获得权限对象
         permissionBos.setPermission(permission);
@@ -127,10 +152,34 @@ public class PermissionController {
     @RequestMapping(value="/permissionTable",method= RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveUpdate(PermissionBo permissionBo, Page<PermissionBo> page/*, Map<String, Object> map*/, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        Permission oldPermission = permissionService.getById(permissionBo.getPermission().getId());//旧值
         permissionBo.getPermission().setUpdateTime(new Date());//获取修改当前时间
-        //permission.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
-        permissionService.update(permissionBo.getPermission());
-        //map.put("page", page);
+        permissionBo.getPermission().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        try {
+            permissionService.update(permissionBo.getPermission());
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("权限模块");
+            log.setTable("u_permission");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(oldPermission.toString());
+            log.setFieldNewValue(permissionBo.getPermission().toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("权限模块");
+        log.setTable("u_permission");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(3);
+        log.setFieldOldValue(oldPermission.toString());
+        log.setFieldNewValue(permissionBo.getPermission().toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -140,8 +189,38 @@ public class PermissionController {
      */
     @RequestMapping(value="/permissionTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public String delete(@PathVariable Integer[] id){
-        permissionService.delete(id);
+    public String delete(@PathVariable Integer[] id, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        String permissionStr = "";//删除前的值
+        for (int i=0;i<id.length;i++) {
+            Permission permission = permissionService.getById(id[i]);
+            permissionStr += permission.toString();
+            if(i != id.length){//不为最后一个满足条件
+                permissionStr += ";";
+            }
+        }
+        try {
+            permissionService.delete(id);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("权限模块");
+            log.setTable("u_permission");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(permissionStr);
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("权限模块");
+        log.setTable("u_permission");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(2);
+        log.setFieldOldValue(permissionStr);
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 

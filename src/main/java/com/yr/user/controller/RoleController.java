@@ -1,6 +1,8 @@
 package com.yr.user.controller;
 
+import com.hazelcast.console.Echo;
 import com.yr.core.shiro.filter.MyRealm;
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.user.RoleBo;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 
@@ -88,10 +91,32 @@ public class RoleController {
     @RequestMapping(value="/roleTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(RoleBo roleBo, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
         Role role = roleBo.getRole();
         role.setCreateTime(new Date());//获取当前时间
-        //role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
-        roleService.add(role);
+        role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        try {
+            roleService.add(role);
+        }catch (Exception e){
+            Log log = new Log();
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldNewValue(role.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setContent(e.getMessage());
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("角色模块");
+        log.setTable("u_role");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(1);
+        log.setFieldNewValue(role.toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
@@ -100,8 +125,7 @@ public class RoleController {
      * @return String
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map, Page<RoleBo> page){
-        //map.put("page", page);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
         RoleBo roleBo = new RoleBo();
         Role role = roleService.getById(id);
         roleBo.setRole(role);
@@ -115,11 +139,35 @@ public class RoleController {
      */
     @RequestMapping(value="/roleTable",method= RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String saveUpdate(RoleBo roleBo, Page<RoleBo> page, Map<String, Object> map, HttpServletRequest request){
+    public String saveUpdate(RoleBo roleBo, Map<String, Object> map, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        Role oldRole = roleService.getById(roleBo.getRole().getId());//没修改之前
         roleBo.getRole().setUpdateTime(new Date());//获取修改当前时间
-        //roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
-        //map.put("page", page);
-        roleService.update(roleBo.getRole());
+        roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        try {
+            roleService.update(roleBo.getRole());
+        }catch (Exception e){
+            Log log = new Log();
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(oldRole.toString());
+            log.setFieldNewValue(roleBo.getRole().toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("角色模块");
+        log.setTable("u_role");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(3);
+        log.setFieldOldValue(oldRole.toString());
+        log.setFieldNewValue(roleBo.getRole().toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -129,8 +177,38 @@ public class RoleController {
      */
     @RequestMapping(value="/roleTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public String delete(@PathVariable Integer[] id){
-        roleService.delete(id);
+    public String delete(@PathVariable Integer[] id, HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        String roleStr = "";//删除前的值
+        for (int i=0;i<id.length;i++) {
+            Role role = roleService.getById(id[i]);
+            roleStr += role.toString();
+            if(i != id.length){//不为最后一个满足条件
+                roleStr += ";";
+            }
+        }
+        try {
+            roleService.delete(id);
+        } catch (Exception e) {
+            Log log = new Log();
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(roleStr);
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+        }
+        Log log = new Log();
+        log.setModular("角色模块");
+        log.setTable("u_role");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(2);
+        log.setFieldOldValue(roleStr);
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 

@@ -17,7 +17,7 @@ layui.use(['form','layer','upload','table'],function(){
 
     //新增页面头像上传
     //入口函数
-    upload.render({
+    /*upload.render({
         elem: '#test1',//绑定标签ID
         url: path+'upload/img',//文件上传的接口路径
         method : 'post',//文件上传/form表单提交必须是post
@@ -36,11 +36,11 @@ layui.use(['form','layer','upload','table'],function(){
         		layer.msg(res.msg,{icon:2});
         	}
         }
-    });
+    });*/
     
     //修改页面头像上传
     //入口函数
-    upload.render({
+    /*upload.render({
     	elem: '#test2',//绑定标签ID
     	url: path+'upload/img',//文件上传的接口路径
     	method : 'post',//文件上传/form表单提交必须是post
@@ -59,7 +59,7 @@ layui.use(['form','layer','upload','table'],function(){
     			layer.msg(res.msg,{icon:2});
     		}
     	}
-    });
+    });*/
 
     //添加
     form.on("submit(addUser)",function(data){

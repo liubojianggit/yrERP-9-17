@@ -46,11 +46,6 @@ public class PermissionFilter extends AccessControlFilter {
         if(null != uri && uri.startsWith(basePath)){
             uri = uri.replaceFirst(basePath, "");
         }
-       /* //跳转的路径直接放出去
-        if("/yr/order/list.shtml".equals(uri) && ("GET").equals(method) || "/yr/order/add.shtml".equals(uri) && ("GET").equals(method)
-                || Pattern.compile("/yr/order/\\d+\\.shtml").matcher(uri).matches() && ("GET").equals(method)){
-            return Boolean.TRUE;
-        }*/
         //将redis的序列化后的值拿出来
         Jedis jedis = jedisManager.getJedis();
         byte[] bytes = jedis.get("permissions".getBytes());

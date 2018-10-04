@@ -186,7 +186,6 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }else if(layEvent === 'auth'){//角色赋权限
             //Ajax请求，动态控制角色弹出层的回显
-            alert(11);
             $.get(path+'u_role/roleTable/getPermission', {}, function(str){//获取后台角色列表所有角色,后台返回的json字符串str
                 $.get(path+'u_role/roleTable/getPermissionById', {"uid":data.id}, function(uRoleStr){//根据用户id查询用户所拥有的角色,后台返回的json字符串uRoleStr
                     var roleStrTd ="";//弹出层td
