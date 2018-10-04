@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
 
     /**
      * 根据sw来给供应商品类型表中添加数据
+     *
      * @param swt
      * @return
      */
@@ -43,17 +46,20 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
             return false;
         }
     }
+
     /**
      * 根据id到供应商品类型表中删除指定数据
+     *
      * @param id
      * @return
      */
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Integer[] id) {
+        List<Integer> list = Arrays.asList(id);//将数组转变成list集合
         StringBuffer jpql = new StringBuffer();
-        jpql.append("delete from SuppWareType s where s.id = ?");
+        jpql.append("delete from SuppWareType s where s.id in(:ids)");
         Query query = entityManager.createQuery(jpql.toString());
-        query.setParameter(1, id);
+        query.setParameter("ids", list);
         try {
             query.executeUpdate();
             return true;
@@ -62,8 +68,10 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
             return false;
         }
     }
+
     /**
      * 根据sw到供应商品类型表中修改相应数据
+     *
      * @param sw
      * @return
      */
@@ -86,8 +94,10 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
             return false;
         }
     }
+
     /**
      * 跟句page中的查询条件到供应商品类型表中查询相应数据
+     *
      * @param page
      * @return
      */
@@ -114,8 +124,10 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
         List<SuppWareTypeBo> SuppWareType = query.getResultList();
         return SuppWareType;
     }
+
     /**
      * 根据id到供应商品类型表中获取指定数据
+     *
      * @param id
      * @return
      */
@@ -128,8 +140,10 @@ public class SuppWareTypeDaoImpl implements SuppWareTypeDao {
         SuppWareType suppWareType = (SuppWareType) query.getSingleResult();
         return suppWareType;
     }
+
     /**
      * 根据page中的查询条件到供应商品类型表中得到数据的数目
+     *
      * @param page
      * @return
      */

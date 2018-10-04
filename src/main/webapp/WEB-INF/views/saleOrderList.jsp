@@ -21,8 +21,12 @@
             <div class="layui-inline">
                 <div class="layui-input-inline">
                     <input type="text" class="layui-input searchVal" id="code" value="" placeholder="请输入订单编号：" />
+                </div>
+                    <div class="layui-input-inline">
                     <input type="text" class="layui-input searchVal" id="customerBuy" placeholder="请输入购买客户：" />
-                    <select name="city" lay-verify="">
+                    </div>
+                <div class="layui-input-inline">
+                    <select name="city"  id="rStates" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>
                         <option value="1">销售成功</option>

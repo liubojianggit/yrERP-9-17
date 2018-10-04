@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
     <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderList.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 </head>
 <script>
     layui.use('upload', function() {
@@ -52,34 +53,35 @@
             }
         });
     });
-
-    $("#export").click(function () {
+</script>
+<script type="text/javascript">
+    function aa() {
         $.ajax({
             type: 'post',
-            url: path+'',//请求导出文件接口
+            url: '<%=request.getContextPath()%>/purchaseExcel/export',//请求导出文件接口
             dataType : 'json',
-            data: $('#searchFormId').serialize(),
+            data: {"purchaseCode":$('#purchaseCode').val(),"purchaseWareCode":$('#purchaseWareCode').val(),"purchaseOrder.status":$('#rStates').val()},
             error: function() {
                 layer.msg("操作失败",{icon:2});
-                setTimeout(function(){
-                    window.location.href = path+"requisition/requisitionTable";
-                },1200);
+                /*setTimeout(function(){
+                    window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
+                },1200);*/
             },
             success: function(data){
                 if("1" == data.code){
                     layer.msg(data.msg,{icon:1});
-                    setTimeout(function(){
-                        window.location.href = path+"requisition/requisitionTable";
-                    },1200);
+                    /*setTimeout(function(){
+                        window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
+                    },1200);*/
                 }else{
                     layer.msg(data.msg,{icon:2});
-                    setTimeout(function(){
-                        window.location.href = path+"requisition/requisitionTable";
-                    },1200);
+                    /*setTimeout(function(){
+                        window.location.href = "<%=request.getContextPath() %>/requisition/requisitionTable";
+                    },1200);*/
                 }
             }
         });
-    })
+    }
 </script>
 <body class="childrenBody">
 <form class="layui-form">
@@ -119,7 +121,7 @@
         </form>
         <div class="layui-upload">
             <div class="layui-inline" style="width: 200px;">
-                <button type="button" class="layui-btn" id="export">导出数据</button>
+                <button type="button" class="layui-btn" onclick="aa()" id="export">导出数据</button>
             </div>
             <div class="layui-inline">
             <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>

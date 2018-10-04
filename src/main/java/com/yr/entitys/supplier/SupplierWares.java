@@ -18,15 +18,16 @@ public class SupplierWares implements Serializable {
     @Column(nullable = false,unique = true)
     private String code;//供应商品的编号，不能为null，唯一约束
     @Column(nullable = false)
-    private String name;//供应商品的名称，不能为null
-    @Column(nullable = false)
-    private String suppPhoto;//供应商品的头像，不能为null
+    private String name;//供应商品的名称，不能为 null
+    @Column(nullable = false,name="supp_code")
+    private String suppCode;
+    private String suppPhoto;
     @Column(nullable = false)
     private String type;//供应商品的类型，不能为null
     @Column(nullable = false,name = "total_inventory")
     private Long totalInventory;//供应商品的总价格，不能为null
     @Column(nullable = false,name = "unit_price")
-    private double unitPrice;//供应商品的单价，不能为null
+    private Double unitPrice;//供应商品的单价，不能为null
     @Column(nullable = false)
     private String brand;//供应商品的品牌，不能为null
     @Column(nullable = false)
@@ -63,6 +64,14 @@ public class SupplierWares implements Serializable {
         this.name = name;
     }
 
+    public String getSuppCode() {
+        return suppCode;
+    }
+
+    public void setSuppCode(String suppCode) {
+        this.suppCode = suppCode;
+    }
+
     public String getSuppPhoto() {
         return suppPhoto;
     }
@@ -87,11 +96,11 @@ public class SupplierWares implements Serializable {
         this.totalInventory = totalInventory;
     }
 
-    public double getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(double unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
@@ -149,6 +158,7 @@ public class SupplierWares implements Serializable {
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", suppCode='" + suppCode + '\'' +
                 ", suppPhoto='" + suppPhoto + '\'' +
                 ", type='" + type + '\'' +
                 ", totalInventory=" + totalInventory +

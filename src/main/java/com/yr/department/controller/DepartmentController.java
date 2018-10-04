@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +70,16 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String add(Departmentbo departmentbo){
+    public String add(Departmentbo departmentbo, HttpServletRequest request){
+        //将时间戳设置进入创建时间
+        departmentbo.getDepartment().setCreateTime(new Timestamp(System.currentTimeMillis()));
+        //将修改时间设进修改时间，初始修改时间，后期会改
+        departmentbo.getDepartment().setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        //获取session 当中当前登录用户，session属性名从login登录的传过来，
+        User user = (User) request.getSession().getAttribute("user");
+        departmentbo.getDepartment().setCreateEmp(user.getName());
+        //这个初始的修改人，后期会改
+        departmentbo.getDepartment().setUpdateEmp(user.getName());
         departmentService.add(departmentbo);//调用添加方法
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
@@ -97,7 +108,16 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String updates(Departmentbo departmentbo){
+    public String updates(Departmentbo departmentbo,HttpServletRequest request){
+        //将时间戳设置进入创建时间
+        departmentbo.getDepartment().setCreateTime(new Timestamp(System.currentTimeMillis()));
+        //将修改时间设进修改时间，初始修改时间，后期会改
+        departmentbo.getDepartment().setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        //获取session 当中当前登录用户，session属性名从login登录的传过来，
+        User user = (User) request.getSession().getAttribute("user");
+        departmentbo.getDepartment().setCreateEmp(user.getName());
+        //这个初始的修改人，后期会改
+        departmentbo.getDepartment().setUpdateEmp(user.getName());
         departmentService.update(departmentbo);
         return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }

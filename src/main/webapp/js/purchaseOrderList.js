@@ -182,7 +182,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                         if ("0" == data.code) {
                             layer.msg("删除用户失败", {icon: 2});
                         } else if ("1" == data.code) {
-                            layer.msg("删除成功", {icon: 2});
+                            layer.msg("删除成功", {icon: 1});
                             window.location.href = path + "requisition/requisitionTable";
                         } else {
                             layer.msg("未知错误，请联系管理员", {icon: 2});

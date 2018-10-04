@@ -1,12 +1,16 @@
 package com.yr.order.dao.impl;
 
+import com.yr.entitys.bo.orderBO.PurchaseOrderBo;
 import com.yr.entitys.order.PurchaseOrder;
+import com.yr.entitys.page.Page;
 import com.yr.order.dao.PurchaseExcelDao;
 import com.yr.order.dao.PurchaseOrderDao;
+import com.yr.util.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -19,14 +23,35 @@ import java.util.List;
 public class PurchaseExcelDaoImpl implements PurchaseExcelDao {
     @PersistenceContext
     private EntityManager entityManager;
+
     /**
      * 查询数据库所有的用于excel 导出的数据信息
      * @return
      */
     @Override
-    public List<PurchaseOrder> queryForList() {
-        String jqpl = "select p from PurchaseOrder p where 1 = 1";
-        List<PurchaseOrder> purchaseOrderList  = entityManager.createQuery(jqpl).getResultList();
+    public List<PurchaseOrder> queryForList(Page<PurchaseOrderBo> page) {
+        String jpql = "select p from PurchaseOrder p where 1 = 1 ";
+
+        if (!StringUtils.isNull(page.getT().getPurchaseWareCode())) {
+            jpql += "and p.purchaseWareCode like :purchaseWareCode ";
+        }
+        if (!StringUtils.isNull(page.getT().getPurchaseCode())) {
+            jpql += "and p.code like :purchaseCode ";
+        }
+        if (!StringUtils.isNull(page.getT().getPurchaseOrder().getStatus())) {
+            jpql += "and p.status = :status ";
+        }
+        Query query =  entityManager.createQuery(jpql);
+        if (!StringUtils.isNull(page.getT().getPurchaseWareCode())) {
+            query.setParameter("purchaseWareCode", page.getT().getPurchaseWareCode());
+        }
+        if (!StringUtils.isNull(page.getT().getPurchaseCode())) {
+            query.setParameter("purchaseCode",page.getT().getPurchaseCode());
+        }
+        if (!StringUtils.isNull(page.getT().getPurchaseOrder().getStatus())) {
+            query.setParameter("status",page.getT().getPurchaseOrder().getStatus());
+        }
+        List<PurchaseOrder> purchaseOrderList =  query.getResultList();
         return purchaseOrderList;
     }
 

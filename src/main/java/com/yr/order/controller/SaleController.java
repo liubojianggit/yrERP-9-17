@@ -47,8 +47,8 @@ public class SaleController {//销售订单Controller
     @ModelAttribute
     public void ModelAttribute(@RequestParam(value = "id",required = false)Integer id, Map<String,Object>map){
         if (id != null && id != 0){
-            SaleOrderBO saleOrderBO = saleService.getById(id);
-            map.put("saleOrderBO",saleOrderBO);
+            SaleOrder saleOrder = saleService.getById(id);
+            map.put("saleOrder",saleOrder);
         }
     }
 
@@ -80,18 +80,29 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/add",method = RequestMethod.GET)
-    public String jumpAdd(Map<String,Object>map,HttpServletRequest request){
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("user");
-        SaleOrderBO saleOrderBO = new SaleOrderBO();
+    public String jumpAdd(Map<String,Object>map,HttpServletRequest request,SaleOrderBO saleOrderBO){
+        saleOrderBO.setOrderType("1");//订单的类型，用于新增/修改页面
+        Map<String,Object>map1 = new HashMap<>();
+        map1.put("0","驳回");
+        map1.put("1","销售成功");
+        map1.put("2","申请退货");
+        map1.put("3","退货成功");
+        map.put("states",map1);
+        User loginUser = (User) request.getSession().getAttribute("user");
+        /*SaleOrderBO saleOrderBO = new SaleOrderBO();
         saleOrderBO.setLoginUser(loginUser);
         List<Ware> listW = ws.getWare();
-        /*saleOrderBO.setWareList(listW);*/
+        *//*saleOrderBO.setWareList(listW);*//*
         map.put("wareList",listW);
-        saleOrderBO.setLoginName("李莉");
+        saleOrderBO.setLoginName(loginUser.getName());
         List<Depot> list = service.getname();
         map.put("depotList",list);
-        map.put("saleOrderBO", saleOrderBO);
+        map.put("saleOrder", saleOrderBO);*/
+        List<Ware> listW = ws.getWare();
+        List<Depot> list = service.getname();
+        map.put("wareList",listW);
+        map.put("depotList",list);
+        map.put("saleOrder", new SaleOrder());
         return "saleOrderAU";
     }
 
@@ -101,10 +112,10 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/add1",method = RequestMethod.GET)
-    public String requAdd(@PathVariable Integer id,Map<String,Object>map){
-        SaleOrderBO saleOrderBO = saleService.getById(id);
-        if (saleOrderBO.getSaleOrder().getStates()==2){
-            saleOrderBO.setOrderType("1");
+    public String requAdd(@PathVariable Integer id,Map<String,Object>map,SaleOrderBO saleOraderBO){
+        SaleOrder saleOrder = saleService.getById(id);
+        if (saleOrder.getStates()==2){
+            saleOraderBO.setOrderType("1");
         }
         return "saleOrderAU";
     }
@@ -115,7 +126,16 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String saveAdd(SaleOrder sale){
+    public String saveAdd(SaleOrder sale,HttpServletRequest request){
+        //将时间戳设置进入创建时间
+        sale.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        //将修改时间设进修改时间，初始修改时间，后期会改
+        sale.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        //获取session 当中当前登录用户，session属性名从login登录的传过来，
+        User user = (User) request.getSession().getAttribute("user");
+        sale.setCreateEmp(user.getName());
+        //这个初始的修改人，后期会改
+        sale.setUpdateEmp(user.getName());
         saleService.add(sale);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
@@ -125,21 +145,22 @@ public class SaleController {//销售订单Controller
      * @return
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
-    public String jumpUpdate(@PathVariable("id") Integer id, Map<String, Object> map){
+    public String jumpUpdate(@PathVariable("id") Integer id, Map<String, Object> map,SaleOrderBO saleOrderBO){
        // Map<String,Object>map1 = new HashMap<>();
        /* map1.put("0","驳回");
         map1.put("1","销售成功");
         map1.put("2","申请退货");
         map1.put("3","退货成功");
         map.put("states",map1);*/
-        SaleOrderBO saleOrderBO = saleService.getById(id);
+        saleOrderBO.setOrderType("1");//订单的类型，用于新增/修改页面
+        SaleOrder saleOrder = saleService.getById(id);
         List<Ware> listW = ws.getWare();
         map.put("wareList",listW);
         List<Depot> list = service.getname();
         map.put("depotList",list);
-        saleOrderBO.setLoginName("李莉");
-        saleOrderBO.setOrderType("1");
-        map.put("saleOrderBO",saleOrderBO);//根据id获取对象放入request中
+      /*  saleOrder.setLoginName("李莉");
+        saleOrder.setOrderType("1");*/
+        map.put("saleOrder",saleOrder);//根据id获取对象放入request中
         return "saleOrderAU";
     }
 
