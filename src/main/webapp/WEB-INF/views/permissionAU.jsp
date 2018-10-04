@@ -43,14 +43,14 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">父级权限</label>
         <div class="layui-input-inline">
-            <form:select path="permission.supId" items="${permissions}"></form:select>
+            <form:select path="permission.supId" id="supPerm" items="${permissions}"></form:select>
         </div>
     </div>
 
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">请求方式</label>
         <div class="layui-input-inline">
-            <form:select path="permission.method" items="${methodMap}"></form:select>
+            <form:select path="permission.method" id="methodSelect" items="${methodMap}"></form:select>
         </div>
     </div>
 
@@ -58,12 +58,12 @@
         <div class="layui-input-block">
             <c:if test="${permissionBo.permission.id == null }">
                 <button type="button" class="layui-btn" lay-submit lay-filter="addMenu">立即添加</button>
+                <button type="button" id="resetAdd" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${permissionBo.permission.id != null }">
                 <button type="button" class="layui-btn" lay-submit lay-filter="updateMenu">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-primary">取消</button>
-            <button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
         </div>
     </div>
 </form:form>
@@ -71,8 +71,12 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/permissionAU.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
 <script type="text/javascript">
-
-
+    $(document).ready(function () {
+        if (${permissionBo.permission.id == null }){
+            $("#supPerm").val("");
+            $("#methodSelect").val("");
+        }
+    })
 </script>
 </body>
 </html>

@@ -141,8 +141,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         var index = layui.layer.open({
             title: "添加用户",
             type: 2,
-            /* area: ['390px', '320px'],*/
-            area: ['700px', '750px'],
+            area: ['390px', '320px'],
+            //area: ['700px', '750px'],
             content: path + "requisition/requisitionTable/add",//发送请求
             end: function () {
                 window.location.href = path + 'requisition/requisitionTable';
@@ -209,7 +209,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 title: "添加用户",
                 type: 2,
                 /*area: ['390px', '320px'],*/
-                area: ['700px', '750px'],
+                area: ['390px', '400px'],
                 content: path + "requisition/requisitionTable/" + data.purchaseOrder.id,//发送请求
                 end: function () {
                     window.location.href = path + 'requisition/requisitionTable';

@@ -87,6 +87,20 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
+    $("#resetAdd").click(function () {
+        $(".layui-input").val("");
+        $("#userName").val("");
+        $("#uPhoneNumber").val("");
+        $("#depCode").val("");
+        $("#suppCode").val("");
+        $("#suppWares").val("");
+        $("#suppWareType").val("");
+        $("#suppWareBrand").val("");
+        $("#consignee").val("");
+        $("#depotCode").val("");
+        $("#orderStatus").val("");
+    })
+
     //格式化时间
     function filterTime(val){
         if(val < 10){
