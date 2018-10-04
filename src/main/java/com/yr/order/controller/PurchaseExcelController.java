@@ -51,7 +51,7 @@ public class PurchaseExcelController {
      * @param request
      * @param response
      */
-    @RequestMapping(value = "/export", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/export", method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String exportExcel(HttpServletRequest request, HttpServletResponse response, PurchaseOrderBo purchaseOrderBo, Page<PurchaseOrderBo> page) {
         try {
