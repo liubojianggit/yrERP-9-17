@@ -132,7 +132,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                 area: ['390px', '275px'],
                 content: path+'department/departmentTable/'+data.id,
                 end: function(){
-                    window.location.href = path+"/department/departmentTable";
+                    window.location.href = path+"department/departmentTable";
                 }
             });
 
