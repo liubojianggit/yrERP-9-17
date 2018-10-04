@@ -13,21 +13,88 @@
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="<%=request.getContextPath() %>/layui/css/layui.css" media="all" />
     <link rel="stylesheet" href="<%=request.getContextPath() %>/css/public.css" media="all" />
+    <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderList.js"></script>
 </head>
+<script>
+    layui.use('upload', function() {
+            var $ = layui.jquery,
+             layer = layui.layer
+                , upload = layui.upload;
+        var beforeIndex;
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#test8'
+            ,url: '<%=request.getContextPath()%>/purchaseExcel/import'
+            ,auto: false
+            ,method: 'post'
+            ,field: 'excelFile'
+            ,accept: 'file'
+            ,exts: 'xls|xlsx'
+            //,multiple: true
+            ,bindAction: '#test9'
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                beforeIndex = layer.msg('文件导入中，请稍候',{icon: 16,time:false,shade:0.8});
+            }
+            ,done: function(res){
+                setTimeout(function(){
+                    layer.close(beforeIndex);
+                    layer.msg("上传成功！",{icon:1});
+                },1000);
+                console.log(res)
+            }
+            ,error: function(index, upload){
+                //当上传失败时，你可以生成一个“重新上传”的按钮，点击该按钮时，执行 upload() 方法即可实现重新上传
+                setTimeout(function(){
+                    layer.close(beforeIndex);
+                    layer.msg("上传失败！",{icon:2});
+                },1000);
+            }
+        });
+    });
+
+    $("#export").click(function () {
+        $.ajax({
+            type: 'post',
+            url: path+'',//请求导出文件接口
+            dataType : 'json',
+            data: $('#searchFormId').serialize(),
+            error: function() {
+                layer.msg("操作失败",{icon:2});
+                setTimeout(function(){
+                    window.location.href = path+"requisition/requisitionTable";
+                },1200);
+            },
+            success: function(data){
+                if("1" == data.code){
+                    layer.msg(data.msg,{icon:1});
+                    setTimeout(function(){
+                        window.location.href = path+"requisition/requisitionTable";
+                    },1200);
+                }else{
+                    layer.msg(data.msg,{icon:2});
+                    setTimeout(function(){
+                        window.location.href = path+"requisition/requisitionTable";
+                    },1200);
+                }
+            }
+        });
+    })
+</script>
 <body class="childrenBody">
 <form class="layui-form">
     <blockquote class="layui-elem-quote quoteBox">
         <form class="layui-form" id="searchFormId">
             <div class="layui-inline">
-                <div class="layui-input-inline">
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
-                        <input type="text" class="layui-input searchVal" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
+                <div class="layui-input-inline" style="width: 500px;">
+                    <div class="layui-input-inline" style='width:35%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                        <input type="text" class="layui-input searchVal" name="" id="purchaseCode" value="" placeholder="请输入订单名称/编号：" />
                     </div>
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
-                        <input type="text" class="layui-input searchVal" id="purchaseWareCode" placeholder="请输入商品名称：" />
+                    <div class="layui-input-inline" style='width:30%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                        <input type="text" class="layui-input searchVal" name="" id="purchaseWareCode" placeholder="请输入商品名称：" />
                     </div>
-                    <div style='width:25%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
-                    <select name="city" id="rStates" lay-verify="">
+                    <div class="layui-input-inline" style='width:30%;heigth:50%,padding:0;margin:0;float:left;box-sizing:border-box;'>
+                    <select name="" id="rStates" lay-verify="">
                         <option value="">请选择订单类型</option>
                         <option value="0">驳回</option>
                         <option value="1">交易成功</option>
@@ -50,8 +117,18 @@
                 </div>
             </shiro:hasPermission>
         </form>
+        <div class="layui-upload">
+            <div class="layui-inline" style="width: 200px;">
+                <button type="button" class="layui-btn" id="export">导出数据</button>
+            </div>
+            <div class="layui-inline">
+            <button type="button" class="layui-btn layui-btn-normal" id="test8">选择文件</button>
+            <button type="button" class="layui-btn" id="test9">开始上传</button>
+            </div>
+        </div>
+
         <div class="layui-inline">
-            <input class="layui-input" placeholder="自定义日期格式" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+
         </div>
     </blockquote>
     <table id="purchaseList" lay-filter="purchaseList"></table>
@@ -65,7 +142,5 @@
         </shiro:hasPermission>
     </script>
 </form>
-<script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderList.js"></script>
 </body>
 </html>

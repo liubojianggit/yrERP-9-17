@@ -107,45 +107,39 @@ public class PurchaseOrderReadExcel {
                         purchaseOrder.setCode(cell.getStringCellValue());
                     }
                     if (c == 3) {
+                        cell.setCellType(XSSFCell.CELL_TYPE_STRING);
                         purchaseOrder.setJobNumber(cell.getStringCellValue());
                     }
                     if (c == 4) {
+                        cell.setCellType(XSSFCell.CELL_TYPE_STRING);
                         purchaseOrder.setDepartmentCode(cell.getStringCellValue());
                     }
                     if (c == 5) {
-                        purchaseOrder.setApprover(cell.getStringCellValue());
+                        purchaseOrder.setApprover(cell.getStringCellValue());//审批人
                     }
-                    /*if (c == 6) {
-                        purchaseOrder.setPurchasName(cell.getStringCellValue());
+                    if (c == 6) {
+                        purchaseOrder.setPurchaseWareCode(cell.getStringCellValue());//供应商商品编号
                     }
                     if (c == 7) {
-                        purchaseOrder.setPurchaseType(cell.getStringCellValue());
-                    }*/
+                       purchaseOrder.setPurchaseNumber(Long.parseLong(cell.getStringCellValue()));
+                    }
                     if (c == 8) {
-
-                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                        purchaseOrder.setPurchaseNumber((long) cell.getNumericCellValue());
+                        purchaseOrder.setSupplierCode(cell.getStringCellValue());//供应商编号
                     }
                     if (c == 9) {
-                        purchaseOrder.setSupplierCode(cell.getStringCellValue());
+                        purchaseOrder.setUnitPrice(Double.parseDouble(cell.getStringCellValue()));
                     }
                     if (c == 10) {
 
-                        purchaseOrder.setUnitPrice(cell.getNumericCellValue());
+                        purchaseOrder.setTotalPrice(Double.parseDouble(cell.getStringCellValue()));
                     }
                     if (c == 11) {
-
-                        purchaseOrder.setTotalPrice(cell.getNumericCellValue());
+                        purchaseOrder.setStatus(Integer.parseInt(cell.getStringCellValue()));
                     }
                     if (c == 12) {
-                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-
-                        purchaseOrder.setStatus((int) cell.getNumericCellValue());
-                    }
-                    if (c == 13) {
                         purchaseOrder.setConsignee(cell.getStringCellValue());
                     }
-                    if (c == 14) {
+                    if (c == 13) {
                         purchaseOrder.setDepotCode(cell.getStringCellValue());
                     }
                     //添加采购信息；
