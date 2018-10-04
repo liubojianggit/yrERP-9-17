@@ -31,20 +31,20 @@ public class ExportExcelUtils {
  
 	// 传入要导入的数据
 	public ExportExcelUtils(String title,String[] rowName,List<Object[]>  dataList,HttpServletResponse  response){
-		this.title=title;
-		this.rowName=rowName;
-		this.dataList=dataList;
+		this.title = title;
+		this.rowName = rowName;
+		this.dataList = dataList;
 		this.response = response;
 	}
 	
 	// 导出数据
 	public void exportData(){
 		try {
-			HSSFWorkbook workbook =new HSSFWorkbook(); // 创建一个excel对象
-			HSSFSheet sheet =workbook.createSheet(title); // 创建表格
+			HSSFWorkbook workbook = new HSSFWorkbook(); // 创建一个excel对象
+			HSSFSheet sheet = workbook.createSheet(title); // 创建表格
 			// 产生表格标题行
-			HSSFRow rowm  =sheet.createRow(0);  // 行
-			HSSFCell cellTiltle =rowm.createCell(0);  // 单元格
+			HSSFRow rowm = sheet.createRow(0);  // 行
+			HSSFCell cellTiltle = rowm.createCell(0);  // 单元格
 			
 			// sheet样式定义
 			HSSFCellStyle columnTopStyle = this.getColumnTopStyle(workbook); // 头样式
@@ -99,7 +99,7 @@ public class ExportExcelUtils {
 					 cell.setCellStyle(style); // 样式
 				}
 			}
-			//  让列宽随着导出的列长自动适应
+			 //  让列宽随着导出的列长自动适应
 			 sheet.autoSizeColumn((short)0); //调整第一列宽度
 			 sheet.autoSizeColumn((short)1); //调整第二列宽度
 			 sheet.autoSizeColumn((short)2); //调整第三列宽度
@@ -119,29 +119,27 @@ public class ExportExcelUtils {
 			 sheet.autoSizeColumn((short)16); //调整第十七列宽度
 			 sheet.autoSizeColumn((short)17); //调整第十八列宽度
 			 sheet.autoSizeColumn((short)18); //调整第十九列宽度
-			 
-			 if(workbook !=null){  
-	                try  
-	                {  
-	                	// excel 表文件名
-	                    String fileName = title + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";  
-	                    String fileName11 = URLEncoder.encode(fileName,"UTF-8");
-	                    String headStr = "attachment; filename=\"" + fileName11 + "\"";  
-	                    response.setContentType("APPLICATION/OCTET-STREAM");  
-	                    response.setHeader("Content-Disposition", headStr);  
-	                    OutputStream out = response.getOutputStream();  
-	                    workbook.write(out);
-	                    out.flush();
-	                    out.close();
-	                }  
-	                catch (IOException e)  
-	                {  
-	                    e.printStackTrace();  
-	                } 
-	                
-	            }  
-	  
-	        }catch(Exception e){  
+
+			if (workbook !=null)
+			{
+				try {
+					// excel 表文件名
+					String fileName = title + String.valueOf(System.currentTimeMillis()).substring(4, 13) + ".xls";
+					String fileName11 = URLEncoder.encode(fileName,"utf-8");
+					response.setCharacterEncoding("UTF-8");// 解决浏览器(servlet)在读文件时的乱码问题，
+					String headStr = "attachment; filename=\"" + fileName11 + "\"";
+					response.setContentType("APPLICATION/OCTET-STREAM");
+					response.setHeader("Content-Disposition", headStr);
+					OutputStream out = response.getOutputStream();
+					workbook.write(out);
+					out.flush();
+					out.close();
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+	        }catch (Exception e){
 	            e.printStackTrace();  
 	        }  
 	          
