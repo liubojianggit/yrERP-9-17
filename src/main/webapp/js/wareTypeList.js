@@ -18,7 +18,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     //用户列表
     var tableIns = table.render({
         elem: '#supplierList',
-        url: path + 'ware_type/ware_typeTable/list',
+        url: path+'ware_type/ware_typeTable/list',
         request: {
             pageName: 'currentPage' //页码的参数名称，默认：page
             , limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -56,7 +56,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             })
         } else {
-            window.location.href = path + "/ware_type/ware_typeTable";
+            window.location.href = path + "ware_type/ware_typeTable";
         }
     });
 
@@ -66,9 +66,9 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             title: "添加商品",
             type: 2,
             area: ['390px', '340px'],
-            content: path + "/ware_type/ware_typeTable/add",//发送请求
+            content: path + "ware_type/ware_typeTable/add",//发送请求
             end: function () {
-                window.location.href = path + '/ware_type/ware_typeTable';
+                window.location.href = path + 'ware_type/ware_typeTable';
             }
         })
         /*layui.layer.full(index);
@@ -107,7 +107,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                             layer.msg("删除商品类型失败", {icon: 2});
                         } else if ("1" == data.code) {
                             layer.msg("删除商品类型成功", {icon: 1});
-                            window.location.href = path + "u_user/userTable";
+                            window.location.href = path + "ware_type/ware_typeTable";
                         } else {
                             layer.msg("未知错误，请联系管理员", {icon: 2});
                         }
@@ -135,9 +135,9 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 maxmin: true,
                 shadeClose: true, //点击遮罩关闭层
                 area: ['800px', '520px'],
-                content: path + '/ware_type/ware_typeTable/' + data.id,
+                content: path + 'ware_type/ware_typeTable/' + data.id,
                 end: function () {
-                    window.location.href = path + "/ware_type/ware_typeTable";
+                    window.location.href = path + "ware_type/ware_typeTable";
                 }
             });
 
@@ -147,26 +147,26 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 layer.close(index);
                 $.ajax({
                     type: 'post',
-                    url: path + '/ware_type/ware_typeTable/' + data.id,//请求登录验证接口
+                    url: path + 'ware_type/ware_typeTable/' + data.id,//请求登录验证接口
                     dataType: 'json',
                     data: {_method: 'delete'},
                     error: function () {
                         layer.msg("操作失败", {icon: 2});
                         setTimeout(function () {
-                            window.location.href = path + "/ware_type/ware_typeTable";
+                            window.location.href = path + "ware_type/ware_typeTable";
                         }, 1200);
                     },
                     success: function (data) {
                         if ("1" == data.code) {
                             layer.msg(data.msg, {icon: 1});
                             setTimeout(function () {
-                                window.location.href = path + "/ware_type/ware_typeTable";
+                                window.location.href = path + "ware_type/ware_typeTable";
                             }, 1200);
 
                         } else {
                             layer.msg(data.msg, {icon: 2});
                             setTimeout(function () {
-                                window.location.href = path + "/ware_type/ware_typeTable";
+                                window.location.href = path + "ware_type/ware_typeTable";
                             }, 1200);
                         }
                     }

@@ -71,7 +71,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             })
         } else {
-            window.location.href = path + "/ware_type/ware_typeTable";
+            window.location.href = path + "ware_type/ware_typeTable";
         }
     });
 
@@ -122,7 +122,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                             layer.msg("删除商品类型失败", {icon: 2});
                         } else if ("1" == data.code) {
                             layer.msg("删除商品类型成功", {icon: 1});
-                            window.location.href = path + "u_user/userTable";
+                            window.location.href = path + "suppWareType/suppWareTypeTable";
                         } else {
                             layer.msg("未知错误，请联系管理员", {icon: 2});
                         }
@@ -175,12 +175,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                         if ("1" == data.code) {
                             layer.msg(data.msg, {icon: 1});
                             setTimeout(function () {
-                                window.location.href = path + "/suppWareType/suppWareTypeTable";
+                                window.location.href = path + "suppWareType/suppWareTypeTable";
                             }, 1200);
                         } else {
                             layer.msg(data.msg, {icon: 2});
                             setTimeout(function () {
-                                window.location.href = path + "/suppWareType/suppWareTypeTable";
+                                window.location.href = path + "suppWareType/suppWareTypeTable";
                             }, 1200);
                         }
                     }
