@@ -134,30 +134,28 @@ public class UserController {
         user.setStates(1);//默认是启用的
         user.setCreateTime(new Date());//获取当前时间
         user.setCreateEmp(user1.getName());//获取当前用户名
+        Log log = new Log();
         try {
             userService.add(user);
-        }catch (Exception e){
-            Log log = new Log();
+            //添加log日志
             log.setModular("用户模块");
-            log.setTable("purchaseOrder");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            //log.setFieldOldValue();  //新增数据忽略前置
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Date());
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            log.setModular("用户模块");
+            log.setTable("u_user");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
             log.setType(0);
             log.setFieldNewValue(user.toString());
-            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateTime(new Date());
             log.setContent(e.getMessage());
             log.setCreateEmp(user1.getName());
-            logService.addLog(log);
         }
-        //添加log日志
-        Log log = new Log();
-        log.setModular("用户模块");
-        log.setTable("u_user");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(1);
-        //log.setFieldOldValue();  //新增数据忽略前置
-        log.setFieldNewValue(user.toString());
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user.getName());
         logService.addLog(log);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
@@ -192,11 +190,20 @@ public class UserController {
         user.setPhoto(filesCopy);//替换掉原本的路径
         user.setUpdateTime(new Date());//获取修改当前时间
         user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        Log log = new Log();
         try {
             userService.update(user);
+            //添加log日志
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(oldUser.toString());  //新增数据忽略前置
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
         }catch (Exception e){
             //添加log日志
-            Log log = new Log();
             log.setModular("用户模块");
             log.setTable("u_user");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
@@ -206,18 +213,7 @@ public class UserController {
             log.setContent(e.getMessage());
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setCreateEmp(user1.getName());
-            logService.addLog(log);
         }
-        //添加log日志
-        Log log = new Log();
-        log.setModular("用户模块");
-        log.setTable("u_user");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(3);
-        log.setFieldOldValue(oldUser.toString());  //新增数据忽略前置
-        log.setFieldNewValue(user.toString());
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user1.getName());
         logService.addLog(log);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
@@ -239,6 +235,7 @@ public class UserController {
                 userStr += ";";
             }
         }
+        Log log = new Log();
         try {
             userService.delete(id);//删除用户
             //删除图片用户
@@ -246,8 +243,14 @@ public class UserController {
                 User user = userService.getById(id1);//根据用户id查询出对象
                 FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
             }*/
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(userStr.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
         }catch (Exception e){
-            Log log = new Log();
             log.setModular("用户模块");
             log.setTable("u_user");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
@@ -256,16 +259,7 @@ public class UserController {
             log.setContent(e.getMessage());
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setCreateEmp(user1.getName());
-            logService.addLog(log);
         }
-        Log log = new Log();
-        log.setModular("用户模块");
-        log.setTable("u_user");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(3);
-        log.setFieldOldValue(userStr.toString());
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user1.getName());
         logService.addLog(log);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }

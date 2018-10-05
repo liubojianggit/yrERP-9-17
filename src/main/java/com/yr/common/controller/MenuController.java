@@ -45,6 +45,7 @@ public class MenuController {
         //从redis取出用户拥有的权限
         Jedis jedis = jedisManager.getJedis();//获得redis对象
         byte[] permissionsByte = jedis.get("permissions".getBytes());//获得权限集合
+        jedisManager.returnResource(jedis,true);//关闭redis连接
         List<Permission> list = (List<Permission>) SerializeUtil.deserialize(permissionsByte);//将序列化后的byte数组转成对象
         List<String> permissionList = new ArrayList<>();//加入新的list中
         for (Permission permission:list) {

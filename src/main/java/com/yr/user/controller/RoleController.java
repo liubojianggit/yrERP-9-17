@@ -8,6 +8,7 @@ import com.yr.entitys.page.Page;
 import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
+import com.yr.log.service.LogService;
 import com.yr.user.service.PermissionService;
 import com.yr.user.service.RoleService;
 import org.apache.shiro.SecurityUtils;
@@ -35,6 +36,8 @@ public class RoleController {
     @Autowired
     @Qualifier("permissionServiceImpl")
     private PermissionService permissionService;
+    @Autowired
+    private LogService logService;
 
 
     /**
@@ -96,10 +99,17 @@ public class RoleController {
         Role role = roleBo.getRole();
         role.setCreateTime(new Date());//获取当前时间
         role.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
+        Log log = new Log();
         try {
             roleService.add(role);
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            log.setFieldNewValue(role.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
         }catch (Exception e){
-            Log log = new Log();
             log.setModular("角色模块");
             log.setTable("u_role");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
@@ -109,14 +119,7 @@ public class RoleController {
             log.setContent(e.getMessage());
             log.setCreateEmp(user.getName());
         }
-        Log log = new Log();
-        log.setModular("角色模块");
-        log.setTable("u_role");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(1);
-        log.setFieldNewValue(role.toString());
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user.getName());
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
@@ -145,10 +148,18 @@ public class RoleController {
         Role oldRole = roleService.getById(roleBo.getRole().getId());//没修改之前
         roleBo.getRole().setUpdateTime(new Date());//获取修改当前时间
         roleBo.getRole().setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        Log log = new Log();
         try {
             roleService.update(roleBo.getRole());
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(oldRole.toString());
+            log.setFieldNewValue(roleBo.getRole().toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
         }catch (Exception e){
-            Log log = new Log();
             log.setModular("角色模块");
             log.setTable("u_role");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
@@ -159,15 +170,7 @@ public class RoleController {
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setCreateEmp(user.getName());
         }
-        Log log = new Log();
-        log.setModular("角色模块");
-        log.setTable("u_role");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(3);
-        log.setFieldOldValue(oldRole.toString());
-        log.setFieldNewValue(roleBo.getRole().toString());
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user.getName());
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -188,10 +191,17 @@ public class RoleController {
                 roleStr += ";";
             }
         }
+        Log log = new Log();
         try {
             roleService.delete(id);
+            log.setModular("角色模块");
+            log.setTable("u_role");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(2);
+            log.setFieldOldValue(roleStr);
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
         } catch (Exception e) {
-            Log log = new Log();
             log.setModular("角色模块");
             log.setTable("u_role");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
@@ -201,14 +211,7 @@ public class RoleController {
             log.setCreateTime(new Timestamp(System.currentTimeMillis()));
             log.setCreateEmp(user.getName());
         }
-        Log log = new Log();
-        log.setModular("角色模块");
-        log.setTable("u_role");
-        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
-        log.setType(2);
-        log.setFieldOldValue(roleStr);
-        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        log.setCreateEmp(user.getName());
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
