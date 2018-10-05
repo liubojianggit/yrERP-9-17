@@ -111,17 +111,20 @@ public class LoginController {
 
                         jedisManager.returnResource(jedis,true);//关闭redis连接
                         str = "{\"code\":1,\"msg\":\"登录成功\"}";// 账号登录成功
-                        Cookie cookie = new Cookie("name", URLEncoder.encode( user.getName(),"UTF-8"));//转码
-                        Cookie cookie1 = new Cookie("password",URLEncoder.encode(user.getPassword(),"UTF-8"));
+                        //Cookie cookie = new Cookie("name", URLEncoder.encode( user.getName(),"UTF-8"));//转码
+                        Cookie cookie = new Cookie("name", new String(user.getName().getBytes("iso-8859-1"), "utf-8"));//转码
+                        //Cookie cookie1 = new Cookie("password",URLEncoder.encode(user.getPassword(),"UTF-8"));
+                        Cookie cookie1 = new Cookie("password",new String(user.getPassword().getBytes("iso-8859-1"), "utf-8"));
                         cookie.setMaxAge(60*60);
                         cookie1.setMaxAge(60*60);
-                        cookie.setPath("/");
-                        cookie1.setPath("/");
+                        /*cookie.setPath("/");
+                        cookie1.setPath("/");*/
                         response.addCookie(cookie);
                         response.addCookie(cookie1);
-                        URLDecoder.decode(user.getName(),"UTF-8");//取码
-                        URLDecoder.decode(user.getPassword(),"UTF-8");
+                        /*URLDecoder.decode(user.getName(),"UTF-8");//取码
+                        URLDecoder.decode(user.getPassword(),"UTF-8");*/
                     } catch (Exception ae) {
+                        ae.printStackTrace();
                         System.out.println("登陆失败: " + ae.getMessage());
                         str = "{\"code\":4,\"msg\":\"账号或密码错误\"}";
                     }
