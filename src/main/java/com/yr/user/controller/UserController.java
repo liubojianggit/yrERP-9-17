@@ -12,6 +12,7 @@ import com.yr.log.service.LogService;
 import com.yr.user.service.RoleService;
 import com.yr.user.service.UserService;
 import com.yr.util.DateUtils;
+import com.yr.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -239,10 +240,12 @@ public class UserController {
         try {
             userService.delete(id);//删除用户
             //删除图片用户
-            /*for (Integer id1:id) {
+            for (Integer id1:id) {
                 User user = userService.getById(id1);//根据用户id查询出对象
-                FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
-            }*/
+                if(user.getPhoto() != null){
+                    FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
+                }
+            }
             log.setModular("用户模块");
             log.setTable("u_user");
             //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
