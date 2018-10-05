@@ -80,7 +80,7 @@
 			<div class="layui-upload-list">
 				<!-- 头像回显的样式，这里是圆形 -->
 				<img src="${user.photo}" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
-				<p id="demoText"></p>
+				<p id="demoText"> </p>
 			</div>
 			<input type="hidden" id="filesCopy" name="filesCopy" value="${user.photo }"><!-- 隐藏框是存图片路径 -->
 			<button type="button" class="layui-btn" id="test1">修改头像</button>
