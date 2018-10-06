@@ -39,11 +39,6 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public String query(Page<SaleOrderBO> page) {
-       /* Double wareCount = 0D;// Double类型，后面加D辨认类型
-        List<Ware> listWare = ws.getWare();//获取商品单价
-        for (Ware ware : listWare) {
-            wareCount = ware.getOutUnitPrice();
-        } // 单个商品单价*/
         page.setTotalRecord(saleDao.getCount(page));//查询总条数加入page中
         List<SaleOrderBO>list = saleDao.query(page);//分页查询的数据
         JsonConfig jsonConfig = new JsonConfig();
@@ -79,9 +74,6 @@ public class SaleServiceImpl implements SaleService {
      */
     @Override
     public SaleOrder getById(Integer id) {
-        /*SaleOrder saleOrder = saleDao.getById(id);
-        SaleOrderBO saleOrderBO = new SaleOrderBO();
-        saleOrderBO.setSaleOrder(saleOrder);*/
         return saleDao.getById(id);
     }
 

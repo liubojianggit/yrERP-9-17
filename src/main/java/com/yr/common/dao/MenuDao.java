@@ -14,7 +14,7 @@ public interface MenuDao {
      * @return List<Menu>
      */
     //查询菜单数据用来生成菜单导航
-    List<Menu> query();
+    List<Menu> query(List<String> list);
 
     Long queryCount(Page<MenuBO> page);
 
@@ -36,4 +36,6 @@ public interface MenuDao {
     void delete(Integer id);
     //修改菜单记录
     void update(Menu menu);
+
+    Integer getCount(String url);
 }

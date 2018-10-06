@@ -48,12 +48,11 @@
         <div class="layui-input-block">
             <c:if test="${suppWareType.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addMenu">立即添加</button>
+                <button type="button" id="resetAdd" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${suppWareType.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateMenu">确认修改</button>
-            </c:if>
-            <c:if test="${suppWareType.id == null }">
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+                <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
         </div>
     </div>
@@ -64,7 +63,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         if (${suppWareType.id == null }){
-            $("#pidSelect").val(0);
+            $("#pidSelect").val("");
         }
     })
 

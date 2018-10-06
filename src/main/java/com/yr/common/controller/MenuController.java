@@ -1,16 +1,24 @@
 package com.yr.common.controller;
 
 import com.yr.common.service.MenuService;
+import com.yr.core.redis.JedisManager;
 import com.yr.entitys.bo.menuBO.MenuBO;
 import com.yr.entitys.page.Page;
+import com.yr.entitys.user.Permission;
 import com.yr.entitys.user.User;
+import com.yr.user.service.UserService;
+import com.yr.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,14 +29,31 @@ import java.util.Map;
 public class MenuController {
     @Autowired
     private MenuService menuService;
+    @Autowired
+    @Qualifier("userServiceImpl")
+    private UserService userService;
+    @Autowired
+    private JedisManager jedisManager;
+
     /**
      * 查询菜单表，返回json格式字符串，生成主页面的左侧垂直菜单
      * @return List<User>
      */
     @RequestMapping(value="/menuTable/json", method = RequestMethod.GET, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String query(){
-        return menuService.query();
+    public String query(HttpServletRequest request){
+        //从redis取出用户拥有的权限
+        Jedis jedis = jedisManager.getJedis();//获得redis对象
+        byte[] permissionsByte = jedis.get("permissions".getBytes());//获得权限集合
+        jedisManager.returnResource(jedis,true);//关闭redis连接
+        List<Permission> list = (List<Permission>) SerializeUtil.deserialize(permissionsByte);//将序列化后的byte数组转成对象
+        List<String> permissionList = new ArrayList<>();//加入新的list中
+        for (Permission permission:list) {
+            if("GET".equals(permission.getMethod())){//所有请求为get请求
+                permissionList.add(permission.getUrl());
+            }
+        }
+        return menuService.query(permissionList);
     }
 
 

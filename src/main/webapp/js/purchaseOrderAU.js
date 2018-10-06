@@ -41,7 +41,7 @@ layui.use(['form','layer','upload','table'],function(){
                     },1200);
 
                 }else{
-                    layer.msg(data.msg,{icon:2});
+                    layer.msg(data.msg,{icon:1});
                     setTimeout(function(){
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
@@ -85,6 +85,20 @@ layui.use(['form','layer','upload','table'],function(){
         });
 
         return false;
+    })
+
+    $("#resetAdd").click(function () {
+        $(".layui-input").val("");
+        $("#userName").val("");
+        $("#uPhoneNumber").val("");
+        $("#depCode").val("");
+        $("#suppCode").val("");
+        $("#suppWares").val("");
+        $("#suppWareType").val("");
+        $("#suppWareBrand").val("");
+        $("#consignee").val("");
+        $("#depotCode").val("");
+        $("#orderStatus").val("");
     })
 
     //格式化时间

@@ -33,9 +33,9 @@ public class MenuServiceImpl implements MenuService {
      * 返回固定格式，固定字段名的json字符串到页面，用来动态显示主页面右边的二级菜单
      */
     @Override
-    public String query() {
+    public String query(List<String> list) {
         List<MenuBO> menuTurnMenuBOList = new ArrayList<MenuBO>();
-        for (Menu menu : menuDaoImp.query()) {
+        for (Menu menu : menuDaoImp.query(list)) {
             //这里new对象，要使用自动注入吗？？
             MenuBO menuBO = new MenuBO();
             menuBO.setId(menu.getId());
@@ -139,4 +139,5 @@ public class MenuServiceImpl implements MenuService {
 
         return str;
     }
+
 }

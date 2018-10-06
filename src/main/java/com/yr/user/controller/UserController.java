@@ -1,39 +1,30 @@
 package com.yr.user.controller;
 
+import com.hazelcast.console.Echo;
 import com.yr.common.service.UploadServer;
 import com.yr.core.redis.JedisManager;
 import com.yr.department.service.DepartmentService;
-import com.yr.department.service.impl.DepartmentServiceImpl;
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.user.UserBo;
 import com.yr.entitys.page.Page;
-import com.yr.entitys.user.Permission;
-import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
-import com.yr.user.service.LoginService;
+import com.yr.log.service.LogService;
 import com.yr.user.service.RoleService;
 import com.yr.user.service.UserService;
 import com.yr.util.DateUtils;
 import com.yr.util.FileUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import redis.clients.jedis.Jedis;
-import sun.misc.Request;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -58,7 +49,7 @@ public class UserController {
     @Autowired
     private UploadServer uploadServerImpl;
     @Autowired
-    private LoginService loginServiceImpl;
+    private LogService logService;
 
     /**
      * 如果检测到form表单提交带有id,直接将值存入request中
@@ -124,8 +115,6 @@ public class UserController {
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
         departmentList.put("-1","请选择");
         map.put("depaList",departmentList);
-        //部门编号为键，名字为值
-        //loginServiceImpl.
         return "userAU";
     }
 
@@ -139,12 +128,36 @@ public class UserController {
     @RequestMapping(value="/userTable", method=RequestMethod.POST, produces="application/json;charset=UTF-8")
     @ResponseBody
     public String saveAdd(User user, @RequestParam(value="filesCopy",required = false) String filesCopy, HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");//获得当前用户
+
         user.setPhoto(filesCopy);//替换掉原本的路径
         user.setAge(DateUtils.calculateTimeDifferenceByCalendar(user.getBirthday()));//计算当前时间-生日日期=现在年龄
         user.setStates(1);//默认是启用的
         user.setCreateTime(new Date());//获取当前时间
-        user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取当前用户名
-        userService.add(user);
+        user.setCreateEmp(user1.getName());//获取当前用户名
+        Log log = new Log();
+        try {
+            userService.add(user);
+            //添加log日志
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            //log.setFieldOldValue();  //新增数据忽略前置
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Date());
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Date());
+            log.setContent(e.getMessage());
+            log.setCreateEmp(user1.getName());
+        }
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
@@ -153,8 +166,7 @@ public class UserController {
      * @return String
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.GET)
-    public String jumpUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy ,@PathVariable Integer id, Map<String, Object> map,UserBo userBo, Page<UserBo> page){
-        page.setT(userBo);
+    public String jumpUpdate(@PathVariable Integer id, Map<String, Object> map){
         Map<String, Object> map1 = new HashMap<>();
         map1.put("1", "男");
         map1.put("0", "女");
@@ -162,7 +174,6 @@ public class UserController {
         Map<String,Object> departmentList = departmentService.querys();//查询所有的部门
         departmentList.put("-1","请选择");
         map.put("depaList",departmentList);
-        map.put("page", page);
         map.put("user", userService.getById(id));//根据id获取对象放入request中
         return "userAU";
     }
@@ -173,11 +184,38 @@ public class UserController {
      */
     @RequestMapping(value="/userTable",method=RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String saveUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy,User user, Page<UserBo> page, Map<String, Object> map, HttpServletRequest request){
+    public String saveUpdate(@RequestParam(value="filesCopy",required = false) String filesCopy,User user, Map<String, Object> map, HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        User oldUser = userService.getById(user.getId());//修改之前的值
         user.setPhoto(filesCopy);//替换掉原本的路径
         user.setUpdateTime(new Date());//获取修改当前时间
         user.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
-        userService.update(user);
+        Log log = new Log();
+        try {
+            userService.update(user);
+            //添加log日志
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(oldUser.toString());  //新增数据忽略前置
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            //添加log日志
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(oldUser.toString());
+            log.setFieldNewValue(user.toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -187,13 +225,45 @@ public class UserController {
      */
     @RequestMapping(value="/userTable/{id}",method=RequestMethod.DELETE)
     @ResponseBody
-    public String delete(@PathVariable Integer[] id){
-        userService.delete(id);//删除用户
-        //删除图片用户
-        for (Integer id1:id) {
-            User user = userService.getById(id1);//根据用户id查询出对象
-            FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
+    public String delete(@PathVariable Integer[] id,HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");//获得当前用户
+
+        String userStr = "";//删除前的值
+        for (int i=0;i<id.length;i++) {
+            User user = userService.getById(id[i]);
+            userStr += user.toString();
+            if(i != id.length){//不为最后一个满足条件
+                userStr += ";";
+            }
         }
+        Log log = new Log();
+        try {
+            userService.delete(id);//删除用户
+            //删除图片用户
+            for (Integer id1:id) {
+                User user = userService.getById(id1);//根据用户id查询出对象
+                if(user.getPhoto() != null){
+                    FileUtils.delete(user.getPhoto());//获得用户的图片路径删除
+                }
+            }
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(userStr.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            log.setModular("用户模块");
+            log.setTable("u_user");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(userStr.toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 
@@ -226,40 +296,6 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
         map.put("url",url);
         return map;
-    }
-
-    /**
-     * 从redis缓存中拿到用户的id返回头像的字节流到jsp
-     * 注意：session中一般用来存储用户的信息，因为能很好的监控到用户的行为
-     *
-     * 不需要
-     */
-    @RequestMapping(value="/userTable/icon")
-    public void getIcon(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = (User) request.getSession().getAttribute("user");//从session取出对象
-        //调用方法将流传出
-        byte[] data = FileUtils.getFileFlow(user.getPhoto());//根据图片存在的路径获得byte流
-        response.setContentType("image/png");//设置文件格式
-        OutputStream stream = response.getOutputStream();//获得输出对象
-        stream.write(data);//将图片以流的形式返回出去
-        stream.flush();//刷新
-        stream.close();//关闭
-    }
-
-    /**
-     * 通过用户的id请求返回图像的字节流
-     *
-     * 不需要
-     */
-    @RequestMapping("/userTable/icons/{id}")
-    public void getIcons(@PathVariable(value="id") Integer id ,HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = userService.getById(id);//根据id获得user对象
-        byte[] data = FileUtils.getFileFlow(user.getPhoto());//调用方法将流传出
-        response.setContentType("image/png");
-        OutputStream stream = response.getOutputStream();
-        stream.write(data);//将图片以流的形式返回出去
-        stream.flush();
-        stream.close();
     }
 
     /**

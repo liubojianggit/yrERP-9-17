@@ -104,7 +104,7 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="type" items="${wares}" itemLabel="name" itemValue="name"></form:select>
+            <form:select path="type" id="waresType" items="${wares}" itemLabel="name" itemValue="name"></form:select>
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -154,17 +154,25 @@
         <div class="layui-input-block">
             <c:if test="${wareBo.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addUser">立即添加</button>
+                <button type="button" id="resetAdd" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${wareBo.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateUser">确认修改</button>
-            </c:if>
-            <c:if test="${wareBo.id == null }">
                 <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
+
         </div>
     </div>
 </form:form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/wareAU.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (${wareBo.id == null }){
+            $("#headUrl").val("");
+            $("#waresType").val("");
+        }
+    })
+</script>
 </body>
 </html>
