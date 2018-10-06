@@ -62,12 +62,12 @@
         <div class="layui-input-block">
             <c:if test="${supplierBo.supplier.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addMenu">立即添加</button>
+                <button type="button" id="resetAdd" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${supplierBo.supplier.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateMenu">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
             </c:if>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
-
         </div>
     </div>
  </form:form>

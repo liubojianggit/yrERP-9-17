@@ -30,44 +30,44 @@
  <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">申请人姓名</label>
         <div class="layui-input-inline">
-            <form:select path="user.jobNum" items="${userList}" itemLabel="name" itemValue="jobNum" />
+            <form:select path="user.jobNum" id="userName" items="${userList}" itemLabel="name" itemValue="jobNum" />
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">申请人电话</label>
         <div class="layui-input-inline">
-            <form:select path="user.phoneNumber" items="${userList }" itemLabel="phoneNumber" itemValue="jobNum" />
+            <form:select path="user.phoneNumber" id="uPhoneNumber" items="${userList }" itemLabel="phoneNumber" itemValue="jobNum" />
         </div>
     </div>
 
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">采购部门</label>
         <div class="layui-input-inline">
-            <form:select path="purchaseOrder.departmentCode" items="${departmentList}" cssStyle="width:80px;height: 40px;"></form:select>
+            <form:select path="purchaseOrder.departmentCode" id="depCode" items="${departmentList}" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">供应商</label>
         <div class="layui-input-inline">
-               <form:select path="purchaseOrder.supplierCode" items="${supplierList}" cssStyle="width:80px;height: 40px;"></form:select>
+               <form:select path="purchaseOrder.supplierCode" id="suppCode" items="${supplierList}" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品名称</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWares.name" items="${supplierWareList }" itemValue="code" itemLabel="name"></form:select>
+            <form:select path="supplierWares.name" id="suppWares" items="${supplierWareList }" itemValue="code" itemLabel="name"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品类型</label>
         <div class="layui-input-inline">
-            <form:select path="supplierWares.type" items="${supplierWareList }" itemValue="code" itemLabel="type"></form:select>
+            <form:select path="supplierWares.type" id="suppWareType" items="${supplierWareList }" itemValue="code" itemLabel="type"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">商品品牌 </label>
         <div class="layui-input-inline">
-            <form:select path="supplierWares.brand" items="${supplierWareList }" itemValue="code" itemLabel="brand"></form:select>
+            <form:select path="supplierWares.brand" id="suppWareBrand" items="${supplierWareList }" itemValue="code" itemLabel="brand"></form:select>
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
@@ -85,20 +85,20 @@
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">收货人</label>
         <div class="layui-input-inline">
-            <form:select path="purchaseOrder.consignee" items="${userList }" itemLabel="name" itemValue="name" />
+            <form:select path="purchaseOrder.consignee" id="consignee" items="${userList }" itemLabel="name" itemValue="name" />
         </div>
     </div>
     <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
         <label class="layui-form-label">收货仓库</label>
         <div class="layui-input-inline">
-             <form:select path="purchaseOrder.depotCode" items="${depotList }" cssStyle="width:80px;height: 40px;"></form:select>
+             <form:select path="purchaseOrder.depotCode" id="depotCode" items="${depotList }" cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
     <c:if test="${purchaseOrderBO.purchaseOrder.id != null }">
         <div class="magb15 layui-col-md4 layui-form-item layui-col-xs12">
-            <label class="layui-form-label">收货仓库</label>
+            <label class="layui-form-label">订单类型</label>
             <div class="layui-input-inline">
-                <form:select path="purchaseOrder.status" items="${status }" cssStyle="width:80px;height: 40px;"></form:select>
+                <form:select path="purchaseOrder.status" id="orderStatus" items="${status }" cssStyle="width:80px;height: 40px;"></form:select>
             </div>
         </div>
     </c:if>
@@ -106,17 +106,35 @@
         <div class="layui-input-block">
             <c:if test="${purchaseOrderBO.purchaseOrder.id == null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="addOrder">立即添加</button>
+                <button type="button" id="resetAdd" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
             <c:if test="${purchaseOrderBO.purchaseOrder.id != null }">
                 <button class="layui-btn layui-btn-sm" lay-submit lay-filter="updateOrder">确认修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </c:if>
            <%-- <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>--%>
-            <button type="reset" id="resets" class="layui-btn layui-btn-primary">重置</button>
-            <button type="button" onClick="javascript :history.back(-1);" class="layui-btn layui-btn-primary">返回</button>
         </div>
     </div>
  </form:form>
 <script type="text/javascript" src="<%=request.getContextPath() %>/layui/layui.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/js/purchaseOrderAU.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-2.1.0.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (${purchaseOrderBO.purchaseOrder.id == null }){
+            alert($("#userName").val());
+            $("#userName").val("");
+            $("#uPhoneNumber").val("");
+            $("#depCode").val("");
+            $("#suppCode").val("");
+            $("#suppWares").val("");
+            $("#suppWareType").val("");
+            $("#suppWareBrand").val("");
+            $("#consignee").val("");
+            $("#depotCode").val("");
+            $("#orderStatus").val("");
+        }
+    })
+</script>
 </body>
 </html>

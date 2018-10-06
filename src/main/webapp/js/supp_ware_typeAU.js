@@ -86,6 +86,11 @@ layui.use(['form','layer','upload','table'],function(){
         return false;
     })
 
+    $("#resetAdd").click(function () {
+        $(".layui-input").val("");
+        $("#pidSelect").val("");
+    })
+
     //格式化时间
     function filterTime(val){
         if(val < 10){

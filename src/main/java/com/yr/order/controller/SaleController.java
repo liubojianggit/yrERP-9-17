@@ -89,19 +89,10 @@ public class SaleController {//销售订单Controller
         map1.put("3","退货成功");
         map.put("states",map1);
         User loginUser = (User) request.getSession().getAttribute("user");
-        /*SaleOrderBO saleOrderBO = new SaleOrderBO();
-        saleOrderBO.setLoginUser(loginUser);
-        List<Ware> listW = ws.getWare();
-        *//*saleOrderBO.setWareList(listW);*//*
-        map.put("wareList",listW);
-        saleOrderBO.setLoginName(loginUser.getName());
-        List<Depot> list = service.getname();
-        map.put("depotList",list);
-        map.put("saleOrder", saleOrderBO);*/
         List<Ware> listW = ws.getWare();
         List<Depot> list = service.getname();
-        map.put("wareList",listW);
-        map.put("depotList",list);
+        map.put("wareList",listW);//销售商品
+        map.put("depotList",list);//销售商品的仓库
         map.put("saleOrder", new SaleOrder());
         return "saleOrderAU";
     }

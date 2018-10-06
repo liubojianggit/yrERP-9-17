@@ -6,7 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.order.SaleOrder;
+import com.yr.entitys.page.Page;
 import org.springframework.stereotype.Repository;
 
 import com.yr.order.dao.SaleExportDao;
@@ -28,7 +30,7 @@ public class SaleExportDaoImpl implements SaleExportDao {
 	}
 
 	@Override
-	public List<SaleOrder> queryForList() {
+	public List<SaleOrder> queryForList(Page<SaleOrderBO> page) {
 		String jpql = "select s from SaleOrder s ";
 		Query query = entityManager.createQuery(jpql);
 		List<SaleOrder> list = query.getResultList();

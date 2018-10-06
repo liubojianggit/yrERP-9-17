@@ -36,17 +36,17 @@ public class PurchaseExcelDaoImpl implements PurchaseExcelDao {
             jpql += "and p.purchaseWareCode like :purchaseWareCode ";
         }
         if (!StringUtils.isNull(page.getT().getPurchaseCode())) {
-            jpql += "and p.code like :purchaseCode ";
+            jpql += "and p.code like :code ";
         }
         if (!StringUtils.isNull(page.getT().getPurchaseOrder().getStatus())) {
             jpql += "and p.status = :status ";
         }
         Query query =  entityManager.createQuery(jpql);
         if (!StringUtils.isNull(page.getT().getPurchaseWareCode())) {
-            query.setParameter("purchaseWareCode", page.getT().getPurchaseWareCode());
+            query.setParameter("purchaseWareCode", "%"+page.getT().getPurchaseWareCode()+"%");
         }
         if (!StringUtils.isNull(page.getT().getPurchaseCode())) {
-            query.setParameter("purchaseCode",page.getT().getPurchaseCode());
+            query.setParameter("code","%"+page.getT().getPurchaseCode()+"%");
         }
         if (!StringUtils.isNull(page.getT().getPurchaseOrder().getStatus())) {
             query.setParameter("status",page.getT().getPurchaseOrder().getStatus());

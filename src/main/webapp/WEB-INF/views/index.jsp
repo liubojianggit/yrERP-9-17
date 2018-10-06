@@ -27,10 +27,10 @@
 <div class="layui-layout layui-layout-admin">
 	<!-- 顶部 -->
 	<div class="layui-header header">
-		<div class="layui-main mag0">
+		<div class="layui-main mag0 layui-icon">
 			<a href="#" class="logo">一容ERP</a>
 			<!-- 显示/隐藏菜单 -->
-			<a href="javascript:;" class="seraph hideMenu icon-caidan "></a>
+			<a href="javascript:;" class="seraph hideMenu icon-caidan layui-icon-shrink-right"></a>
 			<!-- 顶级菜单 -->
 			<ul class="layui-nav mobileTopLevelMenus" mobile>
 				<li class="layui-nav-item" data-menu="contentManagement">
@@ -73,7 +73,7 @@
 						<dd><a href="javascript:;" class="showNotice"><i class="layui-icon">&#xe645;</i><cite>系统公告</cite><span class="layui-badge-dot"></span></a></dd>
 						<dd pc><a href="javascript:;" class="functionSetting"><i class="layui-icon">&#xe620;</i><cite>功能设定</cite><span class="layui-badge-dot"></span></a></dd>
 						<dd pc><a href="javascript:;" class="changeSkin"><i class="layui-icon">&#xe61b;</i><cite>更换皮肤</cite></a></dd>
-						<dd><a href="login" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
+						<dd><a href="logout" class="signOut"><i class="seraph icon-tuichu"></i><cite>退出</cite></a></dd>
 					</dl>
 				</li>
 			</ul>

@@ -34,7 +34,8 @@
 			}
         });
 
-        $("#userFace").click(function(){//点击头像
+
+        $("#userFace,#test1").click(function(){//点击头像
             $("#files").click();//触发文件上传事件
         });
 
@@ -78,18 +79,18 @@
 		<c:if test="${user.id != null }">
 			<div class="layui-upload-list">
 				<!-- 头像回显的样式，这里是圆形 -->
-				<img src="${pageContext.request.contextPath}/u_user/userTable/icons/${user.id }" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
-				<p id="demoText"></p>
+				<img src="${user.photo}" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
+				<p id="demoText"> </p>
 			</div>
 			<input type="hidden" id="filesCopy" name="filesCopy" value="${user.photo }"><!-- 隐藏框是存图片路径 -->
-			<button type="button" class="layui-btn" id="test2">修改头像</button>
+			<button type="button" class="layui-btn" id="test1">修改头像</button>
 		</c:if>
 		<c:if test="${user.id == null }">
 			<div class="layui-upload-list">
-				<img src="${pageContext.request.contextPath }/images/587c589d26802.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
+				<img src="http://192.168.1.77/static/b.jpg" class="layui-upload-img layui-circle userFaceBtn userAvatar" style="width:100px;height:100px;" id="userFace">
 				<p id="demoText"></p>
 			</div>
-			<input type="hidden" id="filesCopy" name="filesCopy" value="E:\idea\yrERP\yrERP-9-17\src\main\webapp\images\587c589d26802.jpg">
+			<input type="hidden" id="filesCopy" name="filesCopy" value="http://192.168.1.77/static/b.jpg">
 			<!-- 上传头像成功后保存的隐藏框 -->
 			<button type="button" class="layui-btn" id="test1">上传头像</button>
 		</c:if>
