@@ -1,10 +1,11 @@
 package com.yr.department.controller;
 
 import com.yr.department.service.DepartmentService;
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.departmentBo.Departmentbo;
-import com.yr.entitys.department.Department;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
+import com.yr.log.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,8 @@ public class DepartmentController {
     @Qualifier("departmentServiceImpl")
     @Autowired
     private DepartmentService departmentService;//把epartmentService对象传过来
+    @Autowired
+    private LogService logService;
 
     //如果表单中带有ID 就执行这里
     //@RequestParam(value="id", required = false)表示执行该方法时不必要有id这个参数值，如果是ture则是必须要有id这个参数
@@ -71,6 +74,8 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
     public String add(Departmentbo departmentbo, HttpServletRequest request){
+        try {
+
         //将时间戳设置进入创建时间
         departmentbo.getDepartment().setCreateTime(new Timestamp(System.currentTimeMillis()));
         //将修改时间设进修改时间，初始修改时间，后期会改
@@ -81,6 +86,32 @@ public class DepartmentController {
         //这个初始的修改人，后期会改
         departmentbo.getDepartment().setUpdateEmp(user.getName());
         departmentService.add(departmentbo);//调用添加方法
+
+        //日志
+        Log log = new Log();
+        log.setModular("部门");
+        log.setTable("departmentbo");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(1);
+        //log.setFieldOldValue();  //新增数据忽略前置
+        log.setFieldNewValue(departmentbo.getDepartment().toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setCreateEmp(user.getName());
+        logService.addLog(log);
+    } catch (Exception e) {
+        Log log = new Log();
+        log.setModular("部门");
+        log.setTable("departmentbo");
+        //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+        log.setType(0);
+        log.setFieldNewValue(departmentbo.getDepartment().toString());
+        log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        log.setContent(e.toString());
+        User user1 = (User) request.getSession().getAttribute("user");
+        log.setCreateEmp(user1.getName());
+        logService.addLog(log);
+        e.printStackTrace();
+    }
         return "{\"code\":1,\"msg\":\"新增保存成功\"}";
     }
     /**
@@ -108,17 +139,51 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping(value="/departmentTable",method=RequestMethod.PUT,produces="application/json;charset=UTF-8")
-    public String updates(Departmentbo departmentbo,HttpServletRequest request){
-        //将时间戳设置进入创建时间
-        departmentbo.getDepartment().setCreateTime(new Timestamp(System.currentTimeMillis()));
-        //将修改时间设进修改时间，初始修改时间，后期会改
-        departmentbo.getDepartment().setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        //获取session 当中当前登录用户，session属性名从login登录的传过来，
-        User user = (User) request.getSession().getAttribute("user");
-        departmentbo.getDepartment().setCreateEmp(user.getName());
-        //这个初始的修改人，后期会改
-        departmentbo.getDepartment().setUpdateEmp(user.getName());
-        departmentService.update(departmentbo);
+    public String updates(Departmentbo departmentbo,HttpServletRequest request) {
+            //修改之前的值
+            String depotLog =departmentService.departmentId(departmentbo.getDepartment().getId()).toString();
+        try {
+            //将时间戳设置进入创建时间
+            departmentbo.getDepartment().setCreateTime(new Timestamp(System.currentTimeMillis()));
+            //将修改时间设进修改时间，初始修改时间，后期会改
+            departmentbo.getDepartment().setUpdateTime(new Timestamp(System.currentTimeMillis()));
+            //获取session 当中当前登录用户，session属性名从login登录的传过来，
+            User user = (User) request.getSession().getAttribute("user");
+            departmentbo.getDepartment().setCreateEmp(user.getName());
+            //这个初始的修改人，后期会改
+            departmentbo.getDepartment().setUpdateEmp(user.getName());
+            departmentService.update(departmentbo);
+
+            //日志
+            Log log = new Log();
+            log.setModular("部门");
+            log.setTable("departmentbo");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            //修改之前的值
+            log.setFieldOldValue(depotLog);
+            //修改之后的值
+            log.setFieldNewValue(departmentbo.getDepartment().toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user.getName());
+            logService.addLog(log);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+
+            Log log = new Log();
+            log.setModular("部门");
+            log.setTable("departmentbo");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(depotLog);
+            log.setFieldNewValue(departmentbo.getDepartment().toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            User user1 = (User) request.getSession().getAttribute("user");
+            log.setCreateEmp(user1.getName());
+            logService.addLog(log);
+        }
         return "{\"code\":1,\"msg\":\"修改保存成功\"}";
     }
 }
