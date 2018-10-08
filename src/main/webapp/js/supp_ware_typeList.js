@@ -80,7 +80,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         var index = layui.layer.open({
             title: "添加供应商品类型",
             type: 2,
-            area: ['390px', '340px'],
+            area: ['800px', '520px'],
             content: path + "suppWareType/suppWareTypeTable/add",//发送请求
             end: function () {
                 window.location.href = path + 'suppWareType/suppWareTypeTable';
