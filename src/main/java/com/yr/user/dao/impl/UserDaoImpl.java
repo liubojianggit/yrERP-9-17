@@ -136,7 +136,7 @@ public class UserDaoImpl implements UserDao {
      */
     public List<String> getRoles(Integer id){
         String sql = "select * from (select u_user_role.rid from u_user_role where u_user_role.uid = ?1)ur inner join u_role r on ur.rid = r.id ";
-        List<String> list = entityManager.createNativeQuery(sql,String.class).setParameter(1,id).getResultList();
+        List<String> list = entityManager.createNativeQuery(sql).setParameter(1,id).getResultList();
         return list;
     }
 
