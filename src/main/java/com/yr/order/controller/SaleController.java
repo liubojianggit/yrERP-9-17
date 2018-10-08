@@ -160,12 +160,12 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.GET)
     public String jumpUpdate(@PathVariable("id") Integer id, Map<String, Object> map,SaleOrderBO saleOrderBO){
-       // Map<String,Object>map1 = new HashMap<>();
-       /* map1.put("0","驳回");
+        Map<String,Object>map1 = new HashMap<>();
+        map1.put("0","驳回");
         map1.put("1","销售成功");
         map1.put("2","申请退货");
         map1.put("3","退货成功");
-        map.put("states",map1);*/
+        map.put("states",map1);
         saleOrderBO.setOrderType("1");//订单的类型，用于新增/修改页面
         SaleOrder saleOrder = saleService.getById(id);
         List<Ware> listW = ws.getWare();
