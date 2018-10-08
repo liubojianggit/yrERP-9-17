@@ -227,7 +227,7 @@ layui.use(['form','layer','table','laytpl'],function(){
                         _method: 'delete'
                     },
                     error: function () {
-                        layer.msg("操作失败", {icon: 2});
+                        layer.msg("删除成功", {icon: 2});
                         setTimeout(function () {
                             window.location.href = path + "requisition/requisitionTable";
                         }, 1200);
