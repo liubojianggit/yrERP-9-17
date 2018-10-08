@@ -39,9 +39,9 @@
                 type : "get",
                 dataType : 'json',
                 data : {"code":typeCode},
-                success : function(result) {
+                success : function(data) {
                     //已经存在该名字提示用户
-                    if(result==true){
+                        if(data =='ture'){
                         $("#errorTypeCode").html("商品编号已存在");
                     }else{
                         $("#errorTypeCode").html("");
