@@ -20,8 +20,6 @@ public class Role extends BaseEntity implements Serializable{
     private String code;//角色编号
     @Column(unique = true, nullable = false)
     private String name;//角色名
-    @ManyToMany(mappedBy = "role",fetch = FetchType.EAGER)
-    private Set<User> user;
     @JoinTable(name="u_role_permission",//中间表的名字
             joinColumns={ @JoinColumn(name="rid",referencedColumnName="id")},//name连接字段的名字,该字段对应本实体类的字段(默认是id)
             inverseJoinColumns={@JoinColumn(name="pid",referencedColumnName="id")})//另一个连接字段的名字,对应实体类的字段(默认是id)
@@ -50,14 +48,6 @@ public class Role extends BaseEntity implements Serializable{
 
     public String getName() {
         return name;
-    }
-
-    public Set<User> getUser() {
-        return user;
-    }
-
-    public void setUser(Set<User> user) {
-        this.user = user;
     }
 
     public Set<Permission> getPermission() {
