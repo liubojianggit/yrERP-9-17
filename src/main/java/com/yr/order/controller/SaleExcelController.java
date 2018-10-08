@@ -57,12 +57,12 @@ public class SaleExcelController {// 销售订单的导出导入
             //上传
             inputs = excelFile.getInputStream();
             String fileName = excelFile.getOriginalFilename();
-            String filePath=request.getSession().getServletContext().getRealPath("uploadFile");
+            String filePath=request.getSession().getServletContext().getRealPath("excelFile");
             String uploadFileName = ImportExcelUtils.uploadFile(inputs, fileName, filePath);
 
 
             //解析Excel，导入MySQL
-            result = saleExcelport.addExcel(filePath+"/"+uploadFileName);
+            result = saleExcelport.addExcel(filePath+"\\"+uploadFileName);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class SaleExcelController {// 销售订单的导出导入
         if(result){
             map.put("message", "成功");
         }else{
-            map.put("message", "失败");
+            map.put("message", "上传失败，检查是否订单编号重复");
         }
         return map;
     }
@@ -100,7 +100,7 @@ public class SaleExcelController {// 销售订单的导出导入
 
 
             String title = "销售订单表";
-            String[] rowsName = new String[] { "序号","订单编号", "购买客户", "销售员", "商品编号", "销售商品数量", "销售总价", "销售员联系电话",
+            String[] rowsName = new String[] { "序号","订单id","订单编号", "购买客户", "销售员", "商品编号", "销售商品数量", "销售总价", "销售员联系电话",
                     "申请退货人姓名","申请退货人联系电话",  "销售商品的仓库编号","收货人","申请人","订单状态", "退货收货人","备注"};
 
             List<Object[]> dataList = new ArrayList<Object[]>();
@@ -109,21 +109,22 @@ public class SaleExcelController {// 销售订单的导出导入
                 SaleOrder po = salelist.get(i);
                 objs = new Object[rowsName.length];
                 objs[0] = i;// 序号
-                objs[1] = po.getCode();// 销售订单编号
-                objs[2] = po.getCustomerBuy(); // 购买客户
-                objs[3] = po.getSalesperson();// 销售员
-                objs[4] = po.getWareCode();// 销售商品编号
-                objs[5] = po.getNumber(); // 销售商品数量
-                objs[6] = po.getMoney();// 销售总价
-                objs[7] = po.getsPhoneNumber();// 销售员联系电话
-                objs[8] = po.getRequName();// 申请退货人姓名
-                objs[9] = po.getrPhoneNumber();// 申请退货人联系电话
-                objs[10] = po.getDepotCode(); // 销售商品的仓库编号
-                objs[11] = po.getConsignee();// 收货人
-                objs[12] = po.getApprover();//申请人
-                objs[13] = po.getStates();// 销售单状态（0退货，1交易成功）
-                objs[14] = po.getConsignee();// 销售单状态（0退货，1交易成功）
-                objs[15] = po.getRemark(); // 备注
+                objs[1] =po.getId();//销售订单id
+                objs[2] = po.getCode();// 销售订单编号
+                objs[3] = po.getCustomerBuy(); // 购买客户
+                objs[4] = po.getSalesperson();// 销售员
+                objs[5] = po.getWareCode();// 销售商品编号
+                objs[6] = po.getNumber(); // 销售商品数量
+                objs[7] = po.getMoney();// 销售总价
+                objs[8] = po.getsPhoneNumber();// 销售员联系电话
+                objs[9] = po.getRequName();// 申请退货人姓名
+                objs[10] = po.getrPhoneNumber();// 申请退货人联系电话
+                objs[11] = po.getDepotCode(); // 销售商品的仓库编号
+                objs[12] = po.getConsignee();// 收货人
+                objs[13] = po.getApprover();//申请人
+                objs[14] = po.getStates();// 销售单状态（0退货，1交易成功）
+                objs[15] = po.getConsignee();// 退货收货人
+                objs[16] = po.getRemark(); // 备注
                 dataList.add(objs);
             }
             // 工具类样式

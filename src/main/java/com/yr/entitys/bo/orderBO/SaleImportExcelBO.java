@@ -24,7 +24,7 @@ public class SaleImportExcelBO {
 
   public List<SaleOrder> getExcelInfo(String filePath){
       //初始化集合
-      List<SaleOrder> lList=new ArrayList<SaleOrder>();
+      List<SaleOrder> saleOrderList=new ArrayList<SaleOrder>();
       //初始化输入流
       InputStream is = null;
       try{
@@ -44,7 +44,7 @@ public class SaleImportExcelBO {
               wb = new XSSFWorkbook(is);
           }
           //读取Excel里面销售订单表的信息
-          lList=readExcelValue(wb);
+          saleOrderList=readExcelValue(wb);
           is.close();
       }catch(Exception e){
           e.printStackTrace();
@@ -59,7 +59,7 @@ public class SaleImportExcelBO {
               }
           }
       }
-      return lList;
+      return saleOrderList;
   }
     /**
      * 读取Excel里面销售订单表的信息
@@ -77,9 +77,8 @@ public class SaleImportExcelBO {
 
         //得到Excel的列数(前提是有行数)
         if((totalRows >= 1) && (sheet.getRow(0) != null)) {
-            sheet.getRow(2).getPhysicalNumberOfCells();
-            /*          int a = sheet.getRow(2).getPhysicalNumberOfCells();
-             */          this.totalCells=sheet.getRow(2).getPhysicalNumberOfCells();
+            int a = sheet.getRow(2).getPhysicalNumberOfCells();
+            this.totalCells=sheet.getRow(2).getPhysicalNumberOfCells();
         }
 
         //循环Excel行数,从第二行开始。标题不入库
@@ -93,74 +92,86 @@ public class SaleImportExcelBO {
                 Cell cell = row.getCell(c);
                 if (null != cell)
                 {
-                 /* if (c == 1)
-                  {
-                      cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                      //requisition.setId(Integer.valueOf(cell.getStringCellValue()));
-                      requisition.setId((int)cell.getNumericCellValue());
-                  }*/
                     if (c == 2)
                     {
+                        cell.setCellType(CellType.STRING);
                         sale.setCode(cell.getStringCellValue());//销售订单编号(唯一)
                     }
                     if (c == 3)
                     {
+                        cell.setCellType(CellType.STRING);
                         sale.setCustomerBuy(cell.getStringCellValue());//购买客户
                     }
                     if (c == 4)
                     {
+                        cell.setCellType(CellType.STRING);
                         //销售员
                         sale.setSalesperson(cell.getStringCellValue());
                     }
                     if (c == 5)
                     {
+                        cell.setCellType(CellType.STRING);
                         sale.setWareCode(cell.getStringCellValue());//销售商品编号
 
                     }
                     if (c == 6)
                     {
-                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                        sale.setNumber((long) cell.getNumericCellValue());//销售商品数量
+
+                        cell.setCellType(CellType.STRING);
+                        sale.setNumber(Long.parseLong(cell.getStringCellValue()));//销售商品数量
                     }
                     if (c == 7)
                     {
-                        sale.setMoney(Double.valueOf(cell.getStringCellValue()));//销售金额
+                        cell.setCellType(CellType.STRING);
+                        sale.setMoney(Double.parseDouble(cell.getStringCellValue()));//销售金额
                     }
                     if (c == 8)
                     {
+                        cell.setCellType(CellType.STRING);
                         sale.setsPhoneNumber(cell.getStringCellValue());//销售员联系电话
                     }
                     if (c == 9)
                     {
-                        sale.setRemark(cell.getStringCellValue());//备注
+                        cell.setCellType(CellType.STRING);
+                        sale.setRequName(cell.getStringCellValue()); //申请退货人姓名
                     }
                     if (c == 10)
                     {
-                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                        sale.setStates((int)cell.getNumericCellValue());//销售单状态（0退货，1交易成功）
+                        cell.setCellType(CellType.STRING);
+                        sale.setrPhoneNumber(cell.getStringCellValue());//申请退货人联系电话
                     }
                     if (c == 11)
                     {
-                        sale.setConsignee(cell.getStringCellValue());//收货人
+                        cell.setCellType(CellType.STRING);
+                        sale.setDepotCode(cell.getStringCellValue()); //销售商品的仓库编号
                     }
                     if (c == 12)
                     {
-                        cell.setCellType(XSSFCell.CELL_TYPE_NUMERIC);
-                        sale.setApprover(cell.getStringCellValue());//审批人
+                        cell.setCellType(CellType.STRING);
+                        sale.setConsignee(cell.getStringCellValue());//收货人
                     }
                     if (c == 13)
                     {
-                        sale.setRequName(cell.getStringCellValue()); //申请退货人姓名
+                        cell.setCellType(CellType.STRING);
+                        sale.setApprover(cell.getStringCellValue());//申请人
                     }
                     if (c == 14)
                     {
-                        sale.setrPhoneNumber(cell.getStringCellValue());//申请退货人联系电话
+                        cell.setCellType(CellType.STRING);
+                        sale.setStates(Integer.parseInt(cell.getStringCellValue()));//销售单状态（0退货，1交易成功）
                     }
-                    if (c == 15)
+                    if(c == 15)
                     {
-                        sale.setDepotCode(cell.getStringCellValue()); //销售商品的仓库编号
+                        cell.setCellType(CellType.STRING);
+                        sale.setConsignee(cell.getStringCellValue());//申请人
+                    }
+                    if (c == 16)
+                    {
+                        cell.setCellType(CellType.STRING);
+                        sale.setRemark(cell.getStringCellValue());//备注
                     }
                     //添加销售订单信息；
+                    System.err.println("============="+sale.toString());
                     lList.add(sale);
                 }
             }

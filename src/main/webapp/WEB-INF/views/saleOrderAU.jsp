@@ -61,7 +61,8 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">销售状态</label>
         <div class="layui-input-block">
-            <form:input path="states" class="layui-input"  lay-verify="required" placeholder="请输入销售状态："/>
+          <%--  <form:input path="states" class="layui-input"  lay-verify="required" placeholder="请输入销售状态："/>--%>
+            <form:select path="states" id="orderStates" items="${states}"  cssStyle="width:80px;height: 40px;"></form:select>
         </div>
     </div>
 
@@ -138,6 +139,8 @@
         if (${permissionBo.permission.id == null }){
             $("#depotCode").val("");
             $("#wareCode").val("");
+            $("#orderStates").val("");
+
         }
     })
 </script>

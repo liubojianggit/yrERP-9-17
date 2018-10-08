@@ -3,6 +3,7 @@ package com.yr.order.controller;
 
 import com.yr.depot.service.DepotService;
 import com.yr.depot.service.WareService;
+import com.yr.entitys.Log.Log;
 import com.yr.entitys.bo.orderBO.SaleOrderBO;
 import com.yr.entitys.department.Department;
 import com.yr.entitys.depot.Depot;
@@ -10,6 +11,7 @@ import com.yr.entitys.depot.Ware;
 import com.yr.entitys.order.SaleOrder;
 import com.yr.entitys.page.Page;
 import com.yr.entitys.user.User;
+import com.yr.log.service.LogService;
 import com.yr.order.service.SaleService;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,8 @@ public class SaleController {//销售订单Controller
 
     @Autowired
     private DepotService service;//注入仓库service的接口
-
+    @Autowired
+    private LogService logService;//注入日志接口
 
     /**
      * 如果检测到form表单提交代有id，直接将值存入request中
@@ -127,7 +130,27 @@ public class SaleController {//销售订单Controller
         sale.setCreateEmp(user.getName());
         //这个初始的修改人，后期会改
         sale.setUpdateEmp(user.getName());
-        saleService.add(sale);
+        Log log = new Log();
+        try {//添加log日志
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(1);
+            //log.setFieldOldValue();  //新增数据忽略前置
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Date());
+            log.setCreateEmp(user.getName());
+        }catch (Exception e){
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldNewValue(user.toString());
+            log.setCreateTime(new Date());
+            log.setContent(e.getMessage());
+            log.setCreateEmp(user.getName());
+        }
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"保存成功\"}";
     }
 
@@ -149,8 +172,6 @@ public class SaleController {//销售订单Controller
         map.put("wareList",listW);
         List<Depot> list = service.getname();
         map.put("depotList",list);
-      /*  saleOrder.setLoginName("李莉");
-        saleOrder.setOrderType("1");*/
         map.put("saleOrder",saleOrder);//根据id获取对象放入request中
         return "saleOrderAU";
     }
@@ -162,8 +183,36 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable",method = RequestMethod.PUT, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String SaveOrUpdate(SaleOrder sale){
-        saleService.update(sale);
+    public String SaveOrUpdate(SaleOrder sale, Map<String, Object> map, HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");//获得当前用户
+        SaleOrder oldSale= saleService.getById(sale.getId());//修改之前的值
+        sale.setUpdateTime(new Date());//获取修改当前时间
+        sale.setCreateEmp(((User)request.getSession().getAttribute("user")).getName());//获取修改用户
+        Log log = new Log();
+        try {
+            saleService.update(sale);
+            //添加log日志
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(oldSale.toString());  //新增数据忽略前置
+            log.setFieldNewValue(sale.toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            //添加log日志
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(oldSale.toString());
+            log.setFieldNewValue(sale.toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }
+        logService.addLog(log);
         return "{\"code\":1,\"msg\":\"修改成功\"}";
     }
 
@@ -173,8 +222,30 @@ public class SaleController {//销售订单Controller
      */
     @RequestMapping(value = "/sale_orderTable/{id}",method = RequestMethod.DELETE, produces="application/json;charset=UTF-8")
     @ResponseBody
-    public String delete(@PathVariable Integer id){
-        saleService.delete(id);
+    public String delete(@PathVariable Integer id,HttpServletRequest request){
+        User user1 = (User) request.getSession().getAttribute("user");//获得当前用户
+        Log log = new Log();
+        try {
+            saleService.delete(id);//删除用户
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(3);
+            log.setFieldOldValue(saleService.getById(id).toString());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }catch (Exception e){
+            log.setModular("销售订单模块");
+            log.setTable("sale_order");
+            //模块的操作类型（0抛异常，1新增，2删除，3修改，4用户登录，5用户退出）
+            log.setType(0);
+            log.setFieldOldValue(saleService.getById(id).toString());
+            log.setContent(e.getMessage());
+            log.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            log.setCreateEmp(user1.getName());
+        }
+        logService.addLog(log);
+
         return "{\"code\":1,\"msg\":\"删除成功\"}";
     }
 }

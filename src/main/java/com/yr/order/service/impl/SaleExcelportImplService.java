@@ -39,6 +39,7 @@ public class SaleExcelportImplService implements SaleExcelportService{
 		//解析xml文件
 		SaleImportExcelBO readExcel=new SaleImportExcelBO();
 		List<SaleOrder> saleOrderList = readExcel.getExcelInfo(filePath);
+		System.out.println("**********"+saleOrderList.size());
 		result = saleExportDao.addExcel(saleOrderList);
 		if(result > 0){
 			return true;

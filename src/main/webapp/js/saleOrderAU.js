@@ -83,6 +83,7 @@ layui.use(['form','layer','upload','table'],function(){
         $(".layui-input").val("");
         $("#depotCode").val("");
         $("#wareCode").val("");
+        $("#orderStates").val("");
     })
 
     //格式化时间
