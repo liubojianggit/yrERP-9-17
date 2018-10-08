@@ -44,6 +44,12 @@ layui.use(['table'],function(){
                     }else if (d.type == 5)
                     {
                         return "用户退出";
+                    }else if (d.type == 6)
+                    {
+                        return "excel导出";
+                    }else  if (d.type == 7)
+                    {
+                        return "excel导入";
                     }
                 }},
             {field: 'fieldOldValue', title: '操作的字段旧值',  align:'center',minWidth:130},

@@ -17,7 +17,9 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
- 
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+
 public class ExportExcelUtils {
 	
 	private String title; // 导出表格的表名
@@ -60,12 +62,12 @@ public class ExportExcelUtils {
 			// 合并第一行的所有列
 			sheet.addMergedRegion(new CellRangeAddress(0, (short) 0, 0, (short) (rowName.length-1)));
 			cellTiltle.setCellStyle(columnTopStyle);
-			cellTiltle.setCellValue(title); 
+			cellTiltle.setCellValue(title);
 			
 			int columnNum = rowName.length;  // 表格列的长度
 			HSSFRow rowRowName = sheet.createRow(1);  // 在第二行创建行
 			HSSFCellStyle cells =workbook.createCellStyle();
-			cells.setBottomBorderColor(HSSFColor.BLACK.index);  
+			cells.setBottomBorderColor(HSSFColor.BLACK.index);
 			rowRowName.setRowStyle(cells);
 			
 			// 循环 将列名放进去
@@ -93,7 +95,7 @@ public class ExportExcelUtils {
 						 if(!"".equals(obj[j]) && obj[j] != null){  
 	                            cell.setCellValue(obj[j].toString());                       //设置单元格的值  
 	                        }else{
-	                        	cell.setCellValue("  ");
+	                        	cell.setCellValue("");
 	                        }  
 					 }
 					 cell.setCellStyle(style); // 样式
