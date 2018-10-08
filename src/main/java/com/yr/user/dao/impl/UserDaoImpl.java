@@ -8,7 +8,6 @@ import com.yr.entitys.user.Role;
 import com.yr.entitys.user.User;
 import com.yr.user.dao.UserDao;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -136,8 +135,8 @@ public class UserDaoImpl implements UserDao {
      * @return User
      */
     public List<String> getRoles(Integer id){
-        String jpql = "select r.name from User u inner join u.role r where u.id = ?1";
-        List<String> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
+        String sql = "select * from (select u_user_role.rid from u_user_role where u_user_role.uid = ?1)ur inner join u_role r on ur.rid = r.id ";
+        List<String> list = entityManager.createNativeQuery(sql,String.class).setParameter(1,id).getResultList();
         return list;
     }
 
@@ -147,10 +146,23 @@ public class UserDaoImpl implements UserDao {
      * @return List<Permission>
      */
     public List<Permission> getPermissions(Integer id){
+        String sql = "select p.id,p.method,p.name,p.url,p.sup_id,p.createEmp,p.createTime,p.updateEmp,p.updateTime from (select u_user_role.rid from u_user_role where u_user_role.uid = ?1)ur inner join u_role r on ur.rid = r.id inner join u_role_permission up on r.id = up.rid inner join u_permission p on up.pid = p.id";
+        List<Permission> list = entityManager.createNativeQuery(sql,Permission.class).setParameter(1,id).getResultList();
+        return list;
+}
+
+    /**
+     * 根据用户id返回权限集合
+     * @param id
+     * @return List<Permission>
+     */
+    /*public List<Permission> getPermissions(Integer id){
         String jpql = "select p from User u inner join u.role r inner join r.permission p where u.id = ?1";
         List<Permission> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
         return list;
-    }
+    }*/
+
+
 
     /**
      * 删除角色关联表
@@ -239,6 +251,7 @@ public class UserDaoImpl implements UserDao {
      */
     public List<Role> getRole(Integer id){
         String jpql = "select r from User u inner join u.role r where u.id = ?1";
+        //String jpql = "";
         List<Role> list = entityManager.createQuery(jpql).setParameter(1,id).getResultList();
         return list;
     }

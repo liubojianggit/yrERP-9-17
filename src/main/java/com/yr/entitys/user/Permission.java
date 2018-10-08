@@ -23,8 +23,6 @@ public class Permission extends BaseEntity implements Serializable {
     private String method;//权限方法
     @Column(name="sup_id",nullable = false)
     private Integer supId;//上级id
-    @ManyToMany(mappedBy = "permission",fetch = FetchType.EAGER,cascade = CascadeType.MERGE)//多对多
-    private Set<Role> role;
 
     public Integer getId() {
         return id;
@@ -64,14 +62,6 @@ public class Permission extends BaseEntity implements Serializable {
 
     public void setSupId(Integer supId) {
         this.supId = supId;
-    }
-
-    public Set<Role> getRole() {
-        return role;
-    }
-
-    public void setRole(Set<Role> roles) {
-        this.role = role;
     }
 
     @Override
